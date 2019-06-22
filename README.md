@@ -1,1 +1,1 @@
-# calendz-front
+# Coming soon
