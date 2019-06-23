@@ -15,31 +15,45 @@
 
 ## Introduction
 
-*A venir*
+Ce repository représente le front de calendz.
 
 ## Ecosystème
 
-*A venir*
+Le front de calendz est développé avec les frameworks et outils suivants* :
 
-<!-- L'api de calendz a été développé avec les frameworks et outils suivants :
+| Librairie        | Version | Description                                                                                                       |
+| ---------------- | ------- | ----------------------------------------------------------------------------------------------------------------- |
+| [Vue.js]         | 2.6.10  | Vue.js is a progressive, incrementally-adoptable JavaScript framework for building UI on the web.                 |
+| [vue-cli]        | 3.1.3   | Standard Tooling for Vue.js Development.                                                                          |
+| [vue-router]     | 3.0.6   | he official router for Vue.js                                                                                     |
+| [vee-validate]   | 2.2.11  | Template Based Validation Framework for Vue.js                                                                    |
+| [Babel]          | 7.4.5   | Babel is a compiler for writing next generation JavaScript.                                                       |
+| [Node-sass]      | 4.12.0  | Node.js bindings to libsass.                                                                                      |
+| [Boostrap]       | 4.3.1   | The most popular HTML, CSS, and JavaScript framework for developing responsive, mobile first projects on the web. |
 
-| Librairie        | Version | Description                                                                                                                     |
-| ---------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| [Node.js]        | 10.15.3 | Node.js® is a JavaScript runtime built on Chrome's V8 JavaScript engine.                                                        |
-| [Express]        | 4.17.1  | Fast, unopinionated, minimalist web framework for Node.js                                                                       | -->
+**(Liste non exhaustive, uniquement les librairies principales sont présentées)*
 
 ## Installation & utilisation
 
 ### Pré-requis
 
-*A venir*
+* Installer Node 10.15.3
+* Créer un fichier `.env` à la source de ce repository contenant les valeurs suivantes (modifiables selon vos besoins)
 
-<!-- NODE_ENV=development
-APP_PORT=3000 -->
+      NODE_ENV=development
+      APP_PORT=3000
 
 ### Lancement
 
-*A venir*
+* Lint : `npm run lint` (corrige la syntaxe du code grâce à [ESLint](https://github.com/eslint/eslint))
+* Tests : `npm run test` (lance les tests effectués lors de l'intégration continue)
+* Production : `npm run build` (build les fichiers statiques du site, à servir via un serveur web)
+* Développement : `npm run serve` (lance avec [vue-cli](https://github.com/vuejs/vue-cli))
 
-[Node.js]: https://github.com/nodejs/node
-[Express]: https://github.com/expressjs/express
+[Vue.js]: https://github.com/vuejs/vue
+[vue-cli]: https://github.com/vuejs/vue-cli
+[vue-router]: https://github.com/vuejs/vue-router
+[vee-validate]: https://github.com/baianat/vee-validate
+[Babel]: https://github.com/babel/babel
+[Node-sass]: https://github.com/sass/node-sass
+[Boostrap]: https://github.com/twbs/bootstrap
