@@ -15,8 +15,8 @@
           class="navbar-brand"
           to="/">
           <img
-            src="img/brand/logo-white.svg"
-            style="height: 75px; width: 187.5px">
+            src="img/brand/logo-square-white.svg"
+            style="height: 100px; width: 100px">
         </router-link>
       </div>
 
@@ -51,69 +51,21 @@
           </li>
           <li class="nav-item">
             <router-link
-              to="/dashboard"
+              to="/contact"
               class="nav-link">
-              <span class="nav-link-inner--text">Dashboard</span>
+              <span class="nav-link-inner--text">Contact</span>
             </router-link>
           </li>
-          <li class="nav-item">
-            <router-link
-              to="/portfolio"
-              class="nav-link">
-              <span class="nav-link-inner--text">Portfolio</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link
-              to="/blog"
-              class="nav-link">
-              <span class="nav-link-inner--text">Blog</span>
-            </router-link>
-          </li>
-
         </ul>
 
         <hr class="d-lg-none">
 
         <!-- Right side -->
         <ul class="navbar-nav align-items-lg-center ml-lg-auto">
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a
               class="nav-link nav-link-icon"
-              href="https://www.instagram.com/"
-              target="_blank"
-              data-toggle="tooltip"
-              data-original-title="Suivez moi sur Instagram">
-              <i class="fab fa-instagram"/>
-              <span class="nav-link-inner--text d-lg-none">Instagram</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a
-              class="nav-link nav-link-icon"
-              href="https://twitter.com/"
-              target="_blank"
-              data-toggle="tooltip"
-              data-original-title="Follow us on Twitter">
-              <i class="fab fa-twitter"/>
-              <span class="nav-link-inner--text d-lg-none">Twitter</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a
-              class="nav-link nav-link-icon"
-              href="https://www.linkedin.com/in/arthur-d-145019132/"
-              target="_blank"
-              data-toggle="tooltip"
-              data-original-title="Rejoignez mon réseau">
-              <i class="fab fa-linkedin"/>
-              <span class="nav-link-inner--text d-lg-none">LinkedIn</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a
-              class="nav-link nav-link-icon"
-              href="https://github.com/Woosy"
+              href="https://github.com/calendz"
               target="_blank"
               data-toggle="tooltip"
               data-original-title="Star me on GitHub">
@@ -121,16 +73,34 @@
               <span class="nav-link-inner--text d-lg-none">Github</span>
             </a>
           </li>
-          <li class="nav-item d-none d-lg-block ml-lg-4">
+          <li class="nav-item">
             <a
-              href="mailto:arthur.dufour@epsi.fr"
+              class="nav-link nav-link-icon"
+              href="mailto:postmaster@calendz.app"
               target="_blank"
+              data-toggle="tooltip"
+              data-original-title="Rejoignez mon réseau">
+              <i class="fas fa-envelope"/>
+              <span class="nav-link-inner--text d-lg-none">Mail</span>
+            </a>
+          </li> -->
+          <li class="nav-item d-none d-lg-block ml-lg-4">
+            <router-link
+              to="/login"
               class="btn btn-neutral btn-icon">
               <span class="btn-inner--icon">
-                <i class="fas fa-envelope mr-2"/>
+                <i class="fas fa-sign-in-alt mr-2"/>
               </span>
-              <span class="nav-link-inner--text">Me contacter</span>
-            </a>
+              <span class="nav-link-inner--text">Connexion</span>
+            </router-link>
+            <router-link
+              to="/register"
+              class="btn btn-default btn-icon">
+              <span class="btn-inner--icon">
+                <i class="fas fa-sign-in-alt mr-2"/>
+              </span>
+              <span class="nav-link-inner--text">Inscription</span>
+            </router-link>
           </li>
         </ul>
       </template>
@@ -147,73 +117,40 @@
 
     <footer
       id="footer-main"
-      class="py-5 bg-white">
+      class="py-5">
       <div class="container">
-        <div class="row row-grid align-items-center my-md">
-          <div class="col-lg-6">
-            <h1 class="font-weight-light text-primary mb-2">
-              Merci pour votre visite !
-            </h1>
-            <h2 class="font-weight-light mb-0">
-              N'hésitez pas à me contacter via les plateformes suivantes :
-            </h2>
-          </div>
-
-          <div class="col-lg-6 text-lg-right btn-wrapper">
-            <a
-              href="mailto:dufourarthur.perso@gmail.com"
-              class="btn btn-neutral btn-icon-only btn-mail btn-round btn-lg"
-              data-toggle="tooltip"
-              data-original-title="Envoyez moi un mail">
-              <i class="fas fa-envelope" />
-            </a>
-            <a
-              target="_blank"
-              href="https://twitter.com/"
-              class="btn btn-neutral btn-icon-only btn-twitter btn-round btn-lg"
-              data-toggle="tooltip"
-              data-original-title="Suivez-moi">
-              <i class="fab fa-twitter" />
-            </a>
-            <a
-              target="_blank"
-              href="https://www.linkedin.com/in/arthur-d-145019132/"
-              class="btn btn-neutral btn-icon-only btn-linkedin btn-round btn-lg"
-              data-toggle="tooltip"
-              data-original-title="Contactez-moi">
-              <i class="fab fa-linkedin" />
-            </a>
-            <a
-              target="_blank"
-              href="https://github.com/Woosy"
-              class="btn btn-neutral btn-icon-only btn-github btn-round btn-lg"
-              data-toggle="tooltip"
-              data-original-title="Mes projets">
-              <i class="fab fa-github" />
-            </a>
-          </div>
-        </div>
-
-        <hr>
-
-        <div class="row align-items-center justify-content-md-between">
-          <div class="col-md-6">
-            <div class="copyright">
-              &copy; {{ year }}
+        <div class="row align-items-center justify-content-xl-between">
+          <div class="col-xl-6">
+            <div class="copyright text-center text-xl-left text-muted">
+              © {{ year }} <a
+                href="https://arthurdufour.com/"
+                class="font-weight-bold ml-1"
+                target="_blank">Arthur Dufour</a> &
               <a
-                href="https://www.arthurdufour.com"
-                target="_blank">Arthur Dufour</a>.
+                href="https://alexandretuet.com/"
+                class="font-weight-bold ml-1"
+                target="_blank">Alexandre Tuet</a>
             </div>
           </div>
-
-          <div class="col-md-6">
-            <ul class="nav nav-footer justify-content-end">
+          <div class="col-xl-6">
+            <ul class="nav nav-footer justify-content-center justify-content-xl-end">
               <li class="nav-item">
                 <a
-                  href="https://choosealicense.com/licenses/mit/"
+                  href="https://github.com/calendz"
                   class="nav-link"
-                  target="_blank"
-                >License MIT</a>
+                  target="_blank">Github</a>
+              </li>
+              <li class="nav-item">
+                <a
+                  href="https://app.codacy.com/organization/calendz"
+                  class="nav-link"
+                  target="_blank">Codacy</a>
+              </li>
+              <li class="nav-item">
+                <a
+                  href="https://travis-ci.com/calendz"
+                  class="nav-link"
+                  target="_blank">Travis CI</a>
               </li>
             </ul>
           </div>

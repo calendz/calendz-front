@@ -25,7 +25,7 @@ router.beforeEach((to, from, next) => {
   }
 
   // sets the page's title
-  document.title = to.meta.title || 'Arthur Dufour'
+  document.title = to.meta.title || 'calendz'
 
   next()
 })

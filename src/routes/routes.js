@@ -36,7 +36,7 @@ const authPages = {
       component: Home,
       meta: {
         noBodyBackground: true,
-        title: 'Accueil - Arthur Dufour'
+        title: 'Accueil - calendz'
       }
     },
     {
@@ -44,7 +44,7 @@ const authPages = {
       name: 'Login',
       component: Login,
       meta: {
-        title: 'Connexion - Arthur Dufour'
+        title: 'Connexion - calendz'
       }
     },
     {
@@ -52,7 +52,7 @@ const authPages = {
       name: 'Register',
       component: Register,
       meta: {
-        title: 'Inscription - Arthur Dufour'
+        title: 'Inscription - calendz'
       }
     },
     // if no route matched -> 404 page
@@ -65,7 +65,7 @@ const dashboardPages = {
   name: 'Dashboard',
   component: DashboardLayout,
   meta: {
-    title: 'Dashboard - Arthur Dufour',
+    title: 'Dashboard - calendz',
     requiresAuth: true
   },
   children: [
