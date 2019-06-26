@@ -9,8 +9,8 @@
             <div class="col-lg-6">
               <div class="pr-5">
                 <h1 class="display-2 text-white font-weight-bold mb-0">CALENDZ</h1>
-                <h2 class="display-4 text-white font-weight-light">Votre emplois du temps amélioré.</h2>
-                <p class="text-white mt-4 font h2 font-weight-light">Calendz est une surcouche à l'emplois du temps fourni par notre campus. Elle vise à améliorer l'esthétique de ce dernier, ainsi qu'à lui rajouter des fonctionnalités...</p>
+                <h2 class="display-4 text-white font-weight-light">Votre emploi du temps amélioré.</h2>
+                <p class="text-white mt-4 font h2 font-weight-light">Calendz est une surcouche à l'emploi du temps fourni par notre campus. Elle vise à améliorer l'esthétique de ce dernier, ainsi qu'à lui rajouter des fonctionnalités...</p>
                 <div class="mt-5">
                   <button class="btn btn-neutral btn-icon my-2">
                     <!-- <span class="btn-inner--icon">
@@ -50,9 +50,9 @@
     <section class="py-6 pb-9 bg-default">
       <div class="row justify-content-center text-center">
         <div class="col-md-6">
-          <h2 class="display-3 text-white">Un emplois du temps amélioré ?</h2>
+          <h2 class="display-3 text-white">Un emploi du temps amélioré ?</h2>
           <p class="lead text-white">
-            Calendz vous propose votre emplois du temps, actualisé en temps réel, avec une interface améliorée (principallement au niveau esthétique), ainsi que des possibilités de personnalisation. <br> De plus, vous y trouverez d'autres fonctions visant à compléter Beecome.
+            Calendz vous propose votre emploi du temps, actualisé en temps réel, avec une interface améliorée (principallement au niveau esthétique), ainsi que des possibilités de personnalisation. <br> De plus, vous y trouverez d'autres fonctions visant à compléter Beecome.
           </p>
         </div>
       </div>
@@ -120,7 +120,7 @@
       <div class="container">
         <div class="row row-grid justify-content-center">
           <div class="col-lg-8 text-center">
-            <h2 class="display-3">Vous aimez l'idée derrière<span class="text-success">notre emplois du temps ?</span></h2>
+            <h2 class="display-3">Vous aimez l'idée derrière<span class="text-success">notre emploi du temps ?</span></h2>
             <p class="lead">Parce-que si c'est le cas, vous pouvez nous aider à le rendre encore meilleur ! Pour cela vous pouvez contribuer au projet au ouvrant votre pull-request, ou encore nous aider financièrement.</p>
             <div class="btn-wrapper">
               <a
