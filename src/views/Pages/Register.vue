@@ -32,63 +32,64 @@
       <div class="row justify-content-center">
         <div class="col-lg-6 col-md-8">
           <div class="card bg-secondary border-0">
-            <div class="card-header bg-transparent pb-5">
-              <div class="text-muted text-center mt-2 mb-4"><small>S'inscrire via</small></div>
-              <div class="text-center">
-                <a
-                  href="#"
-                  class="btn btn-neutral btn-icon mr-4"
-                  @click="showAlert('Cette fonctionnalité n\'est pas disponible...')">
-                  <span class="btn-inner--icon"><img src="img/icons/common/github.svg"></span>
-                  <span class="btn-inner--text">Github</span>
-                </a>
-                <a
-                  href="#"
-                  class="btn btn-neutral btn-icon"
-                  @click="showAlert('Cette fonctionnalité n\'est pas disponible...')">
-                  <span class="btn-inner--icon"><img src="img/icons/common/google.svg"></span>
-                  <span class="btn-inner--text">Google</span>
-                </a>
-              </div>
+            <div class="card-header bg-transparent">
+              <div class="text-center mt-2">Création d'un compte</div>
             </div>
             <div class="card-body px-lg-5 py-lg-5">
               <div class="text-center text-muted mb-4">
-                <small>Ou en créant de nouveaux identifiants</small>
+                <small>(tous les champs sont obligatoires)</small>
               </div>
-              <form role="form">
+              <form
+                class="needs-validation"
+                role="form">
                 <base-input
-                  v-model="model.name"
-                  alternative
+                  v-validate="'required|min:3|max:32'"
+                  v-model="register.firstname"
+                  :error="getError('prénom')"
+                  :valid="isValid('prénom')"
+                  name="prénom"
                   class="mb-3"
                   prepend-icon="ni ni-hat-3"
-                  placeholder="Pseudo"/>
+                  placeholder="Prénom"/>
 
                 <base-input
-                  v-model="model.email"
-                  alternative
+                  v-validate="'required|min:3|max:32'"
+                  v-model="register.lastname"
+                  :error="getError('nom')"
+                  :valid="isValid('nom')"
+                  name="nom"
+                  class="mb-3"
+                  prepend-icon="ni ni-hat-3"
+                  placeholder="Nom"/>
+
+                <base-input
+                  v-validate="'required|email|epsimail|min:12|max:64'"
+                  v-model="register.email"
+                  :error="getError('email')"
+                  :valid="isValid('email')"
+                  name="email"
                   class="mb-3"
                   prepend-icon="ni ni-email-83"
                   placeholder="Adresse mail"/>
 
                 <base-input
-                  v-model="model.password"
-                  alternative
+                  v-model="register.password"
                   class="mb-3"
                   prepend-icon="ni ni-lock-circle-open"
                   placeholder="Mot de passe"
                   type="password"/>
 
                 <base-input
-                  v-model="model.password2"
-                  alternative
+                  v-model="register.password2"
                   class="mb-3"
                   prepend-icon="ni ni-lock-circle-open"
                   placeholder="Confirmer le mot de passe"
                   type="password"/>
                 <div class="text-muted font-italic"><small>Force du mot de passe : <span class="text-success font-weight-700">fort</span></small></div>
+
                 <div class="row my-4">
                   <div class="col-12">
-                    <base-checkbox v-model="model.agree">
+                    <base-checkbox v-model="register.agree">
                       <span class="text-muted">J'ai lu et j'accepte la <a href="#!">Politique de confidentialité</a></span>
                     </base-checkbox>
                   </div>
@@ -125,11 +126,13 @@ export default {
   name: 'Register',
   data () {
     return {
-      model: {
-        name: '',
+      register: {
+        firstname: '',
+        lastname: '',
         email: '',
         password: '',
         password2: '',
+        grade: '',
         agree: false
       }
     }
@@ -141,6 +144,12 @@ export default {
         buttonsStyling: false,
         confirmButtonClass: 'btn btn-success btn-fill'
       })
+    },
+    getError (name) {
+      return this.errors.first(name)
+    },
+    isValid (name) {
+      return this.validated && !this.errors.has(name)
     }
   }
 }
