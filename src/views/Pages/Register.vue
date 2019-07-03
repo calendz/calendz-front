@@ -135,8 +135,31 @@
                     <base-checkbox v-model="register.agree">
                       <span class="text-muted">J'ai lu et j'accepte la <a href="#!">Politique de confidentialité</a></span>
                     </base-checkbox>
+                    <div
+                      v-show="!register.agree && triedSubmit"
+                      class="invalid-feedback"
+                      style="display: block;">
+                      Vous devez accepter les conditions d'utilisation.
+                    </div>
                   </div>
                 </div>
+
+                <base-alert
+                  v-for="(apiError, index) in apiErrors"
+                  :key="index"
+                  type="danger"
+                  dismissible
+                  class="py-2 mb-1">
+                  <strong>Erreur !</strong> {{ apiError }}
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="alert"
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </base-alert>
+
                 <div class="text-center">
                   <button
                     type="button"
@@ -166,12 +189,15 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
 import swal from 'sweetalert2'
 
 export default {
   name: 'Register',
   data () {
     return {
+      triedSubmit: false,
+      apiErrors: [],
       register: {
         firstname: '',
         lastname: '',
@@ -195,13 +221,27 @@ export default {
   },
   methods: {
     handleSubmit (e) {
-      this.submitted = true
+      // disable le bouton register
+      e.target.disabled = true
+
+      // vérification validation des champs
       this.$validator.validate().then(valid => {
-        if (valid) {
-          alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.user))
+        if (!this.register.agree) {
+          this.triedSubmit = true
+          e.target.disabled = false
+        } else if (valid) {
+          // envoie de la requête inscription
+          axios.post(`${this.$apiUrl}/user`, this.register).then((res) => {
+            this.$notify({ type: 'success', message: 'Votre compte a bien été créé !<br>Vous pouvez désormais vous connecter.' })
+            console.log(res)
+            this.$router.push('/login')
+          // on catch les erreurs pour les afficher
+          }).catch((err) => {
+            this.apiErrors = err.response.data.errors
+            e.target.disabled = false
+          })
         }
       })
-      console.log('test')
     },
     showAlert (title) {
       swal({
