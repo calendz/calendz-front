@@ -5,6 +5,9 @@ import DashboardPlugin from './plugins/dashboard-plugin'
 
 Vue.use(DashboardPlugin)
 
+// create global variables with env configuration
+Vue.prototype.$apiUrl = process.env.VUE_APP_API_URL
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
