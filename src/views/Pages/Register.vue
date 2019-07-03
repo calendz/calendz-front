@@ -233,7 +233,6 @@ export default {
           // envoie de la requête inscription
           axios.post(`${this.$apiUrl}/user`, this.register).then((res) => {
             this.$notify({ type: 'success', message: 'Votre compte a bien été créé !<br>Vous pouvez désormais vous connecter.' })
-            console.log(res)
             this.$router.push('/login')
           // on catch les erreurs pour les afficher
           }).catch((err) => {
