@@ -15,6 +15,7 @@
     "@fullcalendar/interaction": "^4.0.2",
     "@fullcalendar/timegrid": "^4.0.1",
     "@fullcalendar/vue": "^4.0.2-beta",
+    "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
     "chart.js": "^2.7.1",
     "d3": "^5.7.0",
