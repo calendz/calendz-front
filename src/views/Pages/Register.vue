@@ -36,12 +36,7 @@
               <div class="text-center mt-2">Création d'un compte</div>
             </div>
             <div class="card-body px-lg-5 py-lg-5">
-              <div class="text-center text-muted mb-4">
-                <small>(tous les champs sont obligatoires)</small>
-              </div>
-              <form
-                class="needs-validation"
-                role="form">
+              <form class="needs-validation">
                 <base-input
                   v-validate="'required|min:3|max:32'"
                   v-model="register.firstname"
@@ -49,7 +44,7 @@
                   :valid="isValid('prénom')"
                   name="prénom"
                   class="mb-3"
-                  prepend-icon="ni ni-hat-3"
+                  prepend-icon="ni ni-single-02"
                   placeholder="Prénom"/>
 
                 <base-input
@@ -59,11 +54,39 @@
                   :valid="isValid('nom')"
                   name="nom"
                   class="mb-3"
-                  prepend-icon="ni ni-hat-3"
+                  prepend-icon="ni ni-single-02"
                   placeholder="Nom"/>
 
                 <base-input
-                  v-validate="'required|email|epsimail|min:12|max:64'"
+                  :error="getError('classe')"
+                  :valid="isValid('classe')"
+                  class="mb-3"
+                  prepend-icon="ni ni-hat-3"
+                >
+                  <select
+                    v-validate="'required|valid_grade'"
+                    v-model="register.grade"
+                    name="classe"
+                    class="form-control">
+                    <option
+                      value=""
+                      hidden>Séléctionnez votre classe</option>
+                    <option>B1 G1</option>
+                    <option>B1 G2</option>
+                    <option>B2 G1</option>
+                    <option>B2 G2</option>
+                    <option>B3 G1</option>
+                    <option>B3 G2</option>
+                    <option>B3 G3</option>
+                    <option>I4 G1</option>
+                    <option>I4 G2</option>
+                    <option>I5 G1</option>
+                    <option>I5 G2</option>
+                  </select>
+                </base-input>
+
+                <base-input
+                  v-validate="'required|email|email_epsi_wis|min:12|max:64'"
                   v-model="register.email"
                   :error="getError('email')"
                   :valid="isValid('email')"
@@ -73,19 +96,39 @@
                   placeholder="Adresse mail"/>
 
                 <base-input
+                  v-validate="'required|min:6|max:64|contains_one_letter|contains_one_number'"
+                  ref="mot de passe"
                   v-model="register.password"
+                  :error="getError('mot de passe')"
+                  :valid="isValid('mot de passe')"
+                  name="mot de passe"
                   class="mb-3"
                   prepend-icon="ni ni-lock-circle-open"
                   placeholder="Mot de passe"
                   type="password"/>
 
                 <base-input
+                  v-validate="{ required: true, confirmed: 'mot de passe' }"
                   v-model="register.password2"
+                  :error="getError('confirmation du mot de passe')"
+                  :valid="isValid('confirmation du mot de passe')"
+                  name="confirmation du mot de passe"
                   class="mb-3"
                   prepend-icon="ni ni-lock-circle-open"
                   placeholder="Confirmer le mot de passe"
                   type="password"/>
-                <div class="text-muted font-italic"><small>Force du mot de passe : <span class="text-success font-weight-700">fort</span></small></div>
+
+                <div
+                  v-show="passwordStrength !== 0"
+                  class="text-muted font-italic">
+                  <small>Force du mot de passe :
+                    <span
+                      :class="{ 'text-danger': passwordStrength === 'faible', 'text-warning': passwordStrength === 'moyen', 'text-success': passwordStrength === 'fort' }"
+                      class="font-weight-700">
+                      {{ passwordStrength }}
+                    </span>
+                  </small>
+                </div>
 
                 <div class="row my-4">
                   <div class="col-12">
@@ -97,7 +140,10 @@
                 <div class="text-center">
                   <button
                     type="button"
-                    class="btn btn-primary mt-4">S'inscrire</button>
+                    class="btn btn-primary mt-4"
+                    @click="handleSubmit">
+                    S'inscrire
+                  </button>
                 </div>
               </form>
             </div>
@@ -129,21 +175,51 @@ export default {
       register: {
         firstname: '',
         lastname: '',
+        grade: '',
         email: '',
         password: '',
         password2: '',
-        grade: '',
         agree: false
       }
     }
   },
+  computed: {
+    passwordStrength () {
+      switch (this.getPasswordStrength(this.register.password)) {
+        case 1: return 'faible'
+        case 2: return 'moyen'
+        case 3: return 'fort'
+        default: return 0
+      }
+    }
+  },
   methods: {
+    handleSubmit (e) {
+      this.submitted = true
+      this.$validator.validate().then(valid => {
+        if (valid) {
+          alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.user))
+        }
+      })
+      console.log('test')
+    },
     showAlert (title) {
       swal({
         title,
         buttonsStyling: false,
         confirmButtonClass: 'btn btn-success btn-fill'
       })
+    },
+    getPasswordStrength (password) {
+      if (password.length < 6) {
+        return 0
+      } else if (password.length < 9) {
+        return 1
+      } else if (password.length < 12) {
+        return 2
+      } else {
+        return 3
+      }
     },
     getError (name) {
       return this.errors.first(name)
