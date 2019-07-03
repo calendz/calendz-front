@@ -1,5 +1,6 @@
 <template>
   <div>
+    <notifications/>
     <base-nav
       v-model="showMenu"
       :transparent="true"

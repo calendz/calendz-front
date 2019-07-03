@@ -32,71 +32,141 @@
       <div class="row justify-content-center">
         <div class="col-lg-6 col-md-8">
           <div class="card bg-secondary border-0">
-            <div class="card-header bg-transparent pb-5">
-              <div class="text-muted text-center mt-2 mb-4"><small>S'inscrire via</small></div>
-              <div class="text-center">
-                <a
-                  href="#"
-                  class="btn btn-neutral btn-icon mr-4"
-                  @click="showAlert('Cette fonctionnalité n\'est pas disponible...')">
-                  <span class="btn-inner--icon"><img src="img/icons/common/github.svg"></span>
-                  <span class="btn-inner--text">Github</span>
-                </a>
-                <a
-                  href="#"
-                  class="btn btn-neutral btn-icon"
-                  @click="showAlert('Cette fonctionnalité n\'est pas disponible...')">
-                  <span class="btn-inner--icon"><img src="img/icons/common/google.svg"></span>
-                  <span class="btn-inner--text">Google</span>
-                </a>
-              </div>
+            <div class="card-header bg-transparent">
+              <div class="text-center mt-2">Création d'un compte</div>
             </div>
             <div class="card-body px-lg-5 py-lg-5">
-              <div class="text-center text-muted mb-4">
-                <small>Ou en créant de nouveaux identifiants</small>
-              </div>
-              <form role="form">
+              <form class="needs-validation">
                 <base-input
-                  v-model="model.name"
-                  alternative
+                  v-validate="'required|min:3|max:32'"
+                  v-model="register.firstname"
+                  :error="getError('prénom')"
+                  :valid="isValid('prénom')"
+                  name="prénom"
                   class="mb-3"
-                  prepend-icon="ni ni-hat-3"
-                  placeholder="Pseudo"/>
+                  prepend-icon="ni ni-single-02"
+                  placeholder="Prénom"/>
 
                 <base-input
-                  v-model="model.email"
-                  alternative
+                  v-validate="'required|min:3|max:32'"
+                  v-model="register.lastname"
+                  :error="getError('nom')"
+                  :valid="isValid('nom')"
+                  name="nom"
+                  class="mb-3"
+                  prepend-icon="ni ni-single-02"
+                  placeholder="Nom"/>
+
+                <base-input
+                  :error="getError('classe')"
+                  :valid="isValid('classe')"
+                  class="mb-3"
+                  prepend-icon="ni ni-hat-3"
+                >
+                  <select
+                    v-validate="'required|valid_grade'"
+                    v-model="register.grade"
+                    name="classe"
+                    class="form-control">
+                    <option
+                      value=""
+                      hidden>Séléctionnez votre classe</option>
+                    <option>B1 G1</option>
+                    <option>B1 G2</option>
+                    <option>B2 G1</option>
+                    <option>B2 G2</option>
+                    <option>B3 G1</option>
+                    <option>B3 G2</option>
+                    <option>B3 G3</option>
+                    <option>I4 G1</option>
+                    <option>I4 G2</option>
+                    <option>I5 G1</option>
+                    <option>I5 G2</option>
+                  </select>
+                </base-input>
+
+                <base-input
+                  v-validate="'required|email|email_epsi_wis|min:12|max:64'"
+                  v-model="register.email"
+                  :error="getError('email')"
+                  :valid="isValid('email')"
+                  name="email"
                   class="mb-3"
                   prepend-icon="ni ni-email-83"
                   placeholder="Adresse mail"/>
 
                 <base-input
-                  v-model="model.password"
-                  alternative
+                  v-validate="'required|min:6|max:64|contains_one_letter|contains_one_number'"
+                  ref="mot de passe"
+                  v-model="register.password"
+                  :error="getError('mot de passe')"
+                  :valid="isValid('mot de passe')"
+                  name="mot de passe"
                   class="mb-3"
                   prepend-icon="ni ni-lock-circle-open"
                   placeholder="Mot de passe"
                   type="password"/>
 
                 <base-input
-                  v-model="model.password2"
-                  alternative
+                  v-validate="{ required: true, confirmed: 'mot de passe' }"
+                  v-model="register.password2"
+                  :error="getError('confirmation du mot de passe')"
+                  :valid="isValid('confirmation du mot de passe')"
+                  name="confirmation du mot de passe"
                   class="mb-3"
                   prepend-icon="ni ni-lock-circle-open"
                   placeholder="Confirmer le mot de passe"
                   type="password"/>
-                <div class="text-muted font-italic"><small>Force du mot de passe : <span class="text-success font-weight-700">fort</span></small></div>
+
+                <div
+                  v-show="passwordStrength !== 0"
+                  class="text-muted font-italic">
+                  <small>Force du mot de passe :
+                    <span
+                      :class="{ 'text-danger': passwordStrength === 'faible', 'text-warning': passwordStrength === 'moyen', 'text-success': passwordStrength === 'fort' }"
+                      class="font-weight-700">
+                      {{ passwordStrength }}
+                    </span>
+                  </small>
+                </div>
+
                 <div class="row my-4">
                   <div class="col-12">
-                    <base-checkbox v-model="model.agree">
+                    <base-checkbox v-model="register.agree">
                       <span class="text-muted">J'ai lu et j'accepte la <a href="#!">Politique de confidentialité</a></span>
                     </base-checkbox>
+                    <div
+                      v-show="!register.agree && triedSubmit"
+                      class="invalid-feedback"
+                      style="display: block;">
+                      Vous devez accepter les conditions d'utilisation.
+                    </div>
                   </div>
                 </div>
+
+                <base-alert
+                  v-for="(apiError, index) in apiErrors"
+                  :key="index"
+                  type="danger"
+                  dismissible
+                  class="py-2 mb-1">
+                  <strong>Erreur !</strong> {{ apiError }}
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="alert"
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </base-alert>
+
                 <div class="text-center">
                   <button
                     type="button"
-                    class="btn btn-primary mt-4">S'inscrire</button>
+                    class="btn btn-primary mt-4"
+                    @click="handleSubmit">
+                    S'inscrire
+                  </button>
                 </div>
               </form>
             </div>
@@ -119,14 +189,19 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
 import swal from 'sweetalert2'
 
 export default {
   name: 'Register',
   data () {
     return {
-      model: {
-        name: '',
+      triedSubmit: false,
+      apiErrors: [],
+      register: {
+        firstname: '',
+        lastname: '',
+        grade: '',
         email: '',
         password: '',
         password2: '',
@@ -134,13 +209,62 @@ export default {
       }
     }
   },
+  computed: {
+    passwordStrength () {
+      switch (this.getPasswordStrength(this.register.password)) {
+        case 1: return 'faible'
+        case 2: return 'moyen'
+        case 3: return 'fort'
+        default: return 0
+      }
+    }
+  },
   methods: {
+    handleSubmit (e) {
+      // disable le bouton register
+      e.target.disabled = true
+
+      // vérification validation des champs
+      this.$validator.validate().then(valid => {
+        if (!this.register.agree) {
+          this.triedSubmit = true
+          e.target.disabled = false
+        } else if (valid) {
+          // envoie de la requête inscription
+          axios.post(`${this.$apiUrl}/user`, this.register).then((res) => {
+            this.$notify({ type: 'success', message: 'Votre compte a bien été créé !<br>Vous pouvez désormais vous connecter.' })
+            this.$router.push('/login')
+          // on catch les erreurs pour les afficher
+          }).catch((err) => {
+            this.apiErrors = err.response.data.errors
+            e.target.disabled = false
+          })
+        }
+      })
+    },
     showAlert (title) {
       swal({
         title,
         buttonsStyling: false,
         confirmButtonClass: 'btn btn-success btn-fill'
       })
+    },
+    getPasswordStrength (password) {
+      if (password.length < 6) {
+        return 0
+      } else if (password.length < 9) {
+        return 1
+      } else if (password.length < 12) {
+        return 2
+      } else {
+        return 3
+      }
+    },
+    getError (name) {
+      return this.errors.first(name)
+    },
+    isValid (name) {
+      return this.validated && !this.errors.has(name)
     }
   }
 }

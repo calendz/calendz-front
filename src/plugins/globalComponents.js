@@ -15,9 +15,7 @@ import BaseAlert from '@/components/BaseAlert'
 import BaseNav from '@/components/Navbar/BaseNav'
 import BaseHeader from '@/components/BaseHeader'
 import { Input, Tooltip, Popover } from 'element-ui'
-/**
- * You can register global components here and use them as a plugin in your main Vue instance
- */
+import { ValidationProvider } from 'vee-validate'
 
 const GlobalComponents = {
   install (Vue) {
@@ -38,6 +36,7 @@ const GlobalComponents = {
     Vue.component(StatsCard.name, StatsCard)
     Vue.component(RouteBreadcrumb.name, RouteBreadcrumb)
     Vue.component(Input.name, Input)
+    Vue.component('ValidationProvider', ValidationProvider)
     Vue.use(Tooltip)
     Vue.use(Popover)
   }
