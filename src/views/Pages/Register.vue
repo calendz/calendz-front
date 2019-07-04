@@ -36,7 +36,10 @@
               <div class="text-center mt-2">Création d'un compte</div>
             </div>
             <div class="card-body px-lg-5 py-lg-5">
-              <form class="needs-validation">
+              <form
+                class="needs-validation"
+                @submit.prevent="handleSubmit">
+
                 <base-input
                   v-validate="'required|min:3|max:32'"
                   v-model="register.firstname"
@@ -161,12 +164,11 @@
                 </base-alert>
 
                 <div class="text-center">
-                  <button
-                    type="button"
-                    class="btn btn-primary mt-4"
-                    @click="handleSubmit">
-                    S'inscrire
-                  </button>
+                  <base-button
+                    type="primary"
+                    native-type="submit"
+                    size="lg"
+                    class="mt-4">S'inscrire</base-button>
                 </div>
               </form>
             </div>
@@ -223,6 +225,7 @@ export default {
     handleSubmit (e) {
       // disable le bouton register
       e.target.disabled = true
+      this.apiErrors = []
 
       // vérification validation des champs
       this.$validator.validate().then(valid => {
@@ -236,8 +239,12 @@ export default {
             this.$router.push('/login')
           // on catch les erreurs pour les afficher
           }).catch((err) => {
-            this.apiErrors = err.response.data.errors
             e.target.disabled = false
+            if (err.response.data.errors) {
+              this.apiErrors = err.response.data.errors
+            } else {
+              this.apiErrors.push(err.response.data.message)
+            }
           })
         }
       })
