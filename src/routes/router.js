@@ -17,6 +17,9 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  // sets the page's title
+  document.title = to.meta.title || 'calendz'
+
   // check if the route requires auth
   if (to.matched.some(record => record.meta.requiresAuth)) {
     const accessToken = localStorage.getItem('accessToken')
@@ -46,9 +49,6 @@ router.beforeEach((to, from, next) => {
       localStorage.removeItem('accessToken')
     })
   }
-
-  // sets the page's title
-  document.title = to.meta.title || 'calendz'
 
   next()
 })
