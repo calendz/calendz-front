@@ -31,49 +31,47 @@
       <div class="row justify-content-center">
         <div class="col-lg-5 col-md-7">
           <div class="card bg-secondary border-0 mb-0 mobile-fix-2">
-            <div class="card-header bg-transparent pb-5">
-              <div class="text-muted text-center mt-2 mb-3"><small>Se connecter via</small></div>
-              <div class="btn-wrapper text-center">
-                <a
-                  href="#"
-                  class="btn btn-neutral btn-icon"
-                  @click="showAlert('Cette fonctionnalité n\'est pas disponible...')">
-                  <span class="btn-inner--icon"><img src="img/icons/common/github.svg"></span>
-                  <span class="btn-inner--text">Github</span>
-                </a>
-                <a
-                  href="#"
-                  class="btn btn-neutral btn-icon"
-                  @click="showAlert('Cette fonctionnalité n\'est pas disponible...')">
-                  <span class="btn-inner--icon"><img src="img/icons/common/google.svg"></span>
-                  <span class="btn-inner--text">Google</span>
-                </a>
-              </div>
+            <div class="card-header bg-transparent">
+              <div class="text-center mt-2">Connectez vous à votre compte</div>
             </div>
             <div class="card-body px-lg-5 py-lg-5">
-              <div class="text-center text-muted mb-4">
-                <small>Ou avec vos identifiants</small>
-              </div>
-              <form role="form">
+              <form
+                role="form"
+                @submit.prevent="handleSubmit">
                 <base-input
-                  v-model="model.email"
-                  alternative
+                  v-validate="'required|email|email_epsi_wis|min:12|max:64'"
+                  v-model="login.email"
+                  :error="getError('email')"
+                  :valid="isValid('email')"
+                  name="email"
                   class="mb-3"
                   prepend-icon="ni ni-email-83"
                   placeholder="Adresse mail"/>
 
                 <base-input
-                  v-model="model.password"
-                  alternative
+                  v-validate="'required|min:6|max:64'"
+                  v-model="login.password"
+                  :error="getError('mot de passe')"
+                  :valid="isValid('mot de passe')"
+                  name="mot de passe"
                   class="mb-3"
                   prepend-icon="ni ni-lock-circle-open"
                   type="password"
                   placeholder="Mot de passe"/>
 
-                <base-checkbox v-model="model.rememberMe">Se souvenir de moi</base-checkbox>
+                <base-checkbox v-model="login.rememberMe">Se souvenir de moi</base-checkbox>
+
+                <base-alert
+                  v-show="apiError"
+                  type="danger"
+                  class="mt-4 py-2 mb-1">
+                  <span v-html="apiError"/>
+                </base-alert>
+
                 <div class="text-center">
                   <base-button
                     type="primary"
+                    native-type="submit"
                     size="lg"
                     class="my-4">Se connecter</base-button>
                 </div>
@@ -98,12 +96,13 @@
   </div>
 </template>
 <script>
-import swal from 'sweetalert2'
+import axios from 'axios'
 
 export default {
   data () {
     return {
-      model: {
+      apiError: '',
+      login: {
         email: '',
         password: '',
         rememberMe: false
@@ -111,12 +110,36 @@ export default {
     }
   },
   methods: {
-    showAlert (title) {
-      swal({
-        title,
-        buttonsStyling: false,
-        confirmButtonClass: 'btn btn-success btn-fill'
+    handleSubmit (e) {
+      // disable le bouton login
+      e.target.disabled = true
+      this.apiError = ''
+
+      this.$validator.validate().then(valid => {
+        if (!valid) {
+          e.target.disabled = false
+          return
+        }
+
+        // request sur l'api
+        axios.post(`${this.$apiUrl}/auth`, this.login).then((res) => {
+          localStorage.setItem('accessToken', res.data.accessToken)
+          localStorage.setItem('user', JSON.stringify(res.data.user))
+
+          this.$notify({ type: 'success', message: 'Vous êtes désormais connecté.' })
+          this.$router.push('/dashboard')
+        // on catch les erreurs
+        }).catch((err) => {
+          this.apiError = `<strong>Erreur !</strong> ${err.response.data.message}.`
+          e.target.disabled = false
+        })
       })
+    },
+    getError (name) {
+      return this.errors.first(name)
+    },
+    isValid (name) {
+      return this.validated && !this.errors.has(name)
     }
   }
 }

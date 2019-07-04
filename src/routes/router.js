@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import axios from 'axios'
 import routes from './routes'
 
 Vue.use(VueRouter)
@@ -16,16 +17,38 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  // check if the route requires auth
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    // eslint-disable-next-line no-constant-condition
-    if (true) { // TODO: localStorage.getItem('user')
-      return next({ name: 'Login' })
-    }
-  }
-
   // sets the page's title
   document.title = to.meta.title || 'calendz'
+
+  // check if the route requires auth
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    const accessToken = localStorage.getItem('accessToken')
+    if (!accessToken) return next({ name: 'Login' })
+
+    axios.post(`${Vue.prototype.$apiUrl}/auth/refresh`, { accessToken }).then((res) => {
+      localStorage.setItem('user', JSON.stringify(res.data.user))
+    }).catch((err) => {
+      Vue.prototype.$notify({ type: 'danger', message: `${err.response.data.message}.` })
+      localStorage.removeItem('user')
+      localStorage.removeItem('accessToken')
+      next({ name: 'Login' })
+    })
+  } else
+
+  // if user is connected, redirect to dashboard
+  if (to.matched.some(record => record.meta.redirectToDashboardIfConnected)) {
+    const accessToken = localStorage.getItem('accessToken')
+    if (!accessToken) return next()
+
+    axios.post(`${Vue.prototype.$apiUrl}/auth/refresh`, { accessToken }).then((res) => {
+      localStorage.setItem('user', JSON.stringify(res.data.user))
+      next('/dashboard')
+    }).catch((err) => {
+      Vue.prototype.$notify({ type: 'danger', message: `${err.response.data.message}.` })
+      localStorage.removeItem('user')
+      localStorage.removeItem('accessToken')
+    })
+  }
 
   next()
 })
