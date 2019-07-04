@@ -35,7 +35,9 @@
               <div class="text-center mt-2">Connectez vous à votre compte</div>
             </div>
             <div class="card-body px-lg-5 py-lg-5">
-              <form role="form">
+              <form
+                role="form"
+                @submit.prevent="handleSubmit">
                 <base-input
                   v-validate="'required|email|email_epsi_wis|min:12|max:64'"
                   v-model="login.email"
@@ -47,7 +49,11 @@
                   placeholder="Adresse mail"/>
 
                 <base-input
+                  v-validate="'required|min:6|max:64'"
                   v-model="login.password"
+                  :error="getError('mot de passe')"
+                  :valid="isValid('mot de passe')"
+                  name="mot de passe"
                   class="mb-3"
                   prepend-icon="ni ni-lock-circle-open"
                   type="password"
@@ -59,15 +65,15 @@
                   v-show="apiError"
                   type="danger"
                   class="mt-4 py-2 mb-1">
-                  <strong>Erreur !</strong> {{ `${apiError}.` }}
+                  <span v-html="apiError"/>
                 </base-alert>
 
                 <div class="text-center">
                   <base-button
                     type="primary"
+                    native-type="submit"
                     size="lg"
-                    class="my-4"
-                    @click="handleSubmit">Se connecter</base-button>
+                    class="my-4">Se connecter</base-button>
                 </div>
               </form>
             </div>
@@ -103,14 +109,11 @@ export default {
       }
     }
   },
-  mounted () {
-    console.log('ACCESS TOKEN : ' + localStorage.getItem('accessToken'))
-    console.log(JSON.parse(localStorage.getItem('user')))
-  },
   methods: {
     handleSubmit (e) {
       // disable le bouton login
       e.target.disabled = true
+      this.apiError = ''
 
       this.$validator.validate().then(valid => {
         if (!valid) {
@@ -128,7 +131,7 @@ export default {
         // on catch les erreurs
         }).catch((err) => {
           console.error(err.response.data.message)
-          this.apiError = err.response.data.message
+          this.apiError = `<strong>Erreur !</strong> ${err.response.data.message}.`
           e.target.disabled = false
         })
       })
