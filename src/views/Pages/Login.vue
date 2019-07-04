@@ -130,7 +130,6 @@ export default {
           this.$router.push('/dashboard')
         // on catch les erreurs
         }).catch((err) => {
-          console.error(err.response.data.message)
           this.apiError = `<strong>Erreur !</strong> ${err.response.data.message}.`
           e.target.disabled = false
         })
