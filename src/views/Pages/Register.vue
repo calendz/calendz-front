@@ -180,7 +180,7 @@
             <div class="col-6 text-right">
               <router-link
                 to="/login"
-                class="text-light"><small>Vous avez déjà un compte ?</small></router-link>
+                class="text-light"><small>Vous êtes déjà inscrit ?</small></router-link>
             </div>
           </div>
         </div>
