@@ -44,7 +44,8 @@ const authPages = {
       name: 'Login',
       component: Login,
       meta: {
-        title: 'Connexion - calendz'
+        title: 'Connexion - calendz',
+        redirectToDashboardIfConnected: true
       }
     },
     {
@@ -52,7 +53,8 @@ const authPages = {
       name: 'Register',
       component: Register,
       meta: {
-        title: 'Inscription - calendz'
+        title: 'Inscription - calendz',
+        redirectToDashboardIfConnected: true
       }
     },
     // if no route matched -> 404 page

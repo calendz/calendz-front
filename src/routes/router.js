@@ -20,10 +20,7 @@ router.beforeEach((to, from, next) => {
   // check if the route requires auth
   if (to.matched.some(record => record.meta.requiresAuth)) {
     const accessToken = localStorage.getItem('accessToken')
-
-    if (!accessToken) {
-      return next({ name: 'Login' })
-    }
+    if (!accessToken) return next({ name: 'Login' })
 
     axios.post(`${Vue.prototype.$apiUrl}/auth/refresh`, { accessToken }).then((res) => {
       localStorage.setItem('user', JSON.stringify(res.data.user))
@@ -32,6 +29,21 @@ router.beforeEach((to, from, next) => {
       localStorage.removeItem('user')
       localStorage.removeItem('accessToken')
       next({ name: 'Login' })
+    })
+  } else
+
+  // if user is connected, redirect to dashboard
+  if (to.matched.some(record => record.meta.redirectToDashboardIfConnected)) {
+    const accessToken = localStorage.getItem('accessToken')
+    if (!accessToken) return next()
+
+    axios.post(`${Vue.prototype.$apiUrl}/auth/refresh`, { accessToken }).then((res) => {
+      localStorage.setItem('user', JSON.stringify(res.data.user))
+      next('/dashboard')
+    }).catch((err) => {
+      Vue.prototype.$notify({ type: 'danger', message: `${err.response.data.message}.` })
+      localStorage.removeItem('user')
+      localStorage.removeItem('accessToken')
     })
   }
 
