@@ -63,29 +63,7 @@
 
         <!-- Right side -->
         <ul class="navbar-nav align-items-lg-center ml-lg-auto">
-          <!-- <li class="nav-item">
-            <a
-              class="nav-link nav-link-icon"
-              href="https://github.com/calendz"
-              target="_blank"
-              data-toggle="tooltip"
-              data-original-title="Star me on GitHub">
-              <i class="fab fa-github"/>
-              <span class="nav-link-inner--text d-lg-none">Github</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a
-              class="nav-link nav-link-icon"
-              href="mailto:postmaster@calendz.app"
-              target="_blank"
-              data-toggle="tooltip"
-              data-original-title="Rejoignez mon réseau">
-              <i class="fas fa-envelope"/>
-              <span class="nav-link-inner--text d-lg-none">Mail</span>
-            </a>
-          </li> -->
-          <li class="nav-item d-none d-lg-block ml-lg-4">
+          <li class="nav-item  d-lg-block ml-lg-4">
             <router-link
               to="/login"
               class="btn btn-neutral btn-icon">
