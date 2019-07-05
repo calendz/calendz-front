@@ -12,12 +12,15 @@
                 <h2 class="display-4 text-white font-weight-light">Votre emploi du temps amélioré.</h2>
                 <p class="text-white mt-4 font h2 font-weight-light">Calendz est une surcouche à l'emploi du temps fourni par notre campus. Elle vise à améliorer l'esthétique de ce dernier, ainsi qu'à lui rajouter des fonctionnalités...</p>
                 <div class="mt-5">
-                  <button class="btn btn-neutral btn-icon my-2">
-                    <!-- <span class="btn-inner--icon">
-                      <i class="fas fa-info-circle"/>
-                    </span> -->
+                  <router-link
+                    to="/dashboard"
+                    class="btn btn-neutral">
+                    <span class="nav-link-inner--text">Accéder au site</span>
+                  </router-link>
+                  <button class="btn btn-default">
                     <span class="btn-inner--text">En savoir plus...</span>
                   </button>
+
                 </div>
               </div>
             </div>
@@ -47,7 +50,7 @@
     </div>
 
     <!-- Page content -->
-    <section class="py-6 pb-9 bg-default">
+    <section class="py-6 pb-9 bg-default p-3">
       <div class="row justify-content-center text-center">
         <div class="col-md-6">
           <h2 class="display-3 text-white">Un emploi du temps amélioré ?</h2>
