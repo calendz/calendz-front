@@ -18,7 +18,7 @@ const Login = () => import(/* webpackChunkName: "pages" */ '@/views/Pages/Login.
 const Register = () => import(/* webpackChunkName: "pages" */ '@/views/Pages/Register.vue')
 
 // Dashboard
-const Dashboard = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Dashboard.vue')
+// const Dashboard = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Dashboard.vue')
 
 // ============================================
 // == Routes
@@ -35,7 +35,6 @@ const authPages = {
       name: 'Home',
       component: Home,
       meta: {
-        noBodyBackground: true,
         title: 'Accueil - calendz'
       }
     },
@@ -69,21 +68,13 @@ const dashboardPages = {
   meta: {
     title: 'Dashboard - calendz',
     requiresAuth: true
-  },
-  children: [
-    {
-      path: 'dashboard',
-      name: 'Dashboard',
-      component: Dashboard
-    }
-  ]
+  }
 }
 
 const routes = [
   {
     path: '/',
-    redirect: '/home',
-    name: 'Home'
+    redirect: '/home'
   },
   dashboardPages,
   authPages
