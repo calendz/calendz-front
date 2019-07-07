@@ -16,6 +16,7 @@ import NotFound from '@/views/Pages/Errors/NotFound.vue'
 const Home = () => import(/* webpackChunkName: "pages" */ '@/views/Pages/Home.vue')
 const Login = () => import(/* webpackChunkName: "pages" */ '@/views/Pages/Login.vue')
 const Register = () => import(/* webpackChunkName: "pages" */ '@/views/Pages/Register.vue')
+const EmailVerification = () => import(/* webpackChunkName: "pages" */ '@/views/Pages/EmailVerification.vue')
 
 // Dashboard
 // const Dashboard = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Dashboard.vue')
@@ -53,6 +54,15 @@ const authPages = {
       component: Register,
       meta: {
         title: 'Inscription - calendz',
+        redirectToDashboardIfConnected: true
+      }
+    },
+    {
+      path: '/emailVerification/:token',
+      name: 'Verification email',
+      component: EmailVerification,
+      meta: {
+        title: 'Confirmation adresse mail - calendz',
         redirectToDashboardIfConnected: true
       }
     },

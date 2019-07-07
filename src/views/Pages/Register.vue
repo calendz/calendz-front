@@ -3,14 +3,7 @@
     <!-- Header -->
     <div class="header bg-gradient-primary py-1 py-lg-5 pt-lg-8">
       <div class="container">
-        <div class="header-body text-center mb-7 mobile-fix">
-          <!-- <div class="row justify-content-center py-2">
-            <div class="col-lg-6 col-md-8">
-              <h1 class="text-white">Création d'un compte</h1>
-              <p class="text-lead text-white my-4">La création d'un compte permet d'accéder au tableau de bord de mes projets. Cet accès est évidement restreint, raison pour laquelle ce dernier sera vide pour les invités.</p>
-            </div>
-          </div> -->
-        </div>
+        <div class="header-body text-center mb-7 mobile-fix"/>
       </div>
       <div class="separator separator-bottom separator-skew zindex-100">
         <svg
@@ -235,7 +228,8 @@ export default {
         } else if (valid) {
           // envoie de la requête inscription
           axios.post(`${this.$apiUrl}/user`, this.register).then((res) => {
-            this.$notify({ type: 'success', message: 'Votre compte a bien été créé !<br>Vous pouvez désormais vous connecter.' })
+            this.$notify({ type: 'success', timeout: 10000, message: 'Votre compte a bien été créé !' })
+            this.$notify({ type: 'info', timeout: 10000, message: 'Veuillez <b>vérifier vos mails</b> afin de confirmer votre adresse avant de vous connecter.' })
             this.$router.push('/login')
           // on catch les erreurs pour les afficher
           }).catch((err) => {
