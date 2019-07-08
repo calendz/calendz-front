@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://travis-ci.com/calendz/calendz-front"><img src="https://travis-ci.com/calendz/calendz-front.svg?branch=develop" alt="Build status of develop branch"></a>
-  <a href="https://www.codacy.com/app/arthur-woosy/calendz-front?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=calendz/calendz-front&amp;utm_campaign=Badge_Grade"><img src="https://api.codacy.com/project/badge/Grade/a1ac982a16164432bf4a95d61a4fa2a1"/></a>
+  <a href="https://www.codacy.com/app/calendz/front?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=calendz/calendz-front&amp;utm_campaign=Badge_Grade"><img src="https://api.codacy.com/project/badge/Grade/031c9c14be87456889c2772d66aaff3b"/></a>
   <br>
   <a href="https://dependabot.com/"><img src="https://api.dependabot.com/badges/status?host=github&amp;repo=calendz/calendz-front" alt="Dependabot status"></a>
   <a href="https://dependabot.com/"><img src="https://img.shields.io/david/calendz/calendz-front.svg?maxAge=3600" alt="Dependencies status"></a>
@@ -42,6 +42,7 @@ Le front de calendz est développé avec les frameworks et outils suivants* :
 
       NODE_ENV=development
       APP_PORT=3000
+      VUE_APP_API_URL=http://localhost:3001/api/v1
 
 ### Lancement
 
