@@ -120,7 +120,7 @@
       </div>
     </section>
 
-    <section class="py-7">
+    <section class="py-7 bg-white">
       <div class="container">
         <div class="row row-grid justify-content-center">
           <div class="col-lg-8 text-center">
