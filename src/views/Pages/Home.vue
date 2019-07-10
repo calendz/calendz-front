@@ -14,13 +14,14 @@
                 <div class="mt-5">
                   <router-link
                     to="/dashboard"
-                    class="btn btn-neutral">
+                    class="btn btn-neutral mb-2">
                     <span class="nav-link-inner--text">Accéder au site</span>
                   </router-link>
-                  <button class="btn btn-default">
-                    <span class="btn-inner--text">En savoir plus...</span>
-                  </button>
-
+                  <router-link
+                    to="/about"
+                    class="btn btn-default mb-2">
+                    <span class="nav-link-inner--text">En savoir plus...</span>
+                  </router-link>
                 </div>
               </div>
             </div>
@@ -119,7 +120,7 @@
       </div>
     </section>
 
-    <section class="py-7">
+    <section class="py-7 bg-white">
       <div class="container">
         <div class="row row-grid justify-content-center">
           <div class="col-lg-8 text-center">

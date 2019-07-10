@@ -16,8 +16,8 @@
           class="navbar-brand"
           to="/">
           <img
-            src="img/brand/logo-square-white.svg"
-            style="height: 100px; width: 100px">
+            src="img/brand/logo-square-white-no-borders.svg"
+            style="height: 65px; width: 65px">
         </router-link>
       </div>
 

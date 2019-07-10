@@ -16,7 +16,7 @@ import NotFound from '@/views/Pages/Errors/NotFound.vue'
 const Home = () => import(/* webpackChunkName: "pages" */ '@/views/Pages/Home.vue')
 const Login = () => import(/* webpackChunkName: "pages" */ '@/views/Pages/Login.vue')
 const Register = () => import(/* webpackChunkName: "pages" */ '@/views/Pages/Register.vue')
-const EmailVerification = () => import(/* webpackChunkName: "pages" */ '@/views/Pages/EmailVerification.vue')
+const EmailConfirmation = () => import(/* webpackChunkName: "pages" */ '@/views/Pages/EmailConfirmation.vue')
 const PasswordReset = () => import(/* webpackChunkName: "pages" */ '@/views/Pages/PasswordReset.vue')
 const PasswordResetChangePassword = () => import(/* webpackChunkName: "pages" */ '@/views/Pages/PasswordResetChangePassword.vue')
 
@@ -60,9 +60,9 @@ const authPages = {
       }
     },
     {
-      path: '/emailVerification/:token',
+      path: '/email-confirmation/:token',
       name: 'Verification email',
-      component: EmailVerification,
+      component: EmailConfirmation,
       meta: {
         title: 'Confirmation adresse mail - calendz',
         redirectToDashboardIfConnected: true
