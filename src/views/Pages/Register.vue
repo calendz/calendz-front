@@ -1,9 +1,16 @@
 <template>
   <div>
     <!-- Header -->
-    <div class="header bg-gradient-primary py-1 py-lg-5 pt-lg-8">
+    <div class="header bg-gradient-primary py-7 py-lg-8 pt-lg-9">
       <div class="container">
-        <div class="header-body text-center mb-7 mobile-fix"/>
+        <div class="header-body text-center mb-7">
+          <div class="row justify-content-center">
+            <div class="col-xl-5 col-lg-6 col-md-8 px-5">
+              <h1 class="text-white">Création d'un compte</h1>
+              <p class="text-lead text-white">Inscrivez-vous avec l'adresse mail de votre école afin d'accéder à votre tableau de bord.</p>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="separator separator-bottom separator-skew zindex-100">
         <svg
@@ -26,7 +33,7 @@
         <div class="col-lg-6 col-md-8">
           <div class="card bg-secondary border-0">
             <div class="card-header bg-transparent">
-              <div class="text-center mt-2">Création d'un compte</div>
+              <div class="text-center mt-2 mb-2">Création d'un compte</div>
             </div>
             <div class="card-body px-lg-5 py-lg-5">
               <form
@@ -271,9 +278,4 @@ export default {
 }
 </script>
 <style scoped>
-@media (max-width: 990px) {
-  .mobile-fix {
-    margin-top: 15rem !important;
-  }
-}
 </style>
