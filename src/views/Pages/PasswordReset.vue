@@ -6,8 +6,8 @@
         <div class="header-body text-center mb-8 mobile-fix">
           <div class="row justify-content-center py-2">
             <div class="col-xl-5 col-lg-6 col-md-8 px-5">
-              <h1 class="display-4 text-white">Bienvenue !</h1>
-              <p class="text-lead text-white my-4">Connectez vous pour accéder au panneau d'administration.</p>
+              <h1 class="display-4 text-white">Mot de passe oublié ?</h1>
+              <p class="text-lead text-white my-4">Pas de panique, commencez par indiquer l'adresse mail de votre compte, puis nous vous enverrons un lien permettant de réinitialiser votre mot de passe.</p>
             </div>
           </div>
         </div>
@@ -32,34 +32,22 @@
         <div class="col-lg-5 col-md-7">
           <div class="card bg-secondary border-0 mb-0 mobile-fix-2">
             <div class="card-header bg-transparent">
-              <div class="text-center mt-2">Connectez vous à votre compte</div>
+              <div class="text-center mt-2">Réinitialisation de votre mot de passe</div>
             </div>
             <div class="card-body px-lg-5 py-lg-5">
               <form
                 role="form"
                 @submit.prevent="handleSubmit">
+
                 <base-input
                   v-validate="'required|email|email_epsi_wis|min:12|max:64'"
-                  v-model="login.email"
+                  v-model="form.email"
                   :error="getError('email')"
                   :valid="isValid('email')"
                   name="email"
                   class="mb-3"
                   prepend-icon="ni ni-email-83"
-                  placeholder="Adresse mail"/>
-
-                <base-input
-                  v-validate="'required|min:6|max:64'"
-                  v-model="login.password"
-                  :error="getError('mot de passe')"
-                  :valid="isValid('mot de passe')"
-                  name="mot de passe"
-                  class="mb-3"
-                  prepend-icon="ni ni-lock-circle-open"
-                  type="password"
-                  placeholder="Mot de passe"/>
-
-                <base-checkbox v-model="login.rememberMe">Se souvenir de moi</base-checkbox>
+                  placeholder="Entrez votre adresse mail"/>
 
                 <base-alert
                   v-show="apiError"
@@ -73,7 +61,7 @@
                     type="primary"
                     native-type="submit"
                     size="lg"
-                    class="my-4">Se connecter</base-button>
+                    class="my-3">Envoyer l'email de réinitialisation</base-button>
                 </div>
               </form>
             </div>
@@ -81,8 +69,8 @@
           <div class="row mt-3">
             <div class="col-6">
               <router-link
-                to="/password-reset"
-                class="text-light"><small>Mot de passe oublié ?</small></router-link>
+                to="/login"
+                class="text-light"><small>Retour à la connexion</small></router-link>
             </div>
             <div class="col-6 text-right">
               <router-link
@@ -102,10 +90,8 @@ export default {
   data () {
     return {
       apiError: '',
-      login: {
-        email: '',
-        password: '',
-        rememberMe: false
+      form: {
+        email: ''
       }
     }
   },
@@ -122,12 +108,9 @@ export default {
         }
 
         // request sur l'api
-        axios.post(`${this.$apiUrl}/auth`, this.login).then((res) => {
-          localStorage.setItem('accessToken', res.data.accessToken)
-          localStorage.setItem('user', JSON.stringify(res.data.user))
-
-          this.$notify({ type: 'success', message: 'Vous êtes désormais connecté.' })
-          this.$router.push('/dashboard')
+        axios.post(`${this.$apiUrl}/auth/password-reset/send-mail`, this.form).then((res) => {
+          this.$notify({ type: 'success', message: 'Le mail a bien été envoyé, veuillez vérifiez vos mails.' })
+          this.$router.push('/login')
         // on catch les erreurs
         }).catch((err) => {
           this.apiError = `<strong>Erreur !</strong> ${err.response.data.message}.`

@@ -6,8 +6,8 @@
         <div class="header-body text-center mb-8 mobile-fix">
           <div class="row justify-content-center py-2">
             <div class="col-xl-5 col-lg-6 col-md-8 px-5">
-              <h1 class="display-4 text-white">Bienvenue !</h1>
-              <p class="text-lead text-white my-4">Connectez vous pour accéder au panneau d'administration.</p>
+              <h1 class="display-4 text-white">Réinitialisation de votre mot de passe</h1>
+              <p class="text-lead text-white my-4">Vous pouvez désormais indiquer votre nouveau mot de passe.</p>
             </div>
           </div>
         </div>
@@ -32,40 +32,42 @@
         <div class="col-lg-5 col-md-7">
           <div class="card bg-secondary border-0 mb-0 mobile-fix-2">
             <div class="card-header bg-transparent">
-              <div class="text-center mt-2">Connectez vous à votre compte</div>
+              <div class="text-center mt-2">Nouveau mot de passe</div>
             </div>
             <div class="card-body px-lg-5 py-lg-5">
               <form
                 role="form"
                 @submit.prevent="handleSubmit">
-                <base-input
-                  v-validate="'required|email|email_epsi_wis|min:12|max:64'"
-                  v-model="login.email"
-                  :error="getError('email')"
-                  :valid="isValid('email')"
-                  name="email"
-                  class="mb-3"
-                  prepend-icon="ni ni-email-83"
-                  placeholder="Adresse mail"/>
 
                 <base-input
-                  v-validate="'required|min:6|max:64'"
-                  v-model="login.password"
+                  v-validate="'required|min:6|max:64|contains_one_letter|contains_one_number'"
+                  ref="mot de passe"
+                  v-model="reset.password"
                   :error="getError('mot de passe')"
                   :valid="isValid('mot de passe')"
                   name="mot de passe"
                   class="mb-3"
                   prepend-icon="ni ni-lock-circle-open"
-                  type="password"
-                  placeholder="Mot de passe"/>
+                  placeholder="Mot de passe"
+                  type="password"/>
 
-                <base-checkbox v-model="login.rememberMe">Se souvenir de moi</base-checkbox>
+                <base-input
+                  v-validate="{ required: true, confirmed: 'mot de passe' }"
+                  v-model="reset.password2"
+                  :error="getError('confirmation du mot de passe')"
+                  :valid="isValid('confirmation du mot de passe')"
+                  name="confirmation du mot de passe"
+                  class="mb-3"
+                  prepend-icon="ni ni-lock-circle-open"
+                  placeholder="Confirmer le mot de passe"
+                  type="password"/>
 
                 <base-alert
-                  v-show="apiError"
+                  v-for="(apiError, index) in apiErrors"
+                  :key="index"
                   type="danger"
-                  class="mt-4 py-2 mb-1">
-                  <span v-html="apiError"/>
+                  class="py-2 mb-1">
+                  <strong>Erreur !</strong> {{ apiError }}
                 </base-alert>
 
                 <div class="text-center">
@@ -73,7 +75,7 @@
                     type="primary"
                     native-type="submit"
                     size="lg"
-                    class="my-4">Se connecter</base-button>
+                    class="my-3">Enregistrer le nouveau mot de passe</base-button>
                 </div>
               </form>
             </div>
@@ -81,8 +83,8 @@
           <div class="row mt-3">
             <div class="col-6">
               <router-link
-                to="/password-reset"
-                class="text-light"><small>Mot de passe oublié ?</small></router-link>
+                to="/login"
+                class="text-light"><small>Retour à la connexion</small></router-link>
             </div>
             <div class="col-6 text-right">
               <router-link
@@ -101,11 +103,11 @@ import axios from 'axios'
 export default {
   data () {
     return {
-      apiError: '',
-      login: {
-        email: '',
+      apiErrors: [],
+      reset: {
+        token: this.$route.params.token,
         password: '',
-        rememberMe: false
+        password2: ''
       }
     }
   },
@@ -113,7 +115,7 @@ export default {
     handleSubmit (e) {
       // disable le bouton login
       e.target.disabled = true
-      this.apiError = ''
+      this.apiErrors = []
 
       this.$validator.validate().then(valid => {
         if (!valid) {
@@ -122,16 +124,17 @@ export default {
         }
 
         // request sur l'api
-        axios.post(`${this.$apiUrl}/auth`, this.login).then((res) => {
-          localStorage.setItem('accessToken', res.data.accessToken)
-          localStorage.setItem('user', JSON.stringify(res.data.user))
-
-          this.$notify({ type: 'success', message: 'Vous êtes désormais connecté.' })
-          this.$router.push('/dashboard')
+        axios.post(`${this.$apiUrl}/user/password-reset`, this.reset).then((res) => {
+          this.$notify({ type: 'success', message: 'Votre mot de passe a bien été mis à jour.' })
+          this.$router.push('/login')
         // on catch les erreurs
         }).catch((err) => {
-          this.apiError = `<strong>Erreur !</strong> ${err.response.data.message}.`
           e.target.disabled = false
+          if (err.response.data.errors) {
+            this.apiErrors = err.response.data.errors
+          } else {
+            this.apiErrors.push(`${err.response.data.message}.`)
+          }
         })
       })
     },
