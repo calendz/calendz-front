@@ -97,10 +97,12 @@
 </template>
 <script>
 import axios from 'axios'
+import swal from 'sweetalert2'
 
 export default {
   data () {
     return {
+      tries: 0,
       apiError: '',
       login: {
         email: '',
@@ -132,6 +134,24 @@ export default {
         }).catch((err) => {
           this.apiError = `<strong>Erreur !</strong> ${err.response.data.message}.`
           e.target.disabled = false
+
+          this.tries++
+          if (this.tries >= 3) {
+            swal({
+              type: 'question',
+              title: `Mot de passe oublié ?`,
+              text: `Pas de panique, indiquez votre adresse mail et nous vous enverrons un lien afin de réinitialiser votre mot de passe.`,
+              buttonsStyling: false,
+              focusConfirm: true,
+              confirmButtonText: 'Réinitialiser',
+              confirmButtonClass: 'btn btn-success btn-fill',
+              showCancelButton: true,
+              cancelButtonText: 'Annuler',
+              cancelButtonClass: 'btn btn-secondary btn-fill'
+            }).then((result) => {
+              if (result.value) this.$router.push('/password-reset')
+            })
+          }
         })
       })
     },
