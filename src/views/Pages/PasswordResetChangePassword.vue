@@ -62,6 +62,18 @@
                   placeholder="Confirmer le mot de passe"
                   type="password"/>
 
+                <div
+                  v-show="passwordStrength !== 0"
+                  class="text-muted font-italic">
+                  <small>Force du mot de passe :
+                    <span
+                      :class="{ 'text-danger': passwordStrength === 'faible', 'text-warning': passwordStrength === 'moyen', 'text-success': passwordStrength === 'fort' }"
+                      class="font-weight-700">
+                      {{ passwordStrength }}
+                    </span>
+                  </small>
+                </div>
+
                 <base-alert
                   v-for="(apiError, index) in apiErrors"
                   :key="index"
@@ -111,6 +123,16 @@ export default {
       }
     }
   },
+  computed: {
+    passwordStrength () {
+      switch (this.getPasswordStrength(this.reset.password)) {
+        case 1: return 'faible'
+        case 2: return 'moyen'
+        case 3: return 'fort'
+        default: return 0
+      }
+    }
+  },
   methods: {
     handleSubmit (e) {
       // disable le bouton login
@@ -137,6 +159,17 @@ export default {
           }
         })
       })
+    },
+    getPasswordStrength (password) {
+      if (password.length < 6) {
+        return 0
+      } else if (password.length < 9) {
+        return 1
+      } else if (password.length < 12) {
+        return 2
+      } else {
+        return 3
+      }
     },
     getError (name) {
       return this.errors.first(name)
