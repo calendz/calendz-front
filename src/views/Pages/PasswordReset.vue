@@ -7,7 +7,7 @@
           <div class="row justify-content-center py-2">
             <div class="col-xl-5 col-lg-6 col-md-8 px-5">
               <h1 class="display-4 text-white">Mot de passe oublié ?</h1>
-              <p class="text-lead text-white my-4">Pas de panique, commencez par indiquer l'adresse mail de votre compte, puis nous vous enverrons un lien permettant de réinitialiser votre mot de passe.</p>
+              <p class="text-lead text-white my-4">Commencez par indiquer l'adresse mail de votre compte, puis nous vous enverrons un lien permettant de réinitialiser votre mot de passe.</p>
             </div>
           </div>
         </div>
