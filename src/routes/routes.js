@@ -14,11 +14,11 @@ import NotFound from '@/views/Pages/Errors/NotFound.vue'
 
 // Authentication
 const Home = () => import(/* webpackChunkName: "pages" */ '@/views/Pages/Home.vue')
-const Login = () => import(/* webpackChunkName: "pages" */ '@/views/Pages/Login.vue')
-const Register = () => import(/* webpackChunkName: "pages" */ '@/views/Pages/Register.vue')
-const EmailConfirmation = () => import(/* webpackChunkName: "pages" */ '@/views/Pages/EmailConfirmation.vue')
-const PasswordReset = () => import(/* webpackChunkName: "pages" */ '@/views/Pages/PasswordReset.vue')
-const PasswordResetChangePassword = () => import(/* webpackChunkName: "pages" */ '@/views/Pages/PasswordResetChangePassword.vue')
+const Login = () => import(/* webpackChunkName: "pages" */ '@/views/Pages/Auth/Login.vue')
+const Register = () => import(/* webpackChunkName: "pages" */ '@/views/Pages/Auth/Register.vue')
+const EmailConfirmation = () => import(/* webpackChunkName: "pages" */ '@/views/Pages/Auth/EmailConfirmation.vue')
+const PasswordReset = () => import(/* webpackChunkName: "pages" */ '@/views/Pages/Auth/PasswordReset.vue')
+const PasswordResetChangePassword = () => import(/* webpackChunkName: "pages" */ '@/views/Pages/Auth/PasswordResetChangePassword.vue')
 
 // Dashboard
 // const Dashboard = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Dashboard.vue')
