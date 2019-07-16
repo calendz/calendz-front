@@ -121,17 +121,7 @@
                   placeholder="Confirmer le mot de passe"
                   type="password"/>
 
-                <div
-                  v-show="passwordStrength !== 0"
-                  class="text-muted font-italic">
-                  <small>Force du mot de passe :
-                    <span
-                      :class="{ 'text-danger': passwordStrength === 'faible', 'text-warning': passwordStrength === 'moyen', 'text-success': passwordStrength === 'fort' }"
-                      class="font-weight-700">
-                      {{ passwordStrength }}
-                    </span>
-                  </small>
-                </div>
+                <password-strength :password="registerForm.password"/>
 
                 <div class="row my-4">
                   <div class="col-12">
@@ -211,16 +201,6 @@ export default {
       }
     }
   },
-  computed: {
-    passwordStrength () {
-      switch (this.getPasswordStrength(this.registerForm.password)) {
-        case 1: return 'faible'
-        case 2: return 'moyen'
-        case 3: return 'fort'
-        default: return 0
-      }
-    }
-  },
   methods: {
     handleSubmit (e) {
       // disable le bouton register
@@ -253,17 +233,6 @@ export default {
         buttonsStyling: false,
         confirmButtonClass: 'btn btn-success btn-fill'
       })
-    },
-    getPasswordStrength (password) {
-      if (password.length < 6) {
-        return 0
-      } else if (password.length < 9) {
-        return 1
-      } else if (password.length < 12) {
-        return 2
-      } else {
-        return 3
-      }
     },
     getError (name) {
       return this.errors.first(name)
