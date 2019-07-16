@@ -44,6 +44,17 @@ const UserService = {
     UserService.removeUser()
     TokenService.removeToken()
     ApiService.removeHeader()
+  },
+
+  // Register the user
+  register: async (data) => {
+    const requestData = {
+      method: 'post',
+      url: '/user',
+      data
+    }
+
+    await ApiService.customRequest(requestData)
   }
 }
 
