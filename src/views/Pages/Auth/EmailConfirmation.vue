@@ -82,11 +82,9 @@ export default {
     const token = this.$route.params.token
 
     axios.post(`${this.$apiUrl}/auth/verify/email`, { token }).then((res) => {
-      console.log(res)
       this.isLoading = false
     }).catch((err) => {
       this.apiError = err.response.data.message
-      console.error(err)
       this.isLoading = false
     })
   },
