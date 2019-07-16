@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import axios from 'axios'
 import routes from './routes'
+import { UserService } from '../services/user.service'
+import { TokenService } from '../services/storage.service'
 
 Vue.use(VueRouter)
 
@@ -22,31 +24,31 @@ router.beforeEach((to, from, next) => {
 
   // check if the route requires auth
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    const accessToken = localStorage.getItem('accessToken')
+    const accessToken = TokenService.getToken()
     if (!accessToken) return next({ name: 'Login' })
 
-    axios.post(`${Vue.prototype.$apiUrl}/auth/refresh`, { accessToken }).then((res) => {
-      localStorage.setItem('user', JSON.stringify(res.data.user))
+    axios.post(`/auth/refresh`, { accessToken }).then((res) => {
+      UserService.setUser(res.data.user)
     }).catch((err) => {
       Vue.prototype.$notify({ type: 'danger', message: `${err.response.data.message}.` })
-      localStorage.removeItem('user')
-      localStorage.removeItem('accessToken')
+      UserService.removeUser()
+      TokenService.removeToken()
       next({ name: 'Login' })
     })
   } else
 
   // if user is connected, redirect to dashboard
   if (to.matched.some(record => record.meta.redirectToDashboardIfConnected)) {
-    const accessToken = localStorage.getItem('accessToken')
+    const accessToken = TokenService.getToken()
     if (!accessToken) return next()
 
-    axios.post(`${Vue.prototype.$apiUrl}/auth/refresh`, { accessToken }).then((res) => {
-      localStorage.setItem('user', JSON.stringify(res.data.user))
+    axios.post(`/auth/refresh`, { accessToken }).then((res) => {
+      UserService.setUser(res.data.user)
       next('/dashboard')
     }).catch((err) => {
       Vue.prototype.$notify({ type: 'danger', message: `${err.response.data.message}.` })
-      localStorage.removeItem('user')
-      localStorage.removeItem('accessToken')
+      UserService.removeUser()
+      TokenService.removeToken()
     })
   }
 
