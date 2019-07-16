@@ -108,7 +108,7 @@ export default {
         }
 
         // request sur l'api
-        axios.post(`${this.$apiUrl}/auth/password-reset/send-mail`, this.form).then((res) => {
+        axios.post('/auth/password-reset/send-mail', this.form).then((res) => {
           this.$notify({ type: 'success', message: 'Le mail a bien été envoyé, veuillez vérifiez vos mails.' })
           this.$router.push('/login')
         // on catch les erreurs

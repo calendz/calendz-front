@@ -146,7 +146,7 @@ export default {
         }
 
         // request sur l'api
-        axios.post(`${this.$apiUrl}/user/password-reset`, this.reset).then((res) => {
+        axios.post('/user/password-reset', this.reset).then((res) => {
           this.$notify({ type: 'success', message: 'Votre mot de passe a bien été mis à jour.' })
           this.$router.push('/login')
         // on catch les erreurs
