@@ -61,12 +61,9 @@
 
                 <base-checkbox v-model="loginForm.rememberMe">Se souvenir de moi</base-checkbox>
 
-                <base-alert
-                  v-show="apiError"
-                  type="danger"
-                  class="mt-4 py-2 mb-1">
-                  <span v-html="apiError"/>
-                </base-alert>
+                <api-errors
+                  :single-error="apiError"
+                  :alert-classes="'mt-4 py-3 mb-1'"/>
 
                 <div class="text-center">
                   <base-button
@@ -128,7 +125,7 @@ export default {
           this.$notify({ type: 'success', message: 'Vous êtes désormais connecté.' })
           this.$router.push('/dashboard')
         }).catch((err) => {
-          this.apiError = `<strong>Erreur !</strong> ${err.response.data.message || err.message}.`
+          this.apiError = err.response.data.message || err.message
           e.target.disabled = false
 
           this.tries++

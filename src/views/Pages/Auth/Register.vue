@@ -137,21 +137,10 @@
                   </div>
                 </div>
 
-                <base-alert
-                  v-for="(apiError, index) in apiErrors"
-                  :key="index"
-                  type="danger"
-                  dismissible
-                  class="py-2 mb-1">
-                  <strong>Erreur !</strong> {{ apiError }}
-                  <button
-                    type="button"
-                    class="close"
-                    data-dismiss="alert"
-                    aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </base-alert>
+                <api-errors
+                  :multiple-errors="apiErrors"
+                  :alert-classes="'py-2 mb-1'"
+                  dismissible/>
 
                 <div class="text-center">
                   <base-button

@@ -49,12 +49,9 @@
                   prepend-icon="ni ni-email-83"
                   placeholder="Entrez votre adresse mail"/>
 
-                <base-alert
-                  v-show="apiError"
-                  type="danger"
-                  class="mt-4 py-2 mb-1">
-                  <span v-html="apiError"/>
-                </base-alert>
+                <api-errors
+                  :single-error="apiError"
+                  :alert-classes="'mt-4 py-2 mb-1'"/>
 
                 <div class="text-center">
                   <base-button
@@ -113,7 +110,7 @@ export default {
           this.$router.push('/login')
         // on catch les erreurs
         }).catch((err) => {
-          this.apiError = `<strong>Erreur !</strong> ${err.response.data.message}.`
+          this.apiError = err.response.data.message || err.message
           e.target.disabled = false
         })
       })

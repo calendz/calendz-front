@@ -38,12 +38,8 @@
               <div
                 v-show="!isLoading"
                 class="text-center">
-                <div v-show="apiError">
-                  <base-alert type="danger">
-                    <span class="alert-inner--icon"><i class="fas fa-exclamation-triangle"/></span>
-                    <span class="alert-inner--text"><strong> Erreur !</strong> {{ apiError }}.</span>
-                  </base-alert>
-                </div>
+
+                <api-errors :single-error="apiError"/>
 
                 <div v-show="!apiError">
                   <base-alert type="success">
@@ -81,7 +77,7 @@ export default {
   mounted () {
     const token = this.$route.params.token
 
-    axios.post(`/auth/verify/email`, { token }).then((res) => {
+    axios.post('auth/verify/email', { token }).then((res) => {
       this.isLoading = false
     }).catch((err) => {
       this.apiError = err.response.data.message

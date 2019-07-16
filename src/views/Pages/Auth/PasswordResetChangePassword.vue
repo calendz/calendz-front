@@ -64,13 +64,9 @@
 
                 <password-strength :password="resetForm.password"/>
 
-                <base-alert
-                  v-for="(apiError, index) in apiErrors"
-                  :key="index"
-                  type="danger"
-                  class="py-2 mb-1">
-                  <strong>Erreur !</strong> {{ apiError }}
-                </base-alert>
+                <api-errors
+                  :multiple-errors="apiErrors"
+                  :alert-classes="'py-2 mb-1'"/>
 
                 <div class="text-center">
                   <base-button
@@ -135,7 +131,7 @@ export default {
           if (err.response.data.errors) {
             this.apiErrors = err.response.data.errors
           } else {
-            this.apiErrors.push(`${err.response.data.message}.`)
+            this.apiErrors.push(err.response.data.message)
           }
         })
       })
