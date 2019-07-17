@@ -1,9 +1,16 @@
 <template>
   <div>
     <!-- Header -->
-    <div class="header bg-gradient-primary py-1 py-lg-5 pt-lg-10">
+    <div class="header bg-gradient-primary py-1 py-lg-5 pt-lg-8">
       <div class="container">
-        <div class="header-body text-center mb-7 mobile-fix"/>
+        <div class="header-body text-center mb-8 mobile-fix">
+          <div class="row justify-content-center py-2">
+            <div class="col-xl-5 col-lg-6 col-md-8 px-5">
+              <h1 class="display-4 text-white">Nous vérifions actuellement votre adresse mail</h1>
+              <p class="text-lead text-white my-4">Vérification en cours, merci de patienter.</p>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="separator separator-bottom separator-skew zindex-100">
         <svg
@@ -32,7 +39,12 @@
                 v-show="isLoading"
                 class="text-center">
                 <h2 class="text-default">Vérification en cours</h2>
-                <div class="lds-ellipsis"><div/><div/><div/><div/></div>
+                <ClipLoader
+                  :loading="isLoading"
+                  :size="40"
+                  class="mt-3"
+                  size-unit="px"
+                />
               </div>
 
               <div
@@ -90,71 +102,9 @@ export default {
 </script>
 
 <style scoped>
-.lds-ellipsis {
-  display: inline-block;
-  position: relative;
-  width: 64px;
-  height: 64px;
-}
-.lds-ellipsis div {
-  position: absolute;
-  top: 27px;
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  background: #000;
-  animation-timing-function: cubic-bezier(0, 1, 1, 0);
-}
-.lds-ellipsis div:nth-child(1) {
-  left: 6px;
-  animation: lds-ellipsis1 0.6s infinite;
-}
-.lds-ellipsis div:nth-child(2) {
-  left: 6px;
-  animation: lds-ellipsis2 0.6s infinite;
-}
-.lds-ellipsis div:nth-child(3) {
-  left: 26px;
-  animation: lds-ellipsis2 0.6s infinite;
-}
-.lds-ellipsis div:nth-child(4) {
-  left: 45px;
-  animation: lds-ellipsis3 0.6s infinite;
-}
-@keyframes lds-ellipsis1 {
-  0% {
-    transform: scale(0);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-@keyframes lds-ellipsis3 {
-  0% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(0);
-  }
-}
-@keyframes lds-ellipsis2 {
-  0% {
-    transform: translate(0, 0);
-  }
-  100% {
-    transform: translate(19px, 0);
-  }
-}
-
-@media (min-width: 990px) {
-  .pt-lg-10 {
-    padding-top: 15rem !important;
-  }
-}
-
 @media (max-width: 990px) {
   .mobile-fix {
-    margin-top: 20rem !important;
+    margin-top: 6rem !important;
   }
 
   .mobile-fix-2 {
