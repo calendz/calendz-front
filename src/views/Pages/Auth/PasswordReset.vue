@@ -49,12 +49,9 @@
                   prepend-icon="ni ni-email-83"
                   placeholder="Entrez votre adresse mail"/>
 
-                <base-alert
-                  v-show="apiError"
-                  type="danger"
-                  class="mt-4 py-2 mb-1">
-                  <span v-html="apiError"/>
-                </base-alert>
+                <api-errors
+                  :single-error="apiError"
+                  :alert-classes="'mt-4 py-2 mb-1'"/>
 
                 <div class="text-center">
                   <base-button
@@ -108,12 +105,12 @@ export default {
         }
 
         // request sur l'api
-        axios.post(`${this.$apiUrl}/auth/password-reset/send-mail`, this.form).then((res) => {
+        axios.post('/auth/password-reset/send-mail', this.form).then((res) => {
           this.$notify({ type: 'success', message: 'Le mail a bien été envoyé, veuillez vérifiez vos mails.' })
           this.$router.push('/login')
         // on catch les erreurs
         }).catch((err) => {
-          this.apiError = `<strong>Erreur !</strong> ${err.response.data.message}.`
+          this.apiError = err.response.data.message || err.message
           e.target.disabled = false
         })
       })

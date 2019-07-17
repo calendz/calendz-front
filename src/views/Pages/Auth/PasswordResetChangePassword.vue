@@ -42,7 +42,7 @@
                 <base-input
                   v-validate="'required|min:6|max:64|contains_one_letter|contains_one_number'"
                   ref="mot de passe"
-                  v-model="reset.password"
+                  v-model="resetForm.password"
                   :error="getError('mot de passe')"
                   :valid="isValid('mot de passe')"
                   name="mot de passe"
@@ -53,7 +53,7 @@
 
                 <base-input
                   v-validate="{ required: true, confirmed: 'mot de passe' }"
-                  v-model="reset.password2"
+                  v-model="resetForm.password2"
                   :error="getError('confirmation du mot de passe')"
                   :valid="isValid('confirmation du mot de passe')"
                   name="confirmation du mot de passe"
@@ -62,25 +62,11 @@
                   placeholder="Confirmer le mot de passe"
                   type="password"/>
 
-                <div
-                  v-show="passwordStrength !== 0"
-                  class="text-muted font-italic">
-                  <small>Force du mot de passe :
-                    <span
-                      :class="{ 'text-danger': passwordStrength === 'faible', 'text-warning': passwordStrength === 'moyen', 'text-success': passwordStrength === 'fort' }"
-                      class="font-weight-700">
-                      {{ passwordStrength }}
-                    </span>
-                  </small>
-                </div>
+                <password-strength :password="resetForm.password"/>
 
-                <base-alert
-                  v-for="(apiError, index) in apiErrors"
-                  :key="index"
-                  type="danger"
-                  class="py-2 mb-1">
-                  <strong>Erreur !</strong> {{ apiError }}
-                </base-alert>
+                <api-errors
+                  :multiple-errors="apiErrors"
+                  :alert-classes="'py-3 my-4'"/>
 
                 <div class="text-center">
                   <base-button
@@ -116,20 +102,10 @@ export default {
   data () {
     return {
       apiErrors: [],
-      reset: {
+      resetForm: {
         token: this.$route.params.token,
         password: '',
         password2: ''
-      }
-    }
-  },
-  computed: {
-    passwordStrength () {
-      switch (this.getPasswordStrength(this.reset.password)) {
-        case 1: return 'faible'
-        case 2: return 'moyen'
-        case 3: return 'fort'
-        default: return 0
       }
     }
   },
@@ -146,7 +122,7 @@ export default {
         }
 
         // request sur l'api
-        axios.post(`${this.$apiUrl}/user/password-reset`, this.reset).then((res) => {
+        axios.post('/user/password-reset', this.resetForm).then((res) => {
           this.$notify({ type: 'success', message: 'Votre mot de passe a bien été mis à jour.' })
           this.$router.push('/login')
         // on catch les erreurs
@@ -155,21 +131,10 @@ export default {
           if (err.response.data.errors) {
             this.apiErrors = err.response.data.errors
           } else {
-            this.apiErrors.push(`${err.response.data.message}.`)
+            this.apiErrors.push(err.response.data.message)
           }
         })
       })
-    },
-    getPasswordStrength (password) {
-      if (password.length < 6) {
-        return 0
-      } else if (password.length < 9) {
-        return 1
-      } else if (password.length < 12) {
-        return 2
-      } else {
-        return 3
-      }
     },
     getError (name) {
       return this.errors.first(name)

@@ -42,7 +42,7 @@
 
                 <base-input
                   v-validate="'required|min:3|max:32'"
-                  v-model="register.firstname"
+                  v-model="registerForm.firstname"
                   :error="getError('prénom')"
                   :valid="isValid('prénom')"
                   name="prénom"
@@ -52,7 +52,7 @@
 
                 <base-input
                   v-validate="'required|min:3|max:32'"
-                  v-model="register.lastname"
+                  v-model="registerForm.lastname"
                   :error="getError('nom')"
                   :valid="isValid('nom')"
                   name="nom"
@@ -68,7 +68,7 @@
                 >
                   <select
                     v-validate="'required|valid_grade'"
-                    v-model="register.grade"
+                    v-model="registerForm.grade"
                     name="classe"
                     class="form-control">
                     <option
@@ -90,7 +90,7 @@
 
                 <base-input
                   v-validate="'required|email|email_epsi_wis|min:12|max:64'"
-                  v-model="register.email"
+                  v-model="registerForm.email"
                   :error="getError('email')"
                   :valid="isValid('email')"
                   name="email"
@@ -101,7 +101,7 @@
                 <base-input
                   v-validate="'required|min:6|max:64|contains_one_letter|contains_one_number'"
                   ref="mot de passe"
-                  v-model="register.password"
+                  v-model="registerForm.password"
                   :error="getError('mot de passe')"
                   :valid="isValid('mot de passe')"
                   name="mot de passe"
@@ -112,7 +112,7 @@
 
                 <base-input
                   v-validate="{ required: true, confirmed: 'mot de passe' }"
-                  v-model="register.password2"
+                  v-model="registerForm.password2"
                   :error="getError('confirmation du mot de passe')"
                   :valid="isValid('confirmation du mot de passe')"
                   name="confirmation du mot de passe"
@@ -121,25 +121,15 @@
                   placeholder="Confirmer le mot de passe"
                   type="password"/>
 
-                <div
-                  v-show="passwordStrength !== 0"
-                  class="text-muted font-italic">
-                  <small>Force du mot de passe :
-                    <span
-                      :class="{ 'text-danger': passwordStrength === 'faible', 'text-warning': passwordStrength === 'moyen', 'text-success': passwordStrength === 'fort' }"
-                      class="font-weight-700">
-                      {{ passwordStrength }}
-                    </span>
-                  </small>
-                </div>
+                <password-strength :password="registerForm.password"/>
 
                 <div class="row my-4">
                   <div class="col-12">
-                    <base-checkbox v-model="register.agree">
+                    <base-checkbox v-model="registerForm.agree">
                       <span class="text-muted">J'ai lu et j'accepte la <a href="#!">Politique de confidentialité</a></span>
                     </base-checkbox>
                     <div
-                      v-show="!register.agree && triedSubmit"
+                      v-show="!registerForm.agree && triedSubmit"
                       class="invalid-feedback"
                       style="display: block;">
                       Vous devez accepter les conditions d'utilisation.
@@ -147,21 +137,10 @@
                   </div>
                 </div>
 
-                <base-alert
-                  v-for="(apiError, index) in apiErrors"
-                  :key="index"
-                  type="danger"
-                  dismissible
-                  class="py-2 mb-1">
-                  <strong>Erreur !</strong> {{ apiError }}
-                  <button
-                    type="button"
-                    class="close"
-                    data-dismiss="alert"
-                    aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </base-alert>
+                <api-errors
+                  :multiple-errors="apiErrors"
+                  :alert-classes="'py-2 mb-1'"
+                  dismissible/>
 
                 <div class="text-center">
                   <base-button
@@ -191,8 +170,8 @@
   </div>
 </template>
 <script>
-import axios from 'axios'
 import swal from 'sweetalert2'
+import { UserService } from '../../../services/user.service'
 
 export default {
   name: 'Register',
@@ -200,7 +179,7 @@ export default {
     return {
       triedSubmit: false,
       apiErrors: [],
-      register: {
+      registerForm: {
         firstname: '',
         lastname: '',
         grade: '',
@@ -208,16 +187,6 @@ export default {
         password: '',
         password2: '',
         agree: false
-      }
-    }
-  },
-  computed: {
-    passwordStrength () {
-      switch (this.getPasswordStrength(this.register.password)) {
-        case 1: return 'faible'
-        case 2: return 'moyen'
-        case 3: return 'fort'
-        default: return 0
       }
     }
   },
@@ -229,23 +198,20 @@ export default {
 
       // vérification validation des champs
       this.$validator.validate().then(valid => {
-        if (!this.register.agree) {
+        if (!this.registerForm.agree) {
           this.triedSubmit = true
           e.target.disabled = false
         } else if (valid) {
           // envoie de la requête inscription
-          axios.post(`${this.$apiUrl}/user`, this.register).then((res) => {
+          UserService.register(this.registerForm).then((res) => {
             this.$notify({ type: 'success', timeout: 10000, message: 'Votre compte a bien été créé !' })
             this.$notify({ type: 'info', timeout: 10000, message: 'Veuillez <b>vérifier vos mails</b> afin de confirmer votre adresse avant de vous connecter.' })
             this.$router.push('/login')
           // on catch les erreurs pour les afficher
           }).catch((err) => {
             e.target.disabled = false
-            if (err.response.data.errors) {
-              this.apiErrors = err.response.data.errors
-            } else {
-              this.apiErrors.push(err.response.data.message)
-            }
+            if (err.response.data.errors) this.apiErrors = err.response.data.errors
+            else this.apiErrors.push(err.response.data.message)
           })
         }
       })
@@ -256,17 +222,6 @@ export default {
         buttonsStyling: false,
         confirmButtonClass: 'btn btn-success btn-fill'
       })
-    },
-    getPasswordStrength (password) {
-      if (password.length < 6) {
-        return 0
-      } else if (password.length < 9) {
-        return 1
-      } else if (password.length < 12) {
-        return 2
-      } else {
-        return 3
-      }
     },
     getError (name) {
       return this.errors.first(name)

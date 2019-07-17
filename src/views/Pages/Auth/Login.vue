@@ -40,7 +40,7 @@
                 @submit.prevent="handleSubmit">
                 <base-input
                   v-validate="'required|email|email_epsi_wis|min:12|max:64'"
-                  v-model="login.email"
+                  v-model="loginForm.email"
                   :error="getError('email')"
                   :valid="isValid('email')"
                   name="email"
@@ -50,7 +50,7 @@
 
                 <base-input
                   v-validate="'required|min:6|max:64'"
-                  v-model="login.password"
+                  v-model="loginForm.password"
                   :error="getError('mot de passe')"
                   :valid="isValid('mot de passe')"
                   name="mot de passe"
@@ -59,14 +59,11 @@
                   type="password"
                   placeholder="Mot de passe"/>
 
-                <base-checkbox v-model="login.rememberMe">Se souvenir de moi</base-checkbox>
+                <base-checkbox v-model="loginForm.rememberMe">Se souvenir de moi</base-checkbox>
 
-                <base-alert
-                  v-show="apiError"
-                  type="danger"
-                  class="mt-4 py-2 mb-1">
-                  <span v-html="apiError"/>
-                </base-alert>
+                <api-errors
+                  :single-error="apiError"
+                  :alert-classes="'mt-4 py-3 mb-1'"/>
 
                 <div class="text-center">
                   <base-button
@@ -96,15 +93,16 @@
   </div>
 </template>
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 import swal from 'sweetalert2'
+import { UserService } from '../../../services/user.service'
 
 export default {
   data () {
     return {
       tries: 0,
       apiError: '',
-      login: {
+      loginForm: {
         email: '',
         password: '',
         rememberMe: false
@@ -123,16 +121,11 @@ export default {
           return
         }
 
-        // request sur l'api
-        axios.post(`${this.$apiUrl}/auth`, this.login).then((res) => {
-          localStorage.setItem('accessToken', res.data.accessToken)
-          localStorage.setItem('user', JSON.stringify(res.data.user))
-
+        UserService.login(this.loginForm).then(() => {
           this.$notify({ type: 'success', message: 'Vous êtes désormais connecté.' })
           this.$router.push('/dashboard')
-        // on catch les erreurs
         }).catch((err) => {
-          this.apiError = `<strong>Erreur !</strong> ${err.response.data.message}.`
+          this.apiError = err.response.data.message || err.message
           e.target.disabled = false
 
           this.tries++
