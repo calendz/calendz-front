@@ -66,7 +66,7 @@
 
                 <api-errors
                   :multiple-errors="apiErrors"
-                  :alert-classes="'py-2 mb-1'"/>
+                  :alert-classes="'py-3 my-4'"/>
 
                 <div class="text-center">
                   <base-button
