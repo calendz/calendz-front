@@ -96,8 +96,7 @@ const dashboardPages = {
   name: 'Dashboard',
   component: DashboardLayout,
   meta: {
-    title: 'Dashboard - calendz',
-    requiresAuth: true
+    title: 'Dashboard - calendz'
   }
 }
 
