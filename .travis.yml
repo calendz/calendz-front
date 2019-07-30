@@ -1,13 +1,28 @@
 language: node_js
+
 notifications:
   email: false
+
 node_js:
   - "10.15.3"
+
 install: npm install
+
 jobs:
   include:
     - stage: test
       script: npm test
+
+after_success:
+  - wget https://raw.githubusercontent.com/calendz/travis-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh success $DISCORD_WEBHOOK_URL
+
+after_failure:
+  - wget https://raw.githubusercontent.com/calendz/travis-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh failure $DISCORD_WEBHOOK_URL
+
 cache:
   directories:
     - node_modules
