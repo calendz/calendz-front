@@ -21,11 +21,29 @@ const PasswordReset = () => import(/* webpackChunkName: "pages" */ '@/views/Page
 const PasswordResetChangePassword = () => import(/* webpackChunkName: "pages" */ '@/views/Pages/Auth/PasswordResetChangePassword.vue')
 
 // Dashboard
-// const Dashboard = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Dashboard.vue')
+const Dashboard = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Dashboard.vue')
 
 // ============================================
 // == Routes
 // ============================================
+
+// Dashboard
+const dashboardPages = {
+  path: '/',
+  component: DashboardLayout,
+  redirect: '/dashboard',
+  name: 'Dashboard Layout',
+  meta: {
+    title: 'Dashboard - calendz'
+  },
+  children: [
+    {
+      path: 'dashboard',
+      name: 'Dashboard',
+      component: Dashboard
+    }
+  ]
+}
 
 // Authentication
 const authPages = {
@@ -91,19 +109,11 @@ const authPages = {
   ]
 }
 
-const dashboardPages = {
-  path: '/dashboard',
-  name: 'Dashboard',
-  component: DashboardLayout,
-  meta: {
-    title: 'Dashboard - calendz'
-  }
-}
-
 const routes = [
   {
     path: '/',
-    redirect: '/home'
+    redirect: '/home',
+    name: 'Home'
   },
   dashboardPages,
   authPages
