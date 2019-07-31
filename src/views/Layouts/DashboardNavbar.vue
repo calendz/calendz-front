@@ -1,11 +1,15 @@
 <template>
   <base-nav
-    :class="$route.meta.navbarClasses ? $route.meta.navbarClasses : 'bg-success navbar-dark'"
+    :class="$route.meta.navbarClasses ? $route.meta.navbarClasses : 'bg-primary navbar-dark'"
     container-classes="container-fluid"
     class="navbar-top border-bottom navbar-expand"
-    type=""
-  >
-    <!-- Search form -->
+    type="">
+
+    <!-- ========================================================== -->
+    <!-- == Search form =========================================== -->
+    <!-- ========================================================== -->
+
+    <!-- TODO: rechercher des devoirs, ou autre chose  -->
     <form
       id="navbar-search-main"
       :class="$route.meta.searchClasses ? $route.meta.searchClasses : 'navbar-search-light'"
@@ -17,7 +21,7 @@
           </div>
           <input
             class="form-control"
-            placeholder="Search"
+            placeholder="Rechercher"
             type="text">
         </div>
       </div>
@@ -30,10 +34,15 @@
         <span aria-hidden="true">×</span>
       </button>
     </form>
-    <!-- Navbar links -->
+
+    <!-- ========================================================== -->
+    <!-- == Navbar links ========================================== -->
+    <!-- ========================================================== -->
+
     <ul class="navbar-nav align-items-center ml-md-auto">
+
+      <!-- Sidenav toggler -->
       <li class="nav-item d-xl-none">
-        <!-- Sidenav toggler -->
         <div
           class="pr-3 sidenav-toggler sidenav-toggler-dark"
           @click="toggleSidebar">
@@ -44,6 +53,8 @@
           </div>
         </div>
       </li>
+
+      <!-- idk -->
       <li class="nav-item d-sm-none">
         <a
           class="nav-link"
@@ -53,214 +64,115 @@
           <i class="ni ni-zoom-split-in"/>
         </a>
       </li>
-      <li class="nav-item dropdown">
-        <a
-          class="nav-link"
-          href="#"
-          role="button"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false">
-          <i class="ni ni-bell-55"/>
-        </a>
-        <div class="dropdown-menu dropdown-menu-xl dropdown-menu-right py-0 overflow-hidden">
-          <!-- Dropdown header -->
-          <div class="px-3 py-3">
-            <h6 class="text-sm text-muted m-0">You have <strong class="text-primary">13</strong> notifications.</h6>
-          </div>
-          <!-- List group -->
-          <div class="list-group list-group-flush">
-            <a
-              href="#!"
-              class="list-group-item list-group-item-action">
-              <div class="row align-items-center">
-                <div class="col-auto">
-                  <!-- Avatar -->
-                  <img
-                    alt="Image placeholder"
-                    src="img/theme/team-1.jpg"
-                    class="avatar rounded-circle">
-                </div>
-                <div class="col ml--2">
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                      <h4 class="mb-0 text-sm">John Snow</h4>
-                    </div>
-                    <div class="text-right text-muted">
-                      <small>2 hrs ago</small>
-                    </div>
-                  </div>
-                  <p class="text-sm mb-0">Let's meet at Starbucks at 11:30. Wdyt?</p>
-                </div>
-              </div>
-            </a>
-            <a
-              href="#!"
-              class="list-group-item list-group-item-action">
-              <div class="row align-items-center">
-                <div class="col-auto">
-                  <!-- Avatar -->
-                  <img
-                    alt="Image placeholder"
-                    src="img/theme/team-2.jpg"
-                    class="avatar rounded-circle">
-                </div>
-                <div class="col ml--2">
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                      <h4 class="mb-0 text-sm">John Snow</h4>
-                    </div>
-                    <div class="text-right text-muted">
-                      <small>3 hrs ago</small>
-                    </div>
-                  </div>
-                  <p class="text-sm mb-0">A new issue has been reported for Argon.</p>
-                </div>
-              </div>
-            </a>
-            <a
-              href="#!"
-              class="list-group-item list-group-item-action">
-              <div class="row align-items-center">
-                <div class="col-auto">
-                  <!-- Avatar -->
-                  <img
-                    alt="Image placeholder"
-                    src="img/theme/team-3.jpg"
-                    class="avatar rounded-circle">
-                </div>
-                <div class="col ml--2">
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                      <h4 class="mb-0 text-sm">John Snow</h4>
-                    </div>
-                    <div class="text-right text-muted">
-                      <small>5 hrs ago</small>
-                    </div>
-                  </div>
-                  <p class="text-sm mb-0">Your posts have been liked a lot.</p>
-                </div>
-              </div>
-            </a>
-            <a
-              href="#!"
-              class="list-group-item list-group-item-action">
-              <div class="row align-items-center">
-                <div class="col-auto">
-                  <!-- Avatar -->
-                  <img
-                    alt="Image placeholder"
-                    src="img/theme/team-4.jpg"
-                    class="avatar rounded-circle">
-                </div>
-                <div class="col ml--2">
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                      <h4 class="mb-0 text-sm">John Snow</h4>
-                    </div>
-                    <div class="text-right text-muted">
-                      <small>2 hrs ago</small>
-                    </div>
-                  </div>
-                  <p class="text-sm mb-0">Let's meet at Starbucks at 11:30. Wdyt?</p>
-                </div>
-              </div>
-            </a>
-            <a
-              href="#!"
-              class="list-group-item list-group-item-action">
-              <div class="row align-items-center">
-                <div class="col-auto">
-                  <!-- Avatar -->
-                  <img
-                    alt="Image placeholder"
-                    src="img/theme/team-5.jpg"
-                    class="avatar rounded-circle">
-                </div>
-                <div class="col ml--2">
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                      <h4 class="mb-0 text-sm">John Snow</h4>
-                    </div>
-                    <div class="text-right text-muted">
-                      <small>3 hrs ago</small>
-                    </div>
-                  </div>
-                  <p class="text-sm mb-0">A new issue has been reported for Argon.</p>
-                </div>
-              </div>
-            </a>
-          </div>
-          <!-- View all -->
+
+      <!-- Notifications -->
+      <base-dropdown
+        :tag="'li'"
+        :icon="'ni ni-bell-55'"
+        :title-tag="'a'"
+        :title-classes="'nav-link dropdown-toggle'"
+        :menu-on-right="true"
+        :menu-classes="'dropdown-menu dropdown-menu-xl py-0 overflow-hidden'">
+        <div class="px-3 py-3">
+          <h6 class="text-sm text-muted m-0">You have <strong class="text-primary">13</strong> notifications.</h6>
+        </div>
+
+        <div class="list-group list-group-flush">
           <a
             href="#!"
-            class="dropdown-item text-center text-primary font-weight-bold py-3">View all</a>
+            class="list-group-item list-group-item-action">
+            <div class="row align-items-center">
+              <div class="col-auto">
+                <img
+                  alt="Image placeholder"
+                  src="img/theme/team-1.jpg"
+                  class="avatar rounded-circle">
+              </div>
+              <div class="col ml--2">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <h4 class="mb-0 text-sm">John Snow</h4>
+                  </div>
+                  <div class="text-right text-muted">
+                    <small>2 hrs ago</small>
+                  </div>
+                </div>
+                <p class="text-sm mb-0">Let's meet at Starbucks at 11:30. Wdyt?</p>
+              </div>
+            </div>
+          </a>
         </div>
-      </li>
-      <li class="nav-item dropdown">
+
         <a
-          class="nav-link"
-          href="#"
-          role="button"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false">
-          <i class="ni ni-ungroup"/>
-        </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-dark bg-default dropdown-menu-right">
-          <div class="row shortcuts px-4">
-            <a
-              href="#!"
-              class="col-4 shortcut-item">
-              <span class="shortcut-media avatar rounded-circle bg-gradient-red">
-                <i class="ni ni-calendar-grid-58"/>
-              </span>
-              <small>Calendar</small>
-            </a>
-            <a
-              href="#!"
-              class="col-4 shortcut-item">
-              <span class="shortcut-media avatar rounded-circle bg-gradient-orange">
-                <i class="ni ni-email-83"/>
-              </span>
-              <small>Email</small>
-            </a>
-            <a
-              href="#!"
-              class="col-4 shortcut-item">
-              <span class="shortcut-media avatar rounded-circle bg-gradient-info">
-                <i class="ni ni-credit-card"/>
-              </span>
-              <small>Payments</small>
-            </a>
-            <a
-              href="#!"
-              class="col-4 shortcut-item">
-              <span class="shortcut-media avatar rounded-circle bg-gradient-green">
-                <i class="ni ni-books"/>
-              </span>
-              <small>Reports</small>
-            </a>
-            <a
-              href="#!"
-              class="col-4 shortcut-item">
-              <span class="shortcut-media avatar rounded-circle bg-gradient-purple">
-                <i class="ni ni-pin-3"/>
-              </span>
-              <small>Maps</small>
-            </a>
-            <a
-              href="#!"
-              class="col-4 shortcut-item">
-              <span class="shortcut-media avatar rounded-circle bg-gradient-yellow">
-                <i class="ni ni-basket"/>
-              </span>
-              <small>Shop</small>
-            </a>
-          </div>
+          href="#!"
+          class="dropdown-item text-center text-primary font-weight-bold py-3">View all</a>
+      </base-dropdown>
+
+      <!-- Shortcuts -->
+      <base-dropdown
+        :tag="'li'"
+        :icon="'ni ni-ungroup'"
+        :title-tag="'a'"
+        :title-classes="'nav-link dropdown-toggle'"
+        :menu-on-right="true"
+        :menu-classes="'dropdown-menu dropdown-menu-lg dropdown-menu-dark bg-default'">
+        <div class="row shortcuts px-4">
+          <a
+            href="#!"
+            class="col-4 shortcut-item">
+            <span class="shortcut-media avatar rounded-circle bg-gradient-red">
+              <i class="ni ni-calendar-grid-58"/>
+            </span>
+            <small>Calendar</small>
+          </a>
+          <a
+            href="#!"
+            class="col-4 shortcut-item">
+            <span class="shortcut-media avatar rounded-circle bg-gradient-orange">
+              <i class="ni ni-email-83"/>
+            </span>
+            <small>Email</small>
+          </a>
+          <a
+            href="#!"
+            class="col-4 shortcut-item">
+            <span class="shortcut-media avatar rounded-circle bg-gradient-info">
+              <i class="ni ni-credit-card"/>
+            </span>
+            <small>Payments</small>
+          </a>
+          <a
+            href="#!"
+            class="col-4 shortcut-item">
+            <span class="shortcut-media avatar rounded-circle bg-gradient-green">
+              <i class="ni ni-books"/>
+            </span>
+            <small>Reports</small>
+          </a>
+          <a
+            href="#!"
+            class="col-4 shortcut-item">
+            <span class="shortcut-media avatar rounded-circle bg-gradient-purple">
+              <i class="ni ni-pin-3"/>
+            </span>
+            <small>Maps</small>
+          </a>
+          <a
+            href="#!"
+            class="col-4 shortcut-item">
+            <span class="shortcut-media avatar rounded-circle bg-gradient-yellow">
+              <i class="ni ni-basket"/>
+            </span>
+            <small>Shop</small>
+          </a>
         </div>
-      </li>
+      </base-dropdown>
     </ul>
+
+    <!-- ========================================================== -->
+    <!-- == Profile =============================================== -->
+    <!-- ========================================================== -->
+
     <ul class="navbar-nav align-items-center ml-auto ml-md-0">
       <li class="nav-item dropdown">
         <a
