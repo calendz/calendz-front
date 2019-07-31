@@ -9,6 +9,11 @@
     "dev": "npm run serve",
     "test": "npm run lint"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
+  },
   "dependencies": {
     "@fullcalendar/core": "^4.0.2",
     "@fullcalendar/daygrid": "^4.0.1",
