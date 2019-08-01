@@ -199,14 +199,14 @@ export default {
     const accessToken = TokenService.getToken()
     if (!accessToken) return this.$router.push('/login')
 
-    axios.post(`/auth/refresh`, { accessToken }).then((res) => {
-      UserService.setUser(res.data.user)
-    }).catch((err) => {
-      this.$notify({ type: 'danger', message: `${err.response.data.message}.` })
-      UserService.removeUser()
-      TokenService.removeToken()
-      this.$router.push('/login')
-    })
+    // axios.post(`/auth/refresh`, { accessToken }).then((res) => {
+    //   UserService.setUser(res.data.user)
+    // }).catch((err) => {
+    //   this.$notify({ type: 'danger', message: `${err.response.data.message}.` })
+    //   UserService.removeUser()
+    //   TokenService.removeToken()
+    //   this.$router.push('/login')
+    // })
   },
   methods: {
     initScrollbar () {

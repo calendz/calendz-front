@@ -1,5 +1,6 @@
 import ApiService from './api.service'
 import { TokenService } from './storage.service'
+import Axios from 'axios'
 
 const USER_KEY = 'user'
 
@@ -29,14 +30,28 @@ const UserService = {
     const requestData = {
       method: 'post',
       url: '/auth',
-      data
+      data,
+      credentials: 'include'
     }
 
-    await ApiService.customRequest(requestData).then((res) => {
-      UserService.setUser(res.data.user)
-      TokenService.setToken(res.data.accessToken)
-      ApiService.setHeader()
-    })
+    // await ApiService.customRequest(requestData).then((res) => {
+    //   UserService.setUser(res.data.user)
+    //   TokenService.setToken(res.data.accessToken)
+    //   ApiService.setHeader()
+    // })
+
+    Axios.defaults.withCredentials = 'include'
+    await Axios.post('http://localhost:3001/api/v1/auth', { email: 'arthur.dufour1@epsi.fr', password: 'password' })
+
+    // await fetch('http://localhost:3001/api/v1/auth', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Accept': 'application/json, text/plain, */*',
+    //     'Content-Type': 'application/json'
+    //   },
+    //   credentials: 'include',
+    //   body: JSON.stringify({ email: 'arthur.dufour1@epsi.fr', password: 'password' })
+    // })
   },
 
   // Logout the current user by removing its token and its data
