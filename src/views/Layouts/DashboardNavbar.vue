@@ -74,7 +74,7 @@
         :menu-on-right="true"
         :menu-classes="'dropdown-menu dropdown-menu-xl py-0 overflow-hidden'">
         <div class="px-3 py-3">
-          <h6 class="text-sm text-muted m-0">You have <strong class="text-primary">13</strong> notifications.</h6>
+          <h6 class="text-sm text-muted m-0">Vous avez <strong class="text-primary">1</strong> notification non-lue.</h6>
         </div>
 
         <div class="list-group list-group-flush">
@@ -94,7 +94,7 @@
                     <h4 class="mb-0 text-sm">John Snow</h4>
                   </div>
                   <div class="text-right text-muted">
-                    <small>2 hrs ago</small>
+                    <small>il y a 2h</small>
                   </div>
                 </div>
                 <p class="text-sm mb-0">Let's meet at Starbucks at 11:30. Wdyt?</p>
@@ -105,7 +105,7 @@
 
         <a
           href="#!"
-          class="dropdown-item text-center text-primary font-weight-bold py-3">View all</a>
+          class="dropdown-item text-center text-primary font-weight-bold py-3">Voir tout</a>
       </base-dropdown>
 
       <!-- Shortcuts -->
@@ -174,59 +174,52 @@
     <!-- ========================================================== -->
 
     <ul class="navbar-nav align-items-center ml-auto ml-md-0">
-      <li class="nav-item dropdown">
+      <li
+        v-click-outside="closeDropDown"
+        class="nav-item dropdown">
         <a
           class="nav-link pr-0"
           href="#"
           role="button"
           data-toggle="dropdown"
           aria-haspopup="true"
-          aria-expanded="false">
+          aria-expanded="false"
+          @click="toggleProfileDropdown">
           <div class="media align-items-center">
             <span class="avatar avatar-sm rounded-circle">
               <img
                 alt="Image placeholder"
-                src="img/theme/team-4.jpg">
+                src="img/theme/default-pp.svg">
             </span>
             <div class="media-body ml-2 d-none d-lg-block">
               <span class="mb-0 text-sm  font-weight-bold">John Snow</span>
             </div>
           </div>
         </a>
-        <div class="dropdown-menu dropdown-menu-right">
+        <div
+          :class="showProfileDropdown ? 'show' : ''"
+          class="dropdown-menu dropdown-menu-right">
           <div class="dropdown-header noti-title">
-            <h6 class="text-overflow m-0">Welcome!</h6>
+            <h6 class="text-overflow m-0">Bienvenue !</h6>
           </div>
           <a
             href="#!"
             class="dropdown-item">
             <i class="ni ni-single-02"/>
-            <span>My profile</span>
+            <span>Mon profil</span>
           </a>
           <a
             href="#!"
             class="dropdown-item">
             <i class="ni ni-settings-gear-65"/>
-            <span>Settings</span>
-          </a>
-          <a
-            href="#!"
-            class="dropdown-item">
-            <i class="ni ni-calendar-grid-58"/>
-            <span>Activity</span>
-          </a>
-          <a
-            href="#!"
-            class="dropdown-item">
-            <i class="ni ni-support-16"/>
-            <span>Support</span>
+            <span>Paramètres</span>
           </a>
           <div class="dropdown-divider"/>
           <a
             href="#!"
             class="dropdown-item">
             <i class="ni ni-user-run"/>
-            <span>Logout</span>
+            <span>Déconnexion</span>
           </a>
         </div>
       </li>
@@ -245,7 +238,7 @@ export default {
   },
   data () {
     return {
-      activeNotifications: false,
+      showProfileDropdown: false,
       showMenu: false,
       searchModalVisible: false,
       searchQuery: ''
@@ -264,11 +257,11 @@ export default {
     capitalizeFirstLetter (string) {
       return string.charAt(0).toUpperCase() + string.slice(1)
     },
-    toggleNotificationDropDown () {
-      this.activeNotifications = !this.activeNotifications
+    toggleProfileDropdown () {
+      this.showProfileDropdown = !this.showProfileDropdown
     },
     closeDropDown () {
-      this.activeNotifications = false
+      this.showProfileDropdown = false
     },
     toggleSidebar () {
       this.$sidebar.displaySidebar(!this.$sidebar.showSidebar)
