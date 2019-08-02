@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import routes from './routes'
-import { TokenService } from '../services/storage.service'
+import { UserService } from '../services/user.service'
 
 Vue.use(VueRouter)
 
@@ -22,8 +22,8 @@ router.beforeEach((to, from, next) => {
 
   // if user is connected, redirect to dashboard
   if (to.matched.some(record => record.meta.redirectToDashboardIfConnected)) {
-    const accessToken = TokenService.getToken()
-    if (accessToken) return next('/dashboard')
+    const user = UserService.getUser()
+    if (user) return next('/dashboard')
   }
 
   next()

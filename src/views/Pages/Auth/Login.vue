@@ -93,7 +93,6 @@
   </div>
 </template>
 <script>
-// import axios from 'axios'
 import swal from 'sweetalert2'
 import { UserService } from '../../../services/user.service'
 
