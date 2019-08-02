@@ -160,8 +160,6 @@
   </div>
 </template>
 <script>
-import axios from 'axios'
-import { TokenService } from '../../services/storage.service'
 import { UserService } from '../../services/user.service'
 
 /* eslint-disable no-new */
@@ -195,18 +193,12 @@ export default {
     DashboardContent,
     FadeTransition
   },
-  beforeCreate () {
-    const accessToken = TokenService.getToken()
-    if (!accessToken) return this.$router.push('/login')
+  created () {
+    const user = UserService.getUser()
+    if (!user) return this.$router.push('/login')
 
-    axios.post(`/auth/refresh`, { accessToken }).then((res) => {
-      UserService.setUser(res.data.user)
-    }).catch((err) => {
-      this.$notify({ type: 'danger', message: `${err.response.data.message}.` })
-      UserService.removeUser()
-      TokenService.removeToken()
-      this.$router.push('/login')
-    })
+    // checks if user is still logged in
+    UserService.verify()
   },
   methods: {
     initScrollbar () {
