@@ -58,12 +58,12 @@ export default {
   props: {
     title: {
       type: String,
-      default: 'Creative Tim',
+      default: 'Calendz',
       description: 'Sidebar title'
     },
     shortTitle: {
       type: String,
-      default: 'CT',
+      default: 'Calendz',
       description: 'Sidebar short title'
     },
     logo: {
