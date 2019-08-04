@@ -1,7 +1,7 @@
 <template>
   <base-nav
     :class="$route.meta.navbarClasses ? $route.meta.navbarClasses : 'bg-primary navbar-dark'"
-    container-classes="container-fluid"
+    container-classes="container-fluid px-4"
     class="navbar-top border-bottom navbar-expand"
     type="">
 
@@ -52,17 +52,6 @@
             <i class="sidenav-toggler-line"/>
           </div>
         </div>
-      </li>
-
-      <!-- idk -->
-      <li class="nav-item d-sm-none">
-        <a
-          class="nav-link"
-          href="#"
-          data-action="search-show"
-          data-target="#navbar-search-main">
-          <i class="ni ni-zoom-split-in"/>
-        </a>
       </li>
 
       <!-- Notifications -->
