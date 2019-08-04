@@ -9,12 +9,11 @@
       class="scrollbar-inner">
       <div class="sidenav-header d-flex align-items-center">
         <a
-          class="navbar-brand"
+          style="font-size: 30px; font-family: Catamaran;"
+          class="navbar-brand text-primary font-weight-900"
           href="#">
-          <img
-            :src="logo"
-            class="navbar-brand-img"
-            alt="Sidebar logo">
+          <i class="ni ni-calendar-grid-58"/>
+          calendz
         </a>
         <div class="ml-auto">
           <!-- Sidenav toggler -->
@@ -68,7 +67,7 @@ export default {
     },
     logo: {
       type: String,
-      default: 'https://demos.creative-tim.com/vue-argon-dashboard-pro/img/brand/green.png',
+      default: 'img/brand/logo-blue.png',
       description: 'Sidebar app logo'
     },
     backgroundColor: {
@@ -121,11 +120,17 @@ export default {
   }
 }
 </script>
-<style>
-@media (min-width: 992px) {
-  .navbar-search-form-mobile,
-  .nav-mobile-menu {
-    display: none;
+
+<style scoped>
+  @media (min-width: 992px) {
+    .navbar-search-form-mobile,
+    .nav-mobile-menu {
+      display: none;
+    }
   }
-}
+
+  .ni-calendar-grid-58 {
+    vertical-align: -4px;
+    margin-right: 4px
+  }
 </style>
