@@ -72,7 +72,8 @@
         :title-tag="'a'"
         :title-classes="'nav-link dropdown-toggle'"
         :menu-on-right="true"
-        :menu-classes="'dropdown-menu dropdown-menu-xl py-0 overflow-hidden'">
+        :menu-classes="'dropdown-menu dropdown-menu-xl py-0 overflow-hidden'"
+        class="nav-item">
         <div class="px-3 py-3">
           <h6 class="text-sm text-muted m-0">Vous avez <strong class="text-primary">1</strong> notification non-lue.</h6>
         </div>
@@ -85,7 +86,7 @@
               <div class="col-auto">
                 <img
                   alt="Image placeholder"
-                  src="img/theme/team-1.jpg"
+                  src="img/theme/default-pp.svg"
                   class="avatar rounded-circle">
               </div>
               <div class="col ml--2">
@@ -97,7 +98,7 @@
                     <small>il y a 2h</small>
                   </div>
                 </div>
-                <p class="text-sm mb-0">Let's meet at Starbucks at 11:30. Wdyt?</p>
+                <p class="text-sm mb-0">Rendez-vous à Confluence à 18h ?</p>
               </div>
             </div>
           </a>
@@ -115,7 +116,8 @@
         :title-tag="'a'"
         :title-classes="'nav-link dropdown-toggle'"
         :menu-on-right="true"
-        :menu-classes="'dropdown-menu dropdown-menu-lg dropdown-menu-dark bg-default'">
+        :menu-classes="'dropdown-menu dropdown-menu-lg dropdown-menu-dark bg-default'"
+        class="nav-item">
         <div class="row shortcuts px-4">
           <a
             href="#!"
