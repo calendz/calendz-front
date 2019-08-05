@@ -3,46 +3,59 @@
     <notifications/>
     <side-bar>
       <template
-        slot="links">
+        slot="links-after">
+        <hr class="mt-0 mb-3">
+        <h6 class="navbar-heading p-0 text-muted">Menu principal</h6>
 
-        <!-- dashboard -->
-        <sidebar-item
-          :link="{
-            name: 'Dashboard',
-            icon: 'fas fa-home text-primary',
-            path: '/dashboard'
-        }"/>
+        <ul class="navbar-nav mb-md-3">
 
-        <!-- calendar -->
-        <sidebar-item
-          :link="{
-            name: 'Emploi du temps',
-            icon: 'ni ni-calendar-grid-58 text-info',
-          }"
-        >
+          <!-- dashboard -->
           <sidebar-item
-            :link="{ name: 'Emploi du temps', path: '/calendar' }"
-          />
+            :link="{
+              name: 'Dashboard',
+              icon: 'ni ni-shop text-red',
+              path: '/dashboard'
+          }"/>
+
+          <!-- calendar -->
           <sidebar-item
-            :link="{ name: 'Rechercher', path: '/calendar/search' }"
-          />
-        </sidebar-item>
+            :link="{
+              name: 'Emploi du temps',
+              icon: 'ni ni-calendar-grid-58 text-info',
+            }"
+          >
+            <sidebar-item
+              :link="{ name: 'Emploi du temps', path: '/calendar' }"
+            />
+            <sidebar-item
+              :link="{ name: 'Rechercher', path: '/calendar/search' }"
+            />
+          </sidebar-item>
 
-        <!-- homeworks -->
-        <sidebar-item
-          :link="{
-            name: 'Devoirs',
-            icon: 'fas fa-book text-success',
-            path: '/homeworks'
-        }"/>
+          <!-- homeworks -->
+          <sidebar-item
+            :link="{
+              name: 'Devoirs',
+              icon: 'fas fa-book text-primary',
+              path: '/homeworks'
+          }"/>
 
-        <!-- settings -->
-        <sidebar-item
-          :link="{
-            name: 'Paramètres',
-            icon: 'fas fa-cogs text-danger',
-            path: '/settings'
-        }"/>
+          <!-- settings -->
+          <sidebar-item
+            :link="{
+              name: 'Mon profil',
+              icon: 'fas fa-user-edit text-success',
+              path: '/profile'
+          }"/>
+
+          <!-- settings -->
+          <sidebar-item
+            :link="{
+              name: 'Paramètres',
+              icon: 'fas fa-cogs text-grey',
+              path: '/settings'
+          }"/>
+        </ul>
       </template>
 
       <template slot="links-after">
