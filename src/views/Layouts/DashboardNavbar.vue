@@ -207,8 +207,8 @@
           </a>
           <div class="dropdown-divider"/>
           <a
-            href="#!"
-            class="dropdown-item">
+            class="dropdown-item"
+            @click.prevent="logout">
             <i class="ni ni-user-run"/>
             <span>Déconnexion</span>
           </a>
@@ -218,6 +218,8 @@
   </base-nav>
 </template>
 <script>
+import swal from 'sweetalert2'
+import UserService from '../../services/user.service'
 import { CollapseTransition } from 'vue2-transitions'
 import { BaseNav, Modal } from '@/components'
 
@@ -259,6 +261,33 @@ export default {
     },
     hideSidebar () {
       this.$sidebar.displaySidebar(false)
+    },
+    logout () {
+      swal.fire({
+        title: 'Êtes vous sûr ?',
+        text: 'Vous serez déconnecté du site !',
+        type: 'info',
+        customClass: {
+          confirmButton: 'btn btn-primary',
+          cancelButton: 'btn btn-secondary'
+        },
+        buttonsStyling: false,
+        showCancelButton: true,
+        cancelButtonText: 'Annuler',
+        confirmButtonText: 'Oui !'
+      }).then((result) => {
+        if (result.value) {
+          UserService.removeUser()
+          this.$router.push('/login')
+          swal.fire({
+            title: 'Vous avez été déconnecté',
+            type: 'success',
+            customClass: {
+              confirmButton: 'btn btn-primary'
+            }
+          })
+        }
+      })
     }
   }
 }
