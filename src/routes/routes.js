@@ -25,6 +25,7 @@ const Dashboard = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Das
 const Calendar = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Calendar.vue')
 const CalendarSearch = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/CalendarSearch.vue')
 const Homeworks = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Homeworks.vue')
+const Profile = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Profile.vue')
 const Settings = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Settings.vue')
 const Blog = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Blog.vue')
 const Features = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Features.vue')
@@ -69,6 +70,14 @@ const dashboardPages = {
       path: 'homeworks',
       name: 'Devoirs',
       component: Homeworks,
+      meta: {
+        title: 'Dashboard - calendz'
+      }
+    },
+    {
+      path: 'profile',
+      name: 'Mon profil',
+      component: Profile,
       meta: {
         title: 'Dashboard - calendz'
       }
