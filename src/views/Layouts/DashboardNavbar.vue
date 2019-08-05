@@ -193,18 +193,18 @@
           <div class="dropdown-header noti-title">
             <h6 class="text-overflow m-0">Bienvenue !</h6>
           </div>
-          <a
-            href="#!"
+          <router-link
+            to="/profile"
             class="dropdown-item">
             <i class="ni ni-single-02"/>
             <span>Mon profil</span>
-          </a>
-          <a
-            href="#!"
+          </router-link>
+          <router-link
+            to="/settings"
             class="dropdown-item">
             <i class="ni ni-settings-gear-65"/>
             <span>Paramètres</span>
-          </a>
+          </router-link>
           <div class="dropdown-divider"/>
           <a
             class="dropdown-item"
