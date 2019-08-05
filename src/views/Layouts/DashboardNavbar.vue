@@ -108,53 +108,68 @@
         :menu-classes="'dropdown-menu dropdown-menu-lg dropdown-menu-dark bg-default'"
         class="nav-item">
         <div class="row shortcuts px-4">
-          <a
-            href="#!"
-            class="col-4 shortcut-item">
-            <span class="shortcut-media avatar rounded-circle bg-gradient-red">
-              <i class="ni ni-calendar-grid-58"/>
-            </span>
-            <small>Calendar</small>
-          </a>
-          <a
-            href="#!"
-            class="col-4 shortcut-item">
-            <span class="shortcut-media avatar rounded-circle bg-gradient-orange">
-              <i class="ni ni-email-83"/>
-            </span>
-            <small>Email</small>
-          </a>
-          <a
-            href="#!"
+          <!-- calendar -->
+          <router-link
+            to="calendar"
             class="col-4 shortcut-item">
             <span class="shortcut-media avatar rounded-circle bg-gradient-info">
-              <i class="ni ni-credit-card"/>
+              <i class="ni ni-calendar-grid-58"/>
             </span>
-            <small>Payments</small>
-          </a>
+            <small>Calendrier</small>
+          </router-link>
+
+          <!-- homeworks -->
+          <router-link
+            to="homeworks"
+            class="col-4 shortcut-item">
+            <span class="shortcut-media avatar rounded-circle bg-gradient-orange">
+              <i class="fas fa-book"/>
+            </span>
+            <small>Devoirs</small>
+          </router-link>
+
+          <!-- beecome -->
           <a
-            href="#!"
+            target="_blank"
+            href="https://www.beecome.io/dashboard"
+            class="col-4 shortcut-item">
+            <span class="shortcut-media avatar rounded-circle bg-gradient-red">
+              <i class="fas fa-bold"/>
+            </span>
+            <small>Beecome</small>
+          </a>
+
+          <!-- Email (outlook) -->
+          <a
+            target="_blank"
+            href="https://outlook.office365.com/mail/inbox"
             class="col-4 shortcut-item">
             <span class="shortcut-media avatar rounded-circle bg-gradient-green">
-              <i class="ni ni-books"/>
+              <i class="fas fa-envelope"/>
             </span>
-            <small>Reports</small>
+            <small>Boîte mail</small>
           </a>
+
+          <!-- MyLearningBox -->
           <a
-            href="#!"
+            target="_blank"
+            href="https://mylearningbox.reseau-cd.fr/"
             class="col-4 shortcut-item">
             <span class="shortcut-media avatar rounded-circle bg-gradient-purple">
-              <i class="ni ni-pin-3"/>
+              <i class="fas fa-box-open"/>
             </span>
-            <small>Maps</small>
+            <small>MyLearBox</small>
           </a>
+
+          <!-- Calendrier officiel -->
           <a
-            href="#!"
+            target="_blank"
+            href="https://edtmobiliteng.wigorservices.net//WebPsDyn.aspx?action=posEDTBEECOME&serverid=C&Tel=arthur.dufour&date=06/17/2019"
             class="col-4 shortcut-item">
             <span class="shortcut-media avatar rounded-circle bg-gradient-yellow">
-              <i class="ni ni-basket"/>
+              <i class="ni ni-calendar-grid-58"/>
             </span>
-            <small>Shop</small>
+            <small>EDT officiel</small>
           </a>
         </div>
       </base-dropdown>
