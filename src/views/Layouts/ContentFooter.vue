@@ -4,28 +4,22 @@
       <div class="col-lg-6">
         <div class="copyright text-center text-lg-left text-muted">
           © {{ year }} <a
-            href="https://www.creative-tim.com"
+            href="https://arthurdufour.com/"
             class="font-weight-bold ml-1"
-            target="_blank">Creative Tim</a> &
+            target="_blank">Arthur Dufour</a> &
           <a
-            href="https://www.binarcode.com?ref=creative-tim"
+            href="https://alexandretuet.com/"
             class="font-weight-bold ml-1"
-            target="_blank">Binar Code</a>
+            target="_blank">Alexandre Tuet</a>
         </div>
       </div>
       <div class="col-lg-6">
         <ul class="nav nav-footer justify-content-center justify-content-lg-end">
           <li class="nav-item">
             <a
-              href="https://www.creative-tim.com"
+              href="https://github.com/calendz"
               class="nav-link"
-              target="_blank">Creative Tim</a>
-          </li>
-          <li class="nav-item">
-            <a
-              href="https://www.creative-tim.com/presentation"
-              class="nav-link"
-              target="_blank">About Us</a>
+              target="_blank">Github</a>
           </li>
           <li class="nav-item">
             <a
