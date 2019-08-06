@@ -65,7 +65,7 @@
         :menu-classes="'dropdown-menu dropdown-menu-xl py-0 overflow-hidden'"
         class="nav-item">
         <div class="px-3 py-3">
-          <h6 class="text-sm text-muted m-0">Vous avez <strong class="text-primary">1</strong> notification non-lue.</h6>
+          <h6 class="text-sm text-muted m-0 text-striked"><del>Vous avez <strong class="text-primary">1</strong> notification non-lue.</del></h6>
         </div>
 
         <div class="list-group list-group-flush">
@@ -75,20 +75,20 @@
             <div class="row align-items-center">
               <div class="col-auto">
                 <img
-                  alt="Image placeholder"
+                  alt="Avatar placeholder"
                   src="img/theme/default-pp.svg"
                   class="avatar rounded-circle">
               </div>
               <div class="col ml--2">
                 <div class="d-flex justify-content-between align-items-center">
                   <div>
-                    <h4 class="mb-0 text-sm">John Snow</h4>
+                    <h4 class="mb-0 text-sm">À venir !</h4>
                   </div>
                   <div class="text-right text-muted">
-                    <small>il y a 2h</small>
+                    <small>soon tm</small>
                   </div>
                 </div>
-                <p class="text-sm mb-0">Rendez-vous à Confluence à 18h ?</p>
+                <p class="text-sm mb-0">Cette fonctionnalité n'est pas encore disponible.</p>
               </div>
             </div>
           </a>
@@ -96,7 +96,7 @@
 
         <a
           href="#!"
-          class="dropdown-item text-center text-primary font-weight-bold py-3">Voir tout</a>
+          class="dropdown-item text-center text-primary font-weight-bold py-3"><del>Voir tout</del></a>
       </base-dropdown>
 
       <!-- Shortcuts -->
