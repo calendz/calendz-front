@@ -13,7 +13,8 @@
     <form
       id="navbar-search-main"
       :class="$route.meta.searchClasses ? $route.meta.searchClasses : 'navbar-search-light'"
-      class="navbar-search form-inline mr-sm-3">
+      class="navbar-search form-inline mr-sm-3"
+      @submit.prevent>
       <div class="form-group mb-0">
         <div class="input-group input-group-alternative input-group-merge">
           <div class="input-group-prepend">
