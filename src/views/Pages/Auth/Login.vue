@@ -115,16 +115,8 @@ export default {
   },
   methods: {
     handleSubmit (e) {
-      // disable le bouton login
-      e.target.disabled = true
-
       this.$validator.validate().then(valid => {
-        if (!valid) {
-          e.target.disabled = false
-          return
-        }
-
-        this.$store.dispatch('login', this.loginForm)
+        if (valid) this.$store.dispatch('login', this.loginForm)
       })
     },
     getError (name) {
