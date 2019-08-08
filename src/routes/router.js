@@ -30,6 +30,11 @@ router.beforeEach((to, from, next) => {
     if (!store.getters.isLoggedIn) return router.push('/login')
   }
 
+  // if user isn't admin, redirect him to main dashboard
+  if (to.matched.some(record => record.meta.adminOnly)) {
+    if (store.state.user.permissionLevel !== 'ADMIN') return router.push('/dashboard')
+  }
+
   next()
 })
 
