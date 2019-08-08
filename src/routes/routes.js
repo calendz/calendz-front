@@ -63,7 +63,7 @@ const dashboardPages = {
     },
     {
       path: 'calendar/search',
-      name: 'Emploi du temps',
+      name: 'Emploi du temps - Recherche',
       component: CalendarSearch,
       meta: {
         title: 'Dashboard - calendz'
@@ -187,8 +187,7 @@ const authPages = {
 const routes = [
   {
     path: '/',
-    redirect: '/home',
-    name: 'Home'
+    redirect: '/home'
   },
   dashboardPages,
   authPages
