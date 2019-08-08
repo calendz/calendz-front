@@ -8,6 +8,5 @@ export default new Vuex.Store({
   modules: {
     user: UserModule
   },
-  // TODO: _must_ be false in production
-  strict: true
+  strict: process.env.NODE_ENV !== 'production'
 })
