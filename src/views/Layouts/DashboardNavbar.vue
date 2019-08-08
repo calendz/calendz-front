@@ -199,7 +199,7 @@
                 src="img/theme/default-pp.svg">
             </span>
             <div class="media-body ml-2 d-none d-lg-block">
-              <span class="mb-0 text-sm  font-weight-bold">John Snow</span>
+              <span class="mb-0 text-sm font-weight-bold">{{ user ? user.firstname + ' ' + user.lastname : 'Votre profil' }}</span>
             </div>
           </div>
         </a>
@@ -207,7 +207,7 @@
           :class="showProfileDropdown ? 'show' : ''"
           class="dropdown-menu dropdown-menu-right">
           <div class="dropdown-header noti-title">
-            <h6 class="text-overflow m-0">Bienvenue !</h6>
+            <h6 class="text-overflow m-0">{{ user ? `Hello ${user.firstname} ${user.lastname}` : '' }} !</h6>
           </div>
           <router-link
             to="/profile"
@@ -235,6 +235,7 @@
 </template>
 <script>
 import swal from 'sweetalert2'
+import { mapState } from 'vuex'
 import { CollapseTransition } from 'vue2-transitions'
 import { BaseNav, Modal } from '@/components'
 
@@ -253,6 +254,9 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      user: state => state.user
+    }),
     routeName () {
       const { name } = this.$route
       return this.capitalizeFirstLetter(name)
