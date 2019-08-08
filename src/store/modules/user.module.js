@@ -4,7 +4,7 @@ import router from '../routes/router'
 import UserService from '../services/user.service'
 
 const userModule = {
-// ==================================
+  // ==================================
   // == State
   // ==================================
   state: {
