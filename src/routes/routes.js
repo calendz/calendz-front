@@ -27,6 +27,10 @@ const CalendarSearch = () => import(/* webpackChunkName: "page" */ '@/views/Page
 const Homeworks = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Homeworks.vue')
 const Profile = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Profile.vue')
 const Settings = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Settings.vue')
+
+const Statistics = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Admin/Statistics.vue')
+const UserManagement = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Admin/UserManagement.vue')
+
 const Blog = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Blog.vue')
 const Features = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Features.vue')
 const BugReport = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/BugReport.vue')
@@ -93,6 +97,30 @@ const dashboardPages = {
         title: 'Dashboard - calendz'
       }
     },
+    // =================================
+    // == administration tab
+    // =================================
+    {
+      path: 'stats',
+      name: 'Statistiques',
+      component: Statistics,
+      meta: {
+        title: 'Dashboard - calendz',
+        adminOnly: true
+      }
+    },
+    {
+      path: 'user-management',
+      name: 'Gestion des utilisateurs',
+      component: UserManagement,
+      meta: {
+        title: 'Dashboard - calendz',
+        adminOnly: true
+      }
+    },
+    // =================================
+    // == documentation tab
+    // =================================
     {
       path: 'blog',
       name: 'Blog',

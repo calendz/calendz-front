@@ -58,6 +58,31 @@
         </ul>
       </template>
 
+      <template
+        v-if="user && user.permissionLevel === 'ADMIN'"
+        slot="links-after">
+        <hr class="my-3">
+        <h6 class="navbar-heading p-0 text-muted">Admin</h6>
+
+        <ul class="navbar-nav mb-md-3">
+          <!-- statistics -->
+          <sidebar-item
+            :link="{
+              name: 'Statistiques',
+              icon: 'fas fa-chart-line text-info',
+              path: '/stats'
+          }"/>
+
+          <!-- user-management -->
+          <sidebar-item
+            :link="{
+              name: 'Gestion des utilisateurs',
+              icon: 'fas fa-users-cog text-primary',
+              path: '/user-management'
+          }"/>
+        </ul>
+      </template>
+
       <template slot="links-after">
         <hr class="my-3">
         <h6 class="navbar-heading p-0 text-muted">Documentation</h6>
@@ -114,6 +139,7 @@ import DashboardNavbar from './DashboardNavbar.vue'
 import ContentFooter from './ContentFooter.vue'
 import DashboardContent from './Content.vue'
 import { FadeTransition } from 'vue2-transitions'
+import { mapState } from 'vuex'
 
 function hasElement (className) {
   return document.getElementsByClassName(className).length > 0
@@ -136,6 +162,11 @@ export default {
     ContentFooter,
     DashboardContent,
     FadeTransition
+  },
+  computed: {
+    ...mapState({
+      user: state => state.user
+    })
   },
   created () {
     // checks if user is still logged in
