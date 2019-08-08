@@ -62,11 +62,12 @@
                 <base-checkbox v-model="loginForm.rememberMe">Se souvenir de moi</base-checkbox>
 
                 <api-errors
-                  :single-error="apiError"
+                  :single-error="loginError"
                   :alert-classes="'mt-4 py-3 mb-1'"/>
 
                 <div class="text-center">
                   <base-button
+                    :disabled="loggingIn"
                     type="primary"
                     native-type="submit"
                     size="lg"
@@ -93,14 +94,12 @@
   </div>
 </template>
 <script>
-import swal from 'sweetalert2'
-import { UserService } from '../../../services/user.service'
+import { mapState } from 'vuex'
 
 export default {
   data () {
     return {
       tries: 0,
-      apiError: '',
       loginForm: {
         email: '',
         password: '',
@@ -108,11 +107,16 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState({
+      loginError: state => state.status.reason,
+      loggingIn: state => state.status.isLoggingIn
+    })
+  },
   methods: {
     handleSubmit (e) {
       // disable le bouton login
       e.target.disabled = true
-      this.apiError = ''
 
       this.$validator.validate().then(valid => {
         if (!valid) {
@@ -120,31 +124,7 @@ export default {
           return
         }
 
-        UserService.login(this.loginForm).then(() => {
-          this.$notify({ type: 'success', message: 'Vous êtes désormais connecté.' })
-          this.$router.push('/dashboard')
-        }).catch((err) => {
-          this.apiError = err.response.data.message || err.message
-          e.target.disabled = false
-
-          this.tries++
-          if (this.tries >= 3) {
-            swal({
-              type: 'question',
-              title: `Mot de passe oublié ?`,
-              text: `Pas de panique, indiquez votre adresse mail et nous vous enverrons un lien afin de réinitialiser votre mot de passe.`,
-              buttonsStyling: false,
-              focusConfirm: true,
-              confirmButtonText: 'Réinitialiser',
-              confirmButtonClass: 'btn btn-success btn-fill',
-              showCancelButton: true,
-              cancelButtonText: 'Annuler',
-              cancelButtonClass: 'btn btn-secondary btn-fill'
-            }).then((result) => {
-              if (result.value) this.$router.push('/password-reset')
-            })
-          }
-        })
+        this.$store.dispatch('login', this.loginForm)
       })
     },
     getError (name) {
