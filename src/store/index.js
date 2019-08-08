@@ -125,7 +125,7 @@ export default new Vuex.Store({
               cancelButtonText: 'Annuler',
               cancelButtonClass: 'btn btn-secondary btn-fill'
             }).then((result) => {
-              if (result.value) this.$router.push('/password-reset')
+              if (result.value) router.push('/password-reset')
             })
           })
     },

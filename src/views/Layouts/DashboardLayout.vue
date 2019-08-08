@@ -138,9 +138,6 @@ export default {
     FadeTransition
   },
   created () {
-    // if user isn't connected, redirect him to login page
-    if (!this.$store.getters.isLoggedIn) return this.$router.push('/login')
-
     // checks if user is still logged in
     this.$store.dispatch('verify')
   },

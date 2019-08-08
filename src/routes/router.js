@@ -25,6 +25,11 @@ router.beforeEach((to, from, next) => {
     if (store.getters.isLoggedIn) return router.push('/dashboard')
   }
 
+  // if user isn't connected, redirect him to login
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!store.getters.isLoggedIn) return router.push('/login')
+  }
+
   next()
 })
 

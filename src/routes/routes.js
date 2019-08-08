@@ -41,6 +41,9 @@ const dashboardPages = {
   component: DashboardLayout,
   redirect: '/dashboard',
   name: 'Dashboard Layout',
+  meta: {
+    requiresAuth: true
+  },
   children: [
     {
       path: 'dashboard',
