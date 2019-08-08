@@ -138,12 +138,13 @@
                 </div>
 
                 <api-errors
-                  :multiple-errors="apiErrors"
+                  :multiple-errors="registerErrors"
                   :alert-classes="'py-2 mb-1'"
                   dismissible/>
 
                 <div class="text-center">
                   <base-button
+                    :disabled="registering"
                     type="primary"
                     native-type="submit"
                     size="lg"
@@ -171,14 +172,13 @@
 </template>
 <script>
 import swal from 'sweetalert2'
-import { UserService } from '../../../services/user.service'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Register',
   data () {
     return {
       triedSubmit: false,
-      apiErrors: [],
       registerForm: {
         firstname: '',
         lastname: '',
@@ -190,29 +190,21 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState({
+      registerErrors: state => state.status.reason,
+      registering: state => state.status.isRegistering
+    })
+  },
   methods: {
     handleSubmit (e) {
-      // disable le bouton register
-      e.target.disabled = true
-      this.apiErrors = []
-
       // vérification validation des champs
       this.$validator.validate().then(valid => {
         if (!this.registerForm.agree) {
           this.triedSubmit = true
-          e.target.disabled = false
         } else if (valid) {
           // envoie de la requête inscription
-          UserService.register(this.registerForm).then((res) => {
-            this.$notify({ type: 'success', timeout: 10000, message: 'Votre compte a bien été créé !' })
-            this.$notify({ type: 'info', timeout: 10000, message: 'Veuillez <b>vérifier vos mails</b> afin de confirmer votre adresse avant de vous connecter.' })
-            this.$router.push('/login')
-          // on catch les erreurs pour les afficher
-          }).catch((err) => {
-            e.target.disabled = false
-            if (err.response.data.errors) this.apiErrors = err.response.data.errors
-            else this.apiErrors.push(err.response.data.message)
-          })
+          this.$store.dispatch('register', this.registerForm)
         }
       })
     },

@@ -19,6 +19,21 @@ export default new Vuex.Store({
   // == Mutations
   // ==================================
   mutations: {
+    REGSITER_REQUSET: (state) => {
+      state.user = null
+      state.status = { isRegistering: true }
+    },
+
+    REGISTER_SUCCESS: (state) => {
+      state.user = null
+      state.status = {}
+    },
+
+    REGISTER_FAILURE: (state, reason) => {
+      state.user = null
+      state.status = { reason }
+    },
+
     LOGIN_REQUEST: (state) => {
       state.user = null
       state.status = { isLoggingIn: true }
@@ -69,6 +84,23 @@ export default new Vuex.Store({
   // == Actions
   // ==================================
   actions: {
+    register: ({ commit }, { firstname, lastname, grade, email, password, password2, agree }) => {
+      commit('REGISTER_REQUEST')
+      UserService.register(firstname, lastname, grade, email, password, password2, agree)
+        .then(
+          res => {
+            commit('REGISTER_SUCCESS')
+            Vue.prototype.$notify({ type: 'success', timeout: 10000, message: 'Votre compte a bien été créé !' })
+            Vue.prototype.$notify({ type: 'info', timeout: 10000, message: 'Veuillez <b>vérifier vos mails</b> afin de confirmer votre adresse avant de vous connecter.' })
+            router.push('/login')
+          },
+          err => {
+            let errors = []
+            err.data.errors ? errors = err.data.errors : errors.push(err.data.message)
+            commit('REGISTER_FAILURE', errors)
+          })
+    },
+
     login: ({ commit }, { email, password, rememberMe }) => {
       commit('LOGIN_REQUEST')
       UserService.login(email, password, rememberMe)
