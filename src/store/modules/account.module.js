@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import swal from 'sweetalert2'
-import router from '../routes/router'
-import UserService from '../services/user.service'
+import router from '../../routes/router'
+import UserService from '../../services/user.service'
 
-const userModule = {
+const accountModule = {
+  namespaced: true,
   // ==================================
   // == State
   // ==================================
@@ -16,7 +17,7 @@ const userModule = {
   // == Mutations
   // ==================================
   mutations: {
-    REGSITER_REQUSET: (state) => {
+    REGISTER_REQUEST: (state) => {
       state.user = null
       state.status = { isRegistering: true }
     },
@@ -170,4 +171,4 @@ const userModule = {
   }
 }
 
-export default userModule
+export default accountModule

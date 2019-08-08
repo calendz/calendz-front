@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import UserModule from './modules/user.module'
+import AccountModule from './modules/account.module'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
-    user: UserModule
+    account: AccountModule
   },
   strict: process.env.NODE_ENV !== 'production'
 })

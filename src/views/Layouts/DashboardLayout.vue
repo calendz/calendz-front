@@ -165,12 +165,12 @@ export default {
   },
   computed: {
     ...mapState({
-      user: state => state.user
+      user: state => state.account.user
     })
   },
   created () {
     // checks if user is still logged in
-    this.$store.dispatch('verify')
+    this.$store.dispatch('account/verify')
   },
   methods: {
     initScrollbar () {

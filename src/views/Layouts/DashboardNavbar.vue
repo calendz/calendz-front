@@ -255,7 +255,7 @@ export default {
   },
   computed: {
     ...mapState({
-      user: state => state.user
+      user: state => state.account.user
     }),
     routeName () {
       const { name } = this.$route
@@ -296,7 +296,7 @@ export default {
         confirmButtonText: 'Oui !'
       }).then((result) => {
         if (result.value) {
-          this.$store.dispatch('logout')
+          this.$store.dispatch('account/logout')
           this.$router.push('/login')
           swal.fire({
             title: 'Vous avez été déconnecté',

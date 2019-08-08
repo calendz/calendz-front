@@ -22,17 +22,17 @@ router.beforeEach((to, from, next) => {
 
   // if user is connected, redirect him to dashboard
   if (to.matched.some(record => record.meta.redirectToDashboardIfConnected)) {
-    if (store.getters.isLoggedIn) return router.push('/dashboard')
+    if (store.getters['account/isLoggedIn']) return router.push('/dashboard')
   }
 
   // if user isn't connected, redirect him to login
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!store.getters.isLoggedIn) return router.push('/login')
+    if (!store.getters['account/isLoggedIn']) return router.push('/login')
   }
 
   // if user isn't admin, redirect him to main dashboard
   if (to.matched.some(record => record.meta.adminOnly)) {
-    if (store.state.user.permissionLevel !== 'ADMIN') return router.push('/dashboard')
+    if (store.state.account.user.permissionLevel !== 'ADMIN') return router.push('/dashboard')
   }
 
   next()

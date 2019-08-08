@@ -109,14 +109,14 @@ export default {
   },
   computed: {
     ...mapState({
-      loginError: state => state.status.reason,
-      loggingIn: state => state.status.isLoggingIn
+      loginError: state => state.account.status.reason,
+      loggingIn: state => state.account.status.isLoggingIn
     })
   },
   methods: {
     handleSubmit (e) {
       this.$validator.validate().then(valid => {
-        if (valid) this.$store.dispatch('login', this.loginForm)
+        if (valid) this.$store.dispatch('account/login', this.loginForm)
       })
     },
     getError (name) {

@@ -192,8 +192,8 @@ export default {
   },
   computed: {
     ...mapState({
-      registerErrors: state => state.status.reason,
-      registering: state => state.status.isRegistering
+      registerErrors: state => state.account.status.reason,
+      registering: state => state.account.status.isRegistering
     })
   },
   methods: {
@@ -204,7 +204,7 @@ export default {
           this.triedSubmit = true
         } else if (valid) {
           // envoie de la requête inscription
-          this.$store.dispatch('register', this.registerForm)
+          this.$store.dispatch('account/register', this.registerForm)
         }
       })
     },
