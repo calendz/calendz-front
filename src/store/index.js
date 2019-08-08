@@ -20,18 +20,23 @@ export default new Vuex.Store({
   // ==================================
   mutations: {
     LOGIN_REQUEST: (state) => {
-      state.user = {}
+      state.user = null
       state.status = { isLoggingIn: true }
     },
 
     LOGIN_SUCCESS: (state, user) => {
       state.user = user
-      state.status = { isLoggedIn: true }
+      state.status = {}
     },
 
     LOGIN_FAILURE: (state, reason) => {
-      state.user = {}
+      state.user = null
       state.status = { reason }
+    },
+
+    LOGOUT: (state) => {
+      state.user = null
+      state.status = {}
     }
   },
 
@@ -43,8 +48,9 @@ export default new Vuex.Store({
       commit('LOGIN_REQUEST')
       UserService.login(email, password, rememberMe)
         .then(
-          user => {
-            commit('LOGIN_SUCCESS', user)
+          res => {
+            localStorage.setItem('user', JSON.stringify(res.user))
+            commit('LOGIN_SUCCESS', res.user)
             Vue.prototype.$notify({ type: 'success', message: 'Vous êtes désormais connecté.' })
             router.push('/dashboard')
           },
@@ -65,14 +71,23 @@ export default new Vuex.Store({
               if (result.value) this.$router.push('/password-reset')
             })
           })
+    },
+
+    // logs the user out
+    logout: ({ commit }) => {
+      localStorage.removeItem('user')
+      commit('LOGOUT')
     }
   },
 
   // ==================================
   // == Getters
   // ==================================
-  // getters: {
-  // }
+  getters: {
+    isLoggedIn: state => {
+      return !!state.user
+    }
+  },
 
   // TODO: _must_ be false in production
   strict: true

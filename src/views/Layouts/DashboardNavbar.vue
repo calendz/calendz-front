@@ -235,7 +235,6 @@
 </template>
 <script>
 import swal from 'sweetalert2'
-import UserService from '../../services/user.service'
 import { CollapseTransition } from 'vue2-transitions'
 import { BaseNav, Modal } from '@/components'
 
@@ -293,7 +292,7 @@ export default {
         confirmButtonText: 'Oui !'
       }).then((result) => {
         if (result.value) {
-          UserService.removeUser()
+          this.$store.dispatch('logout')
           this.$router.push('/login')
           swal.fire({
             title: 'Vous avez été déconnecté',

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import routes from './routes'
-import { UserService } from '../services/user.service'
+import store from '../store/index'
 
 Vue.use(VueRouter)
 
@@ -20,10 +20,9 @@ router.beforeEach((to, from, next) => {
   // sets the page's title
   document.title = to.meta.title || 'calendz'
 
-  // if user is connected, redirect to dashboard
+  // if user is connected, redirect him to dashboard
   if (to.matched.some(record => record.meta.redirectToDashboardIfConnected)) {
-    const user = UserService.getUser()
-    if (user) return next('/dashboard')
+    if (store.getters.isLoggedIn) return router.push('/dashboard')
   }
 
   next()
