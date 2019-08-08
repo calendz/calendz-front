@@ -142,7 +142,7 @@ export default {
     if (!this.$store.getters.isLoggedIn) return this.$router.push('/login')
 
     // checks if user is still logged in
-    // UserService.verify()
+    this.$store.dispatch('verify')
   },
   methods: {
     initScrollbar () {
