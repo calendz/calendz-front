@@ -106,8 +106,6 @@
   </div>
 </template>
 <script>
-import { UserService } from '../../services/user.service'
-
 /* eslint-disable no-new */
 import PerfectScrollbar from 'perfect-scrollbar'
 import 'perfect-scrollbar/css/perfect-scrollbar.css'
@@ -140,11 +138,11 @@ export default {
     FadeTransition
   },
   created () {
-    const user = UserService.getUser()
-    if (!user) return this.$router.push('/login')
+    // if user isn't connected, redirect him to login page
+    if (!this.$store.getters.isLoggedIn) return this.$router.push('/login')
 
     // checks if user is still logged in
-    UserService.verify()
+    this.$store.dispatch('verify')
   },
   methods: {
     initScrollbar () {
