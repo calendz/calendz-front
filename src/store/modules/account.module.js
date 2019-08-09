@@ -56,8 +56,9 @@ const accountModule = {
       state.status = { isVerifying: true }
     },
 
-    VERIFY_SUCCESS: (state) => {
+    VERIFY_SUCCESS: (state, user) => {
       state.status = {}
+      state.user = user
     },
 
     VERIFY_FAILURE: (state, reason) => {
@@ -68,8 +69,9 @@ const accountModule = {
       state.status = { isRefreshing: true }
     },
 
-    REFRESH_SUCCESS: (state) => {
+    REFRESH_SUCCESS: (state, user) => {
       state.status = {}
+      state.user = user
     },
 
     REFRESH_FAILURE: (state, reason) => {
@@ -139,7 +141,10 @@ const accountModule = {
       commit('VERIFY_REQUEST')
       UserService.verify()
         .then(
-          res => commit('VERIFY_SUCCESS'),
+          res => {
+            localStorage.setItem('user', JSON.stringify(res.user))
+            commit('VERIFY_SUCCESS', res.user)
+          },
           err => {
             commit('VERIFY_FAILURE')
             if (err.status === 401) dispatch('refresh')
@@ -151,7 +156,10 @@ const accountModule = {
       commit('REFRESH_REQUEST')
       UserService.refresh()
         .then(
-          res => commit('REFRESH_SUCCESS'),
+          res => {
+            localStorage.setItem('user', JSON.stringify(res.user))
+            commit('REFRESH_SUCCESS', res.user)
+          },
           err => {
             commit('REFRESH_FAILURE', err.data.message)
             dispatch('logout')
