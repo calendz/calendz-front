@@ -95,6 +95,8 @@
 </template>
 <script>
 import { mapState } from 'vuex'
+import swal from 'sweetalert2'
+import router from '../../../routes/router'
 
 export default {
   data () {
@@ -116,7 +118,27 @@ export default {
   methods: {
     handleSubmit (e) {
       this.$validator.validate().then(valid => {
-        if (valid) this.$store.dispatch('account/login', this.loginForm)
+        if (valid) {
+          this.tries++
+          this.$store.dispatch('account/login', this.loginForm)
+        }
+
+        if (this.tries >= 3) {
+          swal.fire({
+            type: 'question',
+            title: `Mot de passe oublié ?`,
+            text: `Pas de panique, indiquez votre adresse mail et nous vous enverrons un lien afin de réinitialiser votre mot de passe.`,
+            buttonsStyling: false,
+            focusConfirm: true,
+            confirmButtonText: 'Réinitialiser',
+            confirmButtonClass: 'btn btn-success btn-fill',
+            showCancelButton: true,
+            cancelButtonText: 'Annuler',
+            cancelButtonClass: 'btn btn-secondary btn-fill'
+          }).then((result) => {
+            if (result.value) router.push('/password-reset')
+          })
+        }
       })
     },
     getError (name) {

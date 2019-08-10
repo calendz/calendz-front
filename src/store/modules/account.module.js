@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import swal from 'sweetalert2'
 import router from '../../routes/router'
 import UserService from '../../services/user.service'
 
@@ -113,20 +112,6 @@ const accountModule = {
           },
           err => {
             commit('LOGIN_FAILURE', err.data.message)
-            swal.fire({
-              type: 'question',
-              title: `Mot de passe oublié ?`,
-              text: `Pas de panique, indiquez votre adresse mail et nous vous enverrons un lien afin de réinitialiser votre mot de passe.`,
-              buttonsStyling: false,
-              focusConfirm: true,
-              confirmButtonText: 'Réinitialiser',
-              confirmButtonClass: 'btn btn-success btn-fill',
-              showCancelButton: true,
-              cancelButtonText: 'Annuler',
-              cancelButtonClass: 'btn btn-secondary btn-fill'
-            }).then((result) => {
-              if (result.value) router.push('/password-reset')
-            })
           })
     },
 
