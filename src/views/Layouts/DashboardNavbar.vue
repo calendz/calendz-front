@@ -65,7 +65,14 @@
         :menu-classes="'dropdown-menu dropdown-menu-xl py-0 overflow-hidden'"
         class="nav-item">
         <div class="px-3 py-3">
-          <h6 class="text-sm text-muted m-0 text-striked">Vous avez <strong class="text-primary">{{ notReadNotifications.length }}</strong> {{ notReadNotifications.length > 1 ? 'notifications non-lues' : 'notification non-lue' }}.</h6>
+          <h6 class="text-sm text-muted text-center m-0">
+            <span v-if="notReadNotifications.length > 0">
+              Vous avez <strong class="text-primary">{{ notReadNotifications.length }}</strong> {{ notReadNotifications.length > 1 ? 'notifications non-lues' : 'notification non-lue' }}.
+            </span>
+            <span v-else>
+              Vous n'avez aucune notification non-lue !
+            </span>
+          </h6>
         </div>
 
         <div
@@ -73,8 +80,8 @@
           :key="index"
           class="list-group list-group-flush">
           <a
-            href="#!"
-            class="list-group-item list-group-item-action">
+            class="list-group-item list-group-item-action"
+            @click.prevent="readNotification(notif)">
             <div class="row align-items-center">
               <div class="col-auto">
                 <i
@@ -272,8 +279,7 @@ export default {
     }
   },
   mounted () {
-    const userId = this.user._id
-    ApiService.get('/notifications/' + userId)
+    ApiService.get(`/notifications/${this.user._id}`)
       .then(res => {
         this.allNotifications = res.data.notifications
       })
@@ -329,6 +335,13 @@ export default {
       if (seconds > 60) return Math.floor(seconds / 60) + 'm'
       if (seconds > 1) return seconds + 's'
       return '?? secondes'
+    },
+    readNotification (notification) {
+      ApiService.patch(`/notifications/${this.user._id}/read/${notification._id}`)
+        .then(res => {
+          const index = this.allNotifications.findIndex(notif => notif._id === notification._id)
+          this.allNotifications[index].isRead = true
+        })
     }
   }
 }
