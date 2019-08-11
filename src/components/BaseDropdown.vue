@@ -19,6 +19,9 @@
           :is-open="isOpen"
           name="title">
           <i :class="icon"/> {{ title }}
+          <span
+            v-if="pillAmount > 0"
+            class="badge badge-sm badge-pill badge-danger badge-notification">{{ pillAmount }}</span>
         </slot>
       </component>
     </slot>
@@ -82,6 +85,11 @@ export default {
       type: Boolean,
       description: 'Whether dropdown has arrow icon shown',
       default: true
+    },
+    pillAmount: {
+      type: Number,
+      description: 'Number to display in the badge-pill span',
+      default: 0
     }
   },
   data () {
@@ -105,5 +113,16 @@ export default {
 .dropdown {
   cursor: pointer;
   user-select: none;
+}
+
+.badge-notification {
+  position: absolute;
+  margin-top: -8px;
+  margin-left: -10px;
+  font-size: 9.5px;
+  padding-right: 0.6em;
+  padding-left: 0.6em;
+  padding-top: 0.4em;
+  padding-bottom: 0.4em;
 }
 </style>

@@ -63,37 +63,46 @@
         :title-classes="'nav-link dropdown-toggle'"
         :menu-on-right="true"
         :menu-classes="'dropdown-menu dropdown-menu-xl py-0 overflow-hidden'"
+        :pill-amount="notReadNotifications.length"
         class="nav-item">
         <div class="px-3 py-3">
-          <h6 class="text-sm text-muted m-0 text-striked"><del>Vous avez <strong class="text-primary">1</strong> notification non-lue.</del></h6>
+          <h6 class="text-sm text-muted text-center m-0">
+            <span v-if="notReadNotifications.length > 0">
+              Vous avez <strong class="text-primary">{{ notReadNotifications.length }}</strong> {{ notReadNotifications.length > 1 ? 'notifications non-lues' : 'notification non-lue' }}.
+            </span>
+            <span v-else>
+              Vous n'avez aucune notification non-lue !
+            </span>
+          </h6>
         </div>
 
-        <div class="list-group list-group-flush">
+        <div
+          v-for="(notif, index) in notReadNotifications.slice(0, 4)"
+          :key="index"
+          class="list-group list-group-flush">
           <a
-            href="#!"
-            class="list-group-item list-group-item-action">
+            class="list-group-item list-group-item-action"
+            @click.prevent="readNotification(notif)">
             <div class="row align-items-center">
               <div class="col-auto">
-                <img
-                  alt="Avatar placeholder"
-                  src="img/theme/default-pp.svg"
-                  class="avatar rounded-circle">
+                <i
+                  :class="notif.icon"
+                  class="avatar rounded-circle"/>
               </div>
               <div class="col ml--2">
                 <div class="d-flex justify-content-between align-items-center">
                   <div>
-                    <h4 class="mb-0 text-sm">À venir !</h4>
+                    <h4 class="mb-0 text-sm">{{ notif.title }}</h4>
                   </div>
                   <div class="text-right text-muted">
-                    <small>soon tm</small>
+                    <small>il y a {{ formatDate(notif.timestamp) }}</small>
                   </div>
                 </div>
-                <p class="text-sm mb-0">Cette fonctionnalité n'est pas encore disponible.</p>
+                <p class="text-sm mb-0">{{ notif.message }}</p>
               </div>
             </div>
           </a>
         </div>
-
         <a
           href="#!"
           class="dropdown-item text-center text-primary font-weight-bold py-3"><del>Voir tout</del></a>
@@ -238,6 +247,7 @@ import swal from 'sweetalert2'
 import { mapState } from 'vuex'
 import { CollapseTransition } from 'vue2-transitions'
 import { BaseNav, Modal } from '@/components'
+import ApiService from '../../services/api.service'
 
 export default {
   components: {
@@ -250,13 +260,17 @@ export default {
       showProfileDropdown: false,
       showMenu: false,
       searchModalVisible: false,
-      searchQuery: ''
+      searchQuery: '',
+      allNotifications: []
     }
   },
   computed: {
     ...mapState({
       user: state => state.account.user
     }),
+    notReadNotifications () {
+      return this.allNotifications.filter(notif => notif.isRead === false)
+    },
     routeName () {
       const { name } = this.$route
       return this.capitalizeFirstLetter(name)
@@ -264,6 +278,12 @@ export default {
     isRTL () {
       return this.$rtl.isRTL
     }
+  },
+  mounted () {
+    ApiService.get(`/notifications/${this.user._id}`)
+      .then(res => {
+        this.allNotifications = res.data.notifications
+      })
   },
   methods: {
     capitalizeFirstLetter (string) {
@@ -307,6 +327,22 @@ export default {
           })
         }
       })
+    },
+    formatDate (timestamp) {
+      const seconds = Math.floor(new Date().getTime() / 1000 - timestamp / 1000)
+      if (seconds > 2 * 24 * 3600) return Math.floor(seconds / 3600 / 24) + 'j'
+      if (seconds > 24 * 3600) return 'hier'
+      if (seconds > 3600) return Math.floor(seconds / 3600) + 'h'
+      if (seconds > 60) return Math.floor(seconds / 60) + 'm'
+      if (seconds > 1) return seconds + 's'
+      return '?? secondes'
+    },
+    readNotification (notification) {
+      ApiService.patch(`/notifications/${this.user._id}/read/${notification._id}`)
+        .then(res => {
+          const index = this.allNotifications.findIndex(notif => notif._id === notification._id)
+          this.allNotifications[index].isRead = true
+        })
     }
   }
 }
