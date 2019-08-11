@@ -63,6 +63,7 @@
         :title-classes="'nav-link dropdown-toggle'"
         :menu-on-right="true"
         :menu-classes="'dropdown-menu dropdown-menu-xl py-0 overflow-hidden'"
+        :pill-amount="notReadNotifications.length"
         class="nav-item">
         <div class="px-3 py-3">
           <h6 class="text-sm text-muted text-center m-0">
