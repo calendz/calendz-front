@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import router from '../../routes/router'
 import UserService from '../../services/user.service'
+import ApiService from '../../services/api.service'
 
 const accountModule = {
   namespaced: true,
@@ -46,9 +47,9 @@ const accountModule = {
       state.status = { reason }
     },
 
-    LOGOUT: (state) => {
+    LOGOUT: (state, reason) => {
       state.user = null
-      state.status = {}
+      state.status = { reason }
     },
 
     VERIFY_REQUEST: (state) => {
@@ -116,41 +117,14 @@ const accountModule = {
     },
 
     // logs the user out
-    logout: ({ commit }) => {
+    logout: ({ commit }, { reason }) => {
+      if (reason) {
+        Vue.prototype.$notify({ type: 'danger', message: `${reason}.` })
+      }
       localStorage.removeItem('user')
-      commit('LOGOUT')
-    },
-
-    // checks if user's accessToken is still valid
-    verify: ({ dispatch, commit }) => {
-      commit('VERIFY_REQUEST')
-      UserService.verify()
-        .then(
-          res => {
-            localStorage.setItem('user', JSON.stringify(res.user))
-            commit('VERIFY_SUCCESS', res.user)
-          },
-          err => {
-            commit('VERIFY_FAILURE')
-            if (err.status === 401) dispatch('refresh')
-          })
-    },
-
-    // tries to refresh user accessToken
-    refresh: ({ dispatch, commit }) => {
-      commit('REFRESH_REQUEST')
-      UserService.refresh()
-        .then(
-          res => {
-            localStorage.setItem('user', JSON.stringify(res.user))
-            commit('REFRESH_SUCCESS', res.user)
-          },
-          err => {
-            commit('REFRESH_FAILURE', err.data.message)
-            dispatch('logout')
-            Vue.prototype.$notify({ type: 'danger', message: `${err.data.message}.` })
-            router.push('/login')
-          })
+      commit('LOGOUT', reason)
+      ApiService.post('/auth/logout')
+      router.push('/login')
     }
   },
 

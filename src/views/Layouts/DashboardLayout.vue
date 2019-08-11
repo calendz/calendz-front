@@ -168,10 +168,6 @@ export default {
       user: state => state.account.user
     })
   },
-  created () {
-    // checks if user is still logged in
-    this.$store.dispatch('account/verify')
-  },
   methods: {
     initScrollbar () {
       let docClasses = document.body.classList

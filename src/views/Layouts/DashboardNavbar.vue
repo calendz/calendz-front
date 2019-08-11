@@ -316,7 +316,7 @@ export default {
         confirmButtonText: 'Oui !'
       }).then((result) => {
         if (result.value) {
-          this.$store.dispatch('account/logout')
+          this.$store.dispatch('account/logout', {})
           this.$router.push('/login')
           swal.fire({
             title: 'Vous avez été déconnecté',
