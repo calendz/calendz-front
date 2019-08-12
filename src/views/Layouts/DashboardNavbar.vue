@@ -173,8 +173,8 @@
 
           <!-- Calendrier officiel -->
           <a
+            :href="'https://edtmobiliteng.wigorservices.net//WebPsDyn.aspx?action=posEDTBEECOME&serverid=C&Tel=' + getFirstnameAndLastname(user.email) +'&date=' + getCurrentDate()"
             target="_blank"
-            href="https://edtmobiliteng.wigorservices.net//WebPsDyn.aspx?action=posEDTBEECOME&serverid=C&Tel=arthur.dufour&date=06/17/2019"
             class="col-4 shortcut-item">
             <span class="shortcut-media avatar rounded-circle bg-gradient-yellow">
               <i class="ni ni-calendar-grid-58"/>
@@ -343,6 +343,25 @@ export default {
           const index = this.allNotifications.findIndex(notif => notif._id === notification._id)
           this.allNotifications[index].isRead = true
         })
+    },
+    getFirstnameAndLastname (email) {
+      return email.split('@')[0]
+    },
+    getCurrentDate () {
+      let date = new Date()
+      if (date.getDay() === 0) {
+        date = this.addDays(date, 1)
+      }
+      const day = date.getDate()
+      const month = date.getMonth() + 1
+      const year = date.getFullYear()
+
+      return month + '/' + day + '/' + year
+    },
+    addDays (date, days) {
+      var result = new Date(date)
+      result.setDate(result.getDate() + days)
+      return result
     }
   }
 }
