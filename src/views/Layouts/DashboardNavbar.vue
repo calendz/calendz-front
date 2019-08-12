@@ -173,7 +173,7 @@
 
           <!-- Calendrier officiel -->
           <a
-            :href="'https://edtmobiliteng.wigorservices.net//WebPsDyn.aspx?action=posEDTBEECOME&serverid=C&Tel=' + getFirstnameAndLastname(user.email) +'&date=' + getCurrentDate()"
+            :href="`https://edtmobiliteng.wigorservices.net//WebPsDyn.aspx?action=posEDTBEECOME&serverid=C&Tel=${user.email.split('@')[0]}&date=${getDate()}`"
             target="_blank"
             class="col-4 shortcut-item">
             <span class="shortcut-media avatar rounded-circle bg-gradient-yellow">
@@ -208,7 +208,7 @@
                 src="img/theme/default-pp.svg">
             </span>
             <div class="media-body ml-2 d-none d-lg-block">
-              <span class="mb-0 text-sm font-weight-bold">{{ user ? user.firstname + ' ' + user.lastname : 'Votre profil' }}</span>
+              <span class="mb-0 text-sm font-weight-bold">{{ user.firstname }}</span>
             </div>
           </div>
         </a>
@@ -216,7 +216,7 @@
           :class="showProfileDropdown ? 'show' : ''"
           class="dropdown-menu dropdown-menu-right">
           <div class="dropdown-header noti-title">
-            <h6 class="text-overflow m-0">{{ user ? `Hello ${user.firstname} ${user.lastname}` : '' }} !</h6>
+            <h6 class="text-overflow m-0">{{ `Hello ${user.firstname} ${user.lastname}` }} !</h6>
           </div>
           <router-link
             to="/profile"
@@ -347,7 +347,7 @@ export default {
     getFirstnameAndLastname (email) {
       return email.split('@')[0]
     },
-    getCurrentDate () {
+    getDate () {
       let date = new Date()
       if (date.getDay() === 0) {
         date = this.addDays(date, 1)
