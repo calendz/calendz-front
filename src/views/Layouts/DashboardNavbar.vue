@@ -173,7 +173,7 @@
 
           <!-- Calendrier officiel -->
           <a
-            :href="`https://edtmobiliteng.wigorservices.net//WebPsDyn.aspx?action=posEDTBEECOME&serverid=C&Tel=${user.email.split('@')[0]}&date=${getDate()}`"
+            :href="`https://edtmobiliteng.wigorservices.net//WebPsDyn.aspx?action=posEDTBEECOME&serverid=C&Tel=${user ? user.email.split('@')[0] : 'error'}&date=${getDate()}`"
             target="_blank"
             class="col-4 shortcut-item">
             <span class="shortcut-media avatar rounded-circle bg-gradient-yellow">
@@ -208,7 +208,7 @@
                 src="img/theme/default-pp.svg">
             </span>
             <div class="media-body ml-2 d-none d-lg-block">
-              <span class="mb-0 text-sm font-weight-bold">{{ user.firstname }}</span>
+              <span class="mb-0 text-sm font-weight-bold">{{ user ? user.firstname : 'Prénom' }}</span>
             </div>
           </div>
         </a>
@@ -216,7 +216,7 @@
           :class="showProfileDropdown ? 'show' : ''"
           class="dropdown-menu dropdown-menu-right">
           <div class="dropdown-header noti-title">
-            <h6 class="text-overflow m-0">{{ `Hello ${user.firstname} ${user.lastname}` }} !</h6>
+            <h6 class="text-overflow m-0">{{ `Hello ${user ? user.firstname : 'Prénom'} ${user ? user.lastname : 'Nom'}` }} !</h6>
           </div>
           <router-link
             to="/profile"
@@ -282,7 +282,7 @@ export default {
   mounted () {
     ApiService.get(`/notifications/${this.user._id}`)
       .then(res => {
-        this.allNotifications = res.data.notifications
+        if (res) this.allNotifications = res.data.notifications
       })
   },
   methods: {
@@ -317,7 +317,6 @@ export default {
       }).then((result) => {
         if (result.value) {
           this.$store.dispatch('account/logout', {})
-          this.$router.push('/login')
           swal.fire({
             title: 'Vous avez été déconnecté',
             type: 'success',
