@@ -82,7 +82,7 @@
           class="list-group list-group-flush">
           <a
             class="list-group-item list-group-item-action"
-            @click.prevent="readNotification(notif)">
+            @click.prevent="$store.dispatch('notifications/read', { notifId: notif._id })">
             <div class="row align-items-center">
               <div class="col-auto">
                 <i
@@ -244,10 +244,9 @@
 </template>
 <script>
 import swal from 'sweetalert2'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import { CollapseTransition } from 'vue2-transitions'
 import { BaseNav, Modal } from '@/components'
-import ApiService from '../../services/api.service'
 
 export default {
   components: {
@@ -260,17 +259,17 @@ export default {
       showProfileDropdown: false,
       showMenu: false,
       searchModalVisible: false,
-      searchQuery: '',
-      allNotifications: []
+      searchQuery: ''
     }
   },
   computed: {
     ...mapState({
       user: state => state.account.user
     }),
-    notReadNotifications () {
-      return this.allNotifications.filter(notif => notif.isRead === false)
-    },
+    ...mapGetters({
+      allNotifications: 'notifications/all',
+      notReadNotifications: 'notifications/notRead'
+    }),
     routeName () {
       const { name } = this.$route
       return this.capitalizeFirstLetter(name)
@@ -280,10 +279,7 @@ export default {
     }
   },
   mounted () {
-    ApiService.get(`/notifications/${this.user._id}`)
-      .then(res => {
-        if (res) this.allNotifications = res.data.notifications
-      })
+    this.$store.dispatch('notifications/fetch')
   },
   methods: {
     capitalizeFirstLetter (string) {
@@ -335,13 +331,6 @@ export default {
       if (seconds > 60) return Math.floor(seconds / 60) + 'm'
       if (seconds > 1) return seconds + 's'
       return '?? secondes'
-    },
-    readNotification (notification) {
-      ApiService.patch(`/notifications/${this.user._id}/read/${notification._id}`)
-        .then(res => {
-          const index = this.allNotifications.findIndex(notif => notif._id === notification._id)
-          this.allNotifications[index].isRead = true
-        })
     },
     getFirstnameAndLastname (email) {
       return email.split('@')[0]
