@@ -63,12 +63,12 @@
         :title-classes="'nav-link dropdown-toggle'"
         :menu-on-right="true"
         :menu-classes="'dropdown-menu dropdown-menu-xl py-0 overflow-hidden'"
-        :pill-amount="notReadNotifications.length"
+        :pill-amount="notifications.length"
         class="nav-item">
         <div class="px-3 py-3">
           <h6 class="text-sm text-muted text-center m-0">
-            <span v-if="notReadNotifications.length > 0">
-              Vous avez <strong class="text-primary">{{ notReadNotifications.length }}</strong> {{ notReadNotifications.length > 1 ? 'notifications non-lues' : 'notification non-lue' }}.
+            <span v-if="notifications.length > 0">
+              Vous avez <strong class="text-primary">{{ notifications.length }}</strong> {{ notifications.length > 1 ? 'notifications non-lues' : 'notification non-lue' }}.
             </span>
             <span v-else>
               Vous n'avez aucune notification non-lue !
@@ -77,7 +77,7 @@
         </div>
 
         <div
-          v-for="(notif, index) in notReadNotifications.slice(0, 4)"
+          v-for="(notif, index) in notifications.slice(0, 4)"
           :key="index"
           class="list-group list-group-flush">
           <a
@@ -89,16 +89,23 @@
                   :class="notif.icon"
                   class="avatar rounded-circle"/>
               </div>
-              <div class="col ml--2">
-                <div class="d-flex justify-content-between align-items-center">
-                  <div>
+              <div class="col container ml--2">
+
+                <div class="row">
+                  <div class="col">
                     <h4 class="mb-0 text-sm">{{ notif.title }}</h4>
                   </div>
-                  <div class="text-right text-muted">
-                    <small>il y a {{ formatDate(notif.timestamp) }}</small>
+                  <div class="col-auto text-right">
+                    <small class="text-muted">
+                      <i class="fas fa-clock mr-1"/>
+                      {{ formatDate(notif.timestamp) }}
+                    </small>
                   </div>
                 </div>
-                <p class="text-sm mb-0">{{ notif.message }}</p>
+
+                <div class="row mt-1 px-3">
+                  <p class="text-sm mb-0">{{ notif.message }}</p>
+                </div>
               </div>
             </div>
           </a>
@@ -267,8 +274,7 @@ export default {
       user: state => state.account.user
     }),
     ...mapGetters({
-      allNotifications: 'notifications/all',
-      notReadNotifications: 'notifications/notRead'
+      notifications: 'notifications/notRead'
     }),
     routeName () {
       const { name } = this.$route
