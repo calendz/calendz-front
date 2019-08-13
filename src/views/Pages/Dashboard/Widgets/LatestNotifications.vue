@@ -27,7 +27,7 @@
         data-timeline-axis-style="dashed">
 
         <div
-          v-for="(notif, index) in notifications.slice(0, 2)"
+          v-for="(notif, index) in notifications.slice(0, 3)"
           :key="index"
           class="timeline-block my-0">
           <span
@@ -35,7 +35,7 @@
             class="timeline-step">
             <i :class="notif.icon"/>
           </span>
-          <div class="timeline-content">
+          <div class="timeline-content container">
 
             <div class="row">
               <div class="col px-1">
@@ -57,7 +57,7 @@
                 </small>
               </div>
 
-              <div class="row py-2 pl-3 pr-4">
+              <div class="row w-100 py-2 pl-3 pr-4">
                 <p class="text-sm  font-weigth-light">{{ notif.message }}</p>
               </div>
             </div>
