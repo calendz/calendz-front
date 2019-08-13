@@ -53,7 +53,7 @@ const notificationsModule = {
             commit('NOTIF_SUCCESS', res.notifications)
           },
           err => {
-            commit('NOTIF_FAILURE', err.data.message)
+            commit('NOTIF_FAILURE', err.message)
           })
     },
 
@@ -66,7 +66,7 @@ const notificationsModule = {
             commit('NOTIF_READ_SUCCESS', index)
           },
           err => {
-            commit('NOTIF_READ_FAILURE', err.data.message)
+            commit('NOTIF_READ_FAILURE', err.message)
           })
     }
   },
