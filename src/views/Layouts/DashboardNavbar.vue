@@ -110,9 +110,9 @@
             </div>
           </a>
         </div>
-        <a
-          href="#!"
-          class="dropdown-item text-center text-primary font-weight-bold py-3"><del>Voir tout</del></a>
+        <router-link
+          to="/notifications"
+          class="dropdown-item text-center text-primary font-weight-bold py-3">Voir tout</router-link>
       </base-dropdown>
 
       <!-- Shortcuts -->

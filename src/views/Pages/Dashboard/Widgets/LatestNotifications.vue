@@ -8,7 +8,9 @@
           <h5 class="h3 mb-0">Vos dernières notifications</h5>
         </div>
         <div class="col-4 text-right">
-          <a class="btn btn-sm btn-neutral">Détail</a>
+          <router-link
+            to="/notifications"
+            class="btn btn-sm btn-neutral">Détail</router-link>
         </div>
       </div>
     </div>
