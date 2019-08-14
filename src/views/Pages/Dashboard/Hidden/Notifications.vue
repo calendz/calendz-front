@@ -28,7 +28,7 @@
           <div class="row">
 
             <!-- menu -->
-            <div class="col-sm-2">
+            <div class="col-lg-2 mb-4">
               <ul class="list-group">
                 <li
                   :class="active === 1 ? 'bg-primary text-white' : 'bg-white text-primary'"
@@ -67,7 +67,7 @@
             </div>
 
             <!-- content -->
-            <div class="col-sm-10">
+            <div class="col-lg-10">
               <div class="card bg-white shadow">
                 <div class="card-header border-0">
                   <div class="row align-items-center">
@@ -94,14 +94,14 @@
 
                     <!-- icon -->
                     <el-table-column
-                      width="100px"
-                      min-width="100px"
+                      width="85px"
+                      min-width="85px"
                       class="text-center">
                       <template v-slot="{row}">
                         <div class="d-flex justify-content-center">
                           <i
                             :class="row.icon"
-                            class="avatar rounded-circle"/>
+                            class="avatar avatar-sm rounded-circle"/>
                         </div>
                       </template>
                     </el-table-column>
@@ -150,7 +150,7 @@
                   slot="footer"
                   class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap pt-4 pb-2">
                   <div>
-                    <p class="card-category text-sm mb-0">
+                    <p class="card-category text-sm mt-2 mb-3">
                       Affichage de  {{ from + 1 }} à {{ to }} d'un total de {{ total }} entrées
                     </p>
                   </div>
