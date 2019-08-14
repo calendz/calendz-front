@@ -4,6 +4,7 @@
     class="custom-toggle">
     <input
       v-model="model"
+      :disabled="disabled"
       type="checkbox">
     <span
       :data-label-off="offText"
@@ -30,6 +31,10 @@ export default {
     offText: {
       type: String,
       default: 'No'
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
