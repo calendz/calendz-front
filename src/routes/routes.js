@@ -31,6 +31,8 @@ const Settings = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dash
 const Statistics = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Admin/Statistics.vue')
 const UserManagement = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Admin/UserManagement.vue')
 
+const Notifications = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Hidden/Notifications.vue')
+
 const Blog = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Blog.vue')
 const Features = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Features.vue')
 const BugReport = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/BugReport.vue')
@@ -116,6 +118,17 @@ const dashboardPages = {
       meta: {
         title: 'Dashboard - calendz',
         adminOnly: true
+      }
+    },
+    // =================================
+    // == hidden pages
+    // =================================
+    {
+      path: 'notifications',
+      name: 'Notifications',
+      component: Notifications,
+      meta: {
+        title: 'Dashboard - calendz'
       }
     },
     // =================================
