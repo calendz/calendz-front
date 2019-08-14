@@ -51,6 +51,19 @@ const notificationsModule = {
 
     NOTIF_READALL_FAILURE: (state, reason) => {
       state.status = { error: reason }
+    },
+
+    NOTIF_UNREAD_REQUEST: (state) => {
+      state.status = { isUnreading: true }
+    },
+
+    NOTIF_UNREAD_SUCCESS: (state, index) => {
+      state.notifications[index].isRead = false
+      state.status = {}
+    },
+
+    NOTIF_UNREAD_FAILURE: (state, reason) => {
+      state.status = { error: reason }
     }
   },
 
@@ -92,6 +105,19 @@ const notificationsModule = {
           },
           err => {
             commit('NOTIF_READALL_FAILURE', err.message)
+          })
+    },
+
+    unread: ({ commit, state, rootState }, { notifId }) => {
+      commit('NOTIF_UNREAD_REQUEST')
+      NotificationService.read(rootState.account.user._id, notifId)
+        .then(
+          res => {
+            const index = state.notifications.findIndex(notif => notif._id === notifId)
+            commit('NOTIF_UNREAD_SUCCESS', index)
+          },
+          err => {
+            commit('NOTIF_UNREAD_FAILURE', err.message)
           })
     }
   },

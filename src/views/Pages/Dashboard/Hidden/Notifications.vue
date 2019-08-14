@@ -139,7 +139,8 @@
                           <base-switch
                             :value="row.isRead"
                             on-text="Lue"
-                            off-text="Lue"/>
+                            off-text="Lue"
+                            @input="toggleRead($event, row._id)"/>
                         </div>
                       </template>
                     </el-table-column>
@@ -245,6 +246,21 @@ export default {
       if (seconds > 60) return Math.floor(seconds / 60) + 'm'
       if (seconds > 1) return seconds + 's'
       return '?? secondes'
+    },
+    toggleRead (element, notifId) {
+      // disable the switch and re-enable it after 5 seconds
+      element.disabled = true
+      setTimeout(() => {
+        element.disabled = false
+      }, 5000)
+
+      // on marque la notification comme lue
+      if (element.checked) {
+        this.$store.dispatch('notifications/read', { notifId })
+      // on marque la notification comme non-lue
+      } else {
+        this.$store.dispatch('notifications/unread', { notifId })
+      }
     }
   }
 }
