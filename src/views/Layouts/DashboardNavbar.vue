@@ -86,7 +86,7 @@
             <div class="row align-items-center">
               <div class="col-auto">
                 <i
-                  :class="notif.icon"
+                  :class="`${notif.icon} bg-${notif.type}`"
                   class="avatar rounded-circle"/>
               </div>
               <div class="col container ml--2">

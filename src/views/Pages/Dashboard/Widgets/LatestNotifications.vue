@@ -16,7 +16,7 @@
     </div>
 
     <!-- Card body -->
-    <div class="card-body pb-3">
+    <div class="card-body pb-3 ">
       <div
         v-if="notifications.length < 1"
         class="text-muted text-center">
@@ -31,22 +31,19 @@
         <div
           v-for="(notif, index) in notifications.slice(0, 3)"
           :key="index"
-          class="timeline-block my-0">
-          <span
-            :class="`badge-info`"
-            class="timeline-step">
-            <i :class="notif.icon"/>
-          </span>
+          class="timeline-block mt-0 mb-2">
+          <i
+            :class="`${notif.icon} bg-${notif.type}`"
+            class="avatar avatar-sm rounded-circle timeline-step"/>
           <div class="timeline-content container">
-
             <div class="row">
-              <div class="col px-1">
-                <h6 class="text-sm font-weight-bold">
+              <div class="col pr-0 ml--4">
+                <h6 class="text-sm font-weight-bold mb-0">
                   {{ notif.title }}
                 </h6>
               </div>
 
-              <div class="col-auto text-right">
+              <div class="col-auto px-1 text-right">
                 <small
                   class="text-muted">
                   <span
@@ -59,12 +56,13 @@
                 </small>
               </div>
 
-              <div class="row w-100 py-2 pl-3 pr-4">
-                <p class="text-sm  font-weigth-light">{{ notif.message }}</p>
+              <div class="row w-100 py-2 pl-2 ">
+                <p class="text-sm font-weigth-light mb-0">{{ notif.message }}</p>
               </div>
             </div>
           </div>
         </div>
+
       </div>
     </div>
   </div>

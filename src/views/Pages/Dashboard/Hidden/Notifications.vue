@@ -100,7 +100,7 @@
                       <template v-slot="{row}">
                         <div class="d-flex justify-content-center">
                           <i
-                            :class="row.icon"
+                            :class="`${row.icon} bg-${row.type}`"
                             class="avatar avatar-sm rounded-circle"/>
                         </div>
                       </template>
