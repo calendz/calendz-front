@@ -29,30 +29,38 @@
 
             <!-- menu -->
             <div class="col-sm-2">
-              <!-- <div
-                v-for="(item, index) in menu"
-                :key="index"
-                class="mb-2">
-                <base-button
-                  :type="item.isActive ? 'primary' : 'white'"
-                  size="m"
-                  class="w-100"
-                  @click="setActive(index)">
-                  {{ item.title }}
-                </base-button>
-              </div> -->
               <ul class="list-group">
                 <li
-                  v-for="(item, index) in menu"
-                  :key="index"
-                  :class="item.isActive ? 'bg-primary text-white' : 'bg-white text-primary'"
+                  :class="active === 1 ? 'bg-primary text-white' : 'bg-white text-primary'"
                   class="list-group-item d-flex justify-content-between align-items-center"
-                  @click="setActive(index)">
-                  {{ item.title }}
+                  @click="active = 1">
+                  Non-lues
                   <badge
                     type="primary"
                     pill>
-                    {{ item.amount || 0 }}
+                    {{ notReadNotifications.length || 0 }}
+                  </badge>
+                </li>
+                <li
+                  :class="active === 2 ? 'bg-primary text-white' : 'bg-white text-primary'"
+                  class="list-group-item d-flex justify-content-between align-items-center"
+                  @click="active = 2">
+                  Lues
+                  <badge
+                    type="primary"
+                    pill>
+                    {{ readNotifications.length || 0 }}
+                  </badge>
+                </li>
+                <li
+                  :class="active === 3 ? 'bg-primary text-white' : 'bg-white text-primary'"
+                  class="list-group-item d-flex justify-content-between align-items-center"
+                  @click="active = 3">
+                  Toutes
+                  <badge
+                    type="primary"
+                    pill>
+                    {{ allNotifications.length || 0 }}
                   </badge>
                 </li>
               </ul>
@@ -62,7 +70,20 @@
             <div class="col-sm-10">
               <div class="card bg-white shadow">
                 <div class="card-header border-0">
-                  <h3 class="mb-0">Gérez vos notifications</h3>
+                  <div class="row align-items-center">
+                    <div class="col">
+                      <h3 class="mb-0">Gérez vos notifications</h3>
+                    </div>
+                    <div class="col text-right">
+                      <base-button
+                        :disabled="active === 2 || notReadNotifications.length < 1"
+                        type="primary"
+                        size="sm"
+                        @click="readAllNotifications()">
+                        Tout lire
+                      </base-button>
+                    </div>
+                  </div>
                 </div>
                 <div>
                   <el-table
@@ -168,23 +189,7 @@ export default {
   mixins: [clientPaginationMixin],
   data () {
     return {
-      menu: [
-        {
-          title: 'Non-lues',
-          isActive: true,
-          amount: '?'
-        },
-        {
-          title: 'Lues',
-          isActive: false,
-          amount: '?'
-        },
-        {
-          title: 'Toutes',
-          isActive: false,
-          amount: '?'
-        }
-      ],
+      active: 1,
       tableColumns: [
         {
           prop: 'title',
@@ -209,39 +214,28 @@ export default {
       readNotifications: 'notifications/read'
     })
   },
+  watch: {
+    active: function (newActive) {
+      switch (newActive) {
+        case 1: this.tableData = this.notReadNotifications; break
+        case 2: this.tableData = this.readNotifications; break
+        case 3: this.tableData = this.allNotifications; break
+      }
+    }
+  },
   mounted () {
     // load default table (besoin du timeout pcq vuex prend tu temps à s'actualiser)
     setTimeout(() => {
-      this.setActive(0)
-      this.menu = [
-        {
-          title: 'Non-lues',
-          isActive: true,
-          amount: this.notReadNotifications.length
-        },
-        {
-          title: 'Lues',
-          isActive: false,
-          amount: this.readNotifications.length
-        },
-        {
-          title: 'Toutes',
-          isActive: false,
-          amount: this.allNotifications.length
-        }
-      ]
-    }, 50)
+      this.tableData = this.notReadNotifications
+    }, 100)
   },
   methods: {
-    setActive (index) {
-      this.menu.forEach(element => { element.isActive = false })
-      this.menu[index].isActive = true
-
-      switch (this.menu[index].title) {
-        case 'Non-lues': this.tableData = this.notReadNotifications; break
-        case 'Lues': this.tableData = this.readNotifications; break
-        case 'Toutes': this.tableData = this.allNotifications; break
-      }
+    readAllNotifications () {
+      this.$store.dispatch('notifications/readAll').then(() => {
+        setTimeout(() => {
+          this.active = 2
+        }, 100)
+      })
     },
     formatDate (timestamp) {
       const seconds = Math.floor(new Date().getTime() / 1000 - timestamp / 1000)

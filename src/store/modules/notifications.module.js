@@ -38,6 +38,19 @@ const notificationsModule = {
 
     NOTIF_READ_FAILURE: (state, reason) => {
       state.status = { error: reason }
+    },
+
+    NOTIF_READALL_REQUEST: (state) => {
+      state.status = { isReading: true }
+    },
+
+    NOTIF_READALL_SUCCESS: (state) => {
+      state.notifications.forEach(notif => { notif.isRead = true })
+      state.status = {}
+    },
+
+    NOTIF_READALL_FAILURE: (state, reason) => {
+      state.status = { error: reason }
     }
   },
 
@@ -67,6 +80,18 @@ const notificationsModule = {
           },
           err => {
             commit('NOTIF_READ_FAILURE', err.message)
+          })
+    },
+
+    readAll: ({ commit, rootState }) => {
+      commit('NOTIF_READALL_REQUEST')
+      NotificationService.readAll(rootState.account.user._id)
+        .then(
+          res => {
+            commit('NOTIF_READALL_SUCCESS')
+          },
+          err => {
+            commit('NOTIF_READALL_FAILURE', err.message)
           })
     }
   },

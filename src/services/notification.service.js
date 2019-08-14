@@ -25,6 +25,17 @@ const UserService = {
       .catch(err => {
         return Promise.reject(err.data)
       })
+  },
+
+  // mark all user's notifications as read
+  readAll: (userId) => {
+    return ApiService.patch(`/notifications/${userId}/read/all`)
+      .then(res => {
+        return res.data
+      })
+      .catch(err => {
+        return Promise.reject(err.data)
+      })
   }
 }
 
