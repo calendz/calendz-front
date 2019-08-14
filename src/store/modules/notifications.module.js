@@ -84,6 +84,11 @@ const notificationsModule = {
       const array = [...state.notifications].filter(notif => notif.isRead === false)
       array.sort((a, b) => (a.timestamp > b.timestamp) ? -1 : 1)
       return array
+    },
+    read: state => {
+      const array = [...state.notifications].filter(notif => notif.isRead === true)
+      array.sort((a, b) => (a.timestamp > b.timestamp) ? -1 : 1)
+      return array
     }
   }
 }
