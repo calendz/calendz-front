@@ -23,8 +23,8 @@
     <!-- ======================================= -->
     <div class="container-fluid mt--6">
       <div class="row">
-        <div class="col-lg-4">
-          <h1 class="text-white">Dashboard admin</h1>
+        <div class="col-lg-5">
+          <create-notifications/>
         </div>
       </div>
     </div>
@@ -32,10 +32,12 @@
 </template>
 <script>
 import RouteBreadCrumb from '@/components/Breadcrumb/RouteBreadcrumb'
+import CreateNotifications from './Widgets/CreateNotifications'
 
 export default {
   components: {
-    RouteBreadCrumb
+    RouteBreadCrumb,
+    CreateNotifications
   }
 }
 </script>
