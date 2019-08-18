@@ -93,7 +93,7 @@
                 name="icône"
                 class="w-100"
                 label="Icône"
-                placeholder="Choisissez un icône"/>
+                placeholder="fas fa-bell"/>
             </div>
 
             <!-- type -->
@@ -106,7 +106,7 @@
                 name="type"
                 class="w-100"
                 label="Type"
-                placeholder="Définissez le type"/>
+                placeholder="primary"/>
             </div>
           </div>
 
@@ -171,7 +171,7 @@ export default {
       type: '',
       select: {
         groups: [
-          { value: 'all', label: 'Tous les utilisateurs' }
+          { value: 'all', label: 'Tous' }
         ],
         target: ''
       }
