@@ -27,10 +27,13 @@
                   class="modal-title">Modifier mon image de profil</h5>
               </template>
               <div>
+                <h5><i style="color:#fb6340">Cette fonctionnalité n'est pas encore disponible</i></h5>
+                <br>
                 Veuillez importer votre photo ci-dessous :
                 <dropzone-file-upload
                   v-model="fileSingle"
                   style="margin-top:10px"/>
+
               </div>
               <template slot="footer">
                 <base-button
@@ -141,8 +144,12 @@
                     <h5 style="color:#fb6340">Attention : Un changement de mot de passe vous obligera à vous reconnecter au site</h5>
                   </div>
                 </div>
+
+                <api-errors
+                  :multiple-errors="apiErrors"
+                  :alert-classes="'py-3 my-4'"/>
+
                 <base-button
-                  :disabled="registering"
                   type="primary"
                   style="margin-top:20px"
                   size="lg"
@@ -176,6 +183,7 @@ import swal from 'sweetalert2'
 import { mapState } from 'vuex'
 import { Modal } from '@/components'
 import DropzoneFileUpload from '@/components/Inputs/DropzoneFileUpload'
+import axios from 'axios'
 
 export default {
   components: {
@@ -184,6 +192,7 @@ export default {
   },
   data () {
     return {
+      apiErrors: [],
       triedSubmit: false,
       modal0: false,
       fileSingle: [],
@@ -202,6 +211,8 @@ export default {
   },
   methods: {
     handleSubmit (e) {
+      this.apiErrors = []
+
       // vérification validation des champs
       this.$validator.validate().then(valid => {
         if (valid) {
@@ -219,15 +230,27 @@ export default {
             confirmButtonText: 'Oui !'
           }).then((result) => {
             if (result.value) {
+              // disable le bouton login
+              e.target.disabled = true
               // envoie de la requête de modification du mot de passe
-              // this.$store.dispatch('account/register', this.registerForm)
-              this.$store.dispatch('account/logout', {})
-              this.$router.push('/login')
-              swal.fire({
-                title: 'Votre mot de passe à bien été modifié. Vous avez été déconnecté',
-                type: 'success',
-                customClass: {
-                  confirmButton: 'btn btn-primary'
+              axios.patch('/user/password', this.registerForm).then((res) => {
+                this.$notify({ type: 'success', message: 'Votre mot de passe a bien été mis à jour.' })
+                this.$store.dispatch('account/logout', {})
+                this.$router.push('/login')
+                swal.fire({
+                  title: 'Votre mot de passe à bien été modifié. Vous avez été déconnecté',
+                  type: 'success',
+                  customClass: {
+                    confirmButton: 'btn btn-primary'
+                  }
+                })
+                // on catch les erreurs
+              }).catch((err) => {
+                e.target.disabled = false
+                if (err.response.data.errors) {
+                  this.apiErrors = err.response.data.errors
+                } else {
+                  this.apiErrors.push(err.response.data.message)
                 }
               })
             }
