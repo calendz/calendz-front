@@ -63,12 +63,12 @@
         :title-classes="'nav-link dropdown-toggle'"
         :menu-on-right="true"
         :menu-classes="'dropdown-menu dropdown-menu-xl py-0 overflow-hidden'"
-        :pill-amount="notReadNotifications.length"
+        :pill-amount="notifications.length"
         class="nav-item">
         <div class="px-3 py-3">
           <h6 class="text-sm text-muted text-center m-0">
-            <span v-if="notReadNotifications.length > 0">
-              Vous avez <strong class="text-primary">{{ notReadNotifications.length }}</strong> {{ notReadNotifications.length > 1 ? 'notifications non-lues' : 'notification non-lue' }}.
+            <span v-if="notifications.length > 0">
+              Vous avez <strong class="text-primary">{{ notifications.length }}</strong> {{ notifications.length > 1 ? 'notifications non-lues' : 'notification non-lue' }}.
             </span>
             <span v-else>
               Vous n'avez aucune notification non-lue !
@@ -77,35 +77,42 @@
         </div>
 
         <div
-          v-for="(notif, index) in notReadNotifications.slice(0, 4)"
+          v-for="(notif, index) in notifications.slice(0, 4)"
           :key="index"
           class="list-group list-group-flush">
           <a
             class="list-group-item list-group-item-action"
-            @click.prevent="readNotification(notif)">
+            @click.prevent="$store.dispatch('notifications/read', { notifId: notif._id })">
             <div class="row align-items-center">
               <div class="col-auto">
                 <i
-                  :class="notif.icon"
+                  :class="`${notif.icon} bg-${notif.type}`"
                   class="avatar rounded-circle"/>
               </div>
-              <div class="col ml--2">
-                <div class="d-flex justify-content-between align-items-center">
-                  <div>
+              <div class="col container ml--2">
+
+                <div class="row">
+                  <div class="col">
                     <h4 class="mb-0 text-sm">{{ notif.title }}</h4>
                   </div>
-                  <div class="text-right text-muted">
-                    <small>il y a {{ formatDate(notif.timestamp) }}</small>
+                  <div class="col-auto text-right">
+                    <small class="text-muted">
+                      <i class="fas fa-clock mr-1"/>
+                      {{ formatDate(notif.timestamp) }}
+                    </small>
                   </div>
                 </div>
-                <p class="text-sm mb-0">{{ notif.message }}</p>
+
+                <div class="row mt-1 px-3">
+                  <p class="text-sm mb-0">{{ notif.message }}</p>
+                </div>
               </div>
             </div>
           </a>
         </div>
-        <a
-          href="#!"
-          class="dropdown-item text-center text-primary font-weight-bold py-3"><del>Voir tout</del></a>
+        <router-link
+          to="/notifications"
+          class="dropdown-item text-center text-primary font-weight-bold py-3">Voir tout</router-link>
       </base-dropdown>
 
       <!-- Shortcuts -->
@@ -244,10 +251,9 @@
 </template>
 <script>
 import swal from 'sweetalert2'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import { CollapseTransition } from 'vue2-transitions'
 import { BaseNav, Modal } from '@/components'
-import ApiService from '../../services/api.service'
 
 export default {
   components: {
@@ -260,17 +266,16 @@ export default {
       showProfileDropdown: false,
       showMenu: false,
       searchModalVisible: false,
-      searchQuery: '',
-      allNotifications: []
+      searchQuery: ''
     }
   },
   computed: {
     ...mapState({
       user: state => state.account.user
     }),
-    notReadNotifications () {
-      return this.allNotifications.filter(notif => notif.isRead === false)
-    },
+    ...mapGetters({
+      notifications: 'notifications/notRead'
+    }),
     routeName () {
       const { name } = this.$route
       return this.capitalizeFirstLetter(name)
@@ -280,10 +285,7 @@ export default {
     }
   },
   mounted () {
-    ApiService.get(`/notifications/${this.user._id}`)
-      .then(res => {
-        if (res) this.allNotifications = res.data.notifications
-      })
+    this.$store.dispatch('notifications/fetch')
   },
   methods: {
     capitalizeFirstLetter (string) {
@@ -335,13 +337,6 @@ export default {
       if (seconds > 60) return Math.floor(seconds / 60) + 'm'
       if (seconds > 1) return seconds + 's'
       return '?? secondes'
-    },
-    readNotification (notification) {
-      ApiService.patch(`/notifications/${this.user._id}/read/${notification._id}`)
-        .then(res => {
-          const index = this.allNotifications.findIndex(notif => notif._id === notification._id)
-          this.allNotifications[index].isRead = true
-        })
     },
     getFirstnameAndLastname (email) {
       return email.split('@')[0]

@@ -2,13 +2,13 @@
   <bread-crumb list-classes="breadcrumb-links breadcrumb-dark">
     <BreadCrumbItem>
       <li class="breadcrumb-item">
-        <router-link to="/">
+        <router-link to="/dashboard">
           <i class="fas fa-home"/>
         </router-link>
       </li>
     </BreadCrumbItem>
     <BreadCrumbItem
-      v-for="(route, index) in $route.matched.slice()"
+      v-for="(route, index) in getPathAsArray()"
       :key="route.name"
       :active="index === $route.matched.length - 1"
       style="display:inline-block"
@@ -37,6 +37,11 @@ export default {
   methods: {
     getBreadName (route) {
       return route.name
+    },
+    getPathAsArray () {
+      const array = this.$route.matched.slice()
+      array.shift()
+      return array
     }
   }
 }

@@ -28,8 +28,11 @@ const Homeworks = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Das
 const Profile = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Profile.vue')
 const Settings = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Settings.vue')
 
+const DashboardAdmin = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Admin/DashboardAdmin.vue')
 const Statistics = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Admin/Statistics.vue')
 const UserManagement = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Admin/UserManagement.vue')
+
+const Notifications = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Hidden/Notifications.vue')
 
 const Blog = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Blog.vue')
 const Features = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Features.vue')
@@ -101,6 +104,14 @@ const dashboardPages = {
     // == administration tab
     // =================================
     {
+      path: 'dashboard-admin',
+      name: 'Dashboard admin',
+      component: DashboardAdmin,
+      meta: {
+        title: 'Dashboard - calendz'
+      }
+    },
+    {
       path: 'stats',
       name: 'Statistiques',
       component: Statistics,
@@ -116,6 +127,17 @@ const dashboardPages = {
       meta: {
         title: 'Dashboard - calendz',
         adminOnly: true
+      }
+    },
+    // =================================
+    // == hidden pages
+    // =================================
+    {
+      path: 'notifications',
+      name: 'Notifications',
+      component: Notifications,
+      meta: {
+        title: 'Dashboard - calendz'
       }
     },
     // =================================

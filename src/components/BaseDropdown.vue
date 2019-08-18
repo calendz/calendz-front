@@ -118,7 +118,7 @@ export default {
 .badge-notification {
   position: absolute;
   margin-top: -8px;
-  margin-left: -10px;
+  margin-left: -12px;
   font-size: 9.5px;
   padding-right: 0.6em;
   padding-left: 0.6em;

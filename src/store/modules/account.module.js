@@ -50,33 +50,6 @@ const accountModule = {
     LOGOUT: (state, reason) => {
       state.user = null
       state.status = { reason }
-    },
-
-    VERIFY_REQUEST: (state) => {
-      state.status = { isVerifying: true }
-    },
-
-    VERIFY_SUCCESS: (state, user) => {
-      state.status = {}
-      state.user = user
-    },
-
-    VERIFY_FAILURE: (state, reason) => {
-      state.status = { reason }
-    },
-
-    REFRESH_REQUEST: (state) => {
-      state.status = { isRefreshing: true }
-    },
-
-    REFRESH_SUCCESS: (state, user) => {
-      state.status = {}
-      state.user = user
-    },
-
-    REFRESH_FAILURE: (state, reason) => {
-      state.user = null
-      state.status = { reason }
     }
   },
 
@@ -112,7 +85,7 @@ const accountModule = {
             router.push('/dashboard')
           },
           err => {
-            commit('LOGIN_FAILURE', err.data.message)
+            commit('LOGIN_FAILURE', err.message)
           })
     },
 
