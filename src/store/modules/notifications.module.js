@@ -1,3 +1,4 @@
+import swal from 'sweetalert2'
 import NotificationService from '../../services/notification.service'
 
 const notificationsModule = {
@@ -64,6 +65,18 @@ const notificationsModule = {
 
     NOTIF_UNREAD_FAILURE: (state, reason) => {
       state.status = { error: reason }
+    },
+
+    NOTIF_CREATE_REQUEST: (state) => {
+      state.status = { isCreating: true }
+    },
+
+    NOTIF_CREATE_SUCCESS: (state) => {
+      state.status = {}
+    },
+
+    NOTIF_CREATE_FAILURE: (state, reason) => {
+      state.status = { error: reason }
     }
   },
 
@@ -118,6 +131,33 @@ const notificationsModule = {
           },
           err => {
             commit('NOTIF_UNREAD_FAILURE', err.message)
+          })
+    },
+
+    create: ({ commit }, { target, title, message, icon, type }) => {
+      commit('NOTIF_CREATE_REQUEST')
+      NotificationService.create(target, title, message, icon, type)
+        .then(
+          res => {
+            commit('NOTIF_CREATE_SUCCESS')
+            swal.fire({
+              title: 'Notification créée avec succès',
+              type: 'success',
+              customClass: {
+                confirmButton: 'btn btn-primary'
+              }
+            })
+          },
+          err => {
+            commit('NOTIF_CREATE_FAILURE', err.message)
+            swal.fire({
+              title: 'Une erreur est survenue',
+              text: err.message,
+              type: 'error',
+              customClass: {
+                confirmButton: 'btn btn-primary'
+              }
+            })
           })
     }
   },

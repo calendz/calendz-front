@@ -65,6 +65,14 @@
         <h6 class="navbar-heading p-0 text-muted">Admin</h6>
 
         <ul class="navbar-nav mb-md-3">
+          <!-- dashboard admin -->
+          <sidebar-item
+            :link="{
+              name: 'Dashboard admin',
+              icon: 'ni ni-shop text-red',
+              path: '/dashboard-admin'
+          }"/>
+
           <!-- statistics -->
           <sidebar-item
             :link="{

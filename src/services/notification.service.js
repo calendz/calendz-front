@@ -36,6 +36,17 @@ const UserService = {
       .catch(err => {
         return Promise.reject(err.data)
       })
+  },
+
+  // create a notification
+  create: (target, title, message, icon, type) => {
+    return ApiService.post(`/notifications`, { target, title, message, icon, type })
+      .then(res => {
+        return res.data
+      })
+      .catch(err => {
+        return Promise.reject(err.data)
+      })
   }
 }
 
