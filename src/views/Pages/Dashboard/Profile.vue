@@ -18,185 +18,201 @@
       </div>
     </base-header>
 
-    <!-- ======================================= -->
-    <!-- == Main container ===================== -->
-    <!-- ======================================= -->
     <div class="container-fluid mt--6 card-wrapper">
-      <div
-        class="row"
-        style="margin:15px">
-        <div class="col-md-4">
+      <div class="row">
+        <!-- ======================================= -->
+        <!-- == Image de profil -->
+        <!-- ======================================= -->
+        <div class="col-md-3">
           <card type="frame">
-            <div style="text-align:center">
-              <h3>Image de Profil</h3>
+            <h3
+              slot="header"
+              class="mb-0">Photo de profil</h3>
+            <div class="text-center">
               <img
                 src="img/theme/default-pp.svg"
-                width="180px"
-                style="margin-top:10px">
+                width="150px">
               <br>
               <base-button
+                class="mt-4 mb-1 mr-0"
                 type="primary"
-                style="margin-top:20px"
-                size="lg"
-                @click="modal0 = true">
-                <i class="ni ni-image"/>Editer
+                size="md"
+                @click="modal = true">
+                <i class="ni ni-image mr-2"/>Éditer
               </base-button>
-              <modal :show.sync="modal0">
+
+              <!-- modal -->
+              <modal :show.sync="modal">
                 <template slot="header">
-                  <h5
-                    id="exampleModalLabel"
-                    class="modal-title">Modifier mon image de profil</h5>
+                  <h5 class="modal-title">Modifier mon image de profil</h5>
                 </template>
+
                 <div>
                   <base-alert type="danger">
-                    <strong>Attention !</strong> Cette fonctionnalité n'est pas encore disponible
+                    <strong>Attention !</strong> Cette fonctionnalité n'est pas encore disponible.
                   </base-alert>
-                  Veuillez importer votre photo ci-dessous :
-                  <dropzone-file-upload
-                    v-model="fileSingle"
-                    style="margin-top:10px"/>
-
+                  <p class="my-4">Veuillez importer votre photo ci-dessous :</p>
+                  <dropzone-file-upload v-model="fileSingle"/>
                 </div>
+
                 <template slot="footer">
                   <base-button
                     type="secondary"
                     size="md"
-                    @click="modal0 = false">Fermer</base-button>
+                    @click="modal = false">Fermer</base-button>
                   <base-button
                     size="md"
                     type="primary">Sauvegarder</base-button>
                 </template>
               </modal>
+
             </div>
           </card>
         </div>
-        <div class="col-md-8">
-          <div>
-            <card type="frame">
-              <div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <base-input
-                      :value="user.lastname"
-                      placeholder="Votre Nom"
-                      label="Nom"
-                      disabled/>
-                  </div>
-                  <div class="col-md-6">
-                    <base-input
-                      :value="user.firstname"
-                      placeholder="Votre Prénom"
-                      label="Prénom"
-                      disabled/>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <base-input
-                      :value="user.email"
-                      placeholder="Votre Email"
-                      label="Email"
-                      disabled/>
-                  </div>
-                  <div class="col-md-6">
-                    <base-input
-                      :value="user.grade"
-                      placeholder="Votre Classe"
-                      label="Classe"
-                      disabled/>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <base-input
-                      :value="displayBts(user.bts)"
-                      label="Option BTS"
-                      disabled/>
-                  </div>
-                </div>
+
+        <!-- ======================================= -->
+        <!-- == Informations profil -->
+        <!-- ======================================= -->
+        <div class="col-md-9">
+          <card type="frame">
+
+            <div class="row">
+              <div class="col-md-6">
+                <base-input
+                  :value="user.firstname"
+                  label="Prénom"
+                  placeholder="Votre prénom"
+                  disabled/>
               </div>
-            </card>
-          </div>
+              <div class="col-md-6">
+                <base-input
+                  :value="user.lastname"
+                  label="Nom de famille"
+                  placeholder="Votre nom de famille"
+                  disabled/>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <base-input
+                  :value="user.email"
+                  label="Adresse mail"
+                  placeholder="Votre adresse mail"
+                  disabled/>
+              </div>
+              <div class="col-md-6">
+                <base-input
+                  :value="user.grade"
+                  label="Classe"
+                  placeholder="Votre classe"
+                  disabled/>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <base-input
+                  :value="user.bts ? 'Oui' : 'Non'"
+                  class="mb-3"
+                  label="Option BTS"
+                  disabled/>
+              </div>
+            </div>
+          </card>
         </div>
       </div>
-      <div
-        class="row"
-        style="margin:15px">
-        <div class="col-md-8">
-          <div>
-            <card type="frame">
-              <div>
-                <h3 style="text-align:center">Modifier mon Mot de Passe</h3>
-                <form
-                  class="needs-validation"
-                  @submit.prevent="handleSubmit">
-                  <div
-                    class="row"
-                    style="margin-top:20px">
-                    <div class="col-md-6">
-                      <base-input
-                        v-validate="'required|min:6|max:64|contains_one_letter|contains_one_number'"
-                        ref="mot de passe"
-                        v-model="registerForm.password"
-                        :error="getError('mot de passe')"
-                        :valid="isValid('mot de passe')"
-                        name="mot de passe"
-                        class="mb-3"
-                        prepend-icon="ni ni-lock-circle-open"
-                        placeholder="Nouveau Mot de passe"
-                        type="password"/>
-                    </div>
-                    <div
-                      class="col-md-6"
-                      style="margin-top:10px">
-                      <password-strength :password="registerForm.password"/>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <base-input
-                        v-validate="{ required: true, confirmed: 'mot de passe' }"
-                        v-model="registerForm.password2"
-                        :error="getError('confirmation du mot de passe')"
-                        :valid="isValid('confirmation du mot de passe')"
-                        name="confirmation du mot de passe"
-                        class="mb-3"
-                        prepend-icon="ni ni-lock-circle-open"
-                        placeholder="Confirmer le mot de passe"
-                        type="password"/>
-                    </div>
-                    <div class="col-md-6">
-                      <h5 style="color:#fb6340">Attention : Un changement de mot de passe vous obligera à vous reconnecter au site</h5>
-                    </div>
-                  </div>
 
-                  <api-errors
-                    :multiple-errors="registerErrors"
-                    :alert-classes="'py-3 my-4'"/>
-
-                  <base-button
-                    type="primary"
-                    style="margin-top:20px"
-                    size="lg"
-                    native-type="submit">
-                    Sauvegarder mes changements
-                  </base-button>
-                </form>
-              </div>
-            </card>
-          </div>
-        </div>
-        <div class="col-md-4">
+      <div class="row">
+        <!-- ============================================= -->
+        <!-- == Modification du mot de passe -->
+        <!-- ============================================= -->
+        <div class="col-md-7">
           <card type="frame">
-            <div style="text-align:center">
-              <h3>Autre Changement ?</h3>
-              <br>
-              <h4>Pour tout changement concernant le Nom, Prénom, Email ou Classe, veuillez contacter le support ci-dessous :</h4>
-              <base-button
-                type="info"
-                style="margin-top:20px">
-                <i class="ni ni-send"/>Support
-              </base-button>
+            <h3
+              slot="header"
+              class="mb-0">Modifier mon mot de passe</h3>
+            <form
+              class="needs-validation"
+              @submit.prevent="handleSubmit">
+
+              <div class="row">
+                <div class="col-md-12">
+                  <base-input
+                    v-validate="'required|min:6|max:64|contains_one_letter|contains_one_number'"
+                    ref="mot de passe"
+                    v-model="changePasswordForm.password"
+                    :error="getError('mot de passe')"
+                    :valid="isValid('mot de passe')"
+                    name="mot de passe"
+                    class="mb-3"
+                    prepend-icon="ni ni-lock-circle-open"
+                    placeholder="Nouveau mot de passe"
+                    type="password"/>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <base-input
+                    v-validate="{ required: true, confirmed: 'mot de passe' }"
+                    v-model="changePasswordForm.password2"
+                    :error="getError('confirmation du mot de passe')"
+                    :valid="isValid('confirmation du mot de passe')"
+                    name="confirmation du mot de passe"
+                    class="mb-3"
+                    prepend-icon="ni ni-lock-circle-open"
+                    placeholder="Confirmez votre mot de passe"
+                    type="password"/>
+                </div>
+              </div>
+
+              <div class="row mt-1">
+                <div class="col-md-6">
+                  <base-button
+                    :disabled="changing"
+                    type="primary"
+                    class="w-100"
+                    size="md"
+                    native-type="submit">
+                    Confirmer le changement
+                  </base-button>
+                </div>
+
+                <div class="col-md-6 my-auto text-center">
+                  <password-strength
+                    :password="changePasswordForm.password"
+                    :size="'18px'"
+                    class="w-100"/>
+                </div>
+              </div>
+
+              <api-errors
+                :multiple-errors="changePasswordErrors"
+                :alert-classes="'py-3 my-4'"/>
+
+            </form>
+          </card>
+        </div>
+
+        <!-- ============================================= -->
+        <!-- == Autres changements -->
+        <!-- ============================================= -->
+        <div class="col-md-5">
+          <card type="frame">
+            <h3
+              slot="header"
+              class="mb-0">Besoin d'une autre modification ?</h3>
+            <div style="min-height: 165px">
+              <p>Pour tout autres changements concernant votre profil, n'hésitez pas à contacter le support en cliquant sur le bouton ci-dessous.</p>
+              <div class="text-center">
+                <router-link
+                  to="/support"
+                  class="btn btn-info mt-4">
+                  <i class="ni ni-send mr-2"/>
+                  Contacter le support
+                </router-link>
+              </div>
             </div>
           </card>
         </div>
@@ -219,11 +235,9 @@ export default {
   },
   data () {
     return {
-      apiErrors: [],
-      triedSubmit: false,
-      modal0: false,
+      modal: false,
       fileSingle: [],
-      registerForm: {
+      changePasswordForm: {
         password: '',
         password2: ''
       }
@@ -232,47 +246,34 @@ export default {
   computed: {
     ...mapState({
       user: state => state.account.user,
-      registerErrors: state => state.account.status.reason,
-      registering: state => state.account.status.isRegistering
+      changePasswordErrors: state => state.account.status.reason,
+      changing: state => state.account.status.isChanging
     })
   },
   methods: {
     handleSubmit (e) {
-      this.apiErrors = []
-
       // vérification validation des champs
       this.$validator.validate().then(valid => {
-        if (valid) {
-          swal.fire({
-            title: 'Êtes vous sûr de bien vouloir changer votre mot de passe ?',
-            text: 'Vous serez déconnecté du site !',
-            type: 'info',
-            customClass: {
-              confirmButton: 'btn btn-primary',
-              cancelButton: 'btn btn-secondary'
-            },
-            buttonsStyling: false,
-            showCancelButton: true,
-            cancelButtonText: 'Annuler',
-            confirmButtonText: 'Oui !'
-          }).then((result) => {
-            if (result.value) {
-              // disable le bouton login
-              e.target.disabled = true
-              this.$store.dispatch('account/changePassword', this.registerForm)
-            }
-          })
-        } else {
-          this.triedSubmit = true
-        }
+        if (!valid) return
+
+        swal.fire({
+          title: 'Êtes-vous sûr de vouloir changer votre mot de passe ?',
+          text: 'Vous serez déconnecté du site !',
+          type: 'warning',
+          customClass: {
+            confirmButton: 'btn btn-warning',
+            cancelButton: 'btn btn-secondary'
+          },
+          buttonsStyling: false,
+          showCancelButton: true,
+          cancelButtonText: 'Annuler',
+          confirmButtonText: 'Oui'
+        }).then((result) => {
+          if (result.value) {
+            this.$store.dispatch('account/changePassword', this.changePasswordForm)
+          }
+        })
       })
-    },
-    displayBts (bts) {
-      if (bts) {
-        return 'Oui'
-      } else {
-        return 'Non'
-      }
     },
     getError (name) {
       return this.errors.first(name)
