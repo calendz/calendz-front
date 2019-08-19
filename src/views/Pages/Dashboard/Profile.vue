@@ -171,7 +171,7 @@
                   </div>
 
                   <api-errors
-                    :multiple-errors="apiErrors"
+                    :multiple-errors="registerErrors"
                     :alert-classes="'py-3 my-4'"/>
 
                   <base-button
@@ -210,7 +210,6 @@ import { mapState } from 'vuex'
 import { Modal } from '@/components'
 import RouteBreadCrumb from '@/components/Breadcrumb/RouteBreadcrumb'
 import DropzoneFileUpload from '@/components/Inputs/DropzoneFileUpload'
-import axios from 'axios'
 
 export default {
   components: {
@@ -260,27 +259,7 @@ export default {
             if (result.value) {
               // disable le bouton login
               e.target.disabled = true
-              // envoie de la requête de modification du mot de passe
-              axios.patch('/user/password', this.registerForm).then((res) => {
-                this.$notify({ type: 'success', message: 'Votre mot de passe a bien été mis à jour.' })
-                this.$store.dispatch('account/logout', {})
-                this.$router.push('/login')
-                swal.fire({
-                  title: 'Votre mot de passe à bien été modifié. Vous avez été déconnecté',
-                  type: 'success',
-                  customClass: {
-                    confirmButton: 'btn btn-primary'
-                  }
-                })
-                // on catch les erreurs
-              }).catch((err) => {
-                e.target.disabled = false
-                if (err.response.data.errors) {
-                  this.apiErrors = err.response.data.errors
-                } else {
-                  this.apiErrors.push(err.response.data.message)
-                }
-              })
+              this.$store.dispatch('account/changePassword', this.registerForm)
             }
           })
         } else {

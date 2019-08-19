@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import swal from 'sweetalert2'
 import router from '../../routes/router'
 import UserService from '../../services/user.service'
 import ApiService from '../../services/api.service'
@@ -77,6 +78,18 @@ const accountModule = {
     REFRESH_FAILURE: (state, reason) => {
       state.user = null
       state.status = { reason }
+    },
+
+    CHANGE_PASSWORD_REQUEST: (state) => {
+      state.status = { isChanging: true }
+    },
+
+    CHANGE_PASSWORD_SUCCESS: (state) => {
+      state.status = {}
+    },
+
+    CHANGE_PASSWORD_FAILURE: (state, reason) => {
+      state.status = { reason }
     }
   },
 
@@ -116,7 +129,6 @@ const accountModule = {
           })
     },
 
-    // logs the user out
     logout: ({ commit }, { reason }) => {
       if (reason) {
         Vue.prototype.$notify({ type: 'danger', message: `${reason}.` })
@@ -125,6 +137,24 @@ const accountModule = {
       commit('LOGOUT', reason)
       ApiService.post('/auth/logout')
       router.push('/login')
+    },
+
+    changePassword: ({ commit, dispatch }, { password, password2 }) => {
+      commit('CHANGE_PASSWORD_REQUEST')
+      UserService.changePassword(password, password2)
+        .then(
+          res => {
+            commit('CHANGE_PASSWORD_SUCCESS')
+            swal.fire({
+              title: 'Votre mot de passe à bien été modifié. Vous avez été déconnecté',
+              type: 'success',
+              customClass: { confirmButton: 'btn btn-primary' }
+            })
+            dispatch('logout', {})
+          },
+          err => {
+            commit('CHANGE_PASSWORD_FAILURE', err.data.message)
+          })
     }
   },
 

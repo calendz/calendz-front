@@ -47,6 +47,17 @@ const UserService = {
       .catch(err => {
         return Promise.reject(err.response)
       })
+  },
+
+  // change user's password
+  changePassword: (password, password2) => {
+    return ApiService.patch('/user/password', { password, password2 })
+      .then(res => {
+        return res.data
+      })
+      .catch(err => {
+        return Promise.reject(err.response)
+      })
   }
 
 }
