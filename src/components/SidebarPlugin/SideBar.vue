@@ -1,6 +1,7 @@
 <template>
   <div
     :data="backgroundColor"
+    style="overflow-x: hidden"
     class="sidenav navbar navbar-vertical fixed-left navbar-expand-xs navbar-light bg-white"
     @mouseenter="$sidebar.onMouseEnter()"
     @mouseleave="$sidebar.onMouseLeave()">
