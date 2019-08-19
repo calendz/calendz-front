@@ -1,7 +1,9 @@
 <template>
   <div
-    v-show="password"
-    class="text-muted font-italic">
+    v-show="hideWhenEmpty ? password : true"
+    :class="{ italic: 'font-italic' }"
+    :style="`font-size: ${size};`"
+    class="text-muted">
     <small>Force du mot de passe :
       <span
         :class="{ 'text-danger': strength === 'faible' || strength === 'insuffisante',
@@ -21,6 +23,21 @@ export default {
       type: String,
       description: 'The password to evaluate the strength of',
       default: ''
+    },
+    size: {
+      type: String,
+      description: 'Text size',
+      default: ''
+    },
+    italic: {
+      type: Boolean,
+      description: 'Whether the text should be in italic',
+      default: false
+    },
+    hideWhenEmpty: {
+      type: Boolean,
+      description: 'Whether the component should be shown if there are no password',
+      default: true
     }
   },
   computed: {
