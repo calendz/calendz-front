@@ -98,7 +98,7 @@
                   <div class="col-auto text-right">
                     <small class="text-muted">
                       <i class="fas fa-clock mr-1"/>
-                      {{ formatDate(notif.timestamp) }}
+                      {{ getFuzzyTime(notif.timestamp) }}
                     </small>
                   </div>
                 </div>
@@ -254,6 +254,7 @@ import swal from 'sweetalert2'
 import { mapState, mapGetters } from 'vuex'
 import { CollapseTransition } from 'vue2-transitions'
 import { BaseNav, Modal } from '@/components'
+import dateUtilMixin from '@/mixins/dateUtilMixin'
 
 export default {
   components: {
@@ -261,6 +262,7 @@ export default {
     BaseNav,
     Modal
   },
+  mixins: [dateUtilMixin],
   data () {
     return {
       showProfileDropdown: false,
@@ -328,15 +330,6 @@ export default {
           })
         }
       })
-    },
-    formatDate (timestamp) {
-      const seconds = Math.floor(new Date().getTime() / 1000 - timestamp / 1000)
-      if (seconds > 2 * 24 * 3600) return Math.floor(seconds / 3600 / 24) + 'j'
-      if (seconds > 24 * 3600) return 'hier'
-      if (seconds > 3600) return Math.floor(seconds / 3600) + 'h'
-      if (seconds > 60) return Math.floor(seconds / 60) + 'm'
-      if (seconds > 1) return seconds + 's'
-      return '?? secondes'
     },
     getFirstnameAndLastname (email) {
       return email.split('@')[0]

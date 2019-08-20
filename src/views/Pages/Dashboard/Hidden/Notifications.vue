@@ -116,14 +116,14 @@
                     <!-- timestamp -->
                     <el-table-column
                       label="Date"
-                      width="100px"
-                      min-width="100px"
+                      width="120px"
+                      min-width="120px"
                       class="text-center">
                       <template v-slot="{row}">
                         <div class="d-flex">
                           <div class="col-auto text-left pl-1 pr-0">
                             <i class="fas fa-clock mr-1"/>
-                            {{ formatDate(row.timestamp) }}
+                            {{ getFuzzyTime(row.timestamp) }}
                           </div>
                         </div>
                       </template>
@@ -181,7 +181,8 @@ import { mapGetters } from 'vuex'
 import { BasePagination } from '@/components'
 import { Table, TableColumn, Option } from 'element-ui'
 import RouteBreadCrumb from '@/components/Breadcrumb/RouteBreadcrumb'
-import clientPaginationMixin from '../../../../mixins/clientPaginationMixin'
+import clientPaginationMixin from '@/mixins/clientPaginationMixin'
+import dateUtilMixin from '@/mixins/dateUtilMixin'
 
 export default {
   name: 'Settings',
@@ -192,7 +193,7 @@ export default {
     [Table.name]: Table,
     [TableColumn.name]: TableColumn
   },
-  mixins: [clientPaginationMixin],
+  mixins: [clientPaginationMixin, dateUtilMixin],
   data () {
     return {
       active: 1,
