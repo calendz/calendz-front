@@ -36,6 +36,17 @@ const UserService = {
       .catch(err => {
         return Promise.reject(err.response)
       })
+  },
+
+  // change user's subscription to email
+  changeIsSubMail: (isSubMail, userId) => {
+    return ApiService.patch('/user/isSubMail', { isSubMail, userId })
+      .then(res => {
+        return res.data
+      })
+      .catch(err => {
+        return Promise.reject(err.data)
+      })
   }
 }
 

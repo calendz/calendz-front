@@ -90,6 +90,18 @@ const accountModule = {
 
     CHANGE_PASSWORD_FAILURE: (state, reason) => {
       state.status = { reason }
+    },
+
+    CHANGE_ISSUBMAIL_REQUEST: (state) => {
+      state.status = { isChanging: true }
+    },
+
+    CHANGE_ISSUBMAIL_SUCCESS: (state) => {
+      state.status = {}
+    },
+
+    CHANGE_ISSUBMAIL_FAILURE: (state, reason) => {
+      state.status = { reason }
     }
   },
 
@@ -154,6 +166,18 @@ const accountModule = {
           },
           err => {
             commit('CHANGE_PASSWORD_FAILURE', err.data.message)
+          })
+    },
+
+    isSubMail: ({ commit }, { isSubMail, userId }) => {
+      commit('CHANGE_ISSUBMAIL_REQUEST')
+      UserService.changeIsSubMail(isSubMail, userId)
+        .then(
+          res => {
+            commit('CHANGE_ISSUBMAIL_SUCCESS')
+          },
+          err => {
+            commit('CHANGE_ISSUBMAIL_FAILURE', err.data.message)
           })
     }
   },
