@@ -53,33 +53,6 @@ const accountModule = {
       state.status = { reason }
     },
 
-    VERIFY_REQUEST: (state) => {
-      state.status = { isVerifying: true }
-    },
-
-    VERIFY_SUCCESS: (state, user) => {
-      state.status = {}
-      state.user = user
-    },
-
-    VERIFY_FAILURE: (state, reason) => {
-      state.status = { reason }
-    },
-
-    REFRESH_REQUEST: (state) => {
-      state.status = { isRefreshing: true }
-    },
-
-    REFRESH_SUCCESS: (state, user) => {
-      state.status = {}
-      state.user = user
-    },
-
-    REFRESH_FAILURE: (state, reason) => {
-      state.user = null
-      state.status = { reason }
-    },
-
     CHANGE_PASSWORD_REQUEST: (state) => {
       state.status = { isChanging: true }
     },
@@ -175,6 +148,9 @@ const accountModule = {
       UserService.setInformationMails(value)
         .then(
           res => {
+            const user = JSON.parse(localStorage.user)
+            user.hasInformationMails = value
+            localStorage.user = JSON.stringify(user)
             commit('CHANGE_PARAMETER_SUCCESS', value)
           },
           err => {
