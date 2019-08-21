@@ -104,7 +104,7 @@ export default {
       } else {
         isSubMail = false
       }
-      this.$store.dispatch('account/isSubMail', { isSubMail, userId })
+      this.$store.dispatch('account/isSubMail', { isSubMail })
     }
   }
 }

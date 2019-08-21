@@ -169,9 +169,9 @@ const accountModule = {
           })
     },
 
-    isSubMail: ({ commit }, { isSubMail, userId }) => {
+    isSubMail: ({ commit }, { isSubMail }) => {
       commit('CHANGE_ISSUBMAIL_REQUEST')
-      UserService.changeIsSubMail(isSubMail, userId)
+      UserService.changeIsSubMail(isSubMail)
         .then(
           res => {
             commit('CHANGE_ISSUBMAIL_SUCCESS')

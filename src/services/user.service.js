@@ -39,8 +39,8 @@ const UserService = {
   },
 
   // change user's subscription to email
-  changeIsSubMail: (isSubMail, userId) => {
-    return ApiService.patch('/user/isSubMail', { isSubMail, userId })
+  changeIsSubMail: (isSubMail) => {
+    return ApiService.patch('/user/isSubMail', { isSubMail })
       .then(res => {
         return res.data
       })
