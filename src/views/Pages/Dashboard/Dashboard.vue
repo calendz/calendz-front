@@ -53,29 +53,38 @@
           </stats-card>
         </div>
         <div class="col-xl-3 col-md-6">
-          <stats-card
-            title="Sales"
-            type="gradient-green"
-            sub-title="924"
-            icon="ni ni-money-coins">
+          <a
+            class="nav-link p-0"
+            target="_blank"
+            href="http://beecome.io/dashboard">
+            <stats-card
+              title="ACCÈS DIRECT À"
+              type="gradient-blue"
+              sub-title="beecome"
+              icon="fas fa-bold">
 
-            <template slot="footer">
-              <span class="text-danger mr-2"><i class="fa fa-arrow-down"/> 5.72%</span>
-              <span class="text-nowrap">Since last month</span>
-            </template>
-          </stats-card>
+              <template slot="footer">
+                <span class="text-nowrap">cliquez pour accéder</span>
+              </template>
+            </stats-card>
+          </a>
 
         </div>
         <div class="col-xl-3 col-md-6">
-          <stats-card
-            title="Performance"
-            type="gradient-info"
-            sub-title="49,65%"
-            icon="ni ni-chart-bar-32">
-
+          <stats-card class="bg-gradient-default">
+            <div class="row">
+              <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0 text-white">DATE & HEURE</h5>
+                <span class="h2 font-weight-bold mb-0 text-white">{{ currentTime }}</span>
+              </div>
+              <div class="col-auto">
+                <div class="icon icon-shape bg-white text-dark rounded-circle shadow">
+                  <i class="fas fa-clock"/>
+                </div>
+              </div>
+            </div>
             <template slot="footer">
-              <span class="text-success mr-2"><i class="fa fa-arrow-up"/> 54.8%</span>
-              <span class="text-nowrap">Since last month</span>
+              <span class="text-nowrap text-white">{{ currentDate }}</span>
             </template>
           </stats-card>
         </div>
@@ -102,6 +111,28 @@ export default {
   components: {
     RouteBreadCrumb,
     LatestNotifications
+  },
+  data () {
+    return {
+      currentTime: '--:--:--',
+      currentDate: '----- -- ------'
+    }
+  },
+  created () {
+    this.updateDate()
+    setInterval(() => {
+      this.updateDate()
+    }, 1000)
+  },
+  methods: {
+    updateDate: function () {
+      const date = new Date()
+      this.currentTime = `${('0' + date.getHours()).slice(-2)}:${('0' + date.getMinutes()).slice(-2)}:${('0' + date.getSeconds()).slice(-2)}`
+
+      const j = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche']
+      const m = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre']
+      this.currentDate = `${j[date.getDay() - 1]} ${('0' + date.getDate()).slice(-2)} ${m[date.getMonth()]}`
+    }
   }
 }
 </script>
