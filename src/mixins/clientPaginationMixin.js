@@ -41,7 +41,8 @@ export default {
       },
       searchQuery: '',
       searchedData: [],
-      fuseSearch: null
+      fuseSearch: null,
+      isFuseSearchReady: false
     }
   },
   methods: {
@@ -62,13 +63,6 @@ export default {
       }
     }
   },
-  mounted () {
-    // Fuse search initialization.
-    this.fuseSearch = new Fuse(this.tableData, {
-      keys: ['name', 'email'],
-      threshold: 0.3
-    })
-  },
   watch: {
     /**
      * Searches through the table data by a given query.
@@ -81,6 +75,17 @@ export default {
         result = this.fuseSearch.search(this.searchQuery)
       }
       this.searchedData = result
+    },
+
+    /**
+     * Wait for the table to have data before initializing fuseSearch
+     */
+    isFuseSearchReady (value) {
+      if (!value) return
+      this.fuseSearch = new Fuse(this.tableData, {
+        keys: this.propsToSearch,
+        threshold: 0.3
+      })
     }
   }
 }
