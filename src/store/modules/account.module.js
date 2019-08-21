@@ -92,15 +92,16 @@ const accountModule = {
       state.status = { reason }
     },
 
-    CHANGE_ISSUBMAIL_REQUEST: (state) => {
-      state.status = { isChanging: true }
+    CHANGE_PARAMETER_REQUEST: (state) => {
+      state.status = { isLoading: true }
     },
 
-    CHANGE_ISSUBMAIL_SUCCESS: (state) => {
+    CHANGE_PARAMETER_SUCCESS: (state, value) => {
+      state.user.hasInformationMails = value
       state.status = {}
     },
 
-    CHANGE_ISSUBMAIL_FAILURE: (state, reason) => {
+    CHANGE_PARAMETER_FAILURE: (state, reason) => {
       state.status = { reason }
     }
   },
@@ -169,15 +170,15 @@ const accountModule = {
           })
     },
 
-    isSubMail: ({ commit }, { isSubMail }) => {
-      commit('CHANGE_ISSUBMAIL_REQUEST')
-      UserService.changeIsSubMail(isSubMail)
+    setInformationMails: ({ commit }, { value }) => {
+      commit('CHANGE_PARAMETER_REQUEST')
+      UserService.setInformationMails(value)
         .then(
           res => {
-            commit('CHANGE_ISSUBMAIL_SUCCESS')
+            commit('CHANGE_PARAMETER_SUCCESS', value)
           },
           err => {
-            commit('CHANGE_ISSUBMAIL_FAILURE', err.data.message)
+            commit('CHANGE_PARAMETER_FAILURE', err.message)
           })
     }
   },
