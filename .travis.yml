@@ -24,7 +24,7 @@ jobs:
 
     # Build and push both current version & latest version
     - stage: Build Docker image
-      if: branch = feature/continuous-deployment
+      if: branch = master
       script:
       - "PACKAGE_VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]')"
       - echo "==== Building calendz/front:$PACKAGE_VERSION ===="
