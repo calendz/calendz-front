@@ -1,0 +1,22 @@
+.DS_Store
+node_modules/
+dist/
+.cache/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+test/unit/coverage
+
+# Editor directories and files
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# env configuration
+.env
+
+# ssh key for deployment
+deploy_key
+deploy_key.pub
