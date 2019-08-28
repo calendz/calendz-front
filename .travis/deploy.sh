@@ -8,6 +8,8 @@ ssh -o "StrictHostKeyChecking=no" $SSH_USER@$SSH_IP -p $SSH_PORT <<EOF
   cd /home/calendz/calendz-conf
   git pull
   docker pull calendz/front:latest
+  docker-compose -f docker/docker-compose.prod.yml stop calendz-front
+  docker-compose -f docker/docker-compose.prod.yml rm -f calendz-front
   docker-compose -f docker/docker-compose.prod.yml up -d --no-deps --build calendz-front
   echo "successfully deployed" >> /home/calendz/deployed.txt
 EOF
