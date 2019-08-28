@@ -10,18 +10,31 @@ install: npm install
 
 jobs:
   include:
-    - stage: test
-      script: npm test
+    - stage: Tests
+      script:
+        - npm test
+      after_success:
+        - wget https://raw.githubusercontent.com/calendz/travis-discord-webhook/master/send.sh
+        - chmod +x send.sh
+        - ./send.sh success $DISCORD_WEBHOOK_URL
+      after_failure:
+        - wget https://raw.githubusercontent.com/calendz/travis-discord-webhook/master/send.sh
+        - chmod +x send.sh
+        - ./send.sh failure $DISCORD_WEBHOOK_URL
 
-after_success:
-  - wget https://raw.githubusercontent.com/calendz/travis-discord-webhook/master/send.sh
-  - chmod +x send.sh
-  - ./send.sh success $DISCORD_WEBHOOK_URL
-
-after_failure:
-  - wget https://raw.githubusercontent.com/calendz/travis-discord-webhook/master/send.sh
-  - chmod +x send.sh
-  - ./send.sh failure $DISCORD_WEBHOOK_URL
+    # Build and push both current version & latest version
+    - stage: Build Docker image
+      if: branch = feature/continuous-deployment
+      script:
+      - "PACKAGE_VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]')"
+      - echo "==== Building calendz/front:$PACKAGE_VERSION ===="
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - docker build -t calendz/front .
+      - docker images
+      - docker tag calendz/front calendz/front:latest
+      - docker tag calendz/front calendz/front:${PACKAGE_VERSION}
+      - docker push calendz/front:latest
+      - docker push calendz/front:${PACKAGE_VERSION}
 
 cache:
   directories:
