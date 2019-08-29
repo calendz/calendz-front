@@ -162,7 +162,7 @@
                     type="info"
                     size="sm"
                     icon
-                    @click="modal = true, modifyForm = editInformations(row), saveValues = row">
+                    @click="modal = true, modifyForm = {...row}">
                     <i class="text-white ni ni-ruler-pencil"/>
                   </base-button>
                   <base-button
@@ -170,7 +170,7 @@
                     type="danger"
                     size="sm"
                     icon
-                    @click="deleteUser(row._id, row)">
+                    @click="deleteUser(row)">
                     <i class="text-white fas fa-trash"/>
                   </base-button>
                 </div>
@@ -183,9 +183,7 @@
           <form
             class="needs-validation"
             @submit.prevent="handleSubmit">
-            <modal
-              :show.sync="modal"
-              @close="editInformationsReverse(modifyForm)">
+            <modal :show.sync="modal">
               <template slot="header">
                 <h5 class="modal-title">Modifier les informations de {{ modifyForm.firstname + " " + modifyForm.lastname }}</h5>
               </template>
@@ -264,37 +262,35 @@
               <div class="row">
                 <div class="col-md-6">
                   <base-input
+                    :error="getError('bts')"
+                    :valid="isValid('bts')"
                     class="mb-3"
                     label="Option BTS"
                     prepend-icon="ni ni-book-bookmark">
                     <select
-                      v-validate="'required|valid_bts_option'"
+                      v-validate="'required|boolean'"
                       v-model="modifyForm.bts"
                       name="bts"
                       class="form-control">
-                      <option
-                        value="null"
-                        hidden>Selectionner l'option</option>
-                      <option>Oui</option>
-                      <option>Non</option>
+                      <option :value="true">Oui</option>
+                      <option :value="false">Non</option>
                     </select>
                   </base-input>
                 </div>
                 <div class="col-md-6">
                   <base-input
+                    :error="getError('actif')"
+                    :valid="isValid('actif')"
                     class="mb-3"
                     label="Actif"
                     prepend-icon="ni ni-check-bold">
                     <select
-                      v-validate="'required|valid_active'"
+                      v-validate="'required|boolean'"
                       v-model="modifyForm.isActive"
-                      name="active"
+                      name="actif"
                       class="form-control">
-                      <option
-                        value="null"
-                        hidden>Selectionner l'option</option>
-                      <option>Oui</option>
-                      <option>Non</option>
+                      <option :value="true">Oui</option>
+                      <option :value="false">Non</option>
                     </select>
                   </base-input>
                 </div>
@@ -319,32 +315,34 @@
               </div>
               <template slot="footer">
                 <base-button
-                  type="secondary"
                   size="md"
-                  @click="modal = false, editInformationsReverse(modifyForm)">Fermer</base-button>
+                  type="secondary"
+                  @click="modal = false">
+                  Fermer
+                </base-button>
                 <base-button
                   size="md"
                   type="primary"
-                  native-type="submit">Sauvegarder</base-button>
+                  native-type="submit">
+                  Sauvegarder
+                </base-button>
               </template>
-          </modal></form>
+            </modal>
+          </form>
         </div>
         <div
           slot="footer"
           class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap">
-          <div class="">
-            <p class="card-category">
-              Affichage de  {{ from + 1 }} à {{ to }} d'un total de {{ total }} entrées
-            </p>
+          <p class="card-category">
+            Affichage de  {{ from + 1 }} à {{ to }} d'un total de {{ total }} entrées
+          </p>
 
-          </div>
           <base-pagination
             v-model="pagination.currentPage"
             :per-page="pagination.perPage"
             :total="total"
             class="pagination-no-border"
           />
-          <!-- slt -->
         </div>
       </card>
     </div>
@@ -402,14 +400,7 @@ export default {
         }
       ],
       tableData: [],
-      toModify: '',
-      modifyForm: {
-        firstname: '',
-        lastname: '',
-        grade: '',
-        email: ''
-      },
-      saveValues: ''
+      modifyForm: {}
     }
   },
   computed: {
@@ -431,66 +422,41 @@ export default {
     isValid (name) {
       return this.validated && !this.errors.has(name)
     },
-    editInformations (value) {
-      if (value.bts === true) {
-        value.bts = 'Oui'
-      } else {
-        value.bts = 'Non'
-      }
-      if (value.isActive === true) {
-        value.isActive = 'Oui'
-      } else {
-        value.isActive = 'Non'
-      }
-      return value
-    },
-    editInformationsReverse (value) {
-      if (value.bts === 'Oui') {
-        value.bts = true
-      } else {
-        value.bts = false
-      }
-      if (value.isActive === 'Oui') {
-        value.isActive = true
-      } else {
-        value.isActive = false
-      }
-      return value
-    },
     handleSubmit (e) {
       // vérification validation des champs
       this.$validator.validate().then(valid => {
         if (valid) {
-          this.modifyForm = this.editInformationsReverse(this.modifyForm)
           // envoie de la requête d'actualisation
           this.$store.dispatch('account/update', this.modifyForm).then(response => {
+            // update the user in the table without having to reload it
+            const index = this.tableData.findIndex(row => row._id === this.modifyForm._id)
+            this.tableData.splice(index, 1, this.modifyForm)
+
+            // close the modal
             this.modal = false
           })
         }
       })
     },
-    deleteUser (userId, row) {
+    deleteUser (row) {
       swal.fire({
-        title: 'Suppression du compte',
-        text: 'Êtes-vous sur de bien vouloir supprimer le compte',
+        title: `Supprimer ${row.firstname} ${row.lastname}`,
+        text: 'Êtes-vous sur de vouloir supprimer ce compte ?',
         type: 'warning',
         customClass: {
-          confirmButton: 'btn btn-primary',
-          cancelButton: 'btn btn-secondary'
+          confirmButton: 'btn btn-warning mt-2',
+          cancelButton: 'btn btn-secondary mt-2'
         },
         buttonsStyling: false,
         showCancelButton: true,
         cancelButtonText: 'Annuler',
-        confirmButtonText: 'Oui !'
+        confirmButtonText: 'Confimer'
       }).then((result) => {
         if (result.value) {
-          this.$store.dispatch('account/delete', { userId }).then(
-            res => {
-              this.tableData.splice(this.tableData.findIndex(function (element) {
-                return element._id === userId
-              }), 1)
-            }
-          )
+          this.$store.dispatch('account/delete', { userId: row._id }).then(res => {
+            const index = this.tableData.findIndex(element => element._id === row._id)
+            this.tableData.splice(index, 1)
+          })
         }
       })
     }

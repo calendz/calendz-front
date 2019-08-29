@@ -16,14 +16,10 @@ Validator.extend('valid_grade', {
   validate: value => ['B1 G1', 'B1 G2', 'B2 G1', 'B2 G2', 'B3 G1', 'B3 G2', 'B3 G3', 'I4 G1', 'I4 G2', 'I5 G1', 'I5 G2'].indexOf(value) !== -1
 })
 
-Validator.extend('valid_bts_option', {
-  validate: value => ['Oui', 'Non'].indexOf(value) !== -1
-})
-
-Validator.extend('valid_active', {
-  validate: value => ['Oui', 'Non'].indexOf(value) !== -1
+Validator.extend('boolean', {
+  validate: value => ['true', 'false', true, false].includes(value)
 })
 
 Validator.extend('valid_role', {
-  validate: value => ['ADMIN', 'MEMBER'].indexOf(value) !== -1
+  validate: value => ['ADMIN', 'MEMBER'].includes(value)
 })
