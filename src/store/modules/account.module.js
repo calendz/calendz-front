@@ -90,6 +90,18 @@ const accountModule = {
 
     CHANGE_PASSWORD_FAILURE: (state, reason) => {
       state.status = { reason }
+    },
+
+    UPDATE_USER_REQUEST: (state) => {
+      state.status = { isUpdating: true }
+    },
+
+    UPDATE_USER_SUCCESS: (state) => {
+      state.status = {}
+    },
+
+    UPDATE_USER_FAILURE: (state, reason) => {
+      state.status = { reason }
     }
   },
 
@@ -154,6 +166,27 @@ const accountModule = {
           },
           err => {
             commit('CHANGE_PASSWORD_FAILURE', err.data.message)
+          })
+    },
+    update: ({ commit }, { _id, firstname, lastname, email, permissionLevel, grade, bts, isActive }) => {
+      commit('UPDATE_USER_REQUEST')
+      UserService.updateInformations(_id, firstname, lastname, email, permissionLevel, grade, bts, isActive)
+        .then(
+          res => {
+            commit('UPDATE_USER_SUCCESS')
+            swal.fire({
+              title: 'Les informations de l\'utilisateur ont bien été modifiés !',
+              type: 'success',
+              customClass: { confirmButton: 'btn btn-primary' }
+            })
+          },
+          err => {
+            commit('UPDATE_USER_FAILURE', err.data.message)
+            swal.fire({
+              title: 'Erreur dans ma modification des informations !',
+              type: 'danger',
+              customClass: { confirmButton: 'btn btn-primary' }
+            })
           })
     }
   },

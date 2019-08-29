@@ -38,6 +38,17 @@ const UserService = {
       })
   },
 
+  // update user informations
+  updateInformations: (id, firstname, lastname, email, permissionLevel, grade, bts, isActive) => {
+    return ApiService.patch(`/user/${id}`, { firstname, lastname, email, permissionLevel, grade, bts, isActive })
+      .then(res => {
+        return res.data
+      })
+      .catch(err => {
+        return Promise.reject(err.response)
+      })
+  },
+
   // get all users
   getAll: () => {
     return ApiService.get('/user/all')

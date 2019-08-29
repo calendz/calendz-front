@@ -155,25 +155,178 @@
               width="130px"
               align="right"
               label="Actions">
-              <div class="d-flex">
-                <base-button
-                  class="edit"
-                  type="info"
-                  size="sm"
-                  icon>
-                  <i class="text-white ni ni-ruler-pencil"/>
-                </base-button>
-                <base-button
-                  class="remove btn-link"
-                  type="danger"
-                  size="sm"
-                  icon>
-                  <i class="text-white fas fa-trash"/>
-                </base-button>
-              </div>
+              <template v-slot="{row}">
+                <div class="d-flex">
+                  <base-button
+                    class="edit"
+                    type="info"
+                    size="sm"
+                    icon
+                    @click="modal = true, modifyForm = editInformations(row)">
+                    <i class="text-white ni ni-ruler-pencil"/>
+                  </base-button>
+                  <base-button
+                    class="remove btn-link"
+                    type="danger"
+                    size="sm"
+                    icon>
+                    <i class="text-white fas fa-trash"/>
+                  </base-button>
+                </div>
+              </template>
             </el-table-column>
 
           </el-table>
+
+          <!-- modal -->
+          <form
+            class="needs-validation"
+            @submit.prevent="handleSubmit">
+            <modal
+              :show.sync="modal"
+              @close="editInformationsReverse(modifyForm)">
+              <template slot="header">
+                <h5 class="modal-title">Modifier les informations de {{ modifyForm.firstname + " " + modifyForm.lastname }}</h5>
+              </template>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <base-input
+                    v-validate="'required|min:3|max:32'"
+                    v-model="modifyForm.firstname"
+                    :error="getError('prénom')"
+                    :valid="isValid('prénom')"
+                    name="prénom"
+                    class="mb-3"
+                    prepend-icon="ni ni-single-02"
+                    placeholder="Prénom"
+                    label="Prénom"/>
+                </div>
+                <div class="col-md-6">
+                  <base-input
+                    v-validate="'required|min:3|max:32'"
+                    v-model="modifyForm.lastname"
+                    :error="getError('nom')"
+                    :valid="isValid('nom')"
+                    name="nom"
+                    class="mb-3"
+                    prepend-icon="ni ni-single-02"
+                    placeholder="Nom"
+                    label="Nom"/>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <base-input
+                    v-validate="'required|email|email_epsi_wis|min:12|max:64'"
+                    v-model="modifyForm.email"
+                    :error="getError('email')"
+                    :valid="isValid('email')"
+                    name="email"
+                    class="mb-3"
+                    prepend-icon="ni ni-email-83"
+                    placeholder="Adresse mail"
+                    label="Adresse mail"/>
+                </div>
+                <div class="col-md-6">
+                  <base-input
+                    :error="getError('classe')"
+                    :valid="isValid('classe')"
+                    class="mb-3"
+                    prepend-icon="ni ni-hat-3"
+                    label="Classe">
+                    <select
+                      v-validate="'required|valid_grade'"
+                      v-model="modifyForm.grade"
+                      name="classe"
+                      class="form-control">
+                      <option
+                        value=""
+                        hidden>Séléctionnez la classe</option>
+                      <option>B1 G1</option>
+                      <option>B1 G2</option>
+                      <option>B2 G1</option>
+                      <option>B2 G2</option>
+                      <option>B3 G1</option>
+                      <option>B3 G2</option>
+                      <option>B3 G3</option>
+                      <option>I4 G1</option>
+                      <option>I4 G2</option>
+                      <option>I5 G1</option>
+                      <option>I5 G2</option>
+                    </select>
+                  </base-input>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <base-input
+                    class="mb-3"
+                    label="Option BTS"
+                    prepend-icon="ni ni-book-bookmark">
+                    <select
+                      v-validate="'required|valid_bts_option'"
+                      v-model="modifyForm.bts"
+                      name="bts"
+                      class="form-control">
+                      <option
+                        value="null"
+                        hidden>Selectionner l'option</option>
+                      <option>Oui</option>
+                      <option>Non</option>
+                    </select>
+                  </base-input>
+                </div>
+                <div class="col-md-6">
+                  <base-input
+                    class="mb-3"
+                    label="Actif"
+                    prepend-icon="ni ni-check-bold">
+                    <select
+                      v-validate="'required|valid_active'"
+                      v-model="modifyForm.isActive"
+                      name="active"
+                      class="form-control">
+                      <option
+                        value="null"
+                        hidden>Selectionner l'option</option>
+                      <option>Oui</option>
+                      <option>Non</option>
+                    </select>
+                  </base-input>
+                </div>
+                <div class="col-md-6">
+                  <base-input
+                    class="mb-3"
+                    label="Rôle"
+                    prepend-icon="ni ni-single-02">
+                    <select
+                      v-validate="'required|valid_role'"
+                      v-model="modifyForm.permissionLevel"
+                      name="permissions"
+                      class="form-control">
+                      <option
+                        value="null"
+                        hidden>Selectionner la permission</option>
+                      <option>ADMIN</option>
+                      <option>MEMBER</option>
+                    </select>
+                  </base-input>
+                </div>
+              </div>
+              <template slot="footer">
+                <base-button
+                  type="secondary"
+                  size="md"
+                  @click="modal = false">Fermer</base-button>
+                <base-button
+                  size="md"
+                  type="primary"
+                  native-type="submit">Sauvegarder</base-button>
+              </template>
+          </modal></form>
         </div>
         <div
           slot="footer"
@@ -190,18 +343,20 @@
             :total="total"
             class="pagination-no-border"
           />
+          <!-- slt -->
         </div>
       </card>
     </div>
   </div>
 </template>
 <script>
-import { BasePagination } from '@/components'
+import { BasePagination, Modal } from '@/components'
 import { Table, TableColumn, Option, Select } from 'element-ui'
 import RouteBreadCrumb from '@/components/Breadcrumb/RouteBreadcrumb'
 import clientPaginationMixin from '@/mixins/clientPaginationMixin'
 import dateUtilMixin from '@/mixins/dateUtilMixin'
 import UserService from '@/services/user.service'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -210,11 +365,13 @@ export default {
     [Option.name]: Option,
     [Select.name]: Select,
     [Table.name]: Table,
-    [TableColumn.name]: TableColumn
+    [TableColumn.name]: TableColumn,
+    Modal
   },
   mixins: [clientPaginationMixin, dateUtilMixin],
   data () {
     return {
+      modal: false,
       propsToSearch: ['firstname', 'lastname', 'grade', 'email', 'permissionLevel'],
       tableColumns: [
         {
@@ -242,14 +399,73 @@ export default {
           sortable: true
         }
       ],
-      tableData: []
+      tableData: [],
+      toModify: '',
+      modifyForm: {
+        firstname: '',
+        lastname: '',
+        grade: '',
+        email: ''
+      }
     }
+  },
+  computed: {
+    ...mapState({
+      updateErrors: state => state.account.status.reason,
+      updating: state => state.account.status.isUpdating
+    })
   },
   created () {
     UserService.getAll().then(res => {
       this.tableData = res.users
       this.isFuseSearchReady = true
     })
+  },
+  methods: {
+    getError (name) {
+      return this.errors.first(name)
+    },
+    isValid (name) {
+      return this.validated && !this.errors.has(name)
+    },
+    editInformations (value) {
+      if (value.bts === true) {
+        value.bts = 'Oui'
+      } else {
+        value.bts = 'Non'
+      }
+      if (value.isActive === true) {
+        value.isActive = 'Oui'
+      } else {
+        value.isActive = 'Non'
+      }
+      return value
+    },
+    editInformationsReverse (value) {
+      if (value.bts === 'Oui') {
+        value.bts = true
+      } else {
+        value.bts = false
+      }
+      if (value.isActive === 'Oui') {
+        value.isActive = true
+      } else {
+        value.isActive = false
+      }
+      return value
+    },
+    handleSubmit (e) {
+      // vérification validation des champs
+      this.$validator.validate().then(valid => {
+        if (valid) {
+          this.modifyForm = this.editInformationsReverse(this.modifyForm)
+          // envoie de la requête d'actualisation
+          this.$store.dispatch('account/update', this.modifyForm).then(response => {
+            this.modal = false
+          })
+        }
+      })
+    }
   }
 }
 </script>
