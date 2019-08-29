@@ -6,6 +6,7 @@ import DashboardPlugin from './plugins/dashboard-plugin'
 import ApiService from './services/api.service'
 import { VueSpinners } from '@saeris/vue-spinners'
 import VueAnalytics from 'vue-analytics'
+import './registerServiceWorker'
 
 const isProd = process.env.NODE_ENV === 'production'
 
