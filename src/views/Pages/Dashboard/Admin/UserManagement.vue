@@ -162,14 +162,15 @@
                     type="info"
                     size="sm"
                     icon
-                    @click="modal = true, modifyForm = editInformations(row)">
+                    @click="modal = true, modifyForm = editInformations(row), saveValues = row">
                     <i class="text-white ni ni-ruler-pencil"/>
                   </base-button>
                   <base-button
                     class="remove btn-link"
                     type="danger"
                     size="sm"
-                    icon>
+                    icon
+                    @click="deleteUser(row._id, row)">
                     <i class="text-white fas fa-trash"/>
                   </base-button>
                 </div>
@@ -320,7 +321,7 @@
                 <base-button
                   type="secondary"
                   size="md"
-                  @click="modal = false">Fermer</base-button>
+                  @click="modal = false, editInformationsReverse(modifyForm)">Fermer</base-button>
                 <base-button
                   size="md"
                   type="primary"
@@ -350,6 +351,7 @@
   </div>
 </template>
 <script>
+import swal from 'sweetalert2'
 import { BasePagination, Modal } from '@/components'
 import { Table, TableColumn, Option, Select } from 'element-ui'
 import RouteBreadCrumb from '@/components/Breadcrumb/RouteBreadcrumb'
@@ -406,7 +408,8 @@ export default {
         lastname: '',
         grade: '',
         email: ''
-      }
+      },
+      saveValues: ''
     }
   },
   computed: {
@@ -463,6 +466,31 @@ export default {
           this.$store.dispatch('account/update', this.modifyForm).then(response => {
             this.modal = false
           })
+        }
+      })
+    },
+    deleteUser (userId, row) {
+      swal.fire({
+        title: 'Suppression du compte',
+        text: 'Êtes-vous sur de bien vouloir supprimer le compte',
+        type: 'warning',
+        customClass: {
+          confirmButton: 'btn btn-primary',
+          cancelButton: 'btn btn-secondary'
+        },
+        buttonsStyling: false,
+        showCancelButton: true,
+        cancelButtonText: 'Annuler',
+        confirmButtonText: 'Oui !'
+      }).then((result) => {
+        if (result.value) {
+          this.$store.dispatch('account/delete', { userId }).then(
+            res => {
+              this.tableData.splice(this.tableData.findIndex(function (element) {
+                return element._id === userId
+              }), 1)
+            }
+          )
         }
       })
     }

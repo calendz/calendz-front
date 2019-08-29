@@ -102,6 +102,18 @@ const accountModule = {
 
     UPDATE_USER_FAILURE: (state, reason) => {
       state.status = { reason }
+    },
+
+    DELETE_USER_REQUEST: (state) => {
+      state.status = { isDeleting: true }
+    },
+
+    DELETE_USER_SUCCESS: (state) => {
+      state.status = {}
+    },
+
+    DELETE_USER_FAILURE: (state, reason) => {
+      state.status = { reason }
     }
   },
 
@@ -168,6 +180,7 @@ const accountModule = {
             commit('CHANGE_PASSWORD_FAILURE', err.data.message)
           })
     },
+
     update: ({ commit }, { _id, firstname, lastname, email, permissionLevel, grade, bts, isActive }) => {
       commit('UPDATE_USER_REQUEST')
       UserService.updateInformations(_id, firstname, lastname, email, permissionLevel, grade, bts, isActive)
@@ -183,11 +196,36 @@ const accountModule = {
           err => {
             commit('UPDATE_USER_FAILURE', err.data.message)
             swal.fire({
-              title: 'Erreur dans ma modification des informations !',
+              title: 'Erreur dans la modification des informations !',
               type: 'danger',
               customClass: { confirmButton: 'btn btn-primary' }
             })
           })
+    },
+
+    delete: ({ commit }, { userId }) => {
+      commit('DELETE_USER_REQUEST')
+      UserService.deleteAccount(userId)
+        .then(
+          res => {
+            commit('DELETE_USER_SUCCESS')
+            swal.fire({
+              title: 'L\'utilisateur à bien été supprimé',
+              type: 'success',
+              customClass: {
+                confirmButton: 'btn btn-primary'
+              }
+            })
+          },
+          err => {
+            commit('DELETE_USER_FAILURE', err.data.message)
+            swal.fire({
+              title: 'Erreur dans la suppression du compte !',
+              type: 'danger',
+              customClass: { confirmButton: 'btn btn-primary' }
+            })
+          }
+        )
     }
   },
 

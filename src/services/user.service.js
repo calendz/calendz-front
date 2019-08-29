@@ -49,6 +49,17 @@ const UserService = {
       })
   },
 
+  // delete user account
+  deleteAccount: (userId) => {
+    return ApiService.delete(`/user/${userId}`)
+      .then(res => {
+        return res.data
+      })
+      .catch(err => {
+        return Promise.reject(err.response)
+      })
+  },
+
   // get all users
   getAll: () => {
     return ApiService.get('/user/all')
