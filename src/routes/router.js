@@ -7,6 +7,7 @@ Vue.use(VueRouter)
 
 // creates our router
 const router = new VueRouter({
+  mode: 'history',
   routes,
   linkActiveClass: 'active',
   scrollBehavior: (to, from, savedPosition) => {
