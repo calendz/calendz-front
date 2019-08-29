@@ -43,7 +43,7 @@ Le front de calendz est développé avec les frameworks et outils suivants* :
 
       NODE_ENV=development
       APP_PORT=3000
-      VUE_APP_API_URL=http://localhost:3001/api/v1
+      VUE_APP_API_URL=http://localhost:3001/v1
 
 ### Lancement
 

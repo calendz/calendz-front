@@ -192,7 +192,7 @@ export default {
   },
   computed: {
     ...mapState({
-      registerErrors: state => state.account.status.reason,
+      registerErrors: state => state.account.status.registerErrors,
       registering: state => state.account.status.isRegistering
     })
   },

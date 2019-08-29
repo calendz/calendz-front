@@ -111,7 +111,7 @@ export default {
   },
   computed: {
     ...mapState({
-      loginError: state => state.account.status.reason,
+      loginError: state => state.account.status.loginError,
       loggingIn: state => state.account.status.isLoggingIn
     })
   },

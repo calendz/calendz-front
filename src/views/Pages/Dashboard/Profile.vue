@@ -246,7 +246,7 @@ export default {
   computed: {
     ...mapState({
       user: state => state.account.user,
-      changePasswordErrors: state => state.account.status.reason,
+      changePasswordErrors: state => state.account.status.changePasswordError,
       changing: state => state.account.status.isChanging
     })
   },
