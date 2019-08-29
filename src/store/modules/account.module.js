@@ -28,9 +28,9 @@ const accountModule = {
       state.status = {}
     },
 
-    REGISTER_FAILURE: (state, reason) => {
+    REGISTER_FAILURE: (state, reasons) => {
       state.user = null
-      state.status = { reason }
+      state.status = { registerErrors: reasons }
     },
 
     LOGIN_REQUEST: (state) => {
@@ -45,7 +45,7 @@ const accountModule = {
 
     LOGIN_FAILURE: (state, reason) => {
       state.user = null
-      state.status = { reason }
+      state.status = { loginError: reason }
     },
 
     LOGOUT: (state, reason) => {
@@ -62,7 +62,7 @@ const accountModule = {
     },
 
     CHANGE_PASSWORD_FAILURE: (state, reason) => {
-      state.status = { reason }
+      state.status = { changePasswordError: reason }
     },
 
     CHANGE_PARAMETER_REQUEST: (state) => {
@@ -75,7 +75,7 @@ const accountModule = {
     },
 
     CHANGE_PARAMETER_FAILURE: (state, reason) => {
-      state.status = { reason }
+      state.status = { changeParameterError: reason }
     }
   },
 
@@ -95,7 +95,7 @@ const accountModule = {
           },
           err => {
             let errors = []
-            err.data.errors ? errors = err.data.errors : errors.push(err.data.message)
+            err.errors ? errors = err.errors : errors.push(err.message)
             commit('REGISTER_FAILURE', errors)
           })
     },
@@ -148,13 +148,15 @@ const accountModule = {
       UserService.setInformationMails(value)
         .then(
           res => {
+            commit('CHANGE_PARAMETER_SUCCESS', value)
             const user = JSON.parse(localStorage.user)
             user.hasInformationMails = value
             localStorage.user = JSON.stringify(user)
-            commit('CHANGE_PARAMETER_SUCCESS', value)
+            Vue.prototype.$notify({ type: 'success', message: `Changement effectué avec succès.` })
           },
           err => {
             commit('CHANGE_PARAMETER_FAILURE', err.message)
+            Vue.prototype.$notify({ type: 'danger', message: `Une erreur est survenue, veuillez réessayer...` })
           })
     }
   },
