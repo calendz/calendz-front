@@ -220,7 +220,8 @@ const accountModule = {
           err => {
             commit('DELETE_USER_FAILURE', err.data.message)
             swal.fire({
-              title: 'Erreur dans la suppression du compte !',
+              title: 'Une erreur est survenue !',
+              footer: err.data.message || 'Erreur inconnue',
               type: 'danger',
               customClass: { confirmButton: 'btn btn-primary' }
             })
