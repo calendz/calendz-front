@@ -240,9 +240,6 @@
                       v-model="modifyForm.grade"
                       name="classe"
                       class="form-control">
-                      <option
-                        value=""
-                        hidden>Séléctionnez la classe</option>
                       <option>B1 G1</option>
                       <option>B1 G2</option>
                       <option>B2 G1</option>
