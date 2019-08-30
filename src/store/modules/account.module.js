@@ -76,6 +76,30 @@ const accountModule = {
 
     CHANGE_PARAMETER_FAILURE: (state, reason) => {
       state.status = { changeParameterError: reason }
+    },
+
+    UPDATE_USER_REQUEST: (state) => {
+      state.status = { isUpdating: true }
+    },
+
+    UPDATE_USER_SUCCESS: (state) => {
+      state.status = {}
+    },
+
+    UPDATE_USER_FAILURE: (state, reason) => {
+      state.status = { reason }
+    },
+
+    DELETE_USER_REQUEST: (state) => {
+      state.status = { isDeleting: true }
+    },
+
+    DELETE_USER_SUCCESS: (state) => {
+      state.status = {}
+    },
+
+    DELETE_USER_FAILURE: (state, reason) => {
+      state.status = { deleteError: reason }
     }
   },
 
@@ -157,6 +181,53 @@ const accountModule = {
           err => {
             commit('CHANGE_PARAMETER_FAILURE', err.message)
             Vue.prototype.$notify({ type: 'danger', message: `Une erreur est survenue, veuillez réessayer...` })
+          })
+    },
+
+    update: ({ commit }, { _id, firstname, lastname, email, permissionLevel, grade, bts, isActive }) => {
+      commit('UPDATE_USER_REQUEST')
+      UserService.updateInformations(_id, firstname, lastname, email, permissionLevel, grade, bts, isActive)
+        .then(
+          res => {
+            commit('UPDATE_USER_SUCCESS')
+            swal.fire({
+              title: 'Les informations de l\'utilisateur ont bien été modifiés !',
+              type: 'success',
+              customClass: { confirmButton: 'btn btn-primary' }
+            })
+          },
+          err => {
+            commit('UPDATE_USER_FAILURE', err.data.message)
+            swal.fire({
+              title: 'Erreur dans la modification des informations !',
+              type: 'error',
+              customClass: { confirmButton: 'btn btn-primary' }
+            })
+          })
+    },
+
+    delete: ({ commit }, { userId }) => {
+      commit('DELETE_USER_REQUEST')
+      UserService.deleteAccount(userId)
+        .then(
+          res => {
+            commit('DELETE_USER_SUCCESS')
+            swal.fire({
+              title: 'L\'utilisateur à bien été supprimé',
+              type: 'success',
+              customClass: {
+                confirmButton: 'btn btn-primary'
+              }
+            })
+          },
+          err => {
+            commit('DELETE_USER_FAILURE', err.message)
+            swal.fire({
+              title: 'Une erreur est survenue !',
+              text: err.message || 'Erreur inconnue',
+              type: 'error',
+              customClass: { confirmButton: 'btn btn-primary' }
+            })
           })
     }
   },
