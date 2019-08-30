@@ -402,6 +402,7 @@ export default {
   },
   computed: {
     ...mapState({
+      user: state => state.account.user,
       updateErrors: state => state.account.status.reason,
       updating: state => state.account.status.isUpdating
     })
@@ -436,6 +437,15 @@ export default {
       })
     },
     deleteUser (row) {
+      if (row._id === this.user._id) {
+        return swal.fire({
+          title: 'Tututut !',
+          text: 'Vous ne pouvez pas vous auto-supprimer, pour cela rendez-vous dans la page "Paramètres".',
+          type: 'error',
+          customClass: { confirmButton: 'btn btn-primary' }
+        })
+      }
+
       swal.fire({
         title: `Supprimer ${row.firstname} ${row.lastname}`,
         text: 'Êtes-vous sur de vouloir supprimer ce compte ?',
