@@ -113,7 +113,7 @@ const accountModule = {
     },
 
     DELETE_USER_FAILURE: (state, reason) => {
-      state.status = { reason }
+      state.status = { deleteError: reason }
     }
   },
 
@@ -197,7 +197,7 @@ const accountModule = {
             commit('UPDATE_USER_FAILURE', err.data.message)
             swal.fire({
               title: 'Erreur dans la modification des informations !',
-              type: 'danger',
+              type: 'error',
               customClass: { confirmButton: 'btn btn-primary' }
             })
           })
@@ -218,15 +218,14 @@ const accountModule = {
             })
           },
           err => {
-            commit('DELETE_USER_FAILURE', err.data.message)
+            commit('DELETE_USER_FAILURE', err.message)
             swal.fire({
               title: 'Une erreur est survenue !',
-              footer: err.data.message || 'Erreur inconnue',
-              type: 'danger',
+              text: err.message || 'Erreur inconnue',
+              type: 'error',
               customClass: { confirmButton: 'btn btn-primary' }
             })
-          }
-        )
+          })
     }
   },
 
