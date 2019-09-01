@@ -56,7 +56,7 @@
           <a
             class="nav-link p-0"
             target="_blank"
-            href="http://beecome.io/dashboard">
+            href="https://www.beecome.io/dashboard">
             <stats-card
               title="ACCÈS DIRECT À"
               type="gradient-blue"
