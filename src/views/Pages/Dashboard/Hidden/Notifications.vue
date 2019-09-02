@@ -244,15 +244,6 @@ export default {
         }, 100)
       })
     },
-    formatDate (timestamp) {
-      const seconds = Math.floor(new Date().getTime() / 1000 - timestamp / 1000)
-      if (seconds > 2 * 24 * 3600) return Math.floor(seconds / 3600 / 24) + 'j'
-      if (seconds > 24 * 3600) return 'hier'
-      if (seconds > 3600) return Math.floor(seconds / 3600) + 'h'
-      if (seconds > 60) return Math.floor(seconds / 60) + 'm'
-      if (seconds > 1) return seconds + 's'
-      return '?? secondes'
-    },
     toggleRead (element, notifId) {
       // disable the switch and re-enable it after 5 seconds
       element.disabled = true
