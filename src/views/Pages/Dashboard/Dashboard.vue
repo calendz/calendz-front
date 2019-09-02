@@ -129,9 +129,9 @@ export default {
       const date = new Date()
       this.currentTime = `${('0' + date.getHours()).slice(-2)}:${('0' + date.getMinutes()).slice(-2)}:${('0' + date.getSeconds()).slice(-2)}`
 
-      const j = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche']
+      const j = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi']
       const m = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre']
-      this.currentDate = `${j[date.getDay() - 1]} ${('0' + date.getDate()).slice(-2)} ${m[date.getMonth()]}`
+      this.currentDate = `${j[date.getDay()]} ${('0' + date.getDate()).slice(-2)} ${m[date.getMonth()]}`
     }
   }
 }
