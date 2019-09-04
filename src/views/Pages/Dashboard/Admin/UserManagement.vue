@@ -448,7 +448,7 @@ export default {
 
       swal.fire({
         title: `Supprimer ${row.firstname} ${row.lastname}`,
-        text: 'Êtes-vous sur de vouloir supprimer ce compte ?',
+        text: 'Êtes-vous sûr de vouloir supprimer ce compte ?',
         type: 'warning',
         customClass: {
           confirmButton: 'btn btn-warning mt-2',
