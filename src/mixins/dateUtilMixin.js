@@ -20,6 +20,13 @@ export default {
       const month = (`0${date.getMonth() + 1}`).slice(-2)
       const year = date.getFullYear()
       return `${day}-${month}-${year}`
+    },
+
+    timeToHour (toFormat) {
+      const date = new Date(toFormat)
+      const hours = (`0${date.getHours()}`).slice(-2)
+      const minutes = (`0${date.getMinutes()}`).slice(-2)
+      return hours + ':' + minutes
     }
   }
 }
