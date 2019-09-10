@@ -65,6 +65,18 @@
                   :single-error="loginError"
                   :alert-classes="'mt-4 py-3 mb-1'"/>
 
+                <div
+                  v-if="resendCode"
+                  class="mt-3 text-center">
+                  <a
+                    href="#"
+                    class="nav-link font-weight-light"
+                    @click="resendEmail()">
+                    Vous n'avez pas reçu l'email ?<br>
+                    Cliquez ici pour le ré-envoyer.
+                  </a>
+                </div>
+
                 <div class="text-center">
                   <base-button
                     :disabled="loggingIn"
@@ -97,6 +109,7 @@
 import { mapState } from 'vuex'
 import swal from 'sweetalert2'
 import router from '../../../routes/router'
+import ApiService from '../../../services/api.service'
 
 export default {
   data () {
@@ -112,7 +125,8 @@ export default {
   computed: {
     ...mapState({
       loginError: state => state.account.status.loginError,
-      loggingIn: state => state.account.status.isLoggingIn
+      loggingIn: state => state.account.status.isLoggingIn,
+      resendCode: state => state.account.status.resendCode
     })
   },
   methods: {
@@ -140,6 +154,11 @@ export default {
           })
         }
       })
+    },
+    resendEmail () {
+      if (!this.resendCode) return
+
+      ApiService.post('/auth/verify/email/resend', { token: this.resendCode })
     },
     getError (name) {
       return this.errors.first(name)
