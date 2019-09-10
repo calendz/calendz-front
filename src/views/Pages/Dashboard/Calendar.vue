@@ -18,31 +18,31 @@
         <div class="col-lg-6 col-5 text-right">
           <a
             href="#"
-            class="fullcalendar-btn-prev btn btn-sm btn-default"
+            class="fullcalendar-btn-prev btn btn-sm btn-default mt-1"
             @click.prevent="prev">
             <i class="fas fa-angle-left"/>
           </a>
           <a
             href="#"
-            class="fullcalendar-btn-next btn btn-sm btn-default"
+            class="fullcalendar-btn-next btn btn-sm btn-default mt-1"
             @click.prevent="next">
             <i class="fas fa-angle-right"/>
           </a>
           <base-button
-            :class="{'active': defaultView === 'dayGridMonth'}"
-            class="btn btn-sm btn-default"
+            :class="{'active': activeView === 'dayGridMonth'}"
+            class="btn btn-sm btn-default mt-1"
             @click="changeView('dayGridMonth')">
             Mois
           </base-button>
           <base-button
-            :class="{'active': defaultView === 'timeGridWeek'}"
-            class="btn btn-sm btn-default"
+            :class="{'active': activeView === 'timeGridWeek'}"
+            class="btn btn-sm btn-default mt-1"
             @click="changeView('timeGridWeek')">
             Semaine
           </base-button>
           <base-button
-            :class="{'active': defaultView === 'timeGridDay'}"
-            class="btn btn-sm btn-default"
+            :class="{'active': activeView === 'timeGridDay'}"
+            class="btn btn-sm btn-default mt-1"
             @click="changeView('timeGridDay')">
             Jour
           </base-button>
@@ -71,11 +71,11 @@
                 :theme="false"
                 :selectable="false"
                 :select-helper="true"
-                :default-view="defaultView"
+                :default-view="activeView"
                 :weekends="false"
                 :all-day-slot="false"
                 :column-header-format="{ weekday: 'long', month: 'numeric', day: 'numeric', omitCommas: true }"
-                :event-render="test"
+                :event-render="customRender"
                 content-height="auto"
                 slot-duration="01:00:00"
                 min-time="08:00:00"
@@ -111,7 +111,7 @@ export default {
   data () {
     return {
       calendarPlugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
-      defaultView: 'timeGridWeek',
+      activeView: 'timeGridWeek',
       events: [
         {
           title: 'Français',
@@ -148,20 +148,29 @@ export default {
     calendarApi.setOption('locale', 'fr')
   },
   methods: {
-    test (element) {
-      console.log(element)
-      element.el.innerHTML = `
-      <h4 class="pl-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h4>
-      <h2 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h2>
-      <h4 class="m-0 pl-1 text-white" style="position: absolute; bottom: 0; left: 0">Karmouche<h4>
-      <h4 class="m-0 pr-1 text-white" style="position: absolute; bottom: 0; right: 0">L-230<h4>
-      `
+    customRender (element) {
+      switch (this.activeView) {
+        case 'timeGridWeek':
+        case 'timeGridDay':
+          element.el.innerHTML = `
+            <h4 class="pl-1 text-light-grey">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h4>
+            <h2 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h2>
+            <h4 class="m-0 pl-1 text-light-grey" style="position: absolute; bottom: 0; left: 0">Karmouche<h4>
+            <h4 class="m-0 pr-1 text-light-grey" style="position: absolute; bottom: 0; right: 0">L-230<h4>
+          `
+          break
+        case 'dayGridMonth':
+          element.el.innerHTML = `
+            <h5 class="m-0 text-white text-center w-100">${element.event.title}</h5>
+          `
+          break
+      }
     },
     calendarApi () {
       return this.$refs.fullCalendar.getApi()
     },
     changeView (viewType) {
-      this.defaultView = viewType
+      this.activeView = viewType
       this.calendarApi().changeView(viewType)
     },
     next () {
@@ -229,13 +238,17 @@ export default {
     font-size: 1.2em !important
   }
 
+  .text-light-grey {
+    color: #a7a7a7;
+  }
+
   // placer
-  .fc-widget-content {
-    position: relative;
-  }
-  .fc-day-number {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-  }
+  // .fc-widget-content {
+  //   position: relative;
+  // }
+  // .fc-day-number {
+  //   position: absolute;
+  //   right: 0;
+  //   bottom: 0;
+  // }
 </style>
