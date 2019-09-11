@@ -66,15 +66,15 @@
                   :alert-classes="'mt-4 py-3 mb-1'"/>
 
                 <div
-                  v-if="resendCode"
+                  v-if="userId"
                   class="mt-3 text-center">
-                  <a
+                  <p
                     href="#"
-                    class="nav-link font-weight-light"
+                    class="m-0 nav-link font-weight-light"
                     @click="resendEmail()">
                     Vous n'avez pas reçu l'email ?<br>
                     Cliquez ici pour le ré-envoyer.
-                  </a>
+                  </p>
                 </div>
 
                 <div class="text-center">
@@ -126,7 +126,7 @@ export default {
     ...mapState({
       loginError: state => state.account.status.loginError,
       loggingIn: state => state.account.status.isLoggingIn,
-      resendCode: state => state.account.status.resendCode
+      userId: state => state.account.status.userId
     })
   },
   methods: {
@@ -156,9 +156,16 @@ export default {
       })
     },
     resendEmail () {
-      if (!this.resendCode) return
-
-      ApiService.post('/auth/verify/email/resend', { token: this.resendCode })
+      if (!this.userId) return
+      ApiService.post(`/auth/verify/email/resend/${this.userId}`)
+        .then(res => {
+          if (res.status === 200) {
+            this.$notify({ type: 'success', message: `Un email de confirmation d'inscription vient d'être ré-envoyé !` })
+          }
+        })
+        .catch(err => {
+          this.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.data.message || err} !` })
+        })
     },
     getError (name) {
       return this.errors.first(name)

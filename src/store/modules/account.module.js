@@ -43,10 +43,9 @@ const accountModule = {
       state.status = {}
     },
 
-    LOGIN_FAILURE: (state, { reason, code = null }) => {
+    LOGIN_FAILURE: (state, { reason, userId = null }) => {
       state.user = null
-      console.log(code)
-      state.status = { loginError: reason, resendCode: code }
+      state.status = { loginError: reason, userId: userId }
     },
 
     LOGOUT: (state, reason) => {
@@ -136,8 +135,8 @@ const accountModule = {
             router.push('/dashboard')
           },
           err => {
-            if (err.code) {
-              commit('LOGIN_FAILURE', { reason: err.message, code: err.code })
+            if (err.userId) {
+              commit('LOGIN_FAILURE', { reason: err.message, userId: err.userId })
             } else {
               commit('LOGIN_FAILURE', { reason: err.message })
             }
