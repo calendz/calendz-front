@@ -65,6 +65,18 @@
                   :single-error="loginError"
                   :alert-classes="'mt-4 py-3 mb-1'"/>
 
+                <div
+                  v-if="userId"
+                  class="mt-3 text-center">
+                  <p
+                    href="#"
+                    class="m-0 nav-link font-weight-light"
+                    @click="resendEmail()">
+                    Vous n'avez pas reçu l'email ?<br>
+                    Cliquez ici pour le ré-envoyer.
+                  </p>
+                </div>
+
                 <div class="text-center">
                   <base-button
                     :disabled="loggingIn"
@@ -97,6 +109,7 @@
 import { mapState } from 'vuex'
 import swal from 'sweetalert2'
 import router from '../../../routes/router'
+import ApiService from '../../../services/api.service'
 
 export default {
   data () {
@@ -112,7 +125,8 @@ export default {
   computed: {
     ...mapState({
       loginError: state => state.account.status.loginError,
-      loggingIn: state => state.account.status.isLoggingIn
+      loggingIn: state => state.account.status.isLoggingIn,
+      userId: state => state.account.status.userId
     })
   },
   methods: {
@@ -140,6 +154,18 @@ export default {
           })
         }
       })
+    },
+    resendEmail () {
+      if (!this.userId) return
+      ApiService.post(`/auth/verify/email/resend/${this.userId}`)
+        .then(res => {
+          if (res.status === 200) {
+            this.$notify({ type: 'success', message: `Un email de confirmation d'inscription vient d'être ré-envoyé !` })
+          }
+        })
+        .catch(err => {
+          this.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.data.message || err} !` })
+        })
     },
     getError (name) {
       return this.errors.first(name)
