@@ -34,7 +34,40 @@ const UserService = {
         return res.data
       })
       .catch(err => {
-        return Promise.reject(err.response)
+        return Promise.reject(err.data)
+      })
+  },
+
+  // update user informations
+  updateInformations: (id, firstname, lastname, email, permissionLevel, grade, bts, isActive) => {
+    return ApiService.patch(`/user/${id}`, { firstname, lastname, email, permissionLevel, grade, bts, isActive })
+      .then(res => {
+        return res.data
+      })
+      .catch(err => {
+        return Promise.reject(err.data)
+      })
+  },
+
+  // delete user account
+  deleteAccount: (userId) => {
+    return ApiService.delete(`/user/${userId}`)
+      .then(res => {
+        return res.data
+      })
+      .catch(err => {
+        return Promise.reject(err.data)
+      })
+  },
+
+  // get all users
+  getAll: () => {
+    return ApiService.get('/user/all')
+      .then(res => {
+        return res.data
+      })
+      .catch(err => {
+        return Promise.reject(err.data)
       })
   },
 
