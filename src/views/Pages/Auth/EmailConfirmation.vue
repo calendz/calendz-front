@@ -77,7 +77,7 @@
   </div>
 </template>
 <script>
-import axios from 'axios'
+import UserService from '../../../services/user.service'
 
 export default {
   data () {
@@ -89,14 +89,15 @@ export default {
   mounted () {
     const token = this.$route.params.token
 
-    axios.post('auth/verify/email', { token }).then((res) => {
-      this.isLoading = false
-    }).catch((err) => {
-      this.apiError = err.response.data.message
-      this.isLoading = false
-    })
-  },
-  methods: {
+    UserService.verifyEmail(token)
+      .then(
+        res => {
+          this.isLoading = false
+        },
+        err => {
+          this.apiError = err.message
+          this.isLoading = false
+        })
   }
 }
 </script>
