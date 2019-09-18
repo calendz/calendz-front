@@ -115,22 +115,31 @@ export default {
       events: [
         {
           title: 'Français',
-          start: new Date('2019-09-09T10:00:00'),
-          end: new Date('2019-09-09T12:00:00'),
+          start: new Date('2019-09-16T10:00:00'),
+          end: new Date('2019-09-16T12:00:00'),
           className: 'bg-default',
-          description: 'SLT LES BG'
+          professor: 'Amy',
+          room: 'L-230',
+          description: 'Test Description'
         },
         {
           title: 'Maths',
-          start: new Date('2019-09-09T14:00:00'),
-          end: new Date('2019-09-09T16:00:00'),
-          className: 'bg-default'
+          start: new Date('2019-09-16T14:00:00'),
+          end: new Date('2019-09-16T16:00:00'),
+          className: 'bg-default',
+          professor: 'Karmouche',
+          room: 'L-230',
+          description: 'Test Description'
         },
         {
           title: 'Réseau',
-          start: new Date('2019-09-10T09:00:00'),
-          end: new Date('2019-09-10T13:00:00'),
-          className: 'bg-default'
+          start: new Date('2019-09-17T09:00:00'),
+          end: new Date('2019-09-17T13:00:00'),
+          className: 'bg-default',
+          professor: 'Hocine',
+          room: 'L-230',
+          description: 'Test Description',
+          contrast: this.addContrast(new Date('2019-09-10T09:00:00'), new Date('2019-09-10T13:00:00'))
         }
       ],
       model: {
@@ -146,15 +155,27 @@ export default {
   mounted () {
     const calendarApi = this.$refs.fullCalendar.getApi()
     calendarApi.setOption('locale', 'fr')
+
+    window.addEventListener('keyup', function (e) {
+      if (e.keyCode === 39) {
+        calendarApi.next()
+      }
+      if (e.keyCode === 37) {
+        calendarApi.prev()
+      }
+    })
   },
   methods: {
     test (element) {
-      console.log(element)
+      console.log(element.el.className)
+      if (element.event.extendedProps.contrast) element.el.className += ' contrast-bg'
       element.el.innerHTML = `
-      <h4 class="pl-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h4>
-      <h2 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h2>
-      <h4 class="m-0 pl-1 text-white" style="position: absolute; bottom: 0; left: 0">Karmouche<h4>
-      <h4 class="m-0 pr-1 text-white" style="position: absolute; bottom: 0; right: 0">L-230<h4>
+      <div>
+        <h4 class="pl-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h4>
+        <h2 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h2>
+        <h4 class="m-0 pl-1 text-white" style="position: absolute; bottom: 0; left: 0">${element.event.extendedProps.professor}<h4>
+        <h4 class="m-0 pr-1 text-white" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h4>
+      </div>
       `
     },
     calendarApi () {
@@ -209,6 +230,14 @@ export default {
         this.events.splice(index, 1)
       }
       this.showEditModal = false
+    },
+    addContrast (start, end) {
+      const date = new Date()
+      if (date > end) {
+        return true
+      } else {
+        return false
+      }
     }
   }
 }
@@ -237,5 +266,8 @@ export default {
     position: absolute;
     right: 0;
     bottom: 0;
+  }
+  .contrast-bg {
+    filter: contrast(0.7)
   }
 </style>
