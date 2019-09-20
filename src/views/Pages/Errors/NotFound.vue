@@ -40,6 +40,7 @@
           <div class="col-md-6">
             <img
               src="img/theme/landing-2.png"
+              alt="Image"
               class="img-fluid">
           </div>
           <div class="col-md-6">

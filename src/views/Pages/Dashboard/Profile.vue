@@ -31,6 +31,7 @@
             <div class="text-center">
               <img
                 src="img/theme/default-pp.svg"
+                alt="Photo de profil"
                 width="150px">
               <br>
               <base-button
