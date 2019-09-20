@@ -65,7 +65,7 @@ const dashboardPages = {
       name: 'Emploi du temps',
       component: Calendar,
       meta: {
-        title: 'Dashboard - calendz'
+        title: 'Emploi du temps - calendz'
       }
     },
     {
@@ -73,7 +73,7 @@ const dashboardPages = {
       name: 'Emploi du temps - Recherche',
       component: CalendarSearch,
       meta: {
-        title: 'Dashboard - calendz'
+        title: 'Emploi du temps - calendz'
       }
     },
     {
@@ -81,7 +81,7 @@ const dashboardPages = {
       name: 'Devoirs',
       component: Homeworks,
       meta: {
-        title: 'Dashboard - calendz'
+        title: 'Devoirs - calendz'
       }
     },
     {
@@ -89,7 +89,7 @@ const dashboardPages = {
       name: 'Mon profil',
       component: Profile,
       meta: {
-        title: 'Dashboard - calendz'
+        title: 'Profil - calendz'
       }
     },
     {
@@ -97,7 +97,7 @@ const dashboardPages = {
       name: 'Paramètres',
       component: Settings,
       meta: {
-        title: 'Dashboard - calendz'
+        title: 'Paramètres - calendz'
       }
     },
     // =================================
@@ -108,7 +108,7 @@ const dashboardPages = {
       name: 'Dashboard admin',
       component: DashboardAdmin,
       meta: {
-        title: 'Dashboard - calendz'
+        title: 'Dashboard admin - calendz'
       }
     },
     {
@@ -116,7 +116,7 @@ const dashboardPages = {
       name: 'Statistiques',
       component: Statistics,
       meta: {
-        title: 'Dashboard - calendz',
+        title: 'Statistiques - calendz',
         adminOnly: true
       }
     },
@@ -125,7 +125,7 @@ const dashboardPages = {
       name: 'Gestion des utilisateurs',
       component: UserManagement,
       meta: {
-        title: 'Dashboard - calendz',
+        title: 'Utilisateurs - calendz',
         adminOnly: true
       }
     },
@@ -137,7 +137,7 @@ const dashboardPages = {
       name: 'Notifications',
       component: Notifications,
       meta: {
-        title: 'Dashboard - calendz'
+        title: 'Notifications - calendz'
       }
     },
     // =================================
