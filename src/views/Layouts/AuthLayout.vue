@@ -17,6 +17,7 @@
           to="/">
           <img
             src="img/brand/logo-square-white-no-borders.svg"
+            alt="Image"
             style="height: 65px; width: 65px">
         </router-link>
       </div>
@@ -26,7 +27,9 @@
           <div class="row">
             <div class="col-6 collapse-brand">
               <router-link to="/">
-                <img src="img/brand/logo-black.svg">
+                <img
+                  src="img/brand/logo-black.svg"
+                  alt="Logo">
               </router-link>
             </div>
             <div class="col-6 collapse-close">
@@ -103,10 +106,12 @@
             <div class="copyright text-center text-xl-left text-muted">
               © {{ year }} <a
                 href="https://arthurdufour.com/"
+                rel="noreferrer noopener"
                 class="font-weight-bold ml-1"
                 target="_blank">Arthur Dufour</a> &
               <a
                 href="https://alexandretuet.com/"
+                rel="noreferrer noopener"
                 class="font-weight-bold ml-1"
                 target="_blank">Alexandre Tuet</a>
             </div>
@@ -116,18 +121,21 @@
               <li class="nav-item">
                 <a
                   href="https://github.com/calendz"
+                  rel="noreferrer noopener"
                   class="nav-link"
                   target="_blank">Github</a>
               </li>
               <li class="nav-item">
                 <a
                   href="https://app.codacy.com/organization/calendz"
+                  rel="noreferrer noopener"
                   class="nav-link"
                   target="_blank">Codacy</a>
               </li>
               <li class="nav-item">
                 <a
                   href="https://travis-ci.com/calendz"
+                  rel="noreferrer noopener"
                   class="nav-link"
                   target="_blank">Travis CI</a>
               </li>

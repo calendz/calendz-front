@@ -29,6 +29,7 @@
               <div class="row pt-5">
                 <img
                   src="img/theme/landing-2.png"
+                  alt="Image"
                   class="img-fluid">
               </div>
             </div>
@@ -150,9 +151,11 @@
                     content="Bootstrap 4 - Most popular front-end component library">
                     <a
                       href="https://getbootstrap.com/"
+                      rel="noreferrer noopener"
                       target="_blank">
                       <img
                         src="img/theme/bootstrap.jpg"
+                        alt="Image"
                         class="img-fluid rounded-circle shadow shadow-lg--hover">
                     </a>
                   </el-tooltip>
@@ -163,9 +166,11 @@
                     content="Vue.js - The progressive javascript framework">
                     <a
                       href="https://vuejs.org/"
+                      rel="noreferrer noopener"
                       target="_blank">
                       <img
                         src="img/theme/vue.jpg"
+                        alt="Image"
                         class="img-fluid rounded-circle">
                     </a>
                   </el-tooltip>
@@ -176,9 +181,11 @@
                     content="Node.js - JavaScript runtime ">
                     <a
                       href="https://nodejs.org/en/"
+                      rel="noreferrer noopener"
                       target="_blank">
                       <img
                         src="img/theme/node.png"
+                        alt="Image"
                         class="img-fluid rounded-circle">
                     </a>
                   </el-tooltip>
