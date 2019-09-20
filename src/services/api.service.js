@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import axios from 'axios'
 import store from '../store/index'
 
@@ -8,6 +9,14 @@ const ApiService = {
     axios.interceptors.response.use(response => {
       return response
     }, err => {
+      // intercept connection errors
+      if (!err.response) {
+        Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> Veuillez vérifier votre connexion internet !` })
+        const error = new Error('Connection failure')
+        return Promise.reject(error)
+      }
+
+      // intercept authentication errors
       if (err.response.status === 401) {
         if (err.response.data && err.response.data.logout) {
           store.dispatch('account/logout', { reason: err.response.data.message })
