@@ -33,11 +33,6 @@
   </div>
 </template>
 <script>
-import RouteBreadCrumb from '@/components/Breadcrumb/RouteBreadcrumb'
-
 export default {
-  components: {
-    RouteBreadCrumb
-  }
 }
 </script>

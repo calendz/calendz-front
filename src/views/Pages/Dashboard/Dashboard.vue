@@ -96,11 +96,9 @@
 <script>
 import NextHomework from './Widgets/NextHomework'
 import LatestNotifications from './Widgets/LatestNotifications'
-import RouteBreadCrumb from '@/components/Breadcrumb/RouteBreadcrumb'
 
 export default {
   components: {
-    RouteBreadCrumb,
     NextHomework,
     LatestNotifications
   },

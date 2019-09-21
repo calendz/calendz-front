@@ -225,14 +225,12 @@
 import swal from 'sweetalert2'
 import { mapState } from 'vuex'
 import { Modal } from '@/components'
-import RouteBreadCrumb from '@/components/Breadcrumb/RouteBreadcrumb'
 import DropzoneFileUpload from '@/components/Inputs/DropzoneFileUpload'
 
 export default {
   components: {
     Modal,
-    DropzoneFileUpload,
-    RouteBreadCrumb
+    DropzoneFileUpload
   },
   data () {
     return {
