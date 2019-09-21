@@ -57,7 +57,7 @@ const dashboardPages = {
       name: 'Dashboard',
       component: Dashboard,
       meta: {
-        title: 'Dashboard - calendz'
+        title: 'Dashboard - Calendz'
       }
     },
     {
@@ -65,7 +65,7 @@ const dashboardPages = {
       name: 'Emploi du temps',
       component: Calendar,
       meta: {
-        title: 'Emploi du temps - calendz'
+        title: 'Emploi du temps - Calendz'
       }
     },
     {
@@ -73,7 +73,7 @@ const dashboardPages = {
       name: 'Emploi du temps - Recherche',
       component: CalendarSearch,
       meta: {
-        title: 'Emploi du temps - calendz'
+        title: 'Emploi du temps - Calendz'
       }
     },
     {
@@ -81,7 +81,7 @@ const dashboardPages = {
       name: 'Devoirs',
       component: Homeworks,
       meta: {
-        title: 'Devoirs - calendz'
+        title: 'Devoirs - Calendz'
       }
     },
     {
@@ -89,7 +89,7 @@ const dashboardPages = {
       name: 'Mon profil',
       component: Profile,
       meta: {
-        title: 'Profil - calendz'
+        title: 'Profil - Calendz'
       }
     },
     {
@@ -97,7 +97,7 @@ const dashboardPages = {
       name: 'Paramètres',
       component: Settings,
       meta: {
-        title: 'Paramètres - calendz'
+        title: 'Paramètres - Calendz'
       }
     },
     // =================================
@@ -108,7 +108,7 @@ const dashboardPages = {
       name: 'Dashboard admin',
       component: DashboardAdmin,
       meta: {
-        title: 'Dashboard admin - calendz'
+        title: 'Dashboard admin - Calendz'
       }
     },
     {
@@ -116,7 +116,7 @@ const dashboardPages = {
       name: 'Statistiques',
       component: Statistics,
       meta: {
-        title: 'Statistiques - calendz',
+        title: 'Statistiques - Calendz',
         adminOnly: true
       }
     },
@@ -125,7 +125,7 @@ const dashboardPages = {
       name: 'Gestion des utilisateurs',
       component: UserManagement,
       meta: {
-        title: 'Utilisateurs - calendz',
+        title: 'Utilisateurs - Calendz',
         adminOnly: true
       }
     },
@@ -137,7 +137,7 @@ const dashboardPages = {
       name: 'Notifications',
       component: Notifications,
       meta: {
-        title: 'Notifications - calendz'
+        title: 'Notifications - Calendz'
       }
     },
     // =================================
@@ -148,7 +148,7 @@ const dashboardPages = {
       name: 'Blog',
       component: Blog,
       meta: {
-        title: 'Dashboard - calendz'
+        title: 'Dashboard - Calendz'
       }
     },
     {
@@ -156,7 +156,7 @@ const dashboardPages = {
       name: 'Features',
       component: Features,
       meta: {
-        title: 'Dashboard - calendz'
+        title: 'Dashboard - Calendz'
       }
     },
     {
@@ -164,7 +164,7 @@ const dashboardPages = {
       name: 'Signaler un bug',
       component: BugReport,
       meta: {
-        title: 'Dashboard - calendz'
+        title: 'Dashboard - Calendz'
       }
     }
   ]
@@ -181,7 +181,7 @@ const authPages = {
       name: 'Home',
       component: Home,
       meta: {
-        title: 'Accueil - calendz'
+        title: 'Accueil - Calendz'
       }
     },
     {
@@ -189,7 +189,7 @@ const authPages = {
       name: 'Login',
       component: Login,
       meta: {
-        title: 'Connexion - calendz',
+        title: 'Connexion - Calendz',
         redirectToDashboardIfConnected: true
       }
     },
@@ -198,7 +198,7 @@ const authPages = {
       name: 'Register',
       component: Register,
       meta: {
-        title: 'Inscription - calendz',
+        title: 'Inscription - Calendz',
         redirectToDashboardIfConnected: true
       }
     },
@@ -207,7 +207,7 @@ const authPages = {
       name: 'Verification email',
       component: EmailConfirmation,
       meta: {
-        title: 'Confirmation adresse mail - calendz',
+        title: 'Confirmation adresse mail - Calendz',
         redirectToDashboardIfConnected: true
       }
     },
@@ -216,7 +216,7 @@ const authPages = {
       name: 'PasswordReset',
       component: PasswordReset,
       meta: {
-        title: 'Mot de passe oublié - calendz',
+        title: 'Mot de passe oublié - Calendz',
         redirectToDashboardIfConnected: true
       }
     },
@@ -225,7 +225,7 @@ const authPages = {
       name: 'PasswordResetChangePassword',
       component: PasswordResetChangePassword,
       meta: {
-        title: 'Mot de passe oublié - calendz',
+        title: 'Mot de passe oublié - Calendz',
         redirectToDashboardIfConnected: true
       }
     },
