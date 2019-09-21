@@ -6,7 +6,7 @@
       :transparent="true"
       type="light"
       menu-classes="justify-content-end"
-      class="navbar-horizontal navbar-main"
+      class="navbar-horizontal navbar-main mt-2"
       expand="lg"
     >
       <div
@@ -16,9 +16,9 @@
           class="navbar-brand"
           to="/">
           <img
-            src="img/brand/logo-square-white-no-borders.svg"
-            alt="Image"
-            style="height: 65px; width: 65px">
+            src="img/icons/favicon-32x32.png"
+            alt="Logo"
+            style="height: 50px; width: 50px">
         </router-link>
       </div>
 
@@ -28,7 +28,7 @@
             <div class="col-6 collapse-brand">
               <router-link to="/">
                 <img
-                  src="img/brand/logo-black.svg"
+                  src="img/icons/favicon-32x32.png"
                   alt="Logo">
               </router-link>
             </div>
@@ -52,6 +52,15 @@
               class="nav-link">
               <span class="nav-link-inner--text">Accueil</span>
             </router-link>
+          </li>
+          <li class="nav-item">
+            <a
+              href="https://docs.calendz.app"
+              target="_blank"
+              rel="noopenner noreferrer"
+              class="nav-link">
+              <span class="nav-link-inner--text">Documentation</span>
+            </a>
           </li>
           <li class="nav-item">
             <router-link
@@ -127,10 +136,10 @@
               </li>
               <li class="nav-item">
                 <a
-                  href="https://app.codacy.com/organization/calendz"
+                  href="https://status.calendz.app"
+                  target="_blank"
                   rel="noreferrer noopener"
-                  class="nav-link"
-                  target="_blank">Codacy</a>
+                  class="nav-link">Status</a>
               </li>
               <li class="nav-item">
                 <a

@@ -181,6 +181,7 @@ const authPages = {
       name: 'Home',
       component: Home,
       meta: {
+        noBodyBackground: true,
         title: 'Accueil - Calendz'
       }
     },

@@ -23,15 +23,9 @@
           </li>
           <li class="nav-item">
             <a
-              href="http://blog.creative-tim.com"
+              href="https://status.calendz.app/"
               class="nav-link"
-              target="_blank">Blog</a>
-          </li>
-          <li class="nav-item">
-            <a
-              href="https://www.creative-tim.com/license"
-              class="nav-link"
-              target="_blank">License</a>
+              target="_blank">Status</a>
           </li>
         </ul>
       </div>
