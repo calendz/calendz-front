@@ -25,8 +25,9 @@ export default {
     // eg: 'lundi 30 septembre'
     dateToString (date) {
       const day = this.dayNumberToString(date.getDay())
+      const dayNumber = ('0' + date.getDate()).slice(-2)
       const month = this.monthNumberToString(date.getMonth())
-      return `${day} ${date.getDate()} ${month}`
+      return `${day} ${dayNumber} ${month}`
     },
 
     // translates date.getDay() into french day's name
@@ -58,6 +59,11 @@ export default {
         case 10: return 'novembre'
         case 11: return 'décembre'
       }
+    },
+
+    // get time as string from date (eg: '07:12:42)
+    dateToTimeString (date) {
+      return `${('0' + date.getHours()).slice(-2)}:${('0' + date.getMinutes()).slice(-2)}:${('0' + date.getSeconds()).slice(-2)}`
     }
   }
 }
