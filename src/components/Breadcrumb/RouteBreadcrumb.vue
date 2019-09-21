@@ -29,7 +29,7 @@ import BreadCrumb from './Breadcrumb'
 import BreadCrumbItem from './BreadcrumbItem'
 
 export default {
-  name: 'RouteBreadcrumb',
+  name: 'RouteBreadCrumb',
   components: {
     BreadCrumb,
     BreadCrumbItem

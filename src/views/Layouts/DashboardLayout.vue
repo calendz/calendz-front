@@ -93,32 +93,32 @@
 
       <template slot="links-after">
         <hr class="my-3">
-        <h6 class="navbar-heading p-0 text-muted">Documentation</h6>
+        <h6 class="navbar-heading p-0 text-muted">Autres</h6>
 
         <ul class="navbar-nav mb-md-3">
-          <!-- Blog -->
-          <sidebar-item
-            :link="{
-              name: 'Blog',
-              icon: 'fas fa-newspaper text-grey',
-              path: '/blog'
-          }"/>
-
-          <!-- Fonctionnalités -->
-          <sidebar-item
-            :link="{
-              name: 'Fonctionnalités',
-              icon: 'ni ni-ui-04 text-grey',
-              path: '/features'
-          }"/>
-
           <!-- Bug report -->
-          <sidebar-item
-            :link="{
-              name: 'Signaler un bug',
-              icon: 'fas fa-bug text-grey',
-              path: '/bug-report'
-          }"/>
+          <li class="nav-item">
+            <a
+              href="https://docs.api-calendar.calendz.app/autres/faq#comment-signaler-des-bugs"
+              target="_blank"
+              rel="noreferrer noopenner"
+              class="nav-link">
+              <i class="fas fa-bug text-grey"/>
+              <span class="nav-link-text">Signaler un bug</span>
+            </a>
+          </li>
+
+          <!-- Documentation -->
+          <li class="nav-item">
+            <a
+              href="https://docs.calendz.app/"
+              target="_blank"
+              rel="noreferrer noopenner"
+              class="nav-link">
+              <i class="fas fa-newspaper text-grey"/>
+              <span class="nav-link-text">Documentation</span>
+            </a>
+          </li>
         </ul>
       </template>
     </side-bar>

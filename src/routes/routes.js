@@ -34,10 +34,6 @@ const UserManagement = () => import(/* webpackChunkName: "page" */ '@/views/Page
 
 const Notifications = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Hidden/Notifications.vue')
 
-const Blog = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Blog.vue')
-const Features = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Features.vue')
-const BugReport = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/BugReport.vue')
-
 // ============================================
 // == Routes
 // ============================================
@@ -139,33 +135,6 @@ const dashboardPages = {
       meta: {
         title: 'Notifications - Calendz'
       }
-    },
-    // =================================
-    // == documentation tab
-    // =================================
-    {
-      path: 'blog',
-      name: 'Blog',
-      component: Blog,
-      meta: {
-        title: 'Dashboard - Calendz'
-      }
-    },
-    {
-      path: 'features',
-      name: 'Features',
-      component: Features,
-      meta: {
-        title: 'Dashboard - Calendz'
-      }
-    },
-    {
-      path: 'bug-report',
-      name: 'Signaler un bug',
-      component: BugReport,
-      meta: {
-        title: 'Dashboard - Calendz'
-      }
     }
   ]
 }
@@ -181,6 +150,7 @@ const authPages = {
       name: 'Home',
       component: Home,
       meta: {
+        noBodyBackground: true,
         title: 'Accueil - Calendz'
       }
     },

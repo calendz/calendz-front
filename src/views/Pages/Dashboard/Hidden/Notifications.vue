@@ -180,7 +180,6 @@
 import { mapGetters } from 'vuex'
 import { BasePagination } from '@/components'
 import { Table, TableColumn, Option } from 'element-ui'
-import RouteBreadCrumb from '@/components/Breadcrumb/RouteBreadcrumb'
 import clientPaginationMixin from '@/mixins/clientPaginationMixin'
 import dateUtilMixin from '@/mixins/dateUtilMixin'
 
@@ -188,7 +187,6 @@ export default {
   name: 'Settings',
   components: {
     BasePagination,
-    RouteBreadCrumb,
     [Option.name]: Option,
     [Table.name]: Table,
     [TableColumn.name]: TableColumn
