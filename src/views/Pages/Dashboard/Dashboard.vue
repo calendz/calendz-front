@@ -31,7 +31,7 @@
             title="Total traffic"
             type="gradient-red"
             sub-title="350,897"
-            icon="ni ni-active-40">
+            icon="fas fa-th-list">
 
             <template slot="footer">
               <span class="text-success mr-2"><i class="fa fa-arrow-up"/> 3.48%</span>
@@ -40,17 +40,7 @@
           </stats-card>
         </div>
         <div class="col-xl-3 col-md-6">
-          <stats-card
-            title="Total traffic"
-            type="gradient-orange"
-            sub-title="2,356"
-            icon="ni ni-chart-pie-35">
-
-            <template slot="footer">
-              <span class="text-success mr-2"><i class="fa fa-arrow-up"/> 12.18%</span>
-              <span class="text-nowrap">Since last month</span>
-            </template>
-          </stats-card>
+          <NextHomework/>
         </div>
         <div class="col-xl-3 col-md-6">
           <a
@@ -104,12 +94,14 @@
   </div>
 </template>
 <script>
+import NextHomework from './Widgets/NextHomework'
 import LatestNotifications from './Widgets/LatestNotifications'
 import RouteBreadCrumb from '@/components/Breadcrumb/RouteBreadcrumb'
 
 export default {
   components: {
     RouteBreadCrumb,
+    NextHomework,
     LatestNotifications
   },
   data () {
