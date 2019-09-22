@@ -288,6 +288,7 @@ export default {
   },
   mounted () {
     this.$store.dispatch('notifications/fetch')
+    this.$store.dispatch('calendar/fetch')
   },
   methods: {
     capitalizeFirstLetter (string) {
