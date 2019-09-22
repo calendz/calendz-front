@@ -7,7 +7,7 @@
       type="primary"
       class="pb-6">
       <div class="row align-items-center py-4">
-        <div class="col-lg-6 col-7">
+        <div class="col-lg-7 col-5">
           <h6 class="h2 text-white d-inline-block mb-0">Emploi du temps</h6>
           <nav
             aria-label="breadcrumb"
@@ -15,34 +15,34 @@
             <route-bread-crumb/>
           </nav>
         </div>
-        <div class="col-lg-6 col-5 text-right">
+        <div class="col-lg-5 col-7 text-right">
           <a
-            href="#"
-            class="fullcalendar-btn-prev btn btn-sm btn-default"
+            href=""
+            class="fullcalendar-btn-prev btn btn-sm btn-default my-1"
             @click.prevent="prev">
             <i class="fas fa-angle-left"/>
           </a>
           <a
-            href="#"
-            class="fullcalendar-btn-next btn btn-sm btn-default"
+            href=""
+            class="fullcalendar-btn-next btn btn-sm btn-default my-1"
             @click.prevent="next">
             <i class="fas fa-angle-right"/>
           </a>
           <base-button
-            :class="{'active': defaultView === 'dayGridMonth'}"
-            class="btn btn-sm btn-default"
+            :class="{'active': activeView === 'dayGridMonth'}"
+            class="btn btn-sm btn-default my-1"
             @click="changeView('dayGridMonth')">
             Mois
           </base-button>
           <base-button
-            :class="{'active': defaultView === 'timeGridWeek'}"
-            class="btn btn-sm btn-default"
+            :class="{'active': activeView === 'timeGridWeek'}"
+            class="btn btn-sm btn-defaul my-1"
             @click="changeView('timeGridWeek')">
             Semaine
           </base-button>
           <base-button
-            :class="{'active': defaultView === 'timeGridDay'}"
-            class="btn btn-sm btn-default"
+            :class="{'active': activeView === 'timeGridDay'}"
+            class="btn btn-sm btn-default mr-2 my-1"
             @click="changeView('timeGridDay')">
             Jour
           </base-button>
@@ -58,7 +58,9 @@
 
             <!-- Card header -->
             <div class="card-header">
-              <h5 class="h3 mb-0">Calendar</h5>
+              <h5 class="h3 mb-0">
+                {{ headerDate }}
+              </h5>
             </div>
 
             <!-- Card body -->
@@ -71,17 +73,16 @@
                 :theme="false"
                 :selectable="false"
                 :select-helper="true"
-                :default-view="defaultView"
+                :default-view="activeView"
                 :weekends="false"
                 :all-day-slot="false"
-                :column-header-format="{ weekday: 'long', month: 'numeric', day: 'numeric', omitCommas: true }"
-                :event-render="test"
+                :column-header-format="getColumnHeaderFormat()"
+                :event-render="customRender"
                 content-height="auto"
                 slot-duration="01:00:00"
                 min-time="08:00:00"
                 max-time="20:00:00"
                 class="calendar"
-                @eventClick="onEventClick"
               />
             </div>
           </div>
@@ -111,12 +112,12 @@ export default {
   data () {
     return {
       calendarPlugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
-      defaultView: 'timeGridWeek',
+      activeView: 'timeGridWeek',
       events: [
         {
           title: 'Français',
-          start: new Date('2019-09-16T10:00:00'),
-          end: new Date('2019-09-16T12:00:00'),
+          start: new Date('2019-09-23T10:00:00'),
+          end: new Date('2019-09-23T12:00:00'),
           className: 'bg-default',
           professor: 'Amy',
           room: 'L-230',
@@ -124,8 +125,8 @@ export default {
         },
         {
           title: 'Maths',
-          start: new Date('2019-09-16T14:00:00'),
-          end: new Date('2019-09-16T16:00:00'),
+          start: new Date('2019-09-23T14:00:00'),
+          end: new Date('2019-09-23T16:00:00'),
           className: 'bg-default',
           professor: 'Karmouche',
           room: 'L-230',
@@ -133,13 +134,12 @@ export default {
         },
         {
           title: 'Réseau',
-          start: new Date('2019-09-17T09:00:00'),
-          end: new Date('2019-09-17T13:00:00'),
+          start: new Date('2019-09-24T09:00:00'),
+          end: new Date('2019-09-24T13:00:00'),
           className: 'bg-default',
           professor: 'Hocine',
           room: 'L-230',
-          description: 'Test Description',
-          contrast: this.addContrast(new Date('2019-09-10T09:00:00'), new Date('2019-09-10T13:00:00'))
+          description: 'Test Description'
         }
       ],
       model: {
@@ -149,95 +149,79 @@ export default {
         start: '',
         end: ''
       },
-      eventColors: ['bg-info', 'bg-orange', 'bg-red', 'bg-green', 'bg-default', 'bg-blue', 'bg-purple', 'bg-yellow']
+      eventColors: ['bg-info', 'bg-orange', 'bg-red', 'bg-green', 'bg-default', 'bg-blue', 'bg-purple', 'bg-yellow'],
+      documentWidth: window.innerWidth,
+      headerDate: 'test'
     }
   },
   mounted () {
     const calendarApi = this.$refs.fullCalendar.getApi()
     calendarApi.setOption('locale', 'fr')
 
-    window.addEventListener('keyup', function (e) {
-      if (e.keyCode === 39) {
-        calendarApi.next()
-      }
-      if (e.keyCode === 37) {
-        calendarApi.prev()
-      }
+    window.addEventListener('keyup', (e) => {
+      if (e.keyCode === 39) this.next()
+      if (e.keyCode === 37) this.prev()
     })
+
+    this.updateHeaderDate()
+  },
+  created () {
+    // if loading from mobile
+    if (window.innerWidth < 750) this.activeView = 'timeGridDay'
   },
   methods: {
-    test (element) {
-      console.log(element.el.className)
-      if (element.event.extendedProps.contrast) element.el.className += ' contrast-bg'
-      element.el.innerHTML = `
-      <div>
-        <h4 class="pl-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h4>
-        <h2 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h2>
-        <h4 class="m-0 pl-1 text-white" style="position: absolute; bottom: 0; left: 0">${element.event.extendedProps.professor}<h4>
-        <h4 class="m-0 pr-1 text-white" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h4>
-      </div>
-      `
+    customRender (element) {
+      switch (this.activeView) {
+        case 'dayGridMonth':
+          element.el.innerHTML = `
+            <div>
+              <h5 class="pl-1 mb-0 text-white w-auto">
+                ${new Date(element.event.start).getHours()}h
+                <span class="ml-1 h5 text-white">${element.event.title}</span>
+              </h5>
+            </div>
+          `
+          break
+        case 'timeGridWeek':
+        case 'timeGridDay':
+          element.el.innerHTML = `
+            <div>
+              <h4 class="pl-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h4>
+              <h2 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h2>
+              <h4 class="m-0 pl-1 text-white" style="position: absolute; bottom: 0; left: 0">${element.event.extendedProps.professor}<h4>
+              <h4 class="m-0 pr-1 text-white" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h4>
+            </div>
+          `
+          break
+      }
     },
     calendarApi () {
       return this.$refs.fullCalendar.getApi()
     },
     changeView (viewType) {
-      this.defaultView = viewType
+      this.activeView = viewType
       this.calendarApi().changeView(viewType)
     },
-    next () {
+    next: function () {
       this.calendarApi().next()
+      this.updateHeaderDate()
     },
     prev () {
       this.calendarApi().prev()
+      this.updateHeaderDate()
     },
-    onEventClick ({ el, event }) {
-      this.model = {
-        title: event.title,
-        className: event.classNames ? event.classNames.join(' ') : '',
-        start: event.start,
-        end: event.end,
-        description: 'Nullam id dolor id nibh ultricies vehicula ut id elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.'
-      }
-      this.showEditModal = true
-    },
-    saveEvent () {
-      if (this.model.title) {
-        let event = {
-          ...this.model,
-          allDay: true
-        }
-        this.events.push(JSON.parse(JSON.stringify(event)))
-
-        this.model = {
-          title: '',
-          eventColor: 'bg-danger',
-          start: '',
-          end: ''
-        }
+    getColumnHeaderFormat () {
+      switch (this.activeView) {
+        case 'timeGridWeek':
+          return { weekday: 'long', month: 'numeric', day: 'numeric', omitCommas: true }
+        case 'dayGridMonth':
+          return { weekday: 'long' }
+        case 'timeGridDay':
+          return { weekday: 'long', day: 'numeric', month: 'long' }
       }
     },
-    editEvent () {
-      let index = this.events.findIndex(e => e.title === this.model.title)
-      if (index !== -1) {
-        this.events.splice(index, 1, this.model)
-      }
-      this.showEditModal = false
-    },
-    deleteEvent () {
-      let index = this.events.findIndex(e => e.title === this.model.title)
-      if (index !== -1) {
-        this.events.splice(index, 1)
-      }
-      this.showEditModal = false
-    },
-    addContrast (start, end) {
-      const date = new Date()
-      if (date > end) {
-        return true
-      } else {
-        return false
-      }
+    updateHeaderDate () {
+      this.headerDate = this.getMonthFromDate(this.calendarApi().getDate()) + ' ' + this.calendarApi().getDate().getFullYear()
     }
   }
 }
@@ -256,6 +240,11 @@ export default {
   // taille du titre
   .fc-event .fc-title {
     font-size: 1.2em !important
+  }
+
+  // fix weekView day number
+  .fc-day-number {
+    position: relative !important;
   }
 
   // placer
