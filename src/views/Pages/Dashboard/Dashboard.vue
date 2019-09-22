@@ -72,6 +72,9 @@
     <div class="container-fluid mt--6">
       <div class="row">
         <div class="col-lg-4">
+          <latest-homeworks/>
+        </div>
+        <div class="col-lg-4">
           <latest-notifications/>
         </div>
       </div>
@@ -81,12 +84,14 @@
 <script>
 import Clock from './Widgets/Clock'
 import NextHomework from './Widgets/NextHomework'
+import LatestHomeworks from './Widgets/LatestHomeworks'
 import LatestNotifications from './Widgets/LatestNotifications'
 
 export default {
   components: {
     Clock,
     NextHomework,
+    LatestHomeworks,
     LatestNotifications
   }
 }

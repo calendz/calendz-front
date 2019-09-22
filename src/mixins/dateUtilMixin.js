@@ -24,6 +24,7 @@ export default {
 
     // eg: 'lundi 30 septembre'
     dateToString (date) {
+      date = new Date(date)
       const day = this.dayNumberToString(date.getDay())
       const dayNumber = ('0' + date.getDate()).slice(-2)
       const month = this.monthNumberToString(date.getMonth())

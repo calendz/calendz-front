@@ -10,7 +10,7 @@
         <div class="col-4 text-right">
           <router-link
             to="/notifications"
-            class="btn btn-sm btn-neutral">Détail</router-link>
+            class="btn btn-sm btn-primary">Détail</router-link>
         </div>
       </div>
     </div>
