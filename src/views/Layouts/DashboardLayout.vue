@@ -22,15 +22,8 @@
             :link="{
               name: 'Emploi du temps',
               icon: 'ni ni-calendar-grid-58 text-info',
-            }"
-          >
-            <sidebar-item
-              :link="{ name: 'Emploi du temps', path: '/calendar' }"
-            />
-            <sidebar-item
-              :link="{ name: 'Rechercher', path: '/calendar/search' }"
-            />
-          </sidebar-item>
+              path: '/calendar'
+          }"/>
 
           <!-- homeworks -->
           <sidebar-item

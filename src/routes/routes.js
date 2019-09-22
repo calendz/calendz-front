@@ -23,7 +23,6 @@ const PasswordResetChangePassword = () => import(/* webpackChunkName: "pages" */
 // Dashboard
 const Dashboard = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Dashboard.vue')
 const Calendar = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Calendar.vue')
-const CalendarSearch = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/CalendarSearch.vue')
 const Homeworks = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Homeworks.vue')
 const Profile = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Profile.vue')
 const Settings = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Settings.vue')
@@ -60,14 +59,6 @@ const dashboardPages = {
       path: 'calendar',
       name: 'Emploi du temps',
       component: Calendar,
-      meta: {
-        title: 'Emploi du temps - Calendz'
-      }
-    },
-    {
-      path: 'calendar/search',
-      name: 'Emploi du temps - Recherche',
-      component: CalendarSearch,
       meta: {
         title: 'Emploi du temps - Calendz'
       }
