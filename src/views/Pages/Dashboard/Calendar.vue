@@ -58,9 +58,18 @@
 
             <!-- Card header -->
             <div class="card-header">
-              <h5 class="h3 mb-0">
-                {{ headerDate }}
-              </h5>
+              <div class="row align-items-center">
+                <div class="col-8">
+                  <h5 class="h3 mb-0">{{ headerDate }}</h5>
+                </div>
+                <div class="col-4 text-right">
+                  <base-button
+                    class="btn btn-sm btn-default"
+                    @click="backToToday()">
+                    Revenir à aujourd'hui
+                  </base-button>
+                </div>
+              </div>
             </div>
 
             <!-- Card body -->
@@ -222,6 +231,9 @@ export default {
     },
     updateHeaderDate () {
       this.headerDate = this.getMonthFromDate(this.calendarApi().getDate()) + ' ' + this.calendarApi().getDate().getFullYear()
+    },
+    backToToday () {
+      this.calendarApi().today()
     }
   }
 }
