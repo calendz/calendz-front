@@ -287,8 +287,11 @@ export default {
     }
   },
   mounted () {
+    // get all notifications
     this.$store.dispatch('notifications/fetch')
-    this.$store.dispatch('calendar/fetch')
+
+    // get current week
+    this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(new Date()) })
   },
   methods: {
     capitalizeFirstLetter (string) {

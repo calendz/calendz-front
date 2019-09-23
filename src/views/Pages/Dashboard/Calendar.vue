@@ -159,7 +159,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      events: 'calendar/getWeek',
+      events: 'calendar/getCourses',
       isLoading: 'calendar/isLoading'
     })
   },
@@ -233,10 +233,32 @@ export default {
       this.calendarApi().changeView(viewType)
     },
     next: function () {
+      // récupérer la date de la semaine prochaine
+      // via
+      // la formatter en MM-DD-YY
+      // la passer en paramètre du dispatch
+
+      // let current = new Date(this.calendarApi().getDate())
+      // console.log(current)
+      // current.setDate(current.getDate() + 8)
+
+      // fullcalendar se chie dessus quand il ajoute 1 semaine à une date et que la prochaine date
+      // est dans le mois suivant
+      console.log(new Date(this.calendarApi().getDate()))
+      let current = new Date(this.calendarApi().getDate())
+      // console.log(current)
+      // console.log(current.getDate() - current.getDay() + 9)
+      // current.getDate() => donne date d'ajd
+      current.setDate(current.getDate() - current.getDay() + 9)
+      // current.setDate(current.getDate() + 7)
+
+      this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(new Date(current)) })
+
       this.calendarApi().next()
       this.updateHeaderDate()
     },
     prev () {
+      // TODO: same shit à l'envers
       this.calendarApi().prev()
       this.updateHeaderDate()
     },
