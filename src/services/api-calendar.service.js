@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import axios from 'axios'
-const customAxios = axios.create()
+const apiCalendar = axios.create()
 
 const ApiCalendarService = {
   init (baseURL, token) {
-    customAxios.defaults.baseURL = baseURL
-    customAxios.defaults.headers.common['x-access-token'] = token
-    customAxios.interceptors.response.use(response => {
+    apiCalendar.defaults.baseURL = baseURL
+    apiCalendar.defaults.headers.common['x-access-token'] = token
+    apiCalendar.interceptors.response.use(response => {
       return response
     }, err => {
       // intercept connection errors
@@ -21,7 +21,7 @@ const ApiCalendarService = {
   },
 
   get (resource) {
-    return customAxios.get(resource)
+    return apiCalendar.get(resource)
       .then(response => {
         return response
       })
@@ -31,7 +31,7 @@ const ApiCalendarService = {
   },
 
   post (resource, data) {
-    return customAxios.post(resource, data)
+    return apiCalendar.post(resource, data)
       .then(response => {
         return response
       })
@@ -41,7 +41,7 @@ const ApiCalendarService = {
   },
 
   put (resource, data) {
-    return customAxios.put(resource, data)
+    return apiCalendar.put(resource, data)
       .then(response => {
         return response
       })
@@ -51,7 +51,7 @@ const ApiCalendarService = {
   },
 
   patch (resource, data) {
-    return customAxios.patch(resource, data)
+    return apiCalendar.patch(resource, data)
       .then(response => {
         return response
       })
@@ -61,7 +61,7 @@ const ApiCalendarService = {
   },
 
   delete (resource) {
-    return customAxios.delete(resource)
+    return apiCalendar.delete(resource)
       .then(response => {
         return response
       })
@@ -82,7 +82,7 @@ const ApiCalendarService = {
    *    - password
   **/
   customRequest (data) {
-    return customAxios(data)
+    return apiCalendar(data)
       .then(response => {
         return response
       })

@@ -2,11 +2,13 @@ import Vue from 'vue'
 import axios from 'axios'
 import store from '../store/index'
 
+const api = axios.create()
+
 const ApiService = {
   init (baseURL) {
-    axios.defaults.baseURL = baseURL
-    axios.defaults.withCredentials = 'include'
-    axios.interceptors.response.use(response => {
+    api.defaults.baseURL = baseURL
+    api.defaults.withCredentials = 'include'
+    api.interceptors.response.use(response => {
       return response
     }, err => {
       // intercept connection errors
@@ -28,7 +30,7 @@ const ApiService = {
   },
 
   get (resource) {
-    return axios.get(resource)
+    return api.get(resource)
       .then(response => {
         return response
       })
@@ -38,7 +40,7 @@ const ApiService = {
   },
 
   post (resource, data) {
-    return axios.post(resource, data)
+    return api.post(resource, data)
       .then(response => {
         return response
       })
@@ -48,7 +50,7 @@ const ApiService = {
   },
 
   put (resource, data) {
-    return axios.put(resource, data)
+    return api.put(resource, data)
       .then(response => {
         return response
       })
@@ -58,7 +60,7 @@ const ApiService = {
   },
 
   patch (resource, data) {
-    return axios.patch(resource, data)
+    return api.patch(resource, data)
       .then(response => {
         return response
       })
@@ -68,7 +70,7 @@ const ApiService = {
   },
 
   delete (resource) {
-    return axios.delete(resource)
+    return api.delete(resource)
       .then(response => {
         return response
       })
@@ -89,7 +91,7 @@ const ApiService = {
    *    - password
   **/
   customRequest (data) {
-    return axios(data)
+    return api(data)
       .then(response => {
         return response
       })

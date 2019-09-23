@@ -29,7 +29,6 @@ const UserService = {
 
   // login
   login: (email, password, rememberMe) => {
-    console.log('test')
     return ApiService.post('/auth', { email, password, rememberMe })
       .then(res => {
         return res.data
