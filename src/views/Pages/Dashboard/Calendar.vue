@@ -75,8 +75,9 @@
             <!-- Card body -->
             <div class="card-body p-0 card-calendar-body">
               <full-calendar
+                id="calendar"
                 ref="fullCalendar"
-                :events="events"
+                :events="isLoading ? fakeEvents : events"
                 :plugins="calendarPlugins"
                 :editable="false"
                 :theme="false"
@@ -102,6 +103,7 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import Modal from '@/components/Modal'
 import FullCalendar from '@fullcalendar/vue'
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -151,17 +153,43 @@ export default {
           description: 'Test Description'
         }
       ],
-      model: {
-        title: '',
-        className: 'bg-default',
-        description: 'Nullam id dolor id nibh ultricies vehicula ut id elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.',
-        start: '',
-        end: ''
-      },
-      eventColors: ['bg-info', 'bg-orange', 'bg-red', 'bg-green', 'bg-default', 'bg-blue', 'bg-purple', 'bg-yellow'],
+      fakeEvents: [
+        {
+          title: 'Français',
+          start: new Date('2019-09-23T10:00:00'),
+          end: new Date('2019-09-23T12:00:00'),
+          className: 'bg-lightgrey',
+          professor: 'Amy',
+          room: 'L-230',
+          description: 'Test Description'
+        },
+        {
+          title: 'Maths',
+          start: new Date('2019-09-23T14:00:00'),
+          end: new Date('2019-09-23T16:00:00'),
+          className: 'bg-lightgrey',
+          professor: 'Karmouche',
+          room: 'L-230',
+          description: 'Test Description'
+        },
+        {
+          title: 'Réseau',
+          start: new Date('2019-09-24T09:00:00'),
+          end: new Date('2019-09-24T13:00:00'),
+          className: 'bg-lightgrey',
+          professor: 'Hocine',
+          room: 'L-230',
+          description: 'Test Description'
+        }
+      ],
       documentWidth: window.innerWidth,
       headerDate: 'test'
     }
+  },
+  computed: {
+    ...mapGetters({
+      isLoading: 'calendar/isLoading'
+    })
   },
   mounted () {
     const calendarApi = this.$refs.fullCalendar.getApi()
@@ -180,9 +208,10 @@ export default {
   },
   methods: {
     customRender (element) {
-      switch (this.activeView) {
-        case 'dayGridMonth':
-          element.el.innerHTML = `
+      if (this.isLoading) {
+        switch (this.activeView) {
+          case 'dayGridMonth':
+            element.el.innerHTML = `
             <div>
               <h5 class="pl-1 mb-0 text-white w-auto">
                 ${new Date(element.event.start).getHours()}h
@@ -190,10 +219,34 @@ export default {
               </h5>
             </div>
           `
-          break
-        case 'timeGridWeek':
-        case 'timeGridDay':
-          element.el.innerHTML = `
+            break
+          case 'timeGridWeek':
+          case 'timeGridDay':
+            element.el.innerHTML = `
+            <div>
+              <div class="ml-2 mt-2 placeholder-sm"></div>
+              <div class="ml-0 mt--2 placeholder-md" style="position: absolute; top: 50%; left: 50%; transform: translateY(-50%); transform: translateX(-50%)"></div>
+              <div class="ml-2 mb-2 placeholder-sm" style="position: absolute; bottom: 0; left: 0"></div>
+              <div class="mr-2 mb-2 placeholder-sm" style="position: absolute; bottom: 0; right: 0"></div>
+            </div>
+          `
+            break
+        }
+      } else {
+        switch (this.activeView) {
+          case 'dayGridMonth':
+            element.el.innerHTML = `
+            <div>
+              <h5 class="pl-1 mb-0 text-white w-auto">
+                ${new Date(element.event.start).getHours()}h
+                <span class="ml-1 h5 text-white">${element.event.title}</span>
+              </h5>
+            </div>
+          `
+            break
+          case 'timeGridWeek':
+          case 'timeGridDay':
+            element.el.innerHTML = `
             <div>
               <h4 class="pl-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h4>
               <h2 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h2>
@@ -201,7 +254,8 @@ export default {
               <h4 class="m-0 pr-1 text-white" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h4>
             </div>
           `
-          break
+            break
+        }
       }
     },
     calendarApi () {
@@ -243,6 +297,47 @@ export default {
   @import '~@fullcalendar/daygrid/main.css';
   @import '~@fullcalendar/timegrid/main.css';
   @import "~@/assets/sass/core/vendors/fullcalendar";
+
+  // =========================================
+  // == Loading placeholder
+  // =========================================
+  .placeholder-sm {
+    width: 60px;
+    height: 10px;
+    border-radius: 6px;
+    animation-name: pulse;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+  }
+
+  .placeholder-md {
+    width: 80px;
+    height: 14px;
+    border-radius: 6px;
+    animation-name: pulse;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+  }
+
+  .bg-lightgrey {
+    background-color: #F0F0F0 !important;
+  }
+
+  @keyframes pulse {
+    0% {
+      background-color: rgb(250, 248, 250);
+    }
+    50% {
+      background-color: rgb(232, 232, 232);
+    }
+    100% {
+      background-color: rgb(250, 250, 250);
+    }
+  }
+
+  // =========================================
+  // == fullcalendar modifications
+  // =========================================
 
   // hauteur des cases
   .fc-time-grid .fc-slats td {

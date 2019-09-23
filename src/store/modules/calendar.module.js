@@ -52,8 +52,8 @@ const calendarModule = {
   // == Getters
   // ==================================
   getters: {
-    isLoggedIn: state => {
-      return !!state.user
+    isLoading: state => {
+      return !!state.status.isLoading
     }
   }
 }
