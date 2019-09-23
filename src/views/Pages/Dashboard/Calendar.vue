@@ -183,7 +183,7 @@ export default {
         }
       ],
       documentWidth: window.innerWidth,
-      headerDate: 'test'
+      headerDate: ''
     }
   },
   computed: {
@@ -213,12 +213,10 @@ export default {
           case 'dayGridMonth':
             element.el.innerHTML = `
             <div>
-              <h5 class="pl-1 mb-0 text-white w-auto">
-                ${new Date(element.event.start).getHours()}h
-                <span class="ml-1 h5 text-white">${element.event.title}</span>
+              <h5 class="pl-1 py-1 mb-0">
+                <div class="ml-1 placeholder-md"></div>
               </h5>
-            </div>
-          `
+            </div>`
             break
           case 'timeGridWeek':
           case 'timeGridDay':
@@ -228,8 +226,7 @@ export default {
               <div class="ml-0 mt--2 placeholder-md" style="position: absolute; top: 50%; left: 50%; transform: translateY(-50%); transform: translateX(-50%)"></div>
               <div class="ml-2 mb-2 placeholder-sm" style="position: absolute; bottom: 0; left: 0"></div>
               <div class="mr-2 mb-2 placeholder-sm" style="position: absolute; bottom: 0; right: 0"></div>
-            </div>
-          `
+            </div>`
             break
         }
       } else {
@@ -241,19 +238,17 @@ export default {
                 ${new Date(element.event.start).getHours()}h
                 <span class="ml-1 h5 text-white">${element.event.title}</span>
               </h5>
-            </div>
-          `
+            </div>`
             break
           case 'timeGridWeek':
           case 'timeGridDay':
             element.el.innerHTML = `
-            <div>
-              <h4 class="pl-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h4>
+            <div class="fade-in">
+              <h4 class="pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h4>
               <h2 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h2>
-              <h4 class="m-0 pl-1 text-white" style="position: absolute; bottom: 0; left: 0">${element.event.extendedProps.professor}<h4>
-              <h4 class="m-0 pr-1 text-white" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h4>
-            </div>
-          `
+              <h4 class="pl-2 mb-1 text-white" style="position: absolute; bottom: 0; left: 0">${element.event.extendedProps.professor}<h4>
+              <h4 class="pr-2 mb-1 text-white" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h4>
+            </div>`
             break
         }
       }
@@ -320,19 +315,23 @@ export default {
   }
 
   .bg-lightgrey {
-    background-color: #F0F0F0 !important;
+    background-color: #ced4da !important;
   }
 
   @keyframes pulse {
-    0% {
-      background-color: rgb(250, 248, 250);
-    }
-    50% {
-      background-color: rgb(232, 232, 232);
-    }
-    100% {
-      background-color: rgb(250, 250, 250);
-    }
+    0% { background-color: #dee2e6; }
+    50% { background-color: #f6f9fc; }
+    100% { background-color: #dee2e6; }
+  }
+
+  .fade-in {
+    animation-name: fade-in;
+    animation-duration: 0.8s;
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
 
   // =========================================
