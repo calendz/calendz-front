@@ -124,35 +124,6 @@ export default {
     return {
       calendarPlugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
       activeView: 'timeGridWeek',
-      events: [
-        {
-          title: 'Français',
-          start: new Date('2019-09-23T10:00:00'),
-          end: new Date('2019-09-23T12:00:00'),
-          className: 'bg-default',
-          professor: 'Amy',
-          room: 'L-230',
-          description: 'Test Description'
-        },
-        {
-          title: 'Maths',
-          start: new Date('2019-09-23T14:00:00'),
-          end: new Date('2019-09-23T16:00:00'),
-          className: 'bg-default',
-          professor: 'Karmouche',
-          room: 'L-230',
-          description: 'Test Description'
-        },
-        {
-          title: 'Réseau',
-          start: new Date('2019-09-24T09:00:00'),
-          end: new Date('2019-09-24T13:00:00'),
-          className: 'bg-default',
-          professor: 'Hocine',
-          room: 'L-230',
-          description: 'Test Description'
-        }
-      ],
       fakeEvents: [
         {
           title: 'Français',
@@ -188,6 +159,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      events: 'calendar/getWeek',
       isLoading: 'calendar/isLoading'
     })
   },
@@ -244,10 +216,10 @@ export default {
           case 'timeGridDay':
             element.el.innerHTML = `
             <div class="fade-in">
-              <h4 class="pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h4>
+              <h5 class="pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
               <h2 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h2>
-              <h4 class="pl-2 mb-1 text-white" style="position: absolute; bottom: 0; left: 0">${element.event.extendedProps.professor}<h4>
-              <h4 class="pr-2 mb-1 text-white" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h4>
+              <h5 class="pl-2 mb-1 text-white" style="position: absolute; bottom: 0; left: 0">${element.event.extendedProps.professor}<h5>
+              <h5 class="pr-2 mb-1 text-white" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h5>
             </div>`
             break
         }
