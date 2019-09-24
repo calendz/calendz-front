@@ -112,6 +112,7 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import RouteBreadCrumb from '@/components/Breadcrumb/RouteBreadcrumb'
 import dateUtilMixin from '@/mixins/dateUtilMixin'
+import stringUtilMixin from '@/mixins/stringUtilMixin'
 
 export default {
   name: 'Calendar',
@@ -120,7 +121,7 @@ export default {
     FullCalendar,
     RouteBreadCrumb
   },
-  mixins: [dateUtilMixin],
+  mixins: [dateUtilMixin, stringUtilMixin],
   data () {
     return {
       calendarPlugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
@@ -220,7 +221,7 @@ export default {
             <div class="fade-in">
               <h5 class="pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
               <h2 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h2>
-              <h5 class="pl-2 mb-1 text-white" style="position: absolute; bottom: 0; left: 0">${element.event.extendedProps.professor}<h5>
+              <h5 class="pl-2 mb-1 text-white" style="position: absolute; bottom: 0; left: 0">${this.capitalizeFirstLetterEachWords(element.event.extendedProps.professor)}<h5>
               <h5 class="pr-2 mb-1 text-white" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h5>
             </div>`
             break
