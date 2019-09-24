@@ -234,7 +234,6 @@ export default {
       this.activeView = viewType
       this.calendarApi().changeView(viewType)
       this.activeDate = this.calendarApi().getDate()
-      console.log(this.activeDate)
     },
     next: function () {
       let dateToFetch = this.activeDate
