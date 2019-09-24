@@ -124,6 +124,7 @@ export default {
     return {
       calendarPlugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
       activeView: 'timeGridWeek',
+      activeDate: new Date(),
       fakeEvents: [
         {
           title: 'Français',
@@ -231,34 +232,55 @@ export default {
     changeView (viewType) {
       this.activeView = viewType
       this.calendarApi().changeView(viewType)
+      this.activeDate = this.calendarApi().getDate()
+      console.log(this.activeDate)
     },
     next: function () {
-      // récupérer la date de la semaine prochaine
-      // via
-      // la formatter en MM-DD-YY
-      // la passer en paramètre du dispatch
+      let dateToFetch = this.activeDate
+      switch (this.activeView) {
+        case 'timeGridWeek':
+          dateToFetch = this.getMonday(dateToFetch.setDate(dateToFetch.getDate() + 7))
+          break
+        case 'dayGridMonth':
+          dateToFetch = this.getMonday(dateToFetch.setMonth(dateToFetch.getMonth() + 1))
+          break
+        case 'timeGridDay':
+          // add 1 day (or 3 if friday or 2 if saturday)
+          let toAdd = 1
+          if (dateToFetch.getDay() === 5) toAdd = 3
+          if (dateToFetch.getDay() === 6) toAdd = 2
 
-      // let current = new Date(this.calendarApi().getDate())
-      // console.log(current)
-      // current.setDate(current.getDate() + 8)
+          dateToFetch = this.getMonday(dateToFetch.setDate(dateToFetch.getDate() + toAdd))
+          break
+      }
 
-      // fullcalendar se chie dessus quand il ajoute 1 semaine à une date et que la prochaine date
-      // est dans le mois suivant
-      console.log(new Date(this.calendarApi().getDate()))
-      let current = new Date(this.calendarApi().getDate())
-      // console.log(current)
-      // console.log(current.getDate() - current.getDay() + 9)
-      // current.getDate() => donne date d'ajd
-      current.setDate(current.getDate() - current.getDay() + 9)
-      // current.setDate(current.getDate() + 7)
-
-      this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(new Date(current)) })
+      this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(dateToFetch) })
 
       this.calendarApi().next()
       this.updateHeaderDate()
     },
     prev () {
-      // TODO: same shit à l'envers
+      let dateToFetch = this.activeDate
+
+      switch (this.activeView) {
+        case 'timeGridWeek':
+          dateToFetch = this.getMonday(dateToFetch.setDate(dateToFetch.getDate() - 7))
+          break
+        case 'dayGridMonth':
+          dateToFetch = this.getMonday(dateToFetch.setMonth(dateToFetch.getMonth() - 1))
+          break
+        case 'timeGridDay':
+          // remove 1 day (or 3 if monday or 2 if sunday)
+          let toRemove = 1
+          if (dateToFetch.getDay() === 1) toRemove = 3
+          if (dateToFetch.getDay() === 0) toRemove = 2
+
+          dateToFetch = this.getMonday(dateToFetch.setDate(dateToFetch.getDate() - toRemove))
+          break
+      }
+
+      this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(dateToFetch) })
+
       this.calendarApi().prev()
       this.updateHeaderDate()
     },
@@ -276,7 +298,14 @@ export default {
       this.headerDate = this.getMonthFromDate(this.calendarApi().getDate()) + ' ' + this.calendarApi().getDate().getFullYear()
     },
     backToToday () {
+      this.activeDate = new Date()
       this.calendarApi().today()
+    },
+    getMonday (d) {
+      d = new Date(d)
+      const day = d.getDay()
+      const diff = d.getDate() - day + (day === 0 ? -6 : 1) // adjust when day is sunday
+      return new Date(d.setDate(diff))
     }
   }
 }

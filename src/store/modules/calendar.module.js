@@ -46,6 +46,7 @@ const calendarModule = {
 
       // if that week hasn't already been fetched
       if (!state.fetchedWeeks.some(week => week.year === currentWeek.year && week.number === currentWeek.number)) {
+        if (process.env.NODE_ENV === 'development') console.log(`Year ${currentWeek.year}, week ${currentWeek.number}: FETCHING`)
         commit('FETCH_REQUEST')
         CalendarService.getWeek(rootState.account.user.email, date)
           .then(
@@ -56,6 +57,8 @@ const calendarModule = {
             err => {
               commit('FETCH_FAILURE', err.message)
             })
+      } else {
+        if (process.env.NODE_ENV === 'development') console.log(`Year ${currentWeek.year}, week ${currentWeek.number}: ALREADY FETCHED`)
       }
     }
   },
