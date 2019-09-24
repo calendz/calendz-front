@@ -234,8 +234,20 @@ export default {
     },
     changeView (viewType) {
       this.activeView = viewType
-      this.calendarApi().changeView(viewType)
       this.activeDate = this.calendarApi().getDate()
+
+      if (viewType === 'dayGridMonth') {
+        // get first day of the month
+        const firstOfTheMonth = this.getFirstFridayOfMonth(this.activeDate)
+
+        this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate())) })
+        this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+        this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+        this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+        this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+      }
+
+      this.calendarApi().changeView(viewType)
     },
     next: function () {
       let dateToFetch = this.activeDate
@@ -245,7 +257,17 @@ export default {
           break
         case 'dayGridMonth':
           dateToFetch = this.getMonday(dateToFetch.setMonth(dateToFetch.getMonth() + 1))
-          break
+
+          const firstOfTheMonth = this.getFirstFridayOfMonth(dateToFetch)
+          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate())) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+
+          this.calendarApi().next()
+          this.updateHeaderDate()
+          return
         case 'timeGridDay':
           // add 1 day (or 3 if friday or 2 if saturday)
           let toAdd = 1
@@ -270,7 +292,17 @@ export default {
           break
         case 'dayGridMonth':
           dateToFetch = this.getMonday(dateToFetch.setMonth(dateToFetch.getMonth() - 1))
-          break
+
+          const firstOfTheMonth = this.getFirstFridayOfMonth(dateToFetch)
+          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate())) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+
+          this.calendarApi().prev()
+          this.updateHeaderDate()
+          return
         case 'timeGridDay':
           // remove 1 day (or 3 if monday or 2 if sunday)
           let toRemove = 1
@@ -308,6 +340,21 @@ export default {
       const day = d.getDay()
       const diff = d.getDate() - day + (day === 0 ? -6 : 1) // adjust when day is sunday
       return new Date(d.setDate(diff))
+    },
+    getFirstFridayOfMonth (date) {
+      date = new Date(date)
+      let targetDay = ''
+      const seekDay = 5
+      let i = 1
+      const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+      ]
+
+      while (i < 31) {
+        targetDay = new Date(`${i++} ${monthNames[date.getMonth()]} ${date.getFullYear()}`)
+        if (targetDay.getDay() === seekDay) return targetDay
+      }
+      return false
     }
   }
 }
