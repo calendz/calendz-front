@@ -135,10 +135,10 @@ const accountModule = {
             router.push('/dashboard')
           },
           err => {
-            if (err.userId) {
+            if (err && err.userId) {
               commit('LOGIN_FAILURE', { reason: err.message, userId: err.userId })
             } else {
-              commit('LOGIN_FAILURE', { reason: err.message })
+              commit('LOGIN_FAILURE', { reason: err && err.message ? err.message : 'Une erreur est survenue' })
             }
           })
     },

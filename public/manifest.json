@@ -1,7 +1,7 @@
 {
   "name": "Calendz",
   "short_name": "Calendz",
-  "start_url": "./index.html",
+  "start_url": "./dashboard",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#5E72E4",

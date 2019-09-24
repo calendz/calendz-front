@@ -16,6 +16,17 @@ const UserService = {
       })
   },
 
+  // verify user email address*
+  verifyEmail: (token) => {
+    return ApiService.post('/auth/verify/email', { token })
+      .then(res => {
+        return res.data
+      })
+      .catch(err => {
+        return Promise.reject(err.data)
+      })
+  },
+
   // login
   login: (email, password, rememberMe) => {
     return ApiService.post('/auth', { email, password, rememberMe })

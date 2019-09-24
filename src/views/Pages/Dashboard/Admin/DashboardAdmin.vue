@@ -31,12 +31,10 @@
   </div>
 </template>
 <script>
-import RouteBreadCrumb from '@/components/Breadcrumb/RouteBreadcrumb'
 import CreateNotifications from './Widgets/CreateNotifications'
 
 export default {
   components: {
-    RouteBreadCrumb,
     CreateNotifications
   }
 }

@@ -4,6 +4,7 @@ import store from './store/index'
 import router from './routes/router'
 import DashboardPlugin from './plugins/dashboard-plugin'
 import ApiService from './services/api.service'
+import ApiCalendarService from './services/api-calendar.service'
 import { VueSpinners } from '@saeris/vue-spinners'
 import VueAnalytics from 'vue-analytics'
 import './registerServiceWorker'
@@ -24,6 +25,7 @@ Vue.use(VueAnalytics, {
 
 // Set the base URL of the API
 ApiService.init(process.env.VUE_APP_API_URL)
+ApiCalendarService.init(process.env.VUE_APP_API_CALENDAR_URL, process.env.VUE_APP_API_CALENDAR_TOKEN)
 
 /* eslint-disable no-new */
 new Vue({

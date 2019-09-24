@@ -349,7 +349,6 @@
 import swal from 'sweetalert2'
 import { BasePagination, Modal } from '@/components'
 import { Table, TableColumn, Option, Select } from 'element-ui'
-import RouteBreadCrumb from '@/components/Breadcrumb/RouteBreadcrumb'
 import clientPaginationMixin from '@/mixins/clientPaginationMixin'
 import dateUtilMixin from '@/mixins/dateUtilMixin'
 import UserService from '@/services/user.service'
@@ -358,7 +357,6 @@ import { mapState } from 'vuex'
 export default {
   components: {
     BasePagination,
-    RouteBreadCrumb,
     [Option.name]: Option,
     [Select.name]: Select,
     [Table.name]: Table,

@@ -22,6 +22,7 @@
       <div class="dz-preview-cover">
         <img
           class="dz-preview-img"
+          alt="Image"
           data-dz-thumbnail>
       </div>
     </div>
@@ -36,6 +37,7 @@
             <div class="avatar">
               <img
                 class="avatar-img rounded"
+                alt="Image"
                 data-dz-thumbnail>
             </div>
           </div>

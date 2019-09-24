@@ -23,7 +23,6 @@ const PasswordResetChangePassword = () => import(/* webpackChunkName: "pages" */
 // Dashboard
 const Dashboard = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Dashboard.vue')
 const Calendar = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Calendar.vue')
-const CalendarSearch = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/CalendarSearch.vue')
 const Homeworks = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Homeworks.vue')
 const Profile = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Profile.vue')
 const Settings = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Settings.vue')
@@ -33,10 +32,6 @@ const Statistics = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Da
 const UserManagement = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Admin/UserManagement.vue')
 
 const Notifications = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Hidden/Notifications.vue')
-
-const Blog = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Blog.vue')
-const Features = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Features.vue')
-const BugReport = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/BugReport.vue')
 
 // ============================================
 // == Routes
@@ -57,7 +52,7 @@ const dashboardPages = {
       name: 'Dashboard',
       component: Dashboard,
       meta: {
-        title: 'Dashboard - calendz'
+        title: 'Dashboard - Calendz'
       }
     },
     {
@@ -65,15 +60,7 @@ const dashboardPages = {
       name: 'Emploi du temps',
       component: Calendar,
       meta: {
-        title: 'Dashboard - calendz'
-      }
-    },
-    {
-      path: 'calendar/search',
-      name: 'Emploi du temps - Recherche',
-      component: CalendarSearch,
-      meta: {
-        title: 'Dashboard - calendz'
+        title: 'Emploi du temps - Calendz'
       }
     },
     {
@@ -81,7 +68,7 @@ const dashboardPages = {
       name: 'Devoirs',
       component: Homeworks,
       meta: {
-        title: 'Dashboard - calendz'
+        title: 'Devoirs - Calendz'
       }
     },
     {
@@ -89,7 +76,7 @@ const dashboardPages = {
       name: 'Mon profil',
       component: Profile,
       meta: {
-        title: 'Dashboard - calendz'
+        title: 'Profil - Calendz'
       }
     },
     {
@@ -97,7 +84,7 @@ const dashboardPages = {
       name: 'Paramètres',
       component: Settings,
       meta: {
-        title: 'Dashboard - calendz'
+        title: 'Paramètres - Calendz'
       }
     },
     // =================================
@@ -108,7 +95,7 @@ const dashboardPages = {
       name: 'Dashboard admin',
       component: DashboardAdmin,
       meta: {
-        title: 'Dashboard - calendz'
+        title: 'Dashboard admin - Calendz'
       }
     },
     {
@@ -116,7 +103,7 @@ const dashboardPages = {
       name: 'Statistiques',
       component: Statistics,
       meta: {
-        title: 'Dashboard - calendz',
+        title: 'Statistiques - Calendz',
         adminOnly: true
       }
     },
@@ -125,7 +112,7 @@ const dashboardPages = {
       name: 'Gestion des utilisateurs',
       component: UserManagement,
       meta: {
-        title: 'Dashboard - calendz',
+        title: 'Utilisateurs - Calendz',
         adminOnly: true
       }
     },
@@ -137,34 +124,7 @@ const dashboardPages = {
       name: 'Notifications',
       component: Notifications,
       meta: {
-        title: 'Dashboard - calendz'
-      }
-    },
-    // =================================
-    // == documentation tab
-    // =================================
-    {
-      path: 'blog',
-      name: 'Blog',
-      component: Blog,
-      meta: {
-        title: 'Dashboard - calendz'
-      }
-    },
-    {
-      path: 'features',
-      name: 'Features',
-      component: Features,
-      meta: {
-        title: 'Dashboard - calendz'
-      }
-    },
-    {
-      path: 'bug-report',
-      name: 'Signaler un bug',
-      component: BugReport,
-      meta: {
-        title: 'Dashboard - calendz'
+        title: 'Notifications - Calendz'
       }
     }
   ]
@@ -181,7 +141,8 @@ const authPages = {
       name: 'Home',
       component: Home,
       meta: {
-        title: 'Accueil - calendz'
+        noBodyBackground: true,
+        title: 'Accueil - Calendz'
       }
     },
     {
@@ -189,7 +150,7 @@ const authPages = {
       name: 'Login',
       component: Login,
       meta: {
-        title: 'Connexion - calendz',
+        title: 'Connexion - Calendz',
         redirectToDashboardIfConnected: true
       }
     },
@@ -198,7 +159,7 @@ const authPages = {
       name: 'Register',
       component: Register,
       meta: {
-        title: 'Inscription - calendz',
+        title: 'Inscription - Calendz',
         redirectToDashboardIfConnected: true
       }
     },
@@ -207,7 +168,7 @@ const authPages = {
       name: 'Verification email',
       component: EmailConfirmation,
       meta: {
-        title: 'Confirmation adresse mail - calendz',
+        title: 'Confirmation adresse mail - Calendz',
         redirectToDashboardIfConnected: true
       }
     },
@@ -216,7 +177,7 @@ const authPages = {
       name: 'PasswordReset',
       component: PasswordReset,
       meta: {
-        title: 'Mot de passe oublié - calendz',
+        title: 'Mot de passe oublié - Calendz',
         redirectToDashboardIfConnected: true
       }
     },
@@ -225,7 +186,7 @@ const authPages = {
       name: 'PasswordResetChangePassword',
       component: PasswordResetChangePassword,
       meta: {
-        title: 'Mot de passe oublié - calendz',
+        title: 'Mot de passe oublié - Calendz',
         redirectToDashboardIfConnected: true
       }
     },

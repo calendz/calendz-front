@@ -6,7 +6,7 @@
       :transparent="true"
       type="light"
       menu-classes="justify-content-end"
-      class="navbar-horizontal navbar-main"
+      class="navbar-horizontal navbar-main mt-2"
       expand="lg"
     >
       <div
@@ -16,8 +16,9 @@
           class="navbar-brand"
           to="/">
           <img
-            src="img/brand/logo-square-white-no-borders.svg"
-            style="height: 65px; width: 65px">
+            src="img/icons/favicon-32x32.png"
+            alt="Logo"
+            style="height: 50px; width: 50px">
         </router-link>
       </div>
 
@@ -26,7 +27,9 @@
           <div class="row">
             <div class="col-6 collapse-brand">
               <router-link to="/">
-                <img src="img/brand/logo-black.svg">
+                <img
+                  src="img/icons/favicon-32x32.png"
+                  alt="Logo">
               </router-link>
             </div>
             <div class="col-6 collapse-close">
@@ -49,6 +52,15 @@
               class="nav-link">
               <span class="nav-link-inner--text">Accueil</span>
             </router-link>
+          </li>
+          <li class="nav-item">
+            <a
+              href="https://docs.calendz.app"
+              target="_blank"
+              rel="noopenner noreferrer"
+              class="nav-link">
+              <span class="nav-link-inner--text">Documentation</span>
+            </a>
           </li>
           <li class="nav-item">
             <router-link
@@ -103,10 +115,12 @@
             <div class="copyright text-center text-xl-left text-muted">
               © {{ year }} <a
                 href="https://arthurdufour.com/"
+                rel="noreferrer noopener"
                 class="font-weight-bold ml-1"
                 target="_blank">Arthur Dufour</a> &
               <a
                 href="https://alexandretuet.com/"
+                rel="noreferrer noopener"
                 class="font-weight-bold ml-1"
                 target="_blank">Alexandre Tuet</a>
             </div>
@@ -116,18 +130,21 @@
               <li class="nav-item">
                 <a
                   href="https://github.com/calendz"
+                  rel="noreferrer noopener"
                   class="nav-link"
                   target="_blank">Github</a>
               </li>
               <li class="nav-item">
                 <a
-                  href="https://app.codacy.com/organization/calendz"
-                  class="nav-link"
-                  target="_blank">Codacy</a>
+                  href="https://status.calendz.app"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  class="nav-link">Status</a>
               </li>
               <li class="nav-item">
                 <a
                   href="https://travis-ci.com/calendz"
+                  rel="noreferrer noopener"
                   class="nav-link"
                   target="_blank">Travis CI</a>
               </li>

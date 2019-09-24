@@ -20,6 +20,85 @@ export default {
       const month = (`0${date.getMonth() + 1}`).slice(-2)
       const year = date.getFullYear()
       return `${day}-${month}-${year}`
+    },
+
+    toMonthDayYear (date) {
+      date = new Date(date)
+      const day = (`0${date.getDate()}`).slice(-2)
+      const month = (`0${date.getMonth() + 1}`).slice(-2)
+      const year = date.getFullYear().toString().substr(-2)
+      return `${month}-${day}-${year}`
+    },
+
+    // eg: 'lundi 30 septembre'
+    dateToString (date) {
+      date = new Date(date)
+      const day = this.dayNumberToString(date.getDay())
+      const dayNumber = ('0' + date.getDate()).slice(-2)
+      const month = this.monthNumberToString(date.getMonth())
+      return `${day} ${dayNumber} ${month}`
+    },
+
+    // translates date.getDay() into french day's name
+    dayNumberToString (day) {
+      switch (day) {
+        case 0: return 'dimanche'
+        case 1: return 'lundi'
+        case 2: return 'mardi'
+        case 3: return 'mercredi'
+        case 4: return 'jeudi'
+        case 5: return 'vendredi'
+        case 6: return 'samedi'
+      }
+    },
+
+    // translates date.getMonth() into french month's name
+    monthNumberToString (month) {
+      switch (month) {
+        case 0: return 'janvier'
+        case 1: return 'février'
+        case 2: return 'mars'
+        case 3: return 'avril'
+        case 4: return 'mai'
+        case 5: return 'juin'
+        case 6: return 'juillet'
+        case 7: return 'août'
+        case 8: return 'setpembre'
+        case 9: return 'octobre'
+        case 10: return 'novembre'
+        case 11: return 'décembre'
+      }
+    },
+
+    // get time as string from date (eg: '07:12:42)
+    dateToTimeString (date) {
+      return `${('0' + date.getHours()).slice(-2)}:${('0' + date.getMinutes()).slice(-2)}:${('0' + date.getSeconds()).slice(-2)}`
+    },
+
+    timeToHour (toFormat) {
+      const date = new Date(toFormat)
+      const hours = (`0${date.getHours()}`).slice(-2)
+      const minutes = (`0${date.getMinutes()}`).slice(-2)
+      return hours + ':' + minutes
+    },
+
+    getMonthFromDate (date) {
+      date = new Date(date)
+      switch (date.getMonth()) {
+        case 0: return 'Janvier'
+        case 1: return 'Février'
+        case 2: return 'Mars'
+        case 3: return 'Avril'
+        case 4: return 'Mai'
+        case 5: return 'Juin'
+        case 6: return 'Juillet'
+        case 7: return 'Août'
+        case 8: return 'Septembre'
+        case 9: return 'Octobre'
+        case 10: return 'Novembre'
+        case 11: return 'Décembre'
+        default: return 'erreur'
+      }
     }
   }
 }

@@ -189,13 +189,9 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import RouteBreadCrumb from '@/components/Breadcrumb/RouteBreadcrumb'
 
 export default {
   name: 'Settings',
-  components: {
-    RouteBreadCrumb
-  },
   data () {
     return {
       active: 1
