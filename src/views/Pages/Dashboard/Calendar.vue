@@ -58,16 +58,26 @@
 
             <!-- Card header -->
             <div class="card-header">
-              <h5 class="h3 mb-0">
-                {{ headerDate }}
-              </h5>
+              <div class="row align-items-center">
+                <div class="col-8">
+                  <h5 class="h3 mb-0">{{ headerDate }}</h5>
+                </div>
+                <div class="col-4 text-right">
+                  <base-button
+                    class="btn btn-sm btn-default"
+                    @click="backToToday()">
+                    Revenir à aujourd'hui
+                  </base-button>
+                </div>
+              </div>
             </div>
 
             <!-- Card body -->
             <div class="card-body p-0 card-calendar-body">
               <full-calendar
+                id="calendar"
                 ref="fullCalendar"
-                :events="events"
+                :events="isLoading ? fakeEvents : events"
                 :plugins="calendarPlugins"
                 :editable="false"
                 :theme="false"
@@ -78,6 +88,8 @@
                 :all-day-slot="false"
                 :column-header-format="getColumnHeaderFormat()"
                 :event-render="customRender"
+                :now-indicator="true"
+                :fixed-week-count="false"
                 content-height="auto"
                 slot-duration="01:00:00"
                 min-time="08:00:00"
@@ -93,6 +105,7 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import Modal from '@/components/Modal'
 import FullCalendar from '@fullcalendar/vue'
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -100,6 +113,7 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import RouteBreadCrumb from '@/components/Breadcrumb/RouteBreadcrumb'
 import dateUtilMixin from '@/mixins/dateUtilMixin'
+import stringUtilMixin from '@/mixins/stringUtilMixin'
 
 export default {
   name: 'Calendar',
@@ -108,17 +122,18 @@ export default {
     FullCalendar,
     RouteBreadCrumb
   },
-  mixins: [dateUtilMixin],
+  mixins: [dateUtilMixin, stringUtilMixin],
   data () {
     return {
       calendarPlugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
       activeView: 'timeGridWeek',
-      events: [
+      activeDate: new Date(),
+      fakeEvents: [
         {
           title: 'Français',
           start: new Date('2019-09-23T10:00:00'),
           end: new Date('2019-09-23T12:00:00'),
-          className: 'bg-default',
+          className: 'bg-lightgrey',
           professor: 'Amy',
           room: 'L-230',
           description: 'Test Description'
@@ -127,7 +142,7 @@ export default {
           title: 'Maths',
           start: new Date('2019-09-23T14:00:00'),
           end: new Date('2019-09-23T16:00:00'),
-          className: 'bg-default',
+          className: 'bg-lightgrey',
           professor: 'Karmouche',
           room: 'L-230',
           description: 'Test Description'
@@ -136,23 +151,21 @@ export default {
           title: 'Réseau',
           start: new Date('2019-09-24T09:00:00'),
           end: new Date('2019-09-24T13:00:00'),
-          className: 'bg-default',
+          className: 'bg-lightgrey',
           professor: 'Hocine',
           room: 'L-230',
           description: 'Test Description'
         }
       ],
-      model: {
-        title: '',
-        className: 'bg-default',
-        description: 'Nullam id dolor id nibh ultricies vehicula ut id elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.',
-        start: '',
-        end: ''
-      },
-      eventColors: ['bg-info', 'bg-orange', 'bg-red', 'bg-green', 'bg-default', 'bg-blue', 'bg-purple', 'bg-yellow'],
       documentWidth: window.innerWidth,
-      headerDate: 'test'
+      headerDate: ''
     }
+  },
+  computed: {
+    ...mapGetters({
+      events: 'calendar/getCourses',
+      isLoading: 'calendar/isLoading'
+    })
   },
   mounted () {
     const calendarApi = this.$refs.fullCalendar.getApi()
@@ -171,28 +184,49 @@ export default {
   },
   methods: {
     customRender (element) {
-      switch (this.activeView) {
-        case 'dayGridMonth':
-          element.el.innerHTML = `
+      if (this.isLoading) {
+        switch (this.activeView) {
+          case 'dayGridMonth':
+            element.el.innerHTML = `
+            <div>
+              <h5 class="pl-1 py-1 mb-0">
+                <div class="ml-1 placeholder-md"></div>
+              </h5>
+            </div>`
+            break
+          case 'timeGridWeek':
+          case 'timeGridDay':
+            element.el.innerHTML = `
+            <div>
+              <div class="ml-2 mt-2 placeholder-sm"></div>
+              <div class="ml-0 mt--2 placeholder-md" style="position: absolute; top: 50%; left: 50%; transform: translateY(-50%); transform: translateX(-50%)"></div>
+              <div class="ml-2 mb-2 placeholder-sm" style="position: absolute; bottom: 0; left: 0"></div>
+              <div class="mr-2 mb-2 placeholder-sm" style="position: absolute; bottom: 0; right: 0"></div>
+            </div>`
+            break
+        }
+      } else {
+        switch (this.activeView) {
+          case 'dayGridMonth':
+            element.el.innerHTML = `
             <div>
               <h5 class="pl-1 mb-0 text-white w-auto">
                 ${new Date(element.event.start).getHours()}h
                 <span class="ml-1 h5 text-white">${element.event.title}</span>
               </h5>
-            </div>
-          `
-          break
-        case 'timeGridWeek':
-        case 'timeGridDay':
-          element.el.innerHTML = `
-            <div>
-              <h4 class="pl-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h4>
+            </div>`
+            break
+          case 'timeGridWeek':
+          case 'timeGridDay':
+            element.el.innerHTML = `
+            <div class="fade-in">
+              <h5 class="pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
               <h2 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h2>
-              <h4 class="m-0 pl-1 text-white" style="position: absolute; bottom: 0; left: 0">${element.event.extendedProps.professor}<h4>
-              <h4 class="m-0 pr-1 text-white" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h4>
-            </div>
-          `
-          break
+              <h5 class="pl-2 mb-1 text-white" style="position: absolute; bottom: 0; left: 0">${this.capitalizeFirstLetterEachWords(element.event.extendedProps.professor)}<h5>
+              <h5 class="pr-2 mb-1 text-white" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h5>
+            </div>`
+            break
+        }
       }
     },
     calendarApi () {
@@ -200,13 +234,87 @@ export default {
     },
     changeView (viewType) {
       this.activeView = viewType
+      this.activeDate = this.calendarApi().getDate()
+
+      if (viewType === 'dayGridMonth') {
+        // get first day of the month
+        const firstOfTheMonth = this.getFirstFridayOfMonth(this.activeDate)
+
+        this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate())) })
+        this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+        this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+        this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+        this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+      }
+
       this.calendarApi().changeView(viewType)
     },
     next: function () {
+      let dateToFetch = this.activeDate
+      switch (this.activeView) {
+        case 'timeGridWeek':
+          dateToFetch = this.getMonday(dateToFetch.setDate(dateToFetch.getDate() + 7))
+          break
+        case 'dayGridMonth':
+          dateToFetch = this.getMonday(dateToFetch.setMonth(dateToFetch.getMonth() + 1))
+
+          const firstOfTheMonth = this.getFirstFridayOfMonth(dateToFetch)
+          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate())) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+
+          this.calendarApi().next()
+          this.updateHeaderDate()
+          return
+        case 'timeGridDay':
+          // add 1 day (or 3 if friday or 2 if saturday)
+          let toAdd = 1
+          if (dateToFetch.getDay() === 5) toAdd = 3
+          if (dateToFetch.getDay() === 6) toAdd = 2
+
+          dateToFetch = this.getMonday(dateToFetch.setDate(dateToFetch.getDate() + toAdd))
+          break
+      }
+
+      this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(dateToFetch) })
+
       this.calendarApi().next()
       this.updateHeaderDate()
     },
     prev () {
+      let dateToFetch = this.activeDate
+
+      switch (this.activeView) {
+        case 'timeGridWeek':
+          dateToFetch = this.getMonday(dateToFetch.setDate(dateToFetch.getDate() - 7))
+          break
+        case 'dayGridMonth':
+          dateToFetch = this.getMonday(dateToFetch.setMonth(dateToFetch.getMonth() - 1))
+
+          const firstOfTheMonth = this.getFirstFridayOfMonth(dateToFetch)
+          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate())) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+
+          this.calendarApi().prev()
+          this.updateHeaderDate()
+          return
+        case 'timeGridDay':
+          // remove 1 day (or 3 if monday or 2 if sunday)
+          let toRemove = 1
+          if (dateToFetch.getDay() === 1) toRemove = 3
+          if (dateToFetch.getDay() === 0) toRemove = 2
+
+          dateToFetch = this.getMonday(dateToFetch.setDate(dateToFetch.getDate() - toRemove))
+          break
+      }
+
+      this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(dateToFetch) })
+
       this.calendarApi().prev()
       this.updateHeaderDate()
     },
@@ -222,6 +330,31 @@ export default {
     },
     updateHeaderDate () {
       this.headerDate = this.getMonthFromDate(this.calendarApi().getDate()) + ' ' + this.calendarApi().getDate().getFullYear()
+    },
+    backToToday () {
+      this.activeDate = new Date()
+      this.calendarApi().today()
+    },
+    getMonday (d) {
+      d = new Date(d)
+      const day = d.getDay()
+      const diff = d.getDate() - day + (day === 0 ? -6 : 1) // adjust when day is sunday
+      return new Date(d.setDate(diff))
+    },
+    getFirstFridayOfMonth (date) {
+      date = new Date(date)
+      let targetDay = ''
+      const seekDay = 5
+      let i = 1
+      const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+      ]
+
+      while (i < 31) {
+        targetDay = new Date(`${i++} ${monthNames[date.getMonth()]} ${date.getFullYear()}`)
+        if (targetDay.getDay() === seekDay) return targetDay
+      }
+      return false
     }
   }
 }
@@ -231,6 +364,51 @@ export default {
   @import '~@fullcalendar/daygrid/main.css';
   @import '~@fullcalendar/timegrid/main.css';
   @import "~@/assets/sass/core/vendors/fullcalendar";
+
+  // =========================================
+  // == Loading placeholder
+  // =========================================
+  .placeholder-sm {
+    width: 60px;
+    height: 10px;
+    border-radius: 6px;
+    animation-name: pulse;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+  }
+
+  .placeholder-md {
+    width: 80px;
+    height: 14px;
+    border-radius: 6px;
+    animation-name: pulse;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+  }
+
+  .bg-lightgrey {
+    background-color: #ced4da !important;
+  }
+
+  @keyframes pulse {
+    0% { background-color: #dee2e6; }
+    50% { background-color: #f6f9fc; }
+    100% { background-color: #dee2e6; }
+  }
+
+  .fade-in {
+    animation-name: fade-in;
+    animation-duration: 0.8s;
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  // =========================================
+  // == fullcalendar modifications
+  // =========================================
 
   // hauteur des cases
   .fc-time-grid .fc-slats td {

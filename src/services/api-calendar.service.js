@@ -1,14 +1,12 @@
 import Vue from 'vue'
 import axios from 'axios'
-import store from '../store/index'
+const apiCalendar = axios.create()
 
-const api = axios.create()
-
-const ApiService = {
-  init (baseURL) {
-    api.defaults.baseURL = baseURL
-    api.defaults.withCredentials = 'include'
-    api.interceptors.response.use(response => {
+const ApiCalendarService = {
+  init (baseURL, token) {
+    apiCalendar.defaults.baseURL = baseURL
+    apiCalendar.defaults.headers.common['x-access-token'] = token
+    apiCalendar.interceptors.response.use(response => {
       return response
     }, err => {
       // intercept connection errors
@@ -18,19 +16,12 @@ const ApiService = {
         return Promise.reject(error)
       }
 
-      // intercept authentication errors
-      if (err.response.status === 401) {
-        if (err.response.data && err.response.data.logout) {
-          store.dispatch('account/logout', { reason: err.response.data.message })
-        }
-      }
-
       return Promise.reject(err.response)
     })
   },
 
   get (resource) {
-    return api.get(resource)
+    return apiCalendar.get(resource)
       .then(response => {
         return response
       })
@@ -40,7 +31,7 @@ const ApiService = {
   },
 
   post (resource, data) {
-    return api.post(resource, data)
+    return apiCalendar.post(resource, data)
       .then(response => {
         return response
       })
@@ -50,7 +41,7 @@ const ApiService = {
   },
 
   put (resource, data) {
-    return api.put(resource, data)
+    return apiCalendar.put(resource, data)
       .then(response => {
         return response
       })
@@ -60,7 +51,7 @@ const ApiService = {
   },
 
   patch (resource, data) {
-    return api.patch(resource, data)
+    return apiCalendar.patch(resource, data)
       .then(response => {
         return response
       })
@@ -70,7 +61,7 @@ const ApiService = {
   },
 
   delete (resource) {
-    return api.delete(resource)
+    return apiCalendar.delete(resource)
       .then(response => {
         return response
       })
@@ -91,7 +82,7 @@ const ApiService = {
    *    - password
   **/
   customRequest (data) {
-    return api(data)
+    return apiCalendar(data)
       .then(response => {
         return response
       })
@@ -101,4 +92,4 @@ const ApiService = {
   }
 }
 
-export default ApiService
+export default ApiCalendarService
