@@ -88,6 +88,7 @@
                 :all-day-slot="false"
                 :column-header-format="getColumnHeaderFormat()"
                 :event-render="customRender"
+                :now-indicator="true"
                 content-height="auto"
                 slot-duration="01:00:00"
                 min-time="08:00:00"
