@@ -255,6 +255,7 @@ import { mapState, mapGetters } from 'vuex'
 import { CollapseTransition } from 'vue2-transitions'
 import { BaseNav, Modal } from '@/components'
 import dateUtilMixin from '@/mixins/dateUtilMixin'
+import stringUtilMixin from '@/mixins/stringUtilMixin'
 
 export default {
   components: {
@@ -262,7 +263,7 @@ export default {
     BaseNav,
     Modal
   },
-  mixins: [dateUtilMixin],
+  mixins: [dateUtilMixin, stringUtilMixin],
   data () {
     return {
       showProfileDropdown: false,
@@ -287,12 +288,13 @@ export default {
     }
   },
   mounted () {
+    // get all notifications
     this.$store.dispatch('notifications/fetch')
+
+    // get current week
+    this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(new Date()) })
   },
   methods: {
-    capitalizeFirstLetter (string) {
-      return string.charAt(0).toUpperCase() + string.slice(1)
-    },
     toggleProfileDropdown () {
       this.showProfileDropdown = !this.showProfileDropdown
     },

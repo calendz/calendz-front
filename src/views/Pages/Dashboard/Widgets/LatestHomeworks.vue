@@ -37,7 +37,7 @@
             <small v-show="item.description">{{ item.description }}<br></small>
             <small style="color: #8898aa">
               <i class="fas fa-hourglass-half m-1"/>
-              {{ dateToString(item.date).charAt(0).toUpperCase() + dateToString(item.date).slice(1) }}</small>
+              {{ capitalizeFirstLetter(dateToString(item.date)) }}</small>
           </div>
           <div>
             <base-checkbox
@@ -52,9 +52,10 @@
 </template>
 <script>
 import dateUtilMixin from '@/mixins/dateUtilMixin'
+import stringUtilMixin from '@/mixins/stringUtilMixin'
 
 export default {
-  mixins: [dateUtilMixin],
+  mixins: [dateUtilMixin, stringUtilMixin],
   data () {
     return {
       items: [
