@@ -95,6 +95,7 @@
                 min-time="08:00:00"
                 max-time="20:00:00"
                 class="calendar"
+                @dateClick="handleClick"
               />
             </div>
           </div>
@@ -195,6 +196,12 @@ export default {
     if (this.windowWidth >= 800) this.changeView('timeGridWeek')
   },
   methods: {
+    // ===========================================
+    // == Core functions
+    // ===========================================
+    calendarApi () {
+      return this.$refs.fullCalendar.getApi()
+    },
     customRender (element) {
       // ======================================
       // == LOADING
@@ -281,9 +288,15 @@ export default {
         }
       }
     },
-    calendarApi () {
-      return this.$refs.fullCalendar.getApi()
+    handleClick (clicked) {
+      if (this.activeView === 'dayGridMonth') {
+        this.calendarApi().gotoDate(clicked.date)
+        this.changeView('timeGridWeek')
+      }
     },
+    // ===========================================
+    // == Naviguation functions
+    // ===========================================
     changeView (viewType) {
       this.activeView = viewType
       this.activeDate = this.calendarApi().getDate()
@@ -370,6 +383,17 @@ export default {
       this.calendarApi().prev()
       this.updateHeaderDate()
     },
+    backToToday () {
+      this.activeDate = new Date()
+      this.calendarApi().today()
+      this.updateHeaderDate()
+    },
+    // ===========================================
+    // == Random functions
+    // ===========================================
+    updateHeaderDate () {
+      this.headerDate = this.getMonthFromDate(this.calendarApi().getDate()) + ' ' + this.calendarApi().getDate().getFullYear()
+    },
     getColumnHeaderFormat () {
       switch (this.activeView) {
         case 'timeGridWeek':
@@ -379,14 +403,6 @@ export default {
         case 'timeGridDay':
           return { weekday: 'long', day: 'numeric', month: 'long' }
       }
-    },
-    updateHeaderDate () {
-      this.headerDate = this.getMonthFromDate(this.calendarApi().getDate()) + ' ' + this.calendarApi().getDate().getFullYear()
-    },
-    backToToday () {
-      this.activeDate = new Date()
-      this.calendarApi().today()
-      this.updateHeaderDate()
     },
     getMonday (d) {
       d = new Date(d)
