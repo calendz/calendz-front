@@ -334,6 +334,7 @@ export default {
     backToToday () {
       this.activeDate = new Date()
       this.calendarApi().today()
+      this.updateHeaderDate()
     },
     getMonday (d) {
       d = new Date(d)
