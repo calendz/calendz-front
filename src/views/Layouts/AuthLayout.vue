@@ -129,6 +129,13 @@
             <ul class="nav nav-footer justify-content-center justify-content-xl-end">
               <li class="nav-item">
                 <a
+                  :href="`https://github.com/calendz/calendz-front/releases/tag/v${version}`"
+                  rel="noreferrer noopener"
+                  class="nav-link"
+                  target="_blank">v{{ version }}</a>
+              </li>
+              <li class="nav-item">
+                <a
                   href="https://github.com/calendz"
                   rel="noreferrer noopener"
                   class="nav-link"
@@ -158,6 +165,7 @@
 <script>
 import { BaseNav } from '@/components'
 import { ZoomCenterTransition } from 'vue2-transitions'
+import packageJson from '../../../package.json'
 
 export default {
   components: {
@@ -176,6 +184,7 @@ export default {
       menuTransitionDuration: 250,
       pageTransitionDuration: 200,
       year: new Date().getFullYear(),
+      version: packageJson.version,
       pageClass: 'login-page'
     }
   },

@@ -5,10 +5,12 @@
         <div class="copyright text-center text-lg-left text-muted">
           © {{ year }} <a
             href="https://arthurdufour.com/"
+            rel="noreferrer noopener"
             class="font-weight-bold ml-1"
             target="_blank">Arthur Dufour</a> &
           <a
             href="https://alexandretuet.com/"
+            rel="noreferrer noopener"
             class="font-weight-bold ml-1"
             target="_blank">Alexandre Tuet</a>
         </div>
@@ -17,13 +19,22 @@
         <ul class="nav nav-footer justify-content-center justify-content-lg-end">
           <li class="nav-item">
             <a
-              href="https://github.com/calendz"
+              :href="`https://github.com/calendz/calendz-front/releases/tag/v${version}`"
+              rel="noreferrer noopener"
               class="nav-link"
+              target="_blank">v{{ version }}</a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              href="https://github.com/calendz"
+              rel="noreferrer noopener"
               target="_blank">Github</a>
           </li>
           <li class="nav-item">
             <a
               href="https://status.calendz.app/"
+              rel="noreferrer noopener"
               class="nav-link"
               target="_blank">Status</a>
           </li>
@@ -33,10 +44,13 @@
   </footer>
 </template>
 <script>
+import packageJson from '../../../package.json'
+
 export default {
   data () {
     return {
-      year: new Date().getFullYear()
+      year: new Date().getFullYear(),
+      version: packageJson.version
     }
   }
 }
