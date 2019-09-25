@@ -157,7 +157,7 @@ export default {
           description: 'Test Description'
         }
       ],
-      documentWidth: window.innerWidth,
+      windowWidth: window.innerWidth,
       headerDate: ''
     }
   },
@@ -167,20 +167,32 @@ export default {
       isLoading: 'calendar/isLoading'
     })
   },
+  watch: {
+    windowWidth: function (newVal, oldVal) {
+      if (newVal < 800 && oldVal >= 800) this.changeView('timeGridDay')
+      if (newVal >= 800 && oldVal < 800) this.changeView('timeGridWeek')
+    }
+  },
   mounted () {
+    // initialize fullcalendar
     const calendarApi = this.$refs.fullCalendar.getApi()
     calendarApi.setOption('locale', 'fr')
 
+    this.updateHeaderDate()
+
+    // add events listeners
     window.addEventListener('keyup', (e) => {
       if (e.keyCode === 39) this.next()
       if (e.keyCode === 37) this.prev()
     })
 
-    this.updateHeaderDate()
-  },
-  created () {
-    // if loading from mobile
-    if (window.innerWidth < 750) this.activeView = 'timeGridDay'
+    window.onresize = () => {
+      this.windowWidth = window.innerWidth
+    }
+
+    // set correct view according to screen's size
+    if (this.windowWidth < 800) this.changeView('timeGridDay')
+    if (this.windowWidth >= 800) this.changeView('timeGridWeek')
   },
   methods: {
     customRender (element) {
