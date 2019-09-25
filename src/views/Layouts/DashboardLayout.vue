@@ -26,12 +26,14 @@
           }"/>
 
           <!-- homeworks -->
-          <sidebar-item
-            :link="{
-              name: 'Devoirs',
-              icon: 'fas fa-book text-primary',
-              path: '/homeworks'
-          }"/>
+          <div class="nav-item">
+            <div
+              class="nav-link"
+              @click="comingSoon()">
+              <i class="fas fa-book text-primary"/>
+              <span class="nav-link-text">Devoirs</span>
+            </div>
+          </div>
 
           <!-- settings -->
           <sidebar-item
@@ -67,12 +69,14 @@
           }"/>
 
           <!-- statistics -->
-          <sidebar-item
-            :link="{
-              name: 'Statistiques',
-              icon: 'fas fa-chart-line text-info',
-              path: '/stats'
-          }"/>
+          <div class="nav-item">
+            <div
+              class="nav-link"
+              @click="comingSoon()">
+              <i class="fas fa-chart-line text-info"/>
+              <span class="nav-link-text">Statistiques</span>
+            </div>
+          </div>
 
           <!-- user-management -->
           <sidebar-item
@@ -141,6 +145,7 @@ import ContentFooter from './ContentFooter.vue'
 import DashboardContent from './Content.vue'
 import { FadeTransition } from 'vue2-transitions'
 import { mapState } from 'vuex'
+import swal from 'sweetalert2'
 
 function hasElement (className) {
   return document.getElementsByClassName(className).length > 0
@@ -181,6 +186,20 @@ export default {
       } else {
         docClasses.add('perfect-scrollbar-off')
       }
+    },
+    comingSoon () {
+      swal.fire({
+        title: 'Un peu de patience !',
+        text: `Cette fonctionnalité n'est pas encore disponible, mais nous travaillons dur pour la terminer le plus rapidement possible.`,
+        type: 'info',
+        customClass: {
+          cancelButton: 'btn btn-primary'
+        },
+        buttonsStyling: false,
+        showConfirmButton: false,
+        showCancelButton: true,
+        cancelButtonText: 'Ok'
+      })
     }
   }
 }

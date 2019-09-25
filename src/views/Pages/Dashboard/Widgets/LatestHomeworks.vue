@@ -17,7 +17,7 @@
         <div class="col-4 text-right">
           <router-link
             to="/homeworks"
-            class="btn btn-sm btn-primary">Détail</router-link>
+            class="btn btn-sm btn-primary disabled">Détail</router-link>
         </div>
       </div>
     </div>
