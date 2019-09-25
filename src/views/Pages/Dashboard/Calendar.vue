@@ -157,7 +157,7 @@ export default {
           description: 'Test Description'
         }
       ],
-      documentWidth: window.innerWidth,
+      windowWidth: window.innerWidth,
       headerDate: ''
     }
   },
@@ -167,65 +167,117 @@ export default {
       isLoading: 'calendar/isLoading'
     })
   },
+  watch: {
+    windowWidth: function (newVal, oldVal) {
+      if (newVal < 800 && oldVal >= 800) this.changeView('timeGridDay')
+      if (newVal >= 800 && oldVal < 800) this.changeView('timeGridWeek')
+    }
+  },
   mounted () {
+    // initialize fullcalendar
     const calendarApi = this.$refs.fullCalendar.getApi()
     calendarApi.setOption('locale', 'fr')
 
+    this.updateHeaderDate()
+
+    // add events listeners
     window.addEventListener('keyup', (e) => {
       if (e.keyCode === 39) this.next()
       if (e.keyCode === 37) this.prev()
     })
 
-    this.updateHeaderDate()
-  },
-  created () {
-    // if loading from mobile
-    if (window.innerWidth < 750) this.activeView = 'timeGridDay'
+    window.onresize = () => {
+      this.windowWidth = window.innerWidth
+    }
+
+    // set correct view according to screen's size
+    if (this.windowWidth < 800) this.changeView('timeGridDay')
+    if (this.windowWidth >= 800) this.changeView('timeGridWeek')
   },
   methods: {
     customRender (element) {
+      // ======================================
+      // == LOADING
+      // ======================================
       if (this.isLoading) {
         switch (this.activeView) {
           case 'dayGridMonth':
             element.el.innerHTML = `
-            <div>
-              <h5 class="pl-1 py-1 mb-0">
-                <div class="ml-1 placeholder-md"></div>
-              </h5>
-            </div>`
+              <div>
+                <h5 class="pl-1 py-1 mb-0">
+                  <div class="ml-1 placeholder-md"></div>
+                </h5>
+              </div>`
             break
           case 'timeGridWeek':
           case 'timeGridDay':
             element.el.innerHTML = `
-            <div>
-              <div class="ml-2 mt-2 placeholder-sm"></div>
-              <div class="ml-0 mt--2 placeholder-md" style="position: absolute; top: 50%; left: 50%; transform: translateY(-50%); transform: translateX(-50%)"></div>
-              <div class="ml-2 mb-2 placeholder-sm" style="position: absolute; bottom: 0; left: 0"></div>
-              <div class="mr-2 mb-2 placeholder-sm" style="position: absolute; bottom: 0; right: 0"></div>
-            </div>`
+              <div>
+                <div class="ml-2 mt-2 placeholder-sm"></div>
+                <div class="ml-0 mt--2 placeholder-md" style="position: absolute; top: 50%; left: 50%; transform: translateY(-50%); transform: translateX(-50%)"></div>
+                <div class="ml-2 mb-2 placeholder-sm" style="position: absolute; bottom: 0; left: 0"></div>
+                <div class="mr-2 mb-2 placeholder-sm" style="position: absolute; bottom: 0; right: 0"></div>
+              </div>`
             break
         }
+      // ======================================
+      // == RENDERING
+      // ======================================
       } else {
-        switch (this.activeView) {
-          case 'dayGridMonth':
-            element.el.innerHTML = `
-            <div>
-              <h5 class="pl-1 mb-0 text-white w-auto">
-                ${new Date(element.event.start).getHours()}h
-                <span class="ml-1 h5 text-white">${element.event.title}</span>
-              </h5>
-            </div>`
-            break
-          case 'timeGridWeek':
-          case 'timeGridDay':
-            element.el.innerHTML = `
-            <div class="fade-in">
-              <h5 class="pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
-              <h2 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h2>
-              <h5 class="pl-2 mb-1 text-white" style="position: absolute; bottom: 0; left: 0">${this.capitalizeFirstLetterEachWords(element.event.extendedProps.professor)}<h5>
-              <h5 class="pr-2 mb-1 text-white" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h5>
-            </div>`
-            break
+        // ======================================
+        // == MOBILE VIEW
+        // ======================================
+        if (this.windowWidth < 800) {
+          switch (this.activeView) {
+            case 'dayGridMonth':
+              element.el.innerHTML = `
+                <div>
+                  <h5 class="pl-1 mb-0 text-white w-auto">
+                    ${new Date(element.event.start).getHours()}h
+                  </h5>
+                </div>`
+              break
+            case 'timeGridWeek':
+              element.el.innerHTML = `
+                <div class="fade-in">
+                  <h4 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h4>
+                </div>`
+              break
+            case 'timeGridDay':
+              element.el.innerHTML = `
+                <div class="fade-in">
+                  <h5 class="pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
+                  <h2 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h2>
+                  <h5 class="pl-2 mb-1 text-white" style="position: absolute; bottom: 0; left: 0">${this.capitalizeFirstLetterEachWords(element.event.extendedProps.professor)}<h5>
+                  <h5 class="pr-2 mb-1 text-white" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h5>
+                </div>`
+              break
+          }
+        // ======================================
+        // == DESKTOP VIEW
+        // ======================================
+        } else {
+          switch (this.activeView) {
+            case 'dayGridMonth':
+              element.el.innerHTML = `
+                <div>
+                  <h5 class="pl-1 mb-0 text-white w-auto">
+                    ${new Date(element.event.start).getHours()}h
+                    <span class="ml-1 h5 text-white">${element.event.title}</span>
+                  </h5>
+                </div>`
+              break
+            case 'timeGridWeek':
+            case 'timeGridDay':
+              element.el.innerHTML = `
+                <div class="fade-in">
+                  <h5 class="pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
+                  <h2 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h2>
+                  <h5 class="pl-2 mb-1 text-white" style="position: absolute; bottom: 0; left: 0">${this.capitalizeFirstLetterEachWords(element.event.extendedProps.professor)}<h5>
+                  <h5 class="pr-2 mb-1 text-white" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h5>
+                </div>`
+              break
+          }
         }
       }
     },
