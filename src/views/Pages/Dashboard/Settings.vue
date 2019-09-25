@@ -72,14 +72,20 @@
                 <!-- ============================== -->
                 <div
                   v-show="active === 1"
-                  class="container mb-3">
+                  class="container mb-3 pr-0">
 
                   <div class="row mt-3">
-                    <div class="col-md-1 d-flex justify-content-center">
-                      <i class="fas fa-moon my-auto"/>
+                    <div class="col-10 row">
+                      <!-- icon -->
+                      <div class="col-2 pl-4 d-flex justify-content-center">
+                        <i class="fas fa-moon my-auto"/>
+                      </div>
+                      <!-- desc -->
+                      <p class="col-10 mb-0"><del>Mode sombre</del></p>
                     </div>
-                    <p class="col-md-9 mb-0"><del>Mode sombre</del></p>
-                    <div class="col-md-2 d-flex justify-content-center">
+
+                    <div class="col-2 px-0 d-flex justify-content-center my-auto">
+                      <!-- switch -->
                       <el-tooltip
                         content="Cette fonctionnalité n'est pas encore disponible !"
                         placement="top">
@@ -94,11 +100,17 @@
                   </div>
 
                   <div class="row mt-3">
-                    <div class="col-md-1 d-flex justify-content-center">
-                      <i class="fas fa-palette my-auto"/>
+                    <div class="col-10 row">
+                      <!-- icon -->
+                      <div class="col-2 pl-4 d-flex justify-content-center">
+                        <i class="fas fa-palette my-auto"/>
+                      </div>
+                      <!-- desc -->
+                      <p class="col-10 mb-0"><del>Couleurs de l'emploi du temps</del></p>
                     </div>
-                    <p class="col-md-9 mb-0"><del>Couleurs de l'emploi du temps</del></p>
-                    <div class="col-md-2 d-flex justify-content-center">
+
+                    <div class="col-2 px-0 d-flex justify-content-center my-auto">
+                      <!-- switch -->
                       <el-tooltip
                         content="Cette fonctionnalité n'est pas encore disponible !"
                         placement="top">
@@ -119,15 +131,21 @@
 
                 <div
                   v-show="active === 2"
-                  class="container mb-3">
+                  class="container mb-3 pr-0">
 
                   <!-- Emails d'informations -->
                   <div class="row mt-3">
-                    <div class="col-md-1 d-flex justify-content-center">
-                      <i class="fas fa-newspaper my-auto"/>
+                    <div class="col-10 row">
+                      <!-- icon -->
+                      <div class="col-2 pl-4 d-flex justify-content-center">
+                        <i class="fas fa-newspaper my-auto"/>
+                      </div>
+                      <!-- desc -->
+                      <p class="col-10 mb-0">Mails d'informations concernant les nouveautés et autres...</p>
                     </div>
-                    <p class="col-md-9 mb-0">Mails d'informations concernant les nouveautés et autres...</p>
-                    <div class="col-md-2 d-flex justify-content-center">
+
+                    <div class="col-2 px-0 d-flex justify-content-center my-auto">
+                      <!-- switch -->
                       <base-switch
                         :value="user.hasInformationMails || false"
                         type="primary"
@@ -139,11 +157,16 @@
 
                   <!-- Nouvelles notifications -->
                   <div class="row mt-3">
-                    <div class="col-md-1 d-flex justify-content-center">
-                      <i class="fas fa-bell my-auto"/>
+                    <div class="col-10 row">
+                      <div class="col-2 pl-4 d-flex justify-content-center">
+                        <i class="fas fa-bell my-auto"/>
+                      </div>
+                      <!-- desc -->
+                      <p class="col-10 mb-0"><del>Nouvelles notifications</del></p>
                     </div>
-                    <p class="col-md-9 mb-0"><del>Nouvelles notifications</del></p>
-                    <div class="col-md-2 d-flex justify-content-center">
+
+                    <div class="col-2 px-0 d-flex justify-content-center my-auto">
+                      <!-- switch -->
                       <el-tooltip
                         content="Cette fonctionnalité n'est pas encore disponible !"
                         placement="top">
@@ -159,11 +182,17 @@
 
                   <!-- Rappels des devoirs -->
                   <div class="row mt-3">
-                    <div class="col-md-1 d-flex justify-content-center">
-                      <i class="fas fa-history my-auto"/>
+                    <div class="col-10 row">
+                      <!-- icon -->
+                      <div class="col-2 pl-4 d-flex justify-content-center">
+                        <i class="fas fa-history my-auto"/>
+                      </div>
+                      <!-- desc -->
+                      <p class="col-10 mb-0"><del>Rappel des devoirs à faire (à J-1)</del></p>
                     </div>
-                    <p class="col-md-9 mb-0"><del>Rappel des devoirs à faire (à J-1)</del></p>
-                    <div class="col-md-2 d-flex justify-content-center">
+
+                    <div class="col-2 px-0 d-flex justify-content-center my-auto">
+                      <!-- switch -->
                       <el-tooltip
                         content="Cette fonctionnalité n'est pas encore disponible !"
                         placement="top">
