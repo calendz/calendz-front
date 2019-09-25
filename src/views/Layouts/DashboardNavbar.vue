@@ -202,7 +202,6 @@
         class="nav-item dropdown">
         <a
           class="nav-link pr-0"
-          href="#"
           role="button"
           data-toggle="dropdown"
           aria-haspopup="true"
