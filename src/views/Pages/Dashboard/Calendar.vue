@@ -95,7 +95,8 @@
                 min-time="08:00:00"
                 max-time="20:00:00"
                 class="calendar"
-                @dateClick="handleClick"
+                @eventClick="handleEventClick"
+                @dateClick="handleDateClick"
               />
             </div>
           </div>
@@ -288,9 +289,15 @@ export default {
         }
       }
     },
-    handleClick (clicked) {
+    handleDateClick (clicked) {
       if (this.activeView === 'dayGridMonth') {
         this.calendarApi().gotoDate(clicked.date)
+        this.changeView('timeGridWeek')
+      }
+    },
+    handleEventClick (clicked) {
+      if (this.activeView === 'dayGridMonth') {
+        this.calendarApi().gotoDate(new Date(clicked.event.start))
         this.changeView('timeGridWeek')
       }
     },
