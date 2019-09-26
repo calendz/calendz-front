@@ -26,7 +26,7 @@
           }"/>
 
           <!-- homeworks -->
-          <div class="nav-item">
+          <div class="nav-item hover-pointer">
             <div
               class="nav-link"
               @click="comingSoon()">
@@ -69,7 +69,7 @@
           }"/>
 
           <!-- statistics -->
-          <div class="nav-item">
+          <div class="nav-item hover-pointer">
             <div
               class="nav-link"
               @click="comingSoon()">
@@ -205,4 +205,7 @@ export default {
 }
 </script>
 <style lang="scss">
+  .hover-pointer{
+    cursor: pointer !important;
+  }
 </style>
