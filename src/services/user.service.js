@@ -6,8 +6,8 @@ const UserService = {
   // ================================================
 
   // register
-  register: (firstname, lastname, grade, email, password, password2, agree) => {
-    return ApiService.post('/user', { firstname, lastname, grade, email, password, password2, agree })
+  register: (firstname, lastname, grade, city, email, password, password2, agree) => {
+    return ApiService.post('/user', { firstname, lastname, grade, city, email, password, password2, agree })
       .then(res => {
         return res.data
       })
@@ -50,13 +50,13 @@ const UserService = {
   },
 
   // update user informations
-  updateInformations: (id, firstname, lastname, email, permissionLevel, grade, bts, isActive) => {
-    return ApiService.patch(`/user/${id}`, { firstname, lastname, email, permissionLevel, grade, bts, isActive })
+  updateInformations: (id, firstname, lastname, email, permissionLevel, grade, city, bts, isActive) => {
+    return ApiService.patch(`/user/${id}`, { firstname, lastname, email, permissionLevel, grade, city, bts, isActive })
       .then(res => {
-        return res.data
+        return res
       })
       .catch(err => {
-        return Promise.reject(err.data)
+        return Promise.reject(err)
       })
   },
 

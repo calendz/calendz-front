@@ -107,9 +107,9 @@ const accountModule = {
   // == Actions
   // ==================================
   actions: {
-    register: ({ commit }, { firstname, lastname, grade, email, password, password2, agree }) => {
+    register: ({ commit }, { firstname, lastname, grade, city, email, password, password2, agree }) => {
       commit('REGISTER_REQUEST')
-      UserService.register(firstname, lastname, grade, email, password, password2, agree)
+      UserService.register(firstname, lastname, grade, city, email, password, password2, agree)
         .then(
           res => {
             commit('REGISTER_SUCCESS')
@@ -188,9 +188,9 @@ const accountModule = {
           })
     },
 
-    update: ({ commit }, { _id, firstname, lastname, email, permissionLevel, grade, bts, isActive }) => {
+    update: ({ commit }, { _id, firstname, lastname, email, permissionLevel, grade, city, bts, isActive }) => {
       commit('UPDATE_USER_REQUEST')
-      UserService.updateInformations(_id, firstname, lastname, email, permissionLevel, grade, bts, isActive)
+      UserService.updateInformations(_id, firstname, lastname, email, permissionLevel, grade, city, bts, isActive)
         .then(
           res => {
             commit('UPDATE_USER_SUCCESS')

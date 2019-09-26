@@ -13,7 +13,11 @@ Validator.extend('contains_one_letter', {
 })
 
 Validator.extend('valid_grade', {
-  validate: value => ['B1 G1', 'B1 G2', 'B2 G1', 'B2 G2', 'B3 G1', 'B3 G2', 'B3 G3', 'I4 G1', 'I4 G2', 'I5 G1', 'I5 G2'].indexOf(value) !== -1
+  validate: value => ['B1', 'B2', 'B3', 'I1', 'I2'].indexOf(value) !== -1
+})
+
+Validator.extend('valid_city', {
+  validate: value => ['Arras', 'Auxerre', 'Bordeaux', 'Brest', 'Grenoble', 'Lille', 'Lyon', 'Montpellier', 'Nantes', 'Paris', 'Dakar'].indexOf(value) !== -1
 })
 
 Validator.extend('boolean', {
