@@ -27,7 +27,9 @@
           <toggle-register/>
         </div>
         <div class="col-xl-3 col-md-5">
-          <toggle-login/>
+          <toggle-login
+            :status="login"
+            @input="toggleLogin($event)"/>
         </div>
         <div class="col-lg-5">
           <create-notifications/>
@@ -46,6 +48,24 @@ export default {
     ToggleLogin,
     ToggleRegister,
     CreateNotifications
+  },
+  data () {
+    return {
+      login: true
+    }
+  },
+  methods: {
+    toggleLogin (element) {
+      // disable the switch and re-enable it after 5 seconds
+      element.disabled = true
+      setTimeout(() => {
+        element.disabled = false
+      }, 5000)
+
+      this.login = !this.login
+      console.log(this.login)
+      // this.$store.dispatch('system/toggleLogin', { value: element.checked })
+    }
   }
 }
 </script>

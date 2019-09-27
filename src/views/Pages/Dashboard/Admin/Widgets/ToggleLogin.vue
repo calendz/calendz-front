@@ -6,18 +6,20 @@
 
       <div class="col">
         <slot>
-          <h5 class="card-title text-uppercase text-muted mb-0">TOGGLE CONNEXION</h5>
+          <h5 class="card-title text-uppercase text-muted mb-3">TOGGLE CONNEXION</h5>
           <div class="row mt-2 mb--3">
-            <div class="col-4 pr-0">
-              <span class="h2 font-weight-bold mb-0">Statut :</span>
-            </div>
-            <div class="col-8 my-auto pl-0">
-              <base-switch
-                :value="true"
-                type="primary"
-                on-text="On"
-                off-text="Off"
-                class="mt-1"/>
+            <div class="col-12 pr-0">
+              <span
+                class="h2 font-weight-bold mt--1 mr-2"
+                style="float:left">Statut :</span>
+              <div>
+                <base-switch
+                  :status="status"
+                  type="primary"
+                  on-text="On"
+                  off-text="Off"
+                  @input="toggleLogin($event)"/>
+              </div>
             </div>
           </div>
         </slot>
@@ -25,7 +27,9 @@
 
       <div class="col-auto">
         <slot name="icon">
-          <div class="bg-success icon icon-shape text-white rounded-circle shadow">
+          <div
+            :class="!status ? 'bg-success' : 'bg-danger'"
+            class="icon icon-shape text-white rounded-circle shadow">
             <i class="fas fa-sign-in-alt"/>
           </div>
         </slot>
@@ -34,7 +38,13 @@
 
     <p class="mt-3 mb-0 text-sm">
       <slot name="footer">
-        <i class="fas fa-toggle-on mr-1"/> État actuel : activé
+        <i
+          :class="!status ? 'fa-toggle-on' : 'fa-toggle-off'"
+          class="fas  mr-1"/>
+        État actuel :
+        <span :class="!status ? 'text-success' : 'text-danger'" >
+          {{ !status ? 'activé' : 'désactivé' }}
+        </span>
       </slot>
     </p>
   </card>
@@ -46,6 +56,23 @@ import Card from '@/components/Cards/Card.vue'
 export default {
   components: {
     Card
+  },
+  data () {
+    return {
+      status: true
+    }
+  },
+  methods: {
+    toggleLogin (element) {
+      // disable the switch and re-enable it after 5 seconds
+      element.disabled = true
+      setTimeout(() => {
+        element.disabled = false
+      }, 5000)
+
+      this.status = !this.status
+      // this.$store.dispatch('system/toggleLogin', { value: element.checked })
+    }
   }
 }
 </script>
