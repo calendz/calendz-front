@@ -14,7 +14,7 @@
                 style="float:left">Statut :</span>
               <div>
                 <base-switch
-                  :status="status"
+                  :value="status"
                   type="primary"
                   on-text="On"
                   off-text="Off"
@@ -28,7 +28,7 @@
       <div class="col-auto">
         <slot name="icon">
           <div
-            :class="!status ? 'bg-success' : 'bg-danger'"
+            :class="status ? 'bg-success' : 'bg-danger'"
             class="icon icon-shape text-white rounded-circle shadow">
             <i class="fas fa-sign-in-alt"/>
           </div>
@@ -39,11 +39,11 @@
     <p class="mt-3 mb-0 text-sm">
       <slot name="footer">
         <i
-          :class="!status ? 'fa-toggle-on' : 'fa-toggle-off'"
+          :class="status ? 'fa-toggle-on' : 'fa-toggle-off'"
           class="fas  mr-1"/>
         État actuel :
-        <span :class="!status ? 'text-success' : 'text-danger'" >
-          {{ !status ? 'activé' : 'désactivé' }}
+        <span :class="status ? 'text-success' : 'text-danger'" >
+          {{ status ? 'activé' : 'désactivé' }}
         </span>
       </slot>
     </p>
@@ -51,6 +51,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import Card from '@/components/Cards/Card.vue'
 
 export default {
@@ -62,6 +63,14 @@ export default {
       status: true
     }
   },
+  computed: {
+    ...mapGetters({
+      settings: 'sysconf/getSettings'
+    })
+  },
+  mounted () {
+    this.status = this.settings.loginEnabled
+  },
   methods: {
     toggleLogin (element) {
       // disable the switch and re-enable it after 5 seconds
@@ -71,7 +80,7 @@ export default {
       }, 5000)
 
       this.status = !this.status
-      // this.$store.dispatch('system/toggleLogin', { value: element.checked })
+      // this.$store.dispatch('sysconf/toggleLogin', { value: element.checked })
     }
   }
 }
