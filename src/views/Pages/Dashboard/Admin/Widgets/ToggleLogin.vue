@@ -14,7 +14,7 @@
                 style="float:left">Statut :</span>
               <div>
                 <base-switch
-                  :value="status"
+                  :value="settings.loginEnabled"
                   type="primary"
                   on-text="On"
                   off-text="Off"
@@ -28,7 +28,7 @@
       <div class="col-auto">
         <slot name="icon">
           <div
-            :class="status ? 'bg-success' : 'bg-danger'"
+            :class="settings.loginEnabled ? 'bg-success' : 'bg-danger'"
             class="icon icon-shape text-white rounded-circle shadow">
             <i class="fas fa-sign-in-alt"/>
           </div>
@@ -39,11 +39,11 @@
     <p class="mt-3 mb-0 text-sm">
       <slot name="footer">
         <i
-          :class="status ? 'fa-toggle-on' : 'fa-toggle-off'"
+          :class="settings.loginEnabled ? 'fa-toggle-on' : 'fa-toggle-off'"
           class="fas  mr-1"/>
         État actuel :
-        <span :class="status ? 'text-success' : 'text-danger'" >
-          {{ status ? 'activé' : 'désactivé' }}
+        <span :class="settings.loginEnabled ? 'text-success' : 'text-danger'" >
+          {{ settings.loginEnabled ? 'activé' : 'désactivé' }}
         </span>
       </slot>
     </p>
@@ -58,18 +58,10 @@ export default {
   components: {
     Card
   },
-  data () {
-    return {
-      status: true
-    }
-  },
   computed: {
     ...mapGetters({
       settings: 'sysconf/getSettings'
     })
-  },
-  mounted () {
-    this.status = this.settings.loginEnabled
   },
   methods: {
     toggleLogin (element) {
@@ -79,7 +71,6 @@ export default {
         element.disabled = false
       }, 5000)
 
-      this.status = !this.status
       this.$store.dispatch('sysconf/toggleLogin', { value: element.checked })
     }
   }

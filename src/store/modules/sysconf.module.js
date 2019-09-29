@@ -35,16 +35,18 @@ const sysconfModule = {
       state.status = { isUpdatingLogin: true }
     },
 
-    TOGGLE_LOGIN_SUCCESS: (state) => {
+    TOGGLE_LOGIN_SUCCESS: (state, value) => {
       state.status = { isUpdatingLogin: false }
+      state.settings.loginEnabled = value
     },
 
     TOGGLE_LOGIN_FAILURE: (state, reason) => {
       state.status = { toggleLoginError: reason }
     },
 
-    TOGGLE_REGISTER_REQUEST: (state) => {
+    TOGGLE_REGISTER_REQUEST: (state, value) => {
       state.status = { isUpdatingRegister: true }
+      state.settings.registerEnabled = value
     },
 
     TOGGLE_REGISTER_SUCCESS: (state) => {
@@ -65,8 +67,10 @@ const sysconfModule = {
       SysconfService.getSettings()
         .then(
           res => {
-            const loginEnabled = res.data.loginEnabled
-            const registerEnabled = res.data.registerEnabled
+            const loginEnabled = res.data.loginEnabled || false
+            console.log(loginEnabled)
+            const registerEnabled = res.data.registerEnabled || false
+            console.log(registerEnabled)
             commit('FETCH_SETTINGS_SUCCESS', { loginEnabled, registerEnabled })
           },
           err => {
@@ -85,7 +89,7 @@ const sysconfModule = {
               ? 'success'
               : 'warning'
             Vue.prototype.$notify({ type, timeout: 10000, message })
-            commit('TOGGLE_LOGIN_SUCCESS')
+            commit('TOGGLE_LOGIN_SUCCESS', value)
           },
           err => {
             Vue.prototype.$notify({ type: 'danger', timeout: 10000, message: `<b>Erreur !</b> ${err.message}` })
@@ -104,7 +108,7 @@ const sysconfModule = {
               ? 'success'
               : 'warning'
             Vue.prototype.$notify({ type, timeout: 10000, message })
-            commit('TOGGLE_REGISTER_SUCCESS')
+            commit('TOGGLE_REGISTER_SUCCESS', value)
           },
           err => {
             Vue.prototype.$notify({ type: 'danger', timeout: 10000, message: `<b>Erreur !</b> ${err.message}` })
