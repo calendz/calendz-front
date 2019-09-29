@@ -322,10 +322,14 @@ export default {
       this.calendarApi().changeView(viewType)
     },
     next: function () {
+      let toAdd
       let dateToFetch = this.activeDate
       switch (this.activeView) {
         case 'timeGridWeek':
-          dateToFetch = this.getMonday(dateToFetch.setDate(dateToFetch.getDate() + 7))
+          toAdd = 7
+          if (dateToFetch.getDay() === 6) toAdd = 8
+          if (dateToFetch.getDay() === 0) toAdd = 9
+          dateToFetch = this.getMonday(dateToFetch.setDate(dateToFetch.getDate() + toAdd))
           break
         case 'dayGridMonth':
           dateToFetch = this.getMonday(dateToFetch.setMonth(dateToFetch.getMonth() + 1))
@@ -342,7 +346,7 @@ export default {
           return
         case 'timeGridDay':
           // add 1 day (or 3 if friday or 2 if saturday)
-          let toAdd = 1
+          toAdd = 1
           if (dateToFetch.getDay() === 5) toAdd = 3
           if (dateToFetch.getDay() === 6) toAdd = 2
 
@@ -356,11 +360,15 @@ export default {
       this.updateHeaderDate()
     },
     prev () {
+      let toRemove = 7
       let dateToFetch = this.activeDate
 
       switch (this.activeView) {
         case 'timeGridWeek':
-          dateToFetch = this.getMonday(dateToFetch.setDate(dateToFetch.getDate() - 7))
+          toRemove = 7
+          if (dateToFetch.getDay() === 6) toRemove = 6
+          if (dateToFetch.getDay() === 0) toRemove = 5
+          dateToFetch = this.getMonday(dateToFetch.setDate(dateToFetch.getDate() - toRemove))
           break
         case 'dayGridMonth':
           dateToFetch = this.getMonday(dateToFetch.setMonth(dateToFetch.getMonth() - 1))
@@ -377,7 +385,7 @@ export default {
           return
         case 'timeGridDay':
           // remove 1 day (or 3 if monday or 2 if sunday)
-          let toRemove = 1
+          toRemove = 1
           if (dateToFetch.getDay() === 1) toRemove = 3
           if (dateToFetch.getDay() === 0) toRemove = 2
 

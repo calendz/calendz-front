@@ -290,8 +290,13 @@ export default {
     // get all notifications
     this.$store.dispatch('notifications/fetch')
 
-    // get current week
-    this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(new Date()) })
+    // get monday of current week
+    // or next week if we are already in the weekend
+    let date = new Date()
+    if (date.getDay() === 6) date.setDate(date.getDate() + 2)
+    if (date.getDay() === 0) date.setDate(date.getDate() + 1)
+    date = this.toMonthDayYear(date)
+    this.$store.dispatch('calendar/fetchDate', { date })
   },
   methods: {
     toggleProfileDropdown () {
