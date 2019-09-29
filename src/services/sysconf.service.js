@@ -14,6 +14,26 @@ const SysconfService = {
       .catch(err => {
         return Promise.reject(err.data)
       })
+  },
+
+  toggleLogin: (value) => {
+    return ApiService.patch(`/sysconf/settings/login-enabled/${value}`)
+      .then(res => {
+        return res
+      })
+      .catch(err => {
+        return Promise.reject(err.data)
+      })
+  },
+
+  toggleRegister: (value) => {
+    return ApiService.patch(`/sysconf/settings/register-enabled/${value}`)
+      .then(res => {
+        return res
+      })
+      .catch(err => {
+        return Promise.reject(err.data)
+      })
   }
 }
 

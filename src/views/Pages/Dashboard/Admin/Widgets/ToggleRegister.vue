@@ -80,7 +80,7 @@ export default {
       }, 5000)
 
       this.status = !this.status
-      // this.$store.dispatch('sysconf/toggleRegister', { value: element.checked })
+      this.$store.dispatch('sysconf/toggleRegister', { value: element.checked })
     }
   }
 }
