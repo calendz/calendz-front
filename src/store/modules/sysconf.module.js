@@ -68,9 +68,7 @@ const sysconfModule = {
         .then(
           res => {
             const loginEnabled = res.data.loginEnabled || false
-            console.log(loginEnabled)
             const registerEnabled = res.data.registerEnabled || false
-            console.log(registerEnabled)
             commit('FETCH_SETTINGS_SUCCESS', { loginEnabled, registerEnabled })
           },
           err => {
