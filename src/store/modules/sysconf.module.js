@@ -73,6 +73,7 @@ const sysconfModule = {
           },
           err => {
             commit('FETCH_SETTINGS_FAILURE', err.message)
+            Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b>Une erreur est survenue, veuillez réessayer...` })
           })
     },
     toggleLogin: ({ commit }, { value }) => {
@@ -86,12 +87,12 @@ const sysconfModule = {
             const type = value
               ? 'success'
               : 'warning'
-            Vue.prototype.$notify({ type, timeout: 10000, message })
             commit('TOGGLE_LOGIN_SUCCESS', value)
+            Vue.prototype.$notify({ type, message })
           },
           err => {
-            Vue.prototype.$notify({ type: 'danger', timeout: 10000, message: `<b>Erreur !</b> ${err.message}` })
             commit('TOGGLE_LOGIN_FAILURE', err.message)
+            Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.message || 'Une erreur est survenue...'}` })
           })
     },
     toggleRegister: ({ commit }, { value }) => {
@@ -105,12 +106,12 @@ const sysconfModule = {
             const type = value
               ? 'success'
               : 'warning'
-            Vue.prototype.$notify({ type, timeout: 10000, message })
             commit('TOGGLE_REGISTER_SUCCESS', value)
+            Vue.prototype.$notify({ type, message })
           },
           err => {
-            Vue.prototype.$notify({ type: 'danger', timeout: 10000, message: `<b>Erreur !</b> ${err.message}` })
             commit('TOGGLE_REGISTER_FAILURE', err.message)
+            Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.message || 'Une erreur est survenue...'}` })
           })
     }
   },

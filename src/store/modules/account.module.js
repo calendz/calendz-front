@@ -168,6 +168,7 @@ const accountModule = {
           },
           err => {
             commit('CHANGE_PASSWORD_FAILURE', err.data.message)
+            Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.data.message || 'Erreur inconnue...'}` })
           })
     },
 
@@ -184,7 +185,7 @@ const accountModule = {
           },
           err => {
             commit('CHANGE_PARAMETER_FAILURE', err.message)
-            Vue.prototype.$notify({ type: 'danger', message: `Une erreur est survenue, veuillez réessayer...` })
+            Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.message || 'Erreur inconnue...'}` })
           })
     },
 
@@ -228,7 +229,7 @@ const accountModule = {
             commit('DELETE_USER_FAILURE', err.message)
             swal.fire({
               title: 'Une erreur est survenue !',
-              text: err.message || 'Erreur inconnue',
+              text: err.message || 'Erreur inconnue...',
               type: 'error',
               customClass: { confirmButton: 'btn btn-primary' }
             })

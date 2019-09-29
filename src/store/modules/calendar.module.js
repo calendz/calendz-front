@@ -1,8 +1,5 @@
-// import Vue from 'vue'
-// import swal from 'sweetalert2'
-// import router from '../../routes/router'
+import Vue from 'vue'
 import CalendarService from '../../services/calendar.service'
-// import ApiService from '../../services/api.service'
 
 const calendarModule = {
   namespaced: true,
@@ -56,6 +53,7 @@ const calendarModule = {
             },
             err => {
               commit('FETCH_FAILURE', err.message)
+              Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.message || `Erreur lors du chargement la semaine...`}` })
             })
       } else {
         if (process.env.NODE_ENV === 'development') console.log(`Year ${currentWeek.year}, week ${currentWeek.number}: ALREADY FETCHED`)
