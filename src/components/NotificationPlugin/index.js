@@ -29,7 +29,10 @@ const NotificationStore = {
       notification.timestamp.getMilliseconds() + this.state.length
     )
     notification = Object.assign({}, this.settings, notification)
-    this.state.push(notification)
+    // cancel duplicates
+    if (!this.state.some(notif => notif.message === notification.message)) {
+      this.state.push(notification)
+    }
   },
   notify (notification) {
     if (Array.isArray(notification)) {
