@@ -211,7 +211,7 @@
             <span class="avatar avatar-sm rounded-circle">
               <img
                 alt="Image placeholder"
-                src="img/theme/default-pp.svg">
+                src="img/theme/default-pp.png">
             </span>
             <div class="media-body ml-2 d-none d-lg-block">
               <span class="mb-0 text-sm font-weight-bold">{{ user ? user.firstname : 'Prénom' }}</span>
