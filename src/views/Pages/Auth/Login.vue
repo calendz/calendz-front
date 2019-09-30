@@ -69,7 +69,6 @@
                   v-if="userId"
                   class="mt-3 text-center">
                   <p
-                    href="#"
                     class="m-0 nav-link font-weight-light"
                     @click="resendEmail()">
                     Vous n'avez pas reçu l'email ?<br>

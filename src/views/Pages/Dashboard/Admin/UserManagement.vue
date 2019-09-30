@@ -68,7 +68,7 @@
               <template v-slot="{row}">
                 <div class="d-flex justify-content-center">
                   <img
-                    src="img/theme/default-pp.svg"
+                    src="img/theme/default-pp.png"
                     alt="Photo de profil"
                     class="avatar avatar-sm rounded-circle">
                 </div>
@@ -135,8 +135,8 @@
             <!-- isActive -->
             <el-table-column
               label="Actif"
-              width="105px"
-              min-width="105px"
+              width="110px"
+              min-width="110px"
               class="text-center"
               prop="row.isActive"
               sortable>
@@ -240,23 +240,46 @@
                       v-model="modifyForm.grade"
                       name="classe"
                       class="form-control">
-                      <option>B1 G1</option>
-                      <option>B1 G2</option>
-                      <option>B2 G1</option>
-                      <option>B2 G2</option>
-                      <option>B3 G1</option>
-                      <option>B3 G2</option>
-                      <option>B3 G3</option>
-                      <option>I4 G1</option>
-                      <option>I4 G2</option>
-                      <option>I5 G1</option>
-                      <option>I5 G2</option>
+                      <option>B1</option>
+                      <option>B2</option>
+                      <option>B3</option>
+                      <option>I1</option>
+                      <option>I2</option>
                     </select>
                   </base-input>
                 </div>
               </div>
 
               <div class="row">
+                <div class="col-md-6">
+                  <base-input
+                    :error="getError('ville')"
+                    :valid="isValid('ville')"
+                    class="mb-3"
+                    prepend-icon="ni ni-hat-3"
+                    label="Ville">
+                    <select
+                      v-validate="'required|valid_city'"
+                      v-model="modifyForm.city"
+                      name="ville"
+                      class="form-control">
+                      <option
+                        value=""
+                        hidden>Séléctionnez votre ville</option>
+                      <option>Arras</option>
+                      <option>Auxerre</option>
+                      <option>Bordeaux</option>
+                      <option>Brest</option>
+                      <option>Grenoble</option>
+                      <option>Lille</option>
+                      <option>Lyon</option>
+                      <option>Montpellier</option>
+                      <option>Nantes</option>
+                      <option>Paris</option>
+                      <option>Dakar</option>
+                    </select>
+                  </base-input>
+                </div>
                 <div class="col-md-6">
                   <base-input
                     :error="getError('bts')"
@@ -274,6 +297,9 @@
                     </select>
                   </base-input>
                 </div>
+              </div>
+
+              <div class="row">
                 <div class="col-md-6">
                   <base-input
                     :error="getError('actif')"
@@ -384,13 +410,19 @@ export default {
         {
           prop: 'grade',
           label: 'Classe',
-          minWidth: 100,
+          minWidth: 115,
+          sortable: true
+        },
+        {
+          prop: 'city',
+          label: 'Ville',
+          minWidth: 110,
           sortable: true
         },
         {
           prop: 'email',
           label: 'Adresse mail',
-          minWidth: 120,
+          minWidth: 180,
           sortable: true
         }
       ],

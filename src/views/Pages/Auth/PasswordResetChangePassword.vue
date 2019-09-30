@@ -96,7 +96,7 @@
   </div>
 </template>
 <script>
-import axios from 'axios'
+import ApiService from '../../../services/api.service'
 
 export default {
   data () {
@@ -122,7 +122,7 @@ export default {
         }
 
         // request sur l'api
-        axios.post('/user/password-reset', this.resetForm).then((res) => {
+        ApiService.post('/user/password-reset', this.resetForm).then((res) => {
           this.$notify({ type: 'success', message: 'Votre mot de passe a bien été mis à jour.' })
           this.$router.push('/login')
         // on catch les erreurs

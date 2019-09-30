@@ -202,7 +202,6 @@
         class="nav-item dropdown">
         <a
           class="nav-link pr-0"
-          href="#"
           role="button"
           data-toggle="dropdown"
           aria-haspopup="true"
@@ -212,7 +211,7 @@
             <span class="avatar avatar-sm rounded-circle">
               <img
                 alt="Image placeholder"
-                src="img/theme/default-pp.svg">
+                src="img/theme/default-pp.png">
             </span>
             <div class="media-body ml-2 d-none d-lg-block">
               <span class="mb-0 text-sm font-weight-bold">{{ user ? user.firstname : 'Prénom' }}</span>
@@ -291,8 +290,13 @@ export default {
     // get all notifications
     this.$store.dispatch('notifications/fetch')
 
-    // get current week
-    this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(new Date()) })
+    // get monday of current week
+    // or next week if we are already in the weekend
+    let date = new Date()
+    if (date.getDay() === 6) date.setDate(date.getDate() + 2)
+    if (date.getDay() === 0) date.setDate(date.getDate() + 1)
+    date = this.toMonthDayYear(date)
+    this.$store.dispatch('calendar/fetchDate', { date })
   },
   methods: {
     toggleProfileDropdown () {

@@ -28,20 +28,21 @@
       <div class="row">
         <div class="col-xl-3 col-md-6">
           <stats-card
-            title="Total traffic"
-            type="gradient-red"
-            sub-title="350,897"
-            icon="fas fa-th-list">
-
+            title="PROCHAIN COURS"
+            type="gradient-info"
+            sub-title="à venir..."
+            icon="fas fa-calendar-week">
             <template slot="footer">
-              <span class="text-success mr-2"><i class="fa fa-arrow-up"/> 3.48%</span>
-              <span class="text-nowrap">Since last month</span>
+              <i class="fas fa-external-link-alt mr-2"/>
+              <span class="text-nowrap">cliquez pour accéder</span>
             </template>
           </stats-card>
         </div>
+
         <div class="col-xl-3 col-md-6">
           <NextHomework/>
         </div>
+
         <div class="col-xl-3 col-md-6">
           <a
             class="nav-link p-0"
@@ -54,6 +55,7 @@
               icon="fas fa-bold">
 
               <template slot="footer">
+                <i class="fas fa-external-link-alt mr-2"/>
                 <span class="text-nowrap">cliquez pour accéder</span>
               </template>
             </stats-card>

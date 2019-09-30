@@ -30,7 +30,7 @@
               class="mb-0">Photo de profil</h3>
             <div class="text-center">
               <img
-                src="img/theme/default-pp.svg"
+                src="img/theme/default-pp.png"
                 alt="Photo de profil"
                 width="150px">
               <br>

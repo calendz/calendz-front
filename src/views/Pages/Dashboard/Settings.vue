@@ -72,14 +72,50 @@
                 <!-- ============================== -->
                 <div
                   v-show="active === 1"
-                  class="container mb-3">
+                  class="container mt--1 mb-3">
 
                   <div class="row mt-3">
-                    <div class="col-md-1 d-flex justify-content-center">
+                    <div class="col-lg-1 col-md-2 my-2 d-flex justify-content-center">
+                      <i class="fas fa-door-open my-auto"/>
+                    </div>
+
+                    <div class="col-lg-9 col-md-8 my-2">
+                      <p class="text-justify my-auto">
+                        Page par défaut
+                        <span style="color: #adb5bd">(page sur laquelle vous arrivez après vous être connecté).</span>
+                      </p>
+                    </div>
+
+                    <div class="col-lg-2 my-2 d-flex justify-content-center my-auto mx-auto">
+                      <el-select
+                        v-model="select.target"
+                        class="select-danger"
+                        style="width: 150px"
+                        @change="handleDefaultPageChange(select.target)">
+                        <el-option
+                          v-for="option in select.options"
+                          :value="option"
+                          :label="option"
+                          :key="option"
+                          class="select-danger"/>
+                      </el-select>
+                    </div>
+                  </div>
+
+                  <hr class="my-2">
+
+                  <div class="row mt-3">
+                    <div class="col-lg-1 col-md-2 my-2 d-flex justify-content-center">
                       <i class="fas fa-moon my-auto"/>
                     </div>
-                    <p class="col-md-9 mb-0"><del>Mode sombre</del></p>
-                    <div class="col-md-2 d-flex justify-content-center">
+
+                    <div class="col-lg-9 col-md-8 my-2">
+                      <p class="text-justify my-auto">
+                        <del>Activer le mode sombre (intégralité du site).</del>
+                      </p>
+                    </div>
+
+                    <div class="col-lg-2 my-2 d-flex justify-content-center my-auto mx-auto">
                       <el-tooltip
                         content="Cette fonctionnalité n'est pas encore disponible !"
                         placement="top">
@@ -93,12 +129,20 @@
                     </div>
                   </div>
 
+                  <hr class="my-2">
+
                   <div class="row mt-3">
-                    <div class="col-md-1 d-flex justify-content-center">
+                    <div class="col-lg-1 col-md-2 my-2 d-flex justify-content-center">
                       <i class="fas fa-palette my-auto"/>
                     </div>
-                    <p class="col-md-9 mb-0"><del>Couleurs de l'emploi du temps</del></p>
-                    <div class="col-md-2 d-flex justify-content-center">
+
+                    <div class="col-lg-9 col-md-8 my-2">
+                      <p class="text-justify my-auto">
+                        <del>Modifier les couleurs de l'emploi du temps.</del>
+                      </p>
+                    </div>
+
+                    <div class="col-m-2 d-flex justify-content-center my-auto mx-auto">
                       <el-tooltip
                         content="Cette fonctionnalité n'est pas encore disponible !"
                         placement="top">
@@ -116,18 +160,23 @@
                 <!-- ============================== -->
                 <!-- == Préférences mails ========= -->
                 <!-- ============================== -->
-
                 <div
                   v-show="active === 2"
-                  class="container mb-3">
+                  class="container mt--1 mb-3">
 
                   <!-- Emails d'informations -->
                   <div class="row mt-3">
-                    <div class="col-md-1 d-flex justify-content-center">
+                    <div class="col-lg-1 col-md-2 my-2 d-flex justify-content-center">
                       <i class="fas fa-newspaper my-auto"/>
                     </div>
-                    <p class="col-md-9 mb-0">Mails d'informations concernant les nouveautés et autres...</p>
-                    <div class="col-md-2 d-flex justify-content-center">
+
+                    <div class="col-lg-9 col-md-8 my-2">
+                      <p class="text-justify my-auto">
+                        Mails d'informations concernant les nouveautés et autres...
+                      </p>
+                    </div>
+
+                    <div class="col-m-2 my-2 d-flex justify-content-center my-auto mx-auto">
                       <base-switch
                         :value="user.hasInformationMails || false"
                         type="primary"
@@ -137,13 +186,21 @@
                     </div>
                   </div>
 
+                  <hr class="my-2">
+
                   <!-- Nouvelles notifications -->
                   <div class="row mt-3">
-                    <div class="col-md-1 d-flex justify-content-center">
+                    <div class="col-lg-1 col-md-2 my-2 d-flex justify-content-center">
                       <i class="fas fa-bell my-auto"/>
                     </div>
-                    <p class="col-md-9 mb-0"><del>Nouvelles notifications</del></p>
-                    <div class="col-md-2 d-flex justify-content-center">
+
+                    <div class="col-lg-9 col-md-8 my-2">
+                      <p class="text-justify my-auto">
+                        Recevoir un mail à chaque nouvelle notification.
+                      </p>
+                    </div>
+
+                    <div class="col-m-2 d-flex justify-content-center my-auto mx-auto">
                       <el-tooltip
                         content="Cette fonctionnalité n'est pas encore disponible !"
                         placement="top">
@@ -157,13 +214,21 @@
                     </div>
                   </div>
 
+                  <hr class="my-2">
+
                   <!-- Rappels des devoirs -->
                   <div class="row mt-3">
-                    <div class="col-md-1 d-flex justify-content-center">
+                    <div class="col-lg-1 col-md-2 my-2 d-flex justify-content-center">
                       <i class="fas fa-history my-auto"/>
                     </div>
-                    <p class="col-md-9 mb-0"><del>Rappel des devoirs à faire (à J-1)</del></p>
-                    <div class="col-md-2 d-flex justify-content-center">
+
+                    <div class="col-lg-9 col-md-8 my-2">
+                      <p class="text-justify my-auto">
+                        <del>Rappel des devoirs à faire (à J-1).</del>
+                      </p>
+                    </div>
+
+                    <div class="col-m-2 my-2 d-flex justify-content-center my-auto mx-auto">
                       <el-tooltip
                         content="Cette fonctionnalité n'est pas encore disponible !"
                         placement="top">
@@ -189,12 +254,24 @@
 </template>
 <script>
 import { mapState } from 'vuex'
+import { Select, Option } from 'element-ui'
 
 export default {
   name: 'Settings',
+  components: {
+    [Select.name]: Select,
+    [Option.name]: Option
+  },
   data () {
     return {
-      active: 1
+      active: 1,
+      select: {
+        target: localStorage.getItem('calendz.settings.defaultPage') || '/dashboard',
+        options: [
+          '/dashboard',
+          '/calendar'
+        ]
+      }
     }
   },
   computed: {
@@ -211,6 +288,9 @@ export default {
       }, 5000)
 
       this.$store.dispatch('account/setInformationMails', { value: element.checked })
+    },
+    handleDefaultPageChange (newPage) {
+      localStorage.setItem('calendz.settings.defaultPage', newPage)
     }
   }
 }

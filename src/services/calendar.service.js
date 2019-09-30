@@ -21,6 +21,7 @@ const CalendarService = {
     const firstname = email.split('@')[0].split('.')[0]
     const lastname = email.split('@')[0].split('.')[1]
 
+    console.log(date)
     // TODO: recreate date object in order to make sure it has the right format
     // /!\ date has to be of format: MM-DD-YY
     return ApiCalendarService.get(`/week/${date}?firstname=${firstname}&lastname=${lastname}`)

@@ -95,6 +95,8 @@
                 min-time="08:00:00"
                 max-time="20:00:00"
                 class="calendar"
+                @eventClick="handleEventClick"
+                @dateClick="handleDateClick"
               />
             </div>
           </div>
@@ -157,7 +159,7 @@ export default {
           description: 'Test Description'
         }
       ],
-      documentWidth: window.innerWidth,
+      windowWidth: window.innerWidth,
       headerDate: ''
     }
   },
@@ -167,71 +169,141 @@ export default {
       isLoading: 'calendar/isLoading'
     })
   },
+  watch: {
+    windowWidth: function (newVal, oldVal) {
+      if (newVal < 800 && oldVal >= 800) this.changeView('timeGridDay')
+      if (newVal >= 800 && oldVal < 800) this.changeView('timeGridWeek')
+    }
+  },
   mounted () {
+    // initialize fullcalendar
     const calendarApi = this.$refs.fullCalendar.getApi()
     calendarApi.setOption('locale', 'fr')
 
+    this.updateHeaderDate()
+
+    // add events listeners
     window.addEventListener('keyup', (e) => {
       if (e.keyCode === 39) this.next()
       if (e.keyCode === 37) this.prev()
     })
 
-    this.updateHeaderDate()
-  },
-  created () {
-    // if loading from mobile
-    if (window.innerWidth < 750) this.activeView = 'timeGridDay'
+    window.onresize = () => {
+      this.windowWidth = window.innerWidth
+    }
+
+    // set correct view according to screen's size
+    if (this.windowWidth < 800) this.changeView('timeGridDay')
+    if (this.windowWidth >= 800) this.changeView('timeGridWeek')
   },
   methods: {
+    // ===========================================
+    // == Core functions
+    // ===========================================
+    calendarApi () {
+      return this.$refs.fullCalendar.getApi()
+    },
     customRender (element) {
+      // ======================================
+      // == LOADING
+      // ======================================
       if (this.isLoading) {
         switch (this.activeView) {
           case 'dayGridMonth':
             element.el.innerHTML = `
-            <div>
-              <h5 class="pl-1 py-1 mb-0">
-                <div class="ml-1 placeholder-md"></div>
-              </h5>
-            </div>`
+              <div>
+                <h5 class="pl-1 py-1 mb-0">
+                  <div class="ml-1 placeholder-md"></div>
+                </h5>
+              </div>`
             break
           case 'timeGridWeek':
           case 'timeGridDay':
             element.el.innerHTML = `
-            <div>
-              <div class="ml-2 mt-2 placeholder-sm"></div>
-              <div class="ml-0 mt--2 placeholder-md" style="position: absolute; top: 50%; left: 50%; transform: translateY(-50%); transform: translateX(-50%)"></div>
-              <div class="ml-2 mb-2 placeholder-sm" style="position: absolute; bottom: 0; left: 0"></div>
-              <div class="mr-2 mb-2 placeholder-sm" style="position: absolute; bottom: 0; right: 0"></div>
-            </div>`
+              <div>
+                <div class="ml-2 mt-2 placeholder-sm"></div>
+                <div class="ml-0 mt--2 placeholder-md" style="position: absolute; top: 50%; left: 50%; transform: translateY(-50%); transform: translateX(-50%)"></div>
+                <div class="ml-2 mb-2 placeholder-sm" style="position: absolute; bottom: 0; left: 0"></div>
+                <div class="mr-2 mb-2 placeholder-sm" style="position: absolute; bottom: 0; right: 0"></div>
+              </div>`
             break
         }
+      // ======================================
+      // == RENDERING
+      // ======================================
       } else {
-        switch (this.activeView) {
-          case 'dayGridMonth':
-            element.el.innerHTML = `
-            <div>
-              <h5 class="pl-1 mb-0 text-white w-auto">
-                ${new Date(element.event.start).getHours()}h
-                <span class="ml-1 h5 text-white">${element.event.title}</span>
-              </h5>
-            </div>`
-            break
-          case 'timeGridWeek':
-          case 'timeGridDay':
-            element.el.innerHTML = `
-            <div class="fade-in">
-              <h5 class="pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
-              <h2 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h2>
-              <h5 class="pl-2 mb-1 text-white" style="position: absolute; bottom: 0; left: 0">${this.capitalizeFirstLetterEachWords(element.event.extendedProps.professor)}<h5>
-              <h5 class="pr-2 mb-1 text-white" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h5>
-            </div>`
-            break
+        // ======================================
+        // == MOBILE VIEW
+        // ======================================
+        if (this.windowWidth < 800) {
+          switch (this.activeView) {
+            case 'dayGridMonth':
+              element.el.innerHTML = `
+                <div>
+                  <h5 class="pl-1 mb-0 text-white w-auto">
+                    ${new Date(element.event.start).getHours()}h
+                  </h5>
+                </div>`
+              break
+            case 'timeGridWeek':
+              element.el.innerHTML = `
+                <div class="fade-in">
+                  <h4 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h4>
+                </div>`
+              break
+            case 'timeGridDay':
+              element.el.innerHTML = `
+                <div class="fade-in">
+                  <h5 class="pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
+                  <h2 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h2>
+                  <h5 class="pl-2 mb-1 text-white" style="position: absolute; bottom: 0; left: 0">${this.capitalizeFirstLetterEachWords(element.event.extendedProps.professor)}<h5>
+                  <h5 class="pr-2 mb-1 text-white" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h5>
+                </div>`
+              break
+          }
+        // ======================================
+        // == DESKTOP VIEW
+        // ======================================
+        } else {
+          switch (this.activeView) {
+            case 'dayGridMonth':
+              element.el.innerHTML = `
+                <div>
+                  <h5 class="pl-1 mb-0 text-white w-auto">
+                    ${new Date(element.event.start).getHours()}h
+                    <span class="ml-1 h5 text-white">${element.event.title}</span>
+                  </h5>
+                </div>`
+              break
+            case 'timeGridWeek':
+            case 'timeGridDay':
+              element.el.innerHTML = `
+                <div class="fade-in">
+                  <h5 class="pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
+                  <h2 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h2>
+                  <h5 class="pl-2 mb-1 text-white" style="position: absolute; bottom: 0; left: 0">${this.capitalizeFirstLetterEachWords(element.event.extendedProps.professor)}<h5>
+                  <h5 class="pr-2 mb-1 text-white" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h5>
+                </div>`
+              break
+          }
         }
       }
     },
-    calendarApi () {
-      return this.$refs.fullCalendar.getApi()
+    handleDateClick (clicked) {
+      if (this.activeView === 'dayGridMonth') {
+        this.calendarApi().gotoDate(clicked.date)
+        this.changeView('timeGridWeek')
+      }
     },
+    handleEventClick (clicked) {
+      if (this.activeView === 'dayGridMonth') {
+        this.calendarApi().gotoDate(new Date(clicked.event.start))
+        this.changeView('timeGridWeek')
+      }
+    },
+    // ===========================================
+    // == Naviguation functions
+    // ===========================================
     changeView (viewType) {
       this.activeView = viewType
       this.activeDate = this.calendarApi().getDate()
@@ -250,10 +322,14 @@ export default {
       this.calendarApi().changeView(viewType)
     },
     next: function () {
+      let toAdd
       let dateToFetch = this.activeDate
       switch (this.activeView) {
         case 'timeGridWeek':
-          dateToFetch = this.getMonday(dateToFetch.setDate(dateToFetch.getDate() + 7))
+          toAdd = 7
+          if (dateToFetch.getDay() === 6) toAdd = 8
+          if (dateToFetch.getDay() === 0) toAdd = 9
+          dateToFetch = this.getMonday(dateToFetch.setDate(dateToFetch.getDate() + toAdd))
           break
         case 'dayGridMonth':
           dateToFetch = this.getMonday(dateToFetch.setMonth(dateToFetch.getMonth() + 1))
@@ -270,7 +346,7 @@ export default {
           return
         case 'timeGridDay':
           // add 1 day (or 3 if friday or 2 if saturday)
-          let toAdd = 1
+          toAdd = 1
           if (dateToFetch.getDay() === 5) toAdd = 3
           if (dateToFetch.getDay() === 6) toAdd = 2
 
@@ -284,11 +360,15 @@ export default {
       this.updateHeaderDate()
     },
     prev () {
+      let toRemove = 7
       let dateToFetch = this.activeDate
 
       switch (this.activeView) {
         case 'timeGridWeek':
-          dateToFetch = this.getMonday(dateToFetch.setDate(dateToFetch.getDate() - 7))
+          toRemove = 7
+          if (dateToFetch.getDay() === 6) toRemove = 6
+          if (dateToFetch.getDay() === 0) toRemove = 5
+          dateToFetch = this.getMonday(dateToFetch.setDate(dateToFetch.getDate() - toRemove))
           break
         case 'dayGridMonth':
           dateToFetch = this.getMonday(dateToFetch.setMonth(dateToFetch.getMonth() - 1))
@@ -305,7 +385,7 @@ export default {
           return
         case 'timeGridDay':
           // remove 1 day (or 3 if monday or 2 if sunday)
-          let toRemove = 1
+          toRemove = 1
           if (dateToFetch.getDay() === 1) toRemove = 3
           if (dateToFetch.getDay() === 0) toRemove = 2
 
@@ -318,6 +398,17 @@ export default {
       this.calendarApi().prev()
       this.updateHeaderDate()
     },
+    backToToday () {
+      this.activeDate = new Date()
+      this.calendarApi().today()
+      this.updateHeaderDate()
+    },
+    // ===========================================
+    // == Random functions
+    // ===========================================
+    updateHeaderDate () {
+      this.headerDate = this.getMonthFromDate(this.calendarApi().getDate()) + ' ' + this.calendarApi().getDate().getFullYear()
+    },
     getColumnHeaderFormat () {
       switch (this.activeView) {
         case 'timeGridWeek':
@@ -327,13 +418,6 @@ export default {
         case 'timeGridDay':
           return { weekday: 'long', day: 'numeric', month: 'long' }
       }
-    },
-    updateHeaderDate () {
-      this.headerDate = this.getMonthFromDate(this.calendarApi().getDate()) + ' ' + this.calendarApi().getDate().getFullYear()
-    },
-    backToToday () {
-      this.activeDate = new Date()
-      this.calendarApi().today()
     },
     getMonday (d) {
       d = new Date(d)

@@ -10,7 +10,7 @@
               <div class="pr-5">
                 <h1 class="display-2 text-white font-weight-bold mb-0">CALENDZ</h1>
                 <h2 class="display-4 text-white font-weight-light">Votre emploi du temps amélioré.</h2>
-                <p class="text-white mt-4 font h2 font-weight-light">Calendz est une alternative à l'emploi du temps fourni par notre campus. Il vise à améliorer l'esthétique de ce dernier, ainsi qu'à lui rajouter des fonctionnalités...</p>
+                <p class="text-white mt-4 font h2 font-weight-light text-justify">Calendz est une alternative à l'emploi du temps fourni par notre campus. Il vise à améliorer l'esthétique de ce dernier, ainsi qu'à lui rajouter des fonctionnalités...</p>
                 <div class="mt-5">
                   <router-link
                     to="/dashboard"
@@ -54,9 +54,9 @@
     <!-- Page content -->
     <section class="py-6 pb-9 bg-default">
       <div class="row justify-content-center text-center">
-        <div class="col-md-6">
+        <div class="col-md-6 col-11">
           <h2 class="display-3 text-white">Un emploi du temps amélioré ?</h2>
-          <p class="lead text-white">
+          <p class="lead text-white text-justify">
             Calendz vous propose votre emploi du temps, actualisé en temps réel, avec une interface améliorée (principalement au niveau esthétique), ainsi que des possibilités de personnalisation. Vous pourrez également profiter d'autres fonctionnalités, visant à compléter Beecome.
           </p>
         </div>
@@ -69,17 +69,15 @@
             <div class="row">
               <div class="col-lg-4">
                 <div class="card card-lift--hover shadow border-0">
-                  <div
-                    class="card-body py-4"
-                    style="height: 300px">
+                  <div class="card-body py-4 h-100">
                     <div class="icon icon-shape bg-gradient-primary text-white rounded-circle mb-4">
                       <i class="ni ni-check-bold"/>
                     </div>
                     <h4 class="h3 text-primary text-uppercase">Votre emploi du temps</h4>
-                    <p class="description mt-3">Une interface épurée, personnalisable et entièrement responsive afin de vous faciliter l'accès à votre emploi du temps.</p>
+                    <p class="description mt-3 text-justify">Une interface épurée, personnalisable et entièrement responsive afin de vous faciliter l'accès à votre emploi du temps.</p>
                     <div>
                       <span class="badge badge-pill badge-primary">emploi du temps</span>
-                      <span class="badge badge-pill badge-primary mx-1">actualisation temps réel</span>
+                      <span class="badge badge-pill badge-primary mr-1">actualisation temps réel</span>
                       <span class="badge badge-pill badge-primary">personnalisation</span>
                     </div>
                   </div>
@@ -87,14 +85,12 @@
               </div>
               <div class="col-lg-4">
                 <div class="card card-lift--hover shadow border-0">
-                  <div
-                    class="card-body py-4"
-                    style="height: 300px">
+                  <div class="card-body py-4 h-100">
                     <div class="icon icon-shape bg-gradient-warning text-white rounded-circle mb-4">
                       <i class="ni ni-ui-04"/>
                     </div>
                     <h4 class="h3 text-warning text-uppercase">Gestion des devoirs</h4>
-                    <p class="description mt-3">Un espace dédié à la gestion des devoirs. Ajoutez vous même les devoirs pour vous ou votre classe, définissez une date d'expiration et obtenez des rappels</p>
+                    <p class="description mt-3 text-justify">Un espace dédié à la gestion des devoirs. Ajoutez vous même les devoirs pour vous ou votre classe, définissez une date d'expiration et obtenez des rappels</p>
                     <div>
                       <span class="badge badge-pill badge-warning">devoirs</span>
                       <span class="badge badge-pill badge-warning mx-1">organisation</span>
@@ -105,14 +101,12 @@
               </div>
               <div class="col-lg-4">
                 <div class="card card-lift--hover shadow border-0">
-                  <div
-                    class="card-body py-4"
-                    style="height: 300px">
+                  <div class="card-body py-4 h-100">
                     <div class="icon icon-shape bg-gradient-success text-white rounded-circle mb-4">
                       <i class="ni ni-ruler-pencil"/>
                     </div>
                     <h4 class="h3 text-success text-uppercase">Une idée de fonctionnalité ?</h4>
-                    <p class="description mt-3">Calendz est avant tout développé <b>par</b> des étudiants, <b>pour</b> les étudiants. Une idée de fonctionnalité ?<br>N'hésitez pas à nous en faire part !</p>
+                    <p class="description mt-3 text-justify">Calendz est avant tout développé <b>par</b> des étudiants, <b>pour</b> les étudiants. Une idée de fonctionnalité ?<br>N'hésitez pas à nous en faire part !</p>
                     <div>
                       <span class="badge badge-pill badge-success">collaboration</span>
                       <span class="badge badge-pill badge-success mx-1">open-source</span>

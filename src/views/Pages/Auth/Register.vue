@@ -74,17 +74,39 @@
                     <option
                       value=""
                       hidden>Séléctionnez votre classe</option>
-                    <option>B1 G1</option>
-                    <option>B1 G2</option>
-                    <option>B2 G1</option>
-                    <option>B2 G2</option>
-                    <option>B3 G1</option>
-                    <option>B3 G2</option>
-                    <option>B3 G3</option>
-                    <option>I4 G1</option>
-                    <option>I4 G2</option>
-                    <option>I5 G1</option>
-                    <option>I5 G2</option>
+                    <option>B1</option>
+                    <option>B2</option>
+                    <option>B3</option>
+                    <option>I1</option>
+                    <option>I2</option>
+                  </select>
+                </base-input>
+
+                <base-input
+                  :error="getError('ville')"
+                  :valid="isValid('ville')"
+                  class="mb-3"
+                  prepend-icon="ni ni-hat-3"
+                >
+                  <select
+                    v-validate="'required|valid_city'"
+                    v-model="registerForm.city"
+                    name="ville"
+                    class="form-control">
+                    <option
+                      value=""
+                      hidden>Séléctionnez votre ville</option>
+                    <option>Arras</option>
+                    <option>Auxerre</option>
+                    <option>Bordeaux</option>
+                    <option>Brest</option>
+                    <option>Grenoble</option>
+                    <option>Lille</option>
+                    <option>Lyon</option>
+                    <option>Montpellier</option>
+                    <option>Nantes</option>
+                    <option>Paris</option>
+                    <option>Dakar</option>
                   </select>
                 </base-input>
 
@@ -183,6 +205,7 @@ export default {
         firstname: '',
         lastname: '',
         grade: '',
+        city: '',
         email: '',
         password: '',
         password2: '',

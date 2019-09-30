@@ -107,9 +107,9 @@ const accountModule = {
   // == Actions
   // ==================================
   actions: {
-    register: ({ commit }, { firstname, lastname, grade, email, password, password2, agree }) => {
+    register: ({ commit }, { firstname, lastname, grade, city, email, password, password2, agree }) => {
       commit('REGISTER_REQUEST')
-      UserService.register(firstname, lastname, grade, email, password, password2, agree)
+      UserService.register(firstname, lastname, grade, city, email, password, password2, agree)
         .then(
           res => {
             commit('REGISTER_SUCCESS')
@@ -132,7 +132,7 @@ const accountModule = {
             localStorage.setItem('user', JSON.stringify(res.user))
             commit('LOGIN_SUCCESS', res.user)
             Vue.prototype.$notify({ type: 'success', message: 'Vous êtes désormais connecté.' })
-            router.push('/dashboard')
+            router.push(localStorage.getItem('calendz.settings.defaultPage') || '/dashboard')
           },
           err => {
             if (err && err.userId) {
@@ -168,6 +168,7 @@ const accountModule = {
           },
           err => {
             commit('CHANGE_PASSWORD_FAILURE', err.data.message)
+            Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.data.message || 'Erreur inconnue...'}` })
           })
     },
 
@@ -184,13 +185,13 @@ const accountModule = {
           },
           err => {
             commit('CHANGE_PARAMETER_FAILURE', err.message)
-            Vue.prototype.$notify({ type: 'danger', message: `Une erreur est survenue, veuillez réessayer...` })
+            Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.message || 'Erreur inconnue...'}` })
           })
     },
 
-    update: ({ commit }, { _id, firstname, lastname, email, permissionLevel, grade, bts, isActive }) => {
+    update: ({ commit }, { _id, firstname, lastname, email, permissionLevel, grade, city, bts, isActive }) => {
       commit('UPDATE_USER_REQUEST')
-      UserService.updateInformations(_id, firstname, lastname, email, permissionLevel, grade, bts, isActive)
+      UserService.updateInformations(_id, firstname, lastname, email, permissionLevel, grade, city, bts, isActive)
         .then(
           res => {
             commit('UPDATE_USER_SUCCESS')
@@ -228,7 +229,7 @@ const accountModule = {
             commit('DELETE_USER_FAILURE', err.message)
             swal.fire({
               title: 'Une erreur est survenue !',
-              text: err.message || 'Erreur inconnue',
+              text: err.message || 'Erreur inconnue...',
               type: 'error',
               customClass: { confirmButton: 'btn btn-primary' }
             })

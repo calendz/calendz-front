@@ -81,7 +81,7 @@
   </div>
 </template>
 <script>
-import axios from 'axios'
+import ApiService from '../../../services/api.service'
 
 export default {
   data () {
@@ -105,12 +105,12 @@ export default {
         }
 
         // request sur l'api
-        axios.post('/auth/password-reset/send-mail', this.form).then((res) => {
+        ApiService.post('/auth/password-reset/send-mail', this.form).then((res) => {
           this.$notify({ type: 'success', message: 'Le mail a bien été envoyé, veuillez vérifiez vos mails.' })
           this.$router.push('/login')
         // on catch les erreurs
         }).catch((err) => {
-          this.apiError = err.response.data.message || err.message
+          this.apiError = err.data.message || err.message
           e.target.disabled = false
         })
       })

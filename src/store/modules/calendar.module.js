@@ -1,8 +1,5 @@
-// import Vue from 'vue'
-// import swal from 'sweetalert2'
-// import router from '../../routes/router'
+import Vue from 'vue'
 import CalendarService from '../../services/calendar.service'
-// import ApiService from '../../services/api.service'
 
 const calendarModule = {
   namespaced: true,
@@ -42,7 +39,7 @@ const calendarModule = {
   actions: {
     fetchDate: ({ state, commit, rootState }, { date }) => {
       // get week { year, number } of the date to fetch
-      const currentWeek = getWeekNumber(new Date(date))
+      const currentWeek = getWeekNumber(new Date('20' + date.split('-')[2] + '-' + date.substr(0, 5) + 'T00:00:00.000Z'))
 
       // if that week hasn't already been fetched
       if (!state.fetchedWeeks.some(week => week.year === currentWeek.year && week.number === currentWeek.number)) {
@@ -56,6 +53,7 @@ const calendarModule = {
             },
             err => {
               commit('FETCH_FAILURE', err.message)
+              Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.message || `Erreur lors du chargement la semaine...`}` })
             })
       } else {
         if (process.env.NODE_ENV === 'development') console.log(`Year ${currentWeek.year}, week ${currentWeek.number}: ALREADY FETCHED`)
@@ -84,8 +82,8 @@ const reformatWeek = (week) => {
     courses.forEach((course) => {
       customCourses.push({
         title: course.subject,
-        start: new Date(formatDate(course.date, course.start)),
-        end: new Date(formatDate(course.date, course.end)),
+        start: formatDate(course.date, course.start),
+        end: formatDate(course.date, course.end),
         className: 'bg-default',
         professor: course.professor,
         room: course.room
@@ -98,7 +96,8 @@ const reformatWeek = (week) => {
 
 const formatDate = (date, time) => {
   const temp = date.split('/')
-  return `${temp[2]}-${temp[1]}-${temp[0]}T${time}:00`
+  const timeSplit = time.split(':')
+  return new Date(temp[2], temp[1] - 1, temp[0], timeSplit[0], timeSplit[1])
 }
 
 const getWeekNumber = (date) => {
