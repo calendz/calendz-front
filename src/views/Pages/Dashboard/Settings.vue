@@ -76,6 +76,36 @@
 
                   <div class="row mt-3">
                     <div class="col-lg-1 col-md-2 my-2 d-flex justify-content-center">
+                      <i class="fas fa-door-open my-auto"/>
+                    </div>
+
+                    <div class="col-lg-9 col-md-8 my-2">
+                      <p class="text-justify my-auto">
+                        Page par défaut
+                        <span style="color: #adb5bd">(page sur laquelle vous arrivez après vous être connecté).</span>
+                      </p>
+                    </div>
+
+                    <div class="col-lg-2 my-2 d-flex justify-content-center my-auto mx-auto">
+                      <el-select
+                        v-model="select.target"
+                        class="select-danger"
+                        style="width: 150px"
+                        @change="handleDefaultPageChange(select.target)">
+                        <el-option
+                          v-for="option in select.options"
+                          :value="option"
+                          :label="option"
+                          :key="option"
+                          class="select-danger"/>
+                      </el-select>
+                    </div>
+                  </div>
+
+                  <hr class="my-2">
+
+                  <div class="row mt-3">
+                    <div class="col-lg-1 col-md-2 my-2 d-flex justify-content-center">
                       <i class="fas fa-moon my-auto"/>
                     </div>
 
@@ -85,7 +115,7 @@
                       </p>
                     </div>
 
-                    <div class="col-m-2 my-2 d-flex justify-content-center my-auto mx-auto">
+                    <div class="col-lg-2 my-2 d-flex justify-content-center my-auto mx-auto">
                       <el-tooltip
                         content="Cette fonctionnalité n'est pas encore disponible !"
                         placement="top">
@@ -224,12 +254,24 @@
 </template>
 <script>
 import { mapState } from 'vuex'
+import { Select, Option } from 'element-ui'
 
 export default {
   name: 'Settings',
+  components: {
+    [Select.name]: Select,
+    [Option.name]: Option
+  },
   data () {
     return {
-      active: 1
+      active: 1,
+      select: {
+        target: localStorage.getItem('calendz.settings.defaultPage') || '/dashboard',
+        options: [
+          '/dashboard',
+          '/calendar'
+        ]
+      }
     }
   },
   computed: {
@@ -246,6 +288,9 @@ export default {
       }, 5000)
 
       this.$store.dispatch('account/setInformationMails', { value: element.checked })
+    },
+    handleDefaultPageChange (newPage) {
+      localStorage.setItem('calendz.settings.defaultPage', newPage)
     }
   }
 }
