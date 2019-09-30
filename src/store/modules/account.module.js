@@ -132,7 +132,7 @@ const accountModule = {
             localStorage.setItem('user', JSON.stringify(res.user))
             commit('LOGIN_SUCCESS', res.user)
             Vue.prototype.$notify({ type: 'success', message: 'Vous êtes désormais connecté.' })
-            router.push('/dashboard')
+            router.push(localStorage.getItem('calendz.settings.defaultPage') || '/dashboard')
           },
           err => {
             if (err && err.userId) {
