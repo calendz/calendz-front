@@ -286,6 +286,9 @@ export default {
       return this.$rtl.isRTL
     }
   },
+  created () {
+    if (window.innerWidth < 1200) this.hideSidebar()
+  },
   mounted () {
     // get all notifications
     this.$store.dispatch('notifications/fetch')
