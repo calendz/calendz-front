@@ -94,8 +94,8 @@
                         @change="handleDefaultPageChange(select.target)">
                         <el-option
                           v-for="option in select.options"
-                          :value="option"
-                          :label="option"
+                          :value="option.value"
+                          :label="option.label"
                           :key="option"
                           class="select-danger"/>
                       </el-select>
@@ -268,8 +268,14 @@ export default {
       select: {
         target: localStorage.getItem('calendz.settings.defaultPage') || '/dashboard',
         options: [
-          '/dashboard',
-          '/calendar'
+          {
+            label: 'Dashboard',
+            value: '/dashboard'
+          },
+          {
+            label: 'Calendrier',
+            value: '/calendar'
+          }
         ]
       }
     }
