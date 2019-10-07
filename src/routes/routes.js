@@ -33,6 +33,8 @@ const UserManagement = () => import(/* webpackChunkName: "page" */ '@/views/Page
 
 const Notifications = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Hidden/Notifications.vue')
 
+const StartURLRedirect = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Others/StartURLRedirect.vue')
+
 // ============================================
 // == Routes
 // ============================================
@@ -196,10 +198,18 @@ const authPages = {
 }
 
 const routes = [
+  // == landing
   {
     path: '/',
     redirect: '/home'
   },
+  // == misc pages
+  {
+    path: '/start_redirect',
+    name: 'StartURLRedirect',
+    component: StartURLRedirect
+  },
+  // == main pages
   dashboardPages,
   authPages
 ]
