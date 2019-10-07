@@ -77,7 +77,7 @@
               <full-calendar
                 id="calendar"
                 ref="fullCalendar"
-                :events="isLoading ? fakeEvents : events"
+                :events="isLoading ? [] : events"
                 :plugins="calendarPlugins"
                 :editable="false"
                 :theme="false"
@@ -137,24 +137,6 @@ export default {
           end: new Date('2019-09-23T12:00:00'),
           className: 'bg-lightgrey',
           professor: 'Amy',
-          room: 'L-230',
-          description: 'Test Description'
-        },
-        {
-          title: 'Maths',
-          start: new Date('2019-09-23T14:00:00'),
-          end: new Date('2019-09-23T16:00:00'),
-          className: 'bg-lightgrey',
-          professor: 'Karmouche',
-          room: 'L-230',
-          description: 'Test Description'
-        },
-        {
-          title: 'Réseau',
-          start: new Date('2019-09-24T09:00:00'),
-          end: new Date('2019-09-24T13:00:00'),
-          className: 'bg-lightgrey',
-          professor: 'Hocine',
           room: 'L-230',
           description: 'Test Description'
         }
@@ -455,42 +437,54 @@ export default {
   // =========================================
   // == Loading placeholder
   // =========================================
-  .placeholder-sm {
-    width: 60px;
-    height: 10px;
-    border-radius: 6px;
-    animation-name: pulse;
-    animation-duration: 2s;
-    animation-iteration-count: infinite;
-  }
 
-  .placeholder-md {
-    width: 80px;
-    height: 14px;
-    border-radius: 6px;
-    animation-name: pulse;
-    animation-duration: 2s;
-    animation-iteration-count: infinite;
-  }
+  // placeholders (coming soon)
+  // .placeholder-sm {
+  //   width: 60px;
+  //   height: 10px;
+  //   border-radius: 6px;
+  //   animation-name: pulse;
+  //   animation-duration: 2s;
+  //   animation-iteration-count: infinite;
+  // }
 
-  .bg-lightgrey {
-    background-color: #ced4da !important;
-  }
+  // .placeholder-md {
+  //   width: 80px;
+  //   height: 14px;
+  //   border-radius: 6px;
+  //   animation-name: pulse;
+  //   animation-duration: 2s;
+  //   animation-iteration-count: infinite;
+  // }
 
-  @keyframes pulse {
-    0% { background-color: #dee2e6; }
-    50% { background-color: #f6f9fc; }
-    100% { background-color: #dee2e6; }
-  }
+  // .bg-lightgrey {
+  //   background-color: #ced4da !important;
+  // }
+
+  // @keyframes pulse {
+  //   0% { background-color: #dee2e6; }
+  //   50% { background-color: #f6f9fc; }
+  //   100% { background-color: #dee2e6; }
+  // }
 
   .fade-in {
     animation-name: fade-in;
-    animation-duration: 0.8s;
+    animation-duration: 1s;
   }
 
   @keyframes fade-in {
     from { opacity: 0; }
     to { opacity: 1; }
+  }
+
+  .fade-out {
+    animation-name: fade-out;
+    animation-duration: 0.5s;
+  }
+
+  @keyframes fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
   }
 
   // =========================================
@@ -529,6 +523,79 @@ export default {
     // day header
     .fc-day-header.fc-widget-header {
       padding: 8px;
+    }
+  }
+
+  // =========================================
+  // == scss spinner
+  // =========================================
+
+  #nest1 {
+    z-index: 101;
+    display: block;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    height: 70px;
+    width: 70px;
+    margin: -25px 0 0 -25px;
+    border: 4px solid transparent;
+    border-top-color: #172B4D;
+    border-radius: 50%;
+    -webkit-animation: spin7 1s ease infinite;
+            animation: spin7 1s ease infinite;
+  }
+
+  #nest1:before {
+    content: "";
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    bottom: 7px;
+    left: 7px;
+    border: 3px solid transparent;
+    border-radius: 50%;
+    border-top-color: #172B4D;
+    -webkit-animation: spin7 1.5s linear infinite;
+            animation: spin7 1.5s linear infinite;
+  }
+
+  #nest1:after {
+    content: "";
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    bottom: 15px;
+    left: 15px;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    border-top-color: #000000;
+    -webkit-animation: spin7 2s ease infinite;
+            animation: spin7 2s ease infinite;
+  }
+
+  @-webkit-keyframes spin7 {
+    from {
+      -webkit-transform: rotate(0deg);
+              transform: rotate(0deg);
+    }
+    to {
+      -webkit-transform: rotate(359deg);
+              transform: rotate(359deg);
+    }
+  }
+  @keyframes spin7 {
+    from {
+      -webkit-transform: rotate(0deg);
+              transform: rotate(0deg);
+      -webkit-transform: rotate(0deg);
+              transform: rotate(0deg);
+    }
+    to {
+      -webkit-transform: rotate(359deg);
+              transform: rotate(359deg);
+      -webkit-transform: rotate(359deg);
+              transform: rotate(359deg);
     }
   }
 </style>
