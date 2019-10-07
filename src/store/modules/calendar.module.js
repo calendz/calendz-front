@@ -108,12 +108,12 @@ const reformatWeek = (week) => {
     // for each course of the day
     courses.forEach((course) => {
       customCourses.push({
-        title: course.subject,
+        title: course.subject.toUpperCase(),
         start: formatDate(course.date, course.start),
         end: formatDate(course.date, course.end),
         className: 'bg-default',
         professor: course.professor,
-        room: course.room
+        room: course.room.split('-')[0].split('(')[0]
       })
     })
   }
