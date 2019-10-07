@@ -59,10 +59,10 @@
             <!-- Card header -->
             <div class="card-header">
               <div class="row align-items-center">
-                <div class="col-8">
+                <div class="col-7">
                   <h5 class="h3 mb-0">{{ headerDate }}</h5>
                 </div>
-                <div class="col-4 text-right">
+                <div class="col-5 text-right">
                   <base-button
                     class="btn btn-sm btn-default"
                     @click="backToToday()">
@@ -241,7 +241,7 @@ export default {
               element.el.innerHTML = `
                 <div>
                   <h5 class="pl-1 mb-0 text-white w-auto">
-                    ${new Date(element.event.start).getHours()}h
+                    ${new Date(element.event.start).getHours()}-${new Date(element.event.end).getHours()}h
                   </h5>
                 </div>`
               break
@@ -412,7 +412,10 @@ export default {
     getColumnHeaderFormat () {
       switch (this.activeView) {
         case 'timeGridWeek':
-          return { weekday: 'long', month: 'numeric', day: 'numeric', omitCommas: true }
+          // mobile
+          if (this.windowWidth < 800) return { month: 'numeric', day: 'numeric', omitCommas: true }
+          // desktop
+          else return { weekday: 'long', month: 'numeric', day: 'numeric', omitCommas: true }
         case 'dayGridMonth':
           return { weekday: 'long' }
         case 'timeGridDay':
@@ -520,5 +523,12 @@ export default {
   }
   .contrast-bg {
     filter: contrast(0.7)
+  }
+
+  @media (max-width: 880px)  {
+    // day header
+    .fc-day-header.fc-widget-header {
+      padding: 8px;
+    }
   }
 </style>
