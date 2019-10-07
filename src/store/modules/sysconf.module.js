@@ -44,13 +44,13 @@ const sysconfModule = {
       state.status = { toggleLoginError: reason }
     },
 
-    TOGGLE_REGISTER_REQUEST: (state, value) => {
+    TOGGLE_REGISTER_REQUEST: (state) => {
       state.status = { isUpdatingRegister: true }
-      state.settings.registerEnabled = value
     },
 
-    TOGGLE_REGISTER_SUCCESS: (state) => {
+    TOGGLE_REGISTER_SUCCESS: (state, value) => {
       state.status = { isUpdatingRegister: false }
+      state.settings.registerEnabled = value
     },
 
     TOGGLE_REGISTER_FAILURE: (state, reason) => {
