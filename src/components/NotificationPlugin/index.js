@@ -24,13 +24,18 @@ const NotificationStore = {
     if (typeof notification === 'string' || notification instanceof String) {
       notification = { message: notification }
     }
-    notification.timestamp = new Date()
-    notification.timestamp.setMilliseconds(
-      notification.timestamp.getMilliseconds() + this.state.length
-    )
-    notification = Object.assign({}, this.settings, notification)
-    // cancel duplicates
-    if (!this.state.some(notif => notif.message === notification.message)) {
+
+    // if notification is custom made
+    if (!notification.timestamp) {
+      notification.timestamp = new Date()
+      notification.timestamp.setMilliseconds(notification.timestamp.getMilliseconds() + this.state.length)
+      notification = Object.assign({}, this.settings, notification)
+      // cancel duplicates
+      if (!this.state.some(notif => notif.message === notification.message)) {
+        this.state.push(notification)
+      }
+    } else {
+      notification = Object.assign({}, this.settings, notification)
       this.state.push(notification)
     }
   },
