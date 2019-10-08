@@ -220,7 +220,8 @@
         </a>
         <div
           :class="showProfileDropdown ? 'show' : ''"
-          class="dropdown-menu dropdown-menu-right">
+          class="dropdown-menu dropdown-menu-right"
+          @click="closeDropDown">
           <div class="dropdown-header noti-title">
             <h6 class="text-overflow m-0">{{ `Hello ${user ? user.firstname : 'Prénom'} ${user ? user.lastname : 'Nom'}` }} !</h6>
           </div>
@@ -306,6 +307,7 @@ export default {
       this.showProfileDropdown = !this.showProfileDropdown
     },
     closeDropDown () {
+      console.log('hide')
       this.showProfileDropdown = false
     },
     toggleSidebar () {
