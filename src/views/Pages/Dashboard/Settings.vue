@@ -93,10 +93,10 @@
                         style="width: 150px"
                         @change="handleDefaultPageChange(select.target)">
                         <el-option
-                          v-for="option in select.options"
+                          v-for="(option, index) in select.options"
                           :value="option.value"
                           :label="option.label"
-                          :key="option"
+                          :key="index"
                           class="select-danger"/>
                       </el-select>
                     </div>
