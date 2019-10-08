@@ -307,7 +307,6 @@ export default {
       this.showProfileDropdown = !this.showProfileDropdown
     },
     closeDropDown () {
-      console.log('hide')
       this.showProfileDropdown = false
     },
     toggleSidebar () {
