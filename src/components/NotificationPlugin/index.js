@@ -15,9 +15,7 @@ const NotificationStore = {
     this.settings = Object.assign(this.settings, options)
   },
   removeNotification (timestamp) {
-    console.log(this.state)
     const indexToDelete = this.state.findIndex(n => n.timestamp === timestamp)
-    console.log(indexToDelete)
     if (indexToDelete !== -1) {
       this.state.splice(indexToDelete, 1)
     }

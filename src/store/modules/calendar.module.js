@@ -45,26 +45,17 @@ const calendarModule = {
       if (!state.fetchedWeeks.some(week => week.year === currentWeek.year && week.number === currentWeek.number)) {
         if (process.env.NODE_ENV === 'development') console.log(`Year ${currentWeek.year}, week ${currentWeek.number}: FETCHING`)
 
-        // show an overlay during while fetching data
-        let spinner
-        const container = document.querySelector('.card-calendar-body')
-        if (container && !state.status.isLoading) {
-          spinner = document.createElement('div')
-          spinner.innerHTML = '<div class="fade-in"><div id="nest1"></div></div>'
-          container.append(spinner)
-        }
-
-        let notificationTimestamp = new Date()
+        const notificationTimestamp = new Date()
         notificationTimestamp.setMilliseconds(
           notificationTimestamp.getMilliseconds() + Vue.prototype.$notifications.state.length
         )
 
         Vue.prototype.$notify({
-          verticalAlign: 'bottom',
-          horizontalAlign: 'right',
-          message: 'Chargement en cours...',
-          timeout: 15000,
           type: 'default',
+          verticalAlign: 'bottom',
+          icon: 'fas fa-circle-notch fa-spin',
+          message: 'Chargement de l\'emploi du temps en cours...',
+          timeout: 15000,
           timestamp: notificationTimestamp
         })
 
@@ -74,27 +65,16 @@ const calendarModule = {
             res => {
               const weekCourses = reformatWeek(res.week)
               commit('FETCH_SUCCESS', { currentWeek, weekCourses })
-
               Vue.prototype.$notifications.removeNotification(notificationTimestamp)
-              // remove the spinner
-              if (container && spinner) {
-                spinner.classList.add('fade-out')
-                setTimeout(() => {
-                  container.removeChild(spinner)
-                }, 500)
+              // if week is empty
+              if (!res.week || Object.keys(res.week).length === 0) {
+                Vue.prototype.$notify({ type: 'warning', message: `<b>Attention !</b> Vous n'avez aucun cours cette semaine...`, verticalAlign: 'bottom', timeout: '3000' })
               }
             },
             err => {
               commit('FETCH_FAILURE', err.message)
+              Vue.prototype.$notifications.removeNotification(notificationTimestamp)
               Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.message || `Erreur lors du chargement la semaine...`}` })
-
-              // remove the spinner
-              if (container && spinner) {
-                spinner.classList.add('fade-out')
-                setTimeout(() => {
-                  container.removeChild(spinner)
-                }, 500)
-              }
             })
       } else {
         if (process.env.NODE_ENV === 'development') console.log(`Year ${currentWeek.year}, week ${currentWeek.number}: ALREADY FETCHED`)
