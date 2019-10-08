@@ -93,7 +93,7 @@
 
                 <div class="row">
                   <div class="col">
-                    <h4 class="mb-0 text-sm">{{ notif.title }}</h4>
+                    <h4 class="mb-0 text-sm text-justify">{{ notif.title }}</h4>
                   </div>
                   <div class="col-auto text-right">
                     <small class="text-muted">
@@ -104,7 +104,7 @@
                 </div>
 
                 <div class="row mt-1 px-3">
-                  <p class="text-sm mb-0">{{ notif.message }}</p>
+                  <p class="text-sm mb-0 text-justify">{{ notif.message }}</p>
                 </div>
               </div>
             </div>
