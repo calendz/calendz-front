@@ -44,16 +44,43 @@ const calendarModule = {
       // if that week hasn't already been fetched
       if (!state.fetchedWeeks.some(week => week.year === currentWeek.year && week.number === currentWeek.number)) {
         if (process.env.NODE_ENV === 'development') console.log(`Year ${currentWeek.year}, week ${currentWeek.number}: FETCHING`)
+
+        // show an overlay during while fetching data
+        let container
+        let spinner
+        if (!state.status.isLoading) {
+          container = document.querySelector('.card-calendar-body')
+          spinner = document.createElement('div')
+          spinner.innerHTML = '<div class="fade-in"><div id="nest1"></div></div>'
+          container.append(spinner)
+        }
+
         commit('FETCH_REQUEST')
         CalendarService.getWeek(rootState.account.user.email, date)
           .then(
             res => {
               const weekCourses = reformatWeek(res.week)
               commit('FETCH_SUCCESS', { currentWeek, weekCourses })
+
+              // remove the spinner
+              if (container && spinner) {
+                spinner.classList.add('fade-out')
+                setTimeout(() => {
+                  container.removeChild(spinner)
+                }, 500)
+              }
             },
             err => {
               commit('FETCH_FAILURE', err.message)
               Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.message || `Erreur lors du chargement la semaine...`}` })
+
+              // remove the spinner
+              if (container && spinner) {
+                spinner.classList.add('fade-out')
+                setTimeout(() => {
+                  container.removeChild(spinner)
+                }, 500)
+              }
             })
       } else {
         if (process.env.NODE_ENV === 'development') console.log(`Year ${currentWeek.year}, week ${currentWeek.number}: ALREADY FETCHED`)
@@ -81,12 +108,12 @@ const reformatWeek = (week) => {
     // for each course of the day
     courses.forEach((course) => {
       customCourses.push({
-        title: course.subject,
+        title: course.subject.toUpperCase(),
         start: formatDate(course.date, course.start),
         end: formatDate(course.date, course.end),
         className: 'bg-default',
         professor: course.professor,
-        room: course.room
+        room: course.room.split('-')[0].split('(')[0]
       })
     })
   }
