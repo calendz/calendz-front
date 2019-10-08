@@ -46,14 +46,27 @@ const calendarModule = {
         if (process.env.NODE_ENV === 'development') console.log(`Year ${currentWeek.year}, week ${currentWeek.number}: FETCHING`)
 
         // show an overlay during while fetching data
-        let container
         let spinner
-        if (!state.status.isLoading) {
-          container = document.querySelector('.card-calendar-body')
+        const container = document.querySelector('.card-calendar-body')
+        if (container && !state.status.isLoading) {
           spinner = document.createElement('div')
           spinner.innerHTML = '<div class="fade-in"><div id="nest1"></div></div>'
           container.append(spinner)
         }
+
+        let notificationTimestamp = new Date()
+        notificationTimestamp.setMilliseconds(
+          notificationTimestamp.getMilliseconds() + Vue.prototype.$notifications.state.length
+        )
+
+        Vue.prototype.$notify({
+          verticalAlign: 'bottom',
+          horizontalAlign: 'right',
+          message: 'Chargement en cours...',
+          timeout: 15000,
+          type: 'default',
+          timestamp: notificationTimestamp
+        })
 
         commit('FETCH_REQUEST')
         CalendarService.getWeek(rootState.account.user.email, date)
@@ -62,6 +75,7 @@ const calendarModule = {
               const weekCourses = reformatWeek(res.week)
               commit('FETCH_SUCCESS', { currentWeek, weekCourses })
 
+              Vue.prototype.$notifications.removeNotification(notificationTimestamp)
               // remove the spinner
               if (container && spinner) {
                 spinner.classList.add('fade-out')
