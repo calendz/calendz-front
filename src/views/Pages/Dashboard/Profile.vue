@@ -104,14 +104,21 @@
               </div>
               <div class="col-md-6">
                 <base-input
-                  :value="user.grade"
-                  label="Classe"
-                  placeholder="Votre classe"
+                  :value="user.city"
+                  label="Ville"
+                  placeholder="Votre ville"
                   disabled/>
               </div>
             </div>
 
             <div class="row">
+              <div class="col-md-6">
+                <base-input
+                  :value="user.grade"
+                  label="Classe"
+                  placeholder="Votre classe"
+                  disabled/>
+              </div>
               <div class="col-md-6">
                 <base-input
                   :value="user.bts ? 'Oui' : 'Non'"
