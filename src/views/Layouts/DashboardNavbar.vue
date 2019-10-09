@@ -93,7 +93,7 @@
 
                 <div class="row">
                   <div class="col">
-                    <h4 class="mb-0 text-sm">{{ notif.title }}</h4>
+                    <h4 class="mb-0 text-sm text-justify">{{ notif.title }}</h4>
                   </div>
                   <div class="col-auto text-right">
                     <small class="text-muted">
@@ -104,7 +104,7 @@
                 </div>
 
                 <div class="row mt-1 px-3">
-                  <p class="text-sm mb-0">{{ notif.message }}</p>
+                  <p class="text-sm mb-0 text-justify">{{ notif.message }}</p>
                 </div>
               </div>
             </div>
@@ -220,7 +220,8 @@
         </a>
         <div
           :class="showProfileDropdown ? 'show' : ''"
-          class="dropdown-menu dropdown-menu-right">
+          class="dropdown-menu dropdown-menu-right"
+          @click="closeDropDown">
           <div class="dropdown-header noti-title">
             <h6 class="text-overflow m-0">{{ `Hello ${user ? user.firstname : 'Prénom'} ${user ? user.lastname : 'Nom'}` }} !</h6>
           </div>
@@ -285,6 +286,9 @@ export default {
     isRTL () {
       return this.$rtl.isRTL
     }
+  },
+  created () {
+    if (window.innerWidth < 1200) this.hideSidebar()
   },
   mounted () {
     // get all notifications

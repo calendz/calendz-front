@@ -9,12 +9,13 @@
       ref="sidebarScrollArea"
       class="scrollbar-inner">
       <div class="sidenav-header d-flex align-items-center">
-        <a
+        <router-link
+          to="/dashboard"
           style="font-size: 30px; font-family: Catamaran;"
           class="navbar-brand text-primary font-weight-900 py-0">
           <i class="ni ni-calendar-grid-58"/>
           calendz
-        </a>
+        </router-link>
         <div class="ml-auto">
           <!-- Sidenav toggler -->
           <div

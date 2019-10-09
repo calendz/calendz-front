@@ -23,7 +23,9 @@
       </slot>
     </template>
 
-    <span class="alert-text">
+    <span
+      class="alert-text my-auto"
+      style="font-size: 0.95rem;">
 
       <span
         v-if="title"
@@ -96,17 +98,17 @@ export default {
     type: {
       type: String,
       default: 'info',
-      validator: value => {
-        let acceptedValues = [
-          'default',
-          'info',
-          'primary',
-          'danger',
-          'warning',
-          'success'
-        ]
-        return acceptedValues.indexOf(value) !== -1
-      },
+      // validator: value => {
+      //   let acceptedValues = [
+      //     'default',
+      //     'info',
+      //     'primary',
+      //     'danger',
+      //     'warning',
+      //     'success'
+      //   ]
+      //   return acceptedValues.indexOf(value) !== -1
+      // },
       description: 'Notification type of notification (default|info|primary|danger|warning|success)'
     },
     timeout: {
@@ -153,7 +155,7 @@ export default {
       return this.icon && this.icon.length > 0
     },
     alertType () {
-      return `alert-${this.type}`
+      return `bg-${this.type}`
     },
     customPosition () {
       let initialMargin = 20

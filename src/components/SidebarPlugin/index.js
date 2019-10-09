@@ -18,6 +18,7 @@ const SidebarStore = {
       docClasses.remove('g-sidenav-hidden')
     } else {
       docClasses.add('g-sidenav-hidden')
+      docClasses.remove('g-sidenav-show')
       docClasses.remove('g-sidenav-pinned')
     }
   },
@@ -33,10 +34,8 @@ const SidebarStore = {
     }
   },
   onMouseEnter () {
-    if (this.isMinimized) {
-      document.body.classList.add('g-sidenav-show')
-      document.body.classList.remove('g-sidenav-hidden')
-    }
+    if (this.isMinimized) document.body.classList.remove('g-sidenav-hidden')
+    document.body.classList.add('g-sidenav-show')
   },
   onMouseLeave () {
     if (this.isMinimized) {

@@ -59,10 +59,10 @@
             <!-- Card header -->
             <div class="card-header">
               <div class="row align-items-center">
-                <div class="col-8">
+                <div class="col-7">
                   <h5 class="h3 mb-0">{{ headerDate }}</h5>
                 </div>
-                <div class="col-4 text-right">
+                <div class="col-5 text-right">
                   <base-button
                     class="btn btn-sm btn-default"
                     @click="backToToday()">
@@ -77,7 +77,7 @@
               <full-calendar
                 id="calendar"
                 ref="fullCalendar"
-                :events="isLoading ? fakeEvents : events"
+                :events="isLoading ? [] : events"
                 :plugins="calendarPlugins"
                 :editable="false"
                 :theme="false"
@@ -137,24 +137,6 @@ export default {
           end: new Date('2019-09-23T12:00:00'),
           className: 'bg-lightgrey',
           professor: 'Amy',
-          room: 'L-230',
-          description: 'Test Description'
-        },
-        {
-          title: 'Maths',
-          start: new Date('2019-09-23T14:00:00'),
-          end: new Date('2019-09-23T16:00:00'),
-          className: 'bg-lightgrey',
-          professor: 'Karmouche',
-          room: 'L-230',
-          description: 'Test Description'
-        },
-        {
-          title: 'Réseau',
-          start: new Date('2019-09-24T09:00:00'),
-          end: new Date('2019-09-24T13:00:00'),
-          className: 'bg-lightgrey',
-          professor: 'Hocine',
           room: 'L-230',
           description: 'Test Description'
         }
@@ -241,7 +223,7 @@ export default {
               element.el.innerHTML = `
                 <div>
                   <h5 class="pl-1 mb-0 text-white w-auto">
-                    ${new Date(element.event.start).getHours()}h
+                    ${new Date(element.event.start).getHours()}-${new Date(element.event.end).getHours()}h
                   </h5>
                 </div>`
               break
@@ -254,10 +236,10 @@ export default {
             case 'timeGridDay':
               element.el.innerHTML = `
                 <div class="fade-in">
-                  <h5 class="pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
+                  <h5 class="h5-5 pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
                   <h2 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h2>
-                  <h5 class="pl-2 mb-1 text-white" style="position: absolute; bottom: 0; left: 0">${this.capitalizeFirstLetterEachWords(element.event.extendedProps.professor)}<h5>
-                  <h5 class="pr-2 mb-1 text-white" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h5>
+                  <h5 class="h5-5 pl-2 mb-1 text-white" style="position: absolute; bottom: 0; left: 0">${this.capitalizeFirstLetterEachWords(element.event.extendedProps.professor)}<h5>
+                  <h5 class="h5-5 pr-2 mb-1 text-white" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h5>
                 </div>`
               break
           }
@@ -279,10 +261,10 @@ export default {
             case 'timeGridDay':
               element.el.innerHTML = `
                 <div class="fade-in">
-                  <h5 class="pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
-                  <h2 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h2>
-                  <h5 class="pl-2 mb-1 text-white" style="position: absolute; bottom: 0; left: 0">${this.capitalizeFirstLetterEachWords(element.event.extendedProps.professor)}<h5>
-                  <h5 class="pr-2 mb-1 text-white" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h5>
+                  <h5 class="h5-5 pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
+                  <h3 class="px-2 text-white text-center" style="max-width: 90%; width: 90%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">${element.event.title}</h3>
+                  <h5 class="h5-5 pl-2 mb-1 text-white col-7" style="position: absolute; bottom: 0; left: 0">${this.capitalizeFirstLetterEachWords(element.event.extendedProps.professor)}<h5>
+                  <h5 class="h5-5 pr-2 mb-1 text-white col-3 text-right" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h5>
                 </div>`
               break
           }
@@ -412,7 +394,10 @@ export default {
     getColumnHeaderFormat () {
       switch (this.activeView) {
         case 'timeGridWeek':
-          return { weekday: 'long', month: 'numeric', day: 'numeric', omitCommas: true }
+          // mobile
+          if (this.windowWidth < 800) return { month: 'numeric', day: 'numeric', omitCommas: true }
+          // desktop
+          else return { weekday: 'long', month: 'numeric', day: 'numeric', omitCommas: true }
         case 'dayGridMonth':
           return { weekday: 'long' }
         case 'timeGridDay':
@@ -452,42 +437,54 @@ export default {
   // =========================================
   // == Loading placeholder
   // =========================================
-  .placeholder-sm {
-    width: 60px;
-    height: 10px;
-    border-radius: 6px;
-    animation-name: pulse;
-    animation-duration: 2s;
-    animation-iteration-count: infinite;
-  }
 
-  .placeholder-md {
-    width: 80px;
-    height: 14px;
-    border-radius: 6px;
-    animation-name: pulse;
-    animation-duration: 2s;
-    animation-iteration-count: infinite;
-  }
+  // placeholders (coming soon)
+  // .placeholder-sm {
+  //   width: 60px;
+  //   height: 10px;
+  //   border-radius: 6px;
+  //   animation-name: pulse;
+  //   animation-duration: 2s;
+  //   animation-iteration-count: infinite;
+  // }
 
-  .bg-lightgrey {
-    background-color: #ced4da !important;
-  }
+  // .placeholder-md {
+  //   width: 80px;
+  //   height: 14px;
+  //   border-radius: 6px;
+  //   animation-name: pulse;
+  //   animation-duration: 2s;
+  //   animation-iteration-count: infinite;
+  // }
 
-  @keyframes pulse {
-    0% { background-color: #dee2e6; }
-    50% { background-color: #f6f9fc; }
-    100% { background-color: #dee2e6; }
-  }
+  // .bg-lightgrey {
+  //   background-color: #ced4da !important;
+  // }
+
+  // @keyframes pulse {
+  //   0% { background-color: #dee2e6; }
+  //   50% { background-color: #f6f9fc; }
+  //   100% { background-color: #dee2e6; }
+  // }
 
   .fade-in {
     animation-name: fade-in;
-    animation-duration: 0.8s;
+    animation-duration: 1s;
   }
 
   @keyframes fade-in {
     from { opacity: 0; }
     to { opacity: 1; }
+  }
+
+  .fade-out {
+    animation-name: fade-out;
+    animation-duration: 0.5s;
+  }
+
+  @keyframes fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
   }
 
   // =========================================
@@ -520,5 +517,16 @@ export default {
   }
   .contrast-bg {
     filter: contrast(0.7)
+  }
+
+  @media (max-width: 880px)  {
+    // day header
+    .fc-day-header.fc-widget-header {
+      padding: 8px;
+    }
+  }
+
+  .h5-5 {
+    font-size: 0.75rem
   }
 </style>

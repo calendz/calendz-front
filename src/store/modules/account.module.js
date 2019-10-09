@@ -11,7 +11,8 @@ const accountModule = {
   // ==================================
   state: {
     user: JSON.parse(localStorage.getItem('user')) || null,
-    status: {}
+    status: {},
+    attempts: 0
   },
 
   // ==================================
@@ -41,11 +42,13 @@ const accountModule = {
     LOGIN_SUCCESS: (state, user) => {
       state.user = user
       state.status = {}
+      state.attempts = 0
     },
 
     LOGIN_FAILURE: (state, { reason, userId = null }) => {
       state.user = null
       state.status = { loginError: reason, userId: userId }
+      state.attempts++
     },
 
     LOGOUT: (state, reason) => {
@@ -124,7 +127,7 @@ const accountModule = {
           })
     },
 
-    login: ({ commit }, { email, password, rememberMe }) => {
+    login: ({ state, commit }, { email, password, rememberMe }) => {
       commit('LOGIN_REQUEST')
       UserService.login(email, password, rememberMe)
         .then(
@@ -139,6 +142,23 @@ const accountModule = {
               commit('LOGIN_FAILURE', { reason: err.message, userId: err.userId })
             } else {
               commit('LOGIN_FAILURE', { reason: err && err.message ? err.message : 'Une erreur est survenue' })
+            }
+
+            if (state.attempts >= 3) {
+              swal.fire({
+                type: 'question',
+                title: `Mot de passe oublié ?`,
+                text: `Pas de panique, indiquez votre adresse mail et nous vous enverrons un lien afin de réinitialiser votre mot de passe.`,
+                buttonsStyling: false,
+                focusConfirm: true,
+                confirmButtonText: 'Réinitialiser',
+                confirmButtonClass: 'btn btn-success btn-fill',
+                showCancelButton: true,
+                cancelButtonText: 'Annuler',
+                cancelButtonClass: 'btn btn-secondary btn-fill'
+              }).then((result) => {
+                if (result.value) router.push('/password-reset')
+              })
             }
           })
     },

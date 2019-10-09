@@ -16,7 +16,7 @@
           class="navbar-brand"
           to="/">
           <img
-            src="img/icons/favicon-32x32.png"
+            src="img/icons/android-chrome-256x256.png"
             alt="Logo"
             style="height: 50px; width: 50px">
         </router-link>
@@ -28,7 +28,7 @@
             <div class="col-6 collapse-brand">
               <router-link to="/">
                 <img
-                  src="img/icons/favicon-32x32.png"
+                  src="img/icons/android-chrome-256x256.png"
                   alt="Logo">
               </router-link>
             </div>

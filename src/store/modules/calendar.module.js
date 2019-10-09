@@ -44,15 +44,36 @@ const calendarModule = {
       // if that week hasn't already been fetched
       if (!state.fetchedWeeks.some(week => week.year === currentWeek.year && week.number === currentWeek.number)) {
         if (process.env.NODE_ENV === 'development') console.log(`Year ${currentWeek.year}, week ${currentWeek.number}: FETCHING`)
+
+        const notificationTimestamp = new Date()
+        notificationTimestamp.setMilliseconds(
+          notificationTimestamp.getMilliseconds() + Vue.prototype.$notifications.state.length
+        )
+
+        Vue.prototype.$notify({
+          type: 'default',
+          verticalAlign: 'bottom',
+          icon: 'fas fa-circle-notch fa-spin',
+          message: 'Chargement de l\'emploi du temps en cours...',
+          timeout: 15000,
+          timestamp: notificationTimestamp
+        })
+
         commit('FETCH_REQUEST')
         CalendarService.getWeek(rootState.account.user.email, date)
           .then(
             res => {
               const weekCourses = reformatWeek(res.week)
               commit('FETCH_SUCCESS', { currentWeek, weekCourses })
+              Vue.prototype.$notifications.removeNotification(notificationTimestamp)
+              // if week is empty
+              if (!res.week || Object.keys(res.week).length === 0) {
+                Vue.prototype.$notify({ type: 'warning', message: `<b>Attention !</b> Vous n'avez aucun cours cette semaine...`, verticalAlign: 'bottom', timeout: '3000' })
+              }
             },
             err => {
               commit('FETCH_FAILURE', err.message)
+              Vue.prototype.$notifications.removeNotification(notificationTimestamp)
               Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.message || `Erreur lors du chargement la semaine...`}` })
             })
       } else {
@@ -81,12 +102,12 @@ const reformatWeek = (week) => {
     // for each course of the day
     courses.forEach((course) => {
       customCourses.push({
-        title: course.subject,
+        title: course.subject.toUpperCase(),
         start: formatDate(course.date, course.start),
         end: formatDate(course.date, course.end),
         className: 'bg-default',
         professor: course.professor,
-        room: course.room
+        room: course.room.split('-')[0].split('(')[0]
       })
     })
   }

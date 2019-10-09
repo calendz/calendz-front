@@ -38,7 +38,7 @@
           <div class="timeline-content container">
             <div class="row">
               <div class="col pr-0 ml--4">
-                <h6 class="text-sm font-weight-bold mb-0">
+                <h6 class="text-sm font-weight-bold mb-0 text-justify">
                   {{ notif.title }}
                 </h6>
               </div>
@@ -57,7 +57,7 @@
               </div>
 
               <div class="row w-100 py-2 pl-2 ">
-                <p class="text-sm font-weigth-light mb-0">{{ notif.message }}</p>
+                <p class="text-sm font-weigth-light mb-0 text-justify">{{ notif.message }}</p>
               </div>
             </div>
           </div>
