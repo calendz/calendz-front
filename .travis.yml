@@ -15,7 +15,10 @@ install: npm install
 jobs:
   include:
     - stage: Tests
-      if: tag IS blank
+      if: |
+        branch = develop AND \
+        tag IS blank AND \
+        commit_message !~ /(no-deploy|wip)/
       script:
         - npm test
       after_success:
