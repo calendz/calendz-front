@@ -7,7 +7,7 @@
       type="primary"
       class="pb-6">
       <div class="row align-items-center py-4">
-        <div class="col-lg-7 col-5">
+        <div class="col-5">
           <h6 class="h2 text-white d-inline-block mb-0">Emploi du temps</h6>
           <nav
             aria-label="breadcrumb"
@@ -15,37 +15,66 @@
             <route-bread-crumb/>
           </nav>
         </div>
-        <div class="col-lg-5 col-7 text-right">
-          <a
-            href=""
-            class="fullcalendar-btn-prev btn btn-sm btn-default my-1"
-            @click.prevent="prev">
-            <i class="fas fa-angle-left"/>
-          </a>
-          <a
-            href=""
-            class="fullcalendar-btn-next btn btn-sm btn-default my-1"
-            @click.prevent="next">
-            <i class="fas fa-angle-right"/>
-          </a>
-          <base-button
-            :class="{'active': activeView === 'dayGridMonth'}"
-            class="btn btn-sm btn-default my-1"
-            @click="changeView('dayGridMonth')">
-            Mois
-          </base-button>
-          <base-button
-            :class="{'active': activeView === 'timeGridWeek'}"
-            class="btn btn-sm btn-defaul my-1"
-            @click="changeView('timeGridWeek')">
-            Semaine
-          </base-button>
-          <base-button
-            :class="{'active': activeView === 'timeGridDay'}"
-            class="btn btn-sm btn-default mr-2 my-1"
-            @click="changeView('timeGridDay')">
-            Jour
-          </base-button>
+        <div class="col-7 text-right">
+
+          <form
+            id="agenda-search"
+            class="navbar-search navbar-search-light d-inline-block mr-3"
+            @submit.prevent>
+            <div class="form-group mb-0">
+              <div class="input-group input-group-alternative input-group-merge">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-search"/></span>
+                </div>
+                <input
+                  class="form-control"
+                  placeholder="Rechercher"
+                  type="text">
+              </div>
+            </div>
+            <button
+              type="button"
+              class="close"
+              data-action="search-close"
+              data-target="#navbar-search-main"
+              aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </form>
+
+          <div class="d-inline-block">
+            <a
+              href=""
+              class="fullcalendar-btn-prev btn btn-sm btn-default my-1"
+              @click.prevent="prev">
+              <i class="fas fa-angle-left"/>
+            </a>
+            <a
+              href=""
+              class="fullcalendar-btn-next btn btn-sm btn-default my-1"
+              @click.prevent="next">
+              <i class="fas fa-angle-right"/>
+            </a>
+            <base-button
+              :class="{'active': activeView === 'dayGridMonth'}"
+              class="btn btn-sm btn-default my-1"
+              @click="changeView('dayGridMonth')">
+              Mois
+            </base-button>
+            <base-button
+              :class="{'active': activeView === 'timeGridWeek'}"
+              class="btn btn-sm btn-defaul my-1"
+              @click="changeView('timeGridWeek')">
+              Semaine
+            </base-button>
+            <base-button
+              :class="{'active': activeView === 'timeGridDay'}"
+              class="btn btn-sm btn-default mr-2 my-1"
+              @click="changeView('timeGridDay')">
+              Jour
+            </base-button>
+          </div>
+
         </div>
       </div>
     </base-header>
