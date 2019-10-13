@@ -33,10 +33,9 @@
                 </div>
                 <input
                   id="agenda-search-input"
-                  v-model="searchInput"
+                  v-model.lazy="searchInput"
                   autocomplete="off"
                   class="form-control p-0"
-                  style="width: 0; transition-duration: 450ms;"
                   placeholder="Entrez : prénom.nom"
                   type="text">
               </div>
@@ -218,6 +217,7 @@ export default {
     // == CALENDAR RENDERING
     // ======================================
     customRender (element) {
+      console.log('idk')
       switch (this.activeView) {
         // ============================
         // == MONTH VIEW
