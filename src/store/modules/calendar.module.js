@@ -30,6 +30,11 @@ const calendarModule = {
 
     FETCH_FAILURE: (state, reason) => {
       state.status = { error: reason }
+    },
+
+    RESET_FETCHED_WEEKS: (state) => {
+      state.fetchedWeeks = []
+      state.courses = []
     }
   },
 
@@ -59,8 +64,9 @@ const calendarModule = {
           timestamp: notificationTimestamp
         })
 
+        const userToFetch = localStorage.getItem('calendz.calendar.searchInput') || rootState.account.user.email
         commit('FETCH_REQUEST')
-        CalendarService.getWeek(rootState.account.user.email, date)
+        CalendarService.getWeek(userToFetch, date)
           .then(
             res => {
               const weekCourses = reformatWeek(res.week)
@@ -79,6 +85,9 @@ const calendarModule = {
       } else {
         if (process.env.NODE_ENV === 'development') console.log(`Year ${currentWeek.year}, week ${currentWeek.number}: ALREADY FETCHED`)
       }
+    },
+    resetFetchedWeeks: ({ commit }) => {
+      commit('RESET_FETCHED_WEEKS')
     }
   },
   // ==================================

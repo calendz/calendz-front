@@ -18,9 +18,10 @@
         <div class="col-7 text-right">
 
           <form
-            v-if="windowWidth > 800"
+            v-if="windowWidth > 1095"
             class="agenda-search navbar-search navbar-search-light d-inline-block mr-3"
             @submit.prevent
+            @change="handleSearchInputChange"
             @mouseenter="handleSearchInputMouseEnter"
             @mouseleave="handleSearchInputMouseLeave">
             <div class="form-group mb-0">
@@ -173,6 +174,7 @@ export default {
       if (newVal >= 800 && oldVal < 800) this.changeView('timeGridWeek')
     },
     searchInput: function (newVal) {
+      localStorage.setItem('calendz.calendar.searchInput', newVal)
       if (newVal === '') this.handleSearchInputMouseLeave()
       else this.handleSearchInputMouseEnter()
     }
@@ -181,8 +183,14 @@ export default {
     // initialize fullcalendar
     const calendarApi = this.$refs.fullCalendar.getApi()
     calendarApi.setOption('locale', 'fr')
-
+    // set correct header date
     this.updateHeaderDate()
+    // initialize the search input
+    const searchInput = localStorage.getItem('calendz.calendar.searchInput')
+    if (searchInput) {
+      this.searchInput = searchInput
+      document.querySelector('#agenda-search-input').style.width = ''
+    }
 
     // add events listeners
     window.addEventListener('keyup', (e) => {
@@ -415,6 +423,20 @@ export default {
       if (!this.searchInput) {
         document.querySelector('#agenda-search-input').style.width = '0'
       }
+    },
+    handleSearchInputChange () {
+      // if input is incorrect
+      if ((!this.searchInput.includes('.') || this.searchInput.length <= 5) && this.searchInput !== '') {
+        return this.$notify({ type: 'warning', message: 'Veuillez indiquer un nom valide !' })
+      }
+
+      this.backToToday()
+      let date = new Date()
+      if (date.getDay() === 6) date.setDate(date.getDate() + 2)
+      if (date.getDay() === 0) date.setDate(date.getDate() + 1)
+      date = this.dateToMonthDayYear(date)
+      this.$store.dispatch('calendar/resetFetchedWeeks')
+      this.$store.dispatch('calendar/fetchDate', { date: date })
     }
   }
 }
