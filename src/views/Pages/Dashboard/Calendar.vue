@@ -18,7 +18,8 @@
         <div class="col-7 text-right">
 
           <form
-            class="navbar-search navbar-search-light d-inline-block mr-3"
+            v-if="windowWidth > 800"
+            class="agenda-search navbar-search navbar-search-light d-inline-block mr-3"
             @submit.prevent
             @mouseenter="handleSearchInputMouseEnter"
             @mouseleave="handleSearchInputMouseLeave">
@@ -39,14 +40,6 @@
                   type="text">
               </div>
             </div>
-            <button
-              type="button"
-              class="close"
-              data-action="search-close"
-              data-target="#navbar-search-main"
-              aria-label="Close">
-              <span aria-hidden="true">×</span>
-            </button>
           </form>
 
           <div class="d-inline-block">
