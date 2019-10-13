@@ -299,7 +299,7 @@ export default {
     let date = new Date()
     if (date.getDay() === 6) date.setDate(date.getDate() + 2)
     if (date.getDay() === 0) date.setDate(date.getDate() + 1)
-    date = this.toMonthDayYear(date)
+    date = this.dateToMonthDayYear(date)
     this.$store.dispatch('calendar/fetchDate', { date })
   },
   methods: {

@@ -37,7 +37,7 @@
             <small v-show="item.description">{{ item.description }}<br></small>
             <small style="color: #8898aa">
               <i class="fas fa-hourglass-half m-1"/>
-              {{ capitalizeFirstLetter(dateToString(item.date)) }}</small>
+              {{ capitalizeFirstLetter(dateToFullString(item.date)) }}</small>
           </div>
           <div>
             <base-checkbox

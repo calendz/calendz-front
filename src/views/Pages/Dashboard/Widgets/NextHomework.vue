@@ -9,7 +9,7 @@
       <span
         :class="remainingDays < 7 ? 'text-danger' : 'text-warning'"
         class="mr-2"><i class="fas fa-clock"/> Prochain :</span>
-      <span class="text-nowrap">{{ dateToString(date) }}</span>
+      <span class="text-nowrap">{{ dateToFullString(date) }}</span>
     </template>
   </stats-card>
 </template>

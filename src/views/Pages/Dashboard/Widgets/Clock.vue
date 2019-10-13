@@ -38,7 +38,7 @@ export default {
     update: function () {
       const now = new Date()
       this.currentTime = this.dateToTimeString(now)
-      this.currentDate = this.dateToString(now)
+      this.currentDate = this.dateToFullString(now)
     }
   }
 }

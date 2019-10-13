@@ -1,5 +1,10 @@
 export default {
   methods: {
+
+    // ============================
+    // == Getters
+    // ============================
+
     getFuzzyTime (timestamp) {
       const seconds = Math.floor(new Date().getTime() / 1000 - timestamp / 1000)
       if (seconds > 2 * 12 * 30 * 24 * 3600) return Math.floor(seconds / 12 / 30 / 3600 / 24) + ' ans'
@@ -12,74 +17,6 @@ export default {
       if (seconds > 60) return Math.floor(seconds / 60) + 'm'
       if (seconds > 1) return seconds + 's'
       return '?? secondes'
-    },
-
-    timestampToDate (timestamp) {
-      const date = new Date(timestamp * 1000 / 1000)
-      const day = (`0${date.getDate()}`).slice(-2)
-      const month = (`0${date.getMonth() + 1}`).slice(-2)
-      const year = date.getFullYear()
-      return `${day}-${month}-${year}`
-    },
-
-    toMonthDayYear (date) {
-      date = new Date(date)
-      const day = (`0${date.getDate()}`).slice(-2)
-      const month = (`0${date.getMonth() + 1}`).slice(-2)
-      const year = date.getFullYear().toString().substr(-2)
-      return `${month}-${day}-${year}`
-    },
-
-    // eg: 'lundi 30 septembre'
-    dateToString (date) {
-      date = new Date(date)
-      const day = this.dayNumberToString(date.getDay())
-      const dayNumber = ('0' + date.getDate()).slice(-2)
-      const month = this.monthNumberToString(date.getMonth())
-      return `${day} ${dayNumber} ${month}`
-    },
-
-    // translates date.getDay() into french day's name
-    dayNumberToString (day) {
-      switch (day) {
-        case 0: return 'dimanche'
-        case 1: return 'lundi'
-        case 2: return 'mardi'
-        case 3: return 'mercredi'
-        case 4: return 'jeudi'
-        case 5: return 'vendredi'
-        case 6: return 'samedi'
-      }
-    },
-
-    // translates date.getMonth() into french month's name
-    monthNumberToString (month) {
-      switch (month) {
-        case 0: return 'janvier'
-        case 1: return 'février'
-        case 2: return 'mars'
-        case 3: return 'avril'
-        case 4: return 'mai'
-        case 5: return 'juin'
-        case 6: return 'juillet'
-        case 7: return 'août'
-        case 8: return 'setpembre'
-        case 9: return 'octobre'
-        case 10: return 'novembre'
-        case 11: return 'décembre'
-      }
-    },
-
-    // get time as string from date (eg: '07:12:42)
-    dateToTimeString (date) {
-      return `${('0' + date.getHours()).slice(-2)}:${('0' + date.getMinutes()).slice(-2)}:${('0' + date.getSeconds()).slice(-2)}`
-    },
-
-    timeToHour (toFormat) {
-      const date = new Date(toFormat)
-      const hours = (`0${date.getHours()}`).slice(-2)
-      const minutes = (`0${date.getMinutes()}`).slice(-2)
-      return hours + ':' + minutes
     },
 
     getMonthFromDate (date) {
@@ -99,6 +36,106 @@ export default {
         case 11: return 'Décembre'
         default: return 'erreur'
       }
+    },
+
+    getMonday (date) {
+      date = new Date(date)
+      const day = date.getDay()
+      const diff = date.getDate() - day + (day === 0 ? -6 : 1) // adjust when day is sunday
+      return new Date(date.setDate(diff))
+    },
+
+    getFirstFridayOfMonth (date) {
+      date = new Date(date)
+      let targetDay = ''
+      const seekDay = 5
+      let i = 1
+      const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
+      while (i < 31) {
+        targetDay = new Date(`${i++} ${monthNames[date.getMonth()]} ${date.getFullYear()}`)
+        if (targetDay.getDay() === seekDay) return targetDay
+      }
+      return false
+    },
+
+    // ============================
+    // == Conversions
+    // ============================
+
+    dateToDayMonthYear (date) {
+      date = new Date(date)
+      const day = (`0${date.getDate()}`).slice(-2)
+      const month = (`0${date.getMonth() + 1}`).slice(-2)
+      const year = date.getFullYear().toString().substr(-2)
+      return `${day}-${month}-${year}`
+    },
+
+    dateToMonthDayYear (date) {
+      date = new Date(date)
+      const day = (`0${date.getDate()}`).slice(-2)
+      const month = (`0${date.getMonth() + 1}`).slice(-2)
+      const year = date.getFullYear().toString().substr(-2)
+      return `${month}-${day}-${year}`
+    },
+
+    // eg: 'lundi 30 septembre'
+    dateToFullString (date) {
+      date = new Date(date)
+      const day = this.dayNbToString(date.getDay())
+      const dayNumber = ('0' + date.getDate()).slice(-2)
+      const month = this.monthNbToString(date.getMonth())
+      return `${day} ${dayNumber} ${month}`
+    },
+
+    // eg: '07:12:42'
+    dateToTimeString (date) {
+      date = new Date(date)
+      const hours = (`0${date.getHours()}`).slice(-2)
+      const minutes = (`0${date.getMinutes()}`).slice(-2)
+      const seconds = (`0${date.getSeconds()}`).slice(-2)
+      return `${hours}:${minutes}:${seconds}`
+    },
+
+    dayNbToString (day) {
+      switch (day) {
+        case 0: return 'dimanche'
+        case 1: return 'lundi'
+        case 2: return 'mardi'
+        case 3: return 'mercredi'
+        case 4: return 'jeudi'
+        case 5: return 'vendredi'
+        case 6: return 'samedi'
+      }
+    },
+
+    monthNbToString (month) {
+      switch (month) {
+        case 0: return 'janvier'
+        case 1: return 'février'
+        case 2: return 'mars'
+        case 3: return 'avril'
+        case 4: return 'mai'
+        case 5: return 'juin'
+        case 6: return 'juillet'
+        case 7: return 'août'
+        case 8: return 'setpembre'
+        case 9: return 'octobre'
+        case 10: return 'novembre'
+        case 11: return 'décembre'
+      }
+    },
+
+    timeToHour (toFormat) {
+      const date = new Date(toFormat)
+      const hours = (`0${date.getHours()}`).slice(-2)
+      const minutes = (`0${date.getMinutes()}`).slice(-2)
+      return hours + ':' + minutes
+    },
+
+    timestampToDate (timestamp) {
+      const date = new Date(timestamp * 1000 / 1000)
+      return date
     }
   }
 }

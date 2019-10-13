@@ -108,21 +108,17 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import Modal from '@/components/Modal'
 import FullCalendar from '@fullcalendar/vue'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import RouteBreadCrumb from '@/components/Breadcrumb/RouteBreadcrumb'
 import dateUtilMixin from '@/mixins/dateUtilMixin'
 import stringUtilMixin from '@/mixins/stringUtilMixin'
 
 export default {
   name: 'Calendar',
   components: {
-    Modal,
-    FullCalendar,
-    RouteBreadCrumb
+    FullCalendar
   },
   mixins: [dateUtilMixin, stringUtilMixin],
   data () {
@@ -130,17 +126,6 @@ export default {
       calendarPlugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
       activeView: 'timeGridWeek',
       activeDate: new Date(),
-      fakeEvents: [
-        {
-          title: 'Français',
-          start: new Date('2019-09-23T10:00:00'),
-          end: new Date('2019-09-23T12:00:00'),
-          className: 'bg-lightgrey',
-          professor: 'Amy',
-          room: 'L-230',
-          description: 'Test Description'
-        }
-      ],
       windowWidth: window.innerWidth,
       headerDate: ''
     }
@@ -185,90 +170,73 @@ export default {
     calendarApi () {
       return this.$refs.fullCalendar.getApi()
     },
+    // ======================================
+    // == CALENDAR RENDERING
+    // ======================================
     customRender (element) {
-      // ======================================
-      // == LOADING
-      // ======================================
-      if (this.isLoading) {
-        switch (this.activeView) {
-          case 'dayGridMonth':
+      switch (this.activeView) {
+        // ============================
+        // == MONTH VIEW
+        // ============================
+        case 'dayGridMonth':
+          if (this.windowWidth < 800) {
             element.el.innerHTML = `
               <div>
-                <h5 class="pl-1 py-1 mb-0">
-                  <div class="ml-1 placeholder-md"></div>
+                <h5 class="pl-1 mb-0 text-white w-auto">
+                  ${new Date(element.event.start).getHours()}-${new Date(element.event.end).getHours()}h
                 </h5>
               </div>`
-            break
-          case 'timeGridWeek':
-          case 'timeGridDay':
+          } else {
             element.el.innerHTML = `
               <div>
-                <div class="ml-2 mt-2 placeholder-sm"></div>
-                <div class="ml-0 mt--2 placeholder-md" style="position: absolute; top: 50%; left: 50%; transform: translateY(-50%); transform: translateX(-50%)"></div>
-                <div class="ml-2 mb-2 placeholder-sm" style="position: absolute; bottom: 0; left: 0"></div>
-                <div class="mr-2 mb-2 placeholder-sm" style="position: absolute; bottom: 0; right: 0"></div>
+                <h5 class="pl-1 mb-0 text-white w-auto">
+                  ${new Date(element.event.start).getHours()}h
+                  <span class="ml-1 h5 text-white">${element.event.title}</span>
+                </h5>
               </div>`
-            break
-        }
-      // ======================================
-      // == RENDERING
-      // ======================================
-      } else {
-        // ======================================
-        // == MOBILE VIEW
-        // ======================================
-        if (this.windowWidth < 800) {
-          switch (this.activeView) {
-            case 'dayGridMonth':
-              element.el.innerHTML = `
-                <div>
-                  <h5 class="pl-1 mb-0 text-white w-auto">
-                    ${new Date(element.event.start).getHours()}-${new Date(element.event.end).getHours()}h
-                  </h5>
-                </div>`
-              break
-            case 'timeGridWeek':
-              element.el.innerHTML = `
-                <div class="fade-in">
-                  <h4 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h4>
-                </div>`
-              break
-            case 'timeGridDay':
-              element.el.innerHTML = `
-                <div class="fade-in">
-                  <h5 class="h5-5 pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
-                  <h2 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h2>
-                  <h5 class="h5-5 pl-2 mb-1 text-white" style="position: absolute; bottom: 0; left: 0">${this.capitalizeFirstLetterEachWords(element.event.extendedProps.professor)}<h5>
-                  <h5 class="h5-5 pr-2 mb-1 text-white" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h5>
-                </div>`
-              break
           }
-        // ======================================
-        // == DESKTOP VIEW
-        // ======================================
-        } else {
-          switch (this.activeView) {
-            case 'dayGridMonth':
-              element.el.innerHTML = `
-                <div>
-                  <h5 class="pl-1 mb-0 text-white w-auto">
-                    ${new Date(element.event.start).getHours()}h
-                    <span class="ml-1 h5 text-white">${element.event.title}</span>
-                  </h5>
-                </div>`
-              break
-            case 'timeGridWeek':
-            case 'timeGridDay':
-              element.el.innerHTML = `
-                <div class="fade-in">
-                  <h5 class="h5-5 pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
-                  <h3 class="px-2 text-white text-center" style="max-width: 90%; width: 90%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">${element.event.title}</h3>
-                  <h5 class="h5-5 pl-2 mb-1 text-white col-7" style="position: absolute; bottom: 0; left: 0">${this.capitalizeFirstLetterEachWords(element.event.extendedProps.professor)}<h5>
-                  <h5 class="h5-5 pr-2 mb-1 text-white col-3 text-right" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h5>
-                </div>`
-              break
+          break
+        // ============================
+        // == WEEK VIEW
+        // ============================
+        case 'timeGridWeek':
+          if (this.windowWidth < 800) {
+            element.el.innerHTML = `
+              <div class="fade-in">
+                <h4 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h4>
+              </div>`
+          } else {
+            element.el.innerHTML = `
+              <div class="fade-in">
+                <h5 class="h5-5 pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
+                <h3 class="px-2 text-white text-center" style="max-width: 90%; width: 90%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">${element.event.title}</h3>
+                <h5 class="h5-5 pl-2 mb-1 text-white col-7" style="position: absolute; bottom: 0; left: 0">${this.capitalizeFirstLetterEachWords(element.event.extendedProps.professor)}<h5>
+                <h5 class="h5-5 pr-2 mb-1 text-white col-3 text-right" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h5>
+              </div>`
           }
-        }
+          break
+        // ============================
+        // == DAY VIEW
+        // ============================
+        case 'timeGridDay':
+          if (this.windowWidth < 800) {
+            element.el.innerHTML = `
+              <div class="fade-in">
+                <h5 class="h5-5 pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
+                <h2 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h2>
+                <h5 class="h5-5 pl-2 mb-1 text-white" style="position: absolute; bottom: 0; left: 0">${this.capitalizeFirstLetterEachWords(element.event.extendedProps.professor)}<h5>
+                <h5 class="h5-5 pr-2 mb-1 text-white" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h5>
+              </div>`
+          } else {
+            element.el.innerHTML = `
+              <div class="fade-in">
+                <h5 class="h5-5 pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
+                <h3 class="px-2 text-white text-center" style="max-width: 90%; width: 90%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">${element.event.title}</h3>
+                <h5 class="h5-5 pl-2 mb-1 text-white col-7" style="position: absolute; bottom: 0; left: 0">${this.capitalizeFirstLetterEachWords(element.event.extendedProps.professor)}<h5>
+                <h5 class="h5-5 pr-2 mb-1 text-white col-3 text-right" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h5>
+              </div>`
+          }
+          break
       }
     },
     handleDateClick (clicked) {
@@ -279,7 +247,7 @@ export default {
     },
     handleEventClick (clicked) {
       if (this.activeView === 'dayGridMonth') {
-        this.calendarApi().gotoDate(new Date(clicked.event.start))
+        this.calendarApi().gotoDate(clicked.event.start)
         this.changeView('timeGridWeek')
       }
     },
@@ -294,11 +262,11 @@ export default {
         // get first day of the month
         const firstOfTheMonth = this.getFirstFridayOfMonth(this.activeDate)
 
-        this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate())) })
-        this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
-        this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
-        this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
-        this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+        this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate())) })
+        this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+        this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+        this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+        this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
       }
 
       this.calendarApi().changeView(viewType)
@@ -317,11 +285,11 @@ export default {
           dateToFetch = this.getMonday(dateToFetch.setMonth(dateToFetch.getMonth() + 1))
 
           const firstOfTheMonth = this.getFirstFridayOfMonth(dateToFetch)
-          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate())) })
-          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
-          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
-          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
-          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate())) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
 
           this.calendarApi().next()
           this.updateHeaderDate()
@@ -336,7 +304,7 @@ export default {
           break
       }
 
-      this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(dateToFetch) })
+      this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(dateToFetch) })
 
       this.calendarApi().next()
       this.updateHeaderDate()
@@ -356,11 +324,11 @@ export default {
           dateToFetch = this.getMonday(dateToFetch.setMonth(dateToFetch.getMonth() - 1))
 
           const firstOfTheMonth = this.getFirstFridayOfMonth(dateToFetch)
-          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate())) })
-          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
-          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
-          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
-          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate())) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
 
           this.calendarApi().prev()
           this.updateHeaderDate()
@@ -375,7 +343,7 @@ export default {
           break
       }
 
-      this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(dateToFetch) })
+      this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(dateToFetch) })
 
       this.calendarApi().prev()
       this.updateHeaderDate()
@@ -393,37 +361,17 @@ export default {
     },
     getColumnHeaderFormat () {
       switch (this.activeView) {
+        // week
         case 'timeGridWeek':
-          // mobile
           if (this.windowWidth < 800) return { month: 'numeric', day: 'numeric', omitCommas: true }
-          // desktop
           else return { weekday: 'long', month: 'numeric', day: 'numeric', omitCommas: true }
+        // month
         case 'dayGridMonth':
           return { weekday: 'long' }
+        // day
         case 'timeGridDay':
           return { weekday: 'long', day: 'numeric', month: 'long' }
       }
-    },
-    getMonday (d) {
-      d = new Date(d)
-      const day = d.getDay()
-      const diff = d.getDate() - day + (day === 0 ? -6 : 1) // adjust when day is sunday
-      return new Date(d.setDate(diff))
-    },
-    getFirstFridayOfMonth (date) {
-      date = new Date(date)
-      let targetDay = ''
-      const seekDay = 5
-      let i = 1
-      const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
-        'July', 'August', 'September', 'October', 'November', 'December'
-      ]
-
-      while (i < 31) {
-        targetDay = new Date(`${i++} ${monthNames[date.getMonth()]} ${date.getFullYear()}`)
-        if (targetDay.getDay() === seekDay) return targetDay
-      }
-      return false
     }
   }
 }
@@ -435,37 +383,8 @@ export default {
   @import "~@/assets/sass/core/vendors/fullcalendar";
 
   // =========================================
-  // == Loading placeholder
+  // == Loading animations
   // =========================================
-
-  // placeholders (coming soon)
-  // .placeholder-sm {
-  //   width: 60px;
-  //   height: 10px;
-  //   border-radius: 6px;
-  //   animation-name: pulse;
-  //   animation-duration: 2s;
-  //   animation-iteration-count: infinite;
-  // }
-
-  // .placeholder-md {
-  //   width: 80px;
-  //   height: 14px;
-  //   border-radius: 6px;
-  //   animation-name: pulse;
-  //   animation-duration: 2s;
-  //   animation-iteration-count: infinite;
-  // }
-
-  // .bg-lightgrey {
-  //   background-color: #ced4da !important;
-  // }
-
-  // @keyframes pulse {
-  //   0% { background-color: #dee2e6; }
-  //   50% { background-color: #f6f9fc; }
-  //   100% { background-color: #dee2e6; }
-  // }
 
   .fade-in {
     animation-name: fade-in;

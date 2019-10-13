@@ -126,7 +126,7 @@
               <template v-slot="{row}">
                 <div class="d-flex">
                   <div class="col-auto text-center pl-1 pr-0">
-                    {{ timestampToDate(row.creationDate) }}
+                    {{ dateToDayMonthYear(timestampToDate(row.creationDate)) }}
                   </div>
                 </div>
               </template>
