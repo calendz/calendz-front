@@ -18,17 +18,24 @@
         <div class="col-7 text-right">
 
           <form
-            id="agenda-search"
             class="navbar-search navbar-search-light d-inline-block mr-3"
-            @submit.prevent>
+            @submit.prevent
+            @mouseenter="handleSearchInputMouseEnter"
+            @mouseleave="handleSearchInputMouseLeave">
             <div class="form-group mb-0">
               <div class="input-group input-group-alternative input-group-merge">
                 <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="fas fa-search"/></span>
+                  <span
+                    class="input-group-text"
+                    style="padding: .9rem 1rem"><i class="fas fa-search"/></span>
                 </div>
                 <input
-                  class="form-control"
-                  placeholder="Rechercher"
+                  id="agenda-search-input"
+                  v-model="searchInput"
+                  autocomplete="off"
+                  class="form-control p-0"
+                  style="width: 0; transition-duration: 450ms;"
+                  placeholder="Entrez : prénom.nom"
                   type="text">
               </div>
             </div>
@@ -156,7 +163,9 @@ export default {
       activeView: 'timeGridWeek',
       activeDate: new Date(),
       windowWidth: window.innerWidth,
-      headerDate: ''
+      headerDate: '',
+      searchInput: '',
+      expandSearchInput: false
     }
   },
   computed: {
@@ -169,6 +178,10 @@ export default {
     windowWidth: function (newVal, oldVal) {
       if (newVal < 800 && oldVal >= 800) this.changeView('timeGridDay')
       if (newVal >= 800 && oldVal < 800) this.changeView('timeGridWeek')
+    },
+    searchInput: function (newVal) {
+      if (newVal === '') this.handleSearchInputMouseLeave()
+      else this.handleSearchInputMouseEnter()
     }
   },
   mounted () {
@@ -400,6 +413,14 @@ export default {
         // day
         case 'timeGridDay':
           return { weekday: 'long', day: 'numeric', month: 'long' }
+      }
+    },
+    handleSearchInputMouseEnter () {
+      document.querySelector('#agenda-search-input').style.width = ''
+    },
+    handleSearchInputMouseLeave () {
+      if (!this.searchInput) {
+        document.querySelector('#agenda-search-input').style.width = '0'
       }
     }
   }
