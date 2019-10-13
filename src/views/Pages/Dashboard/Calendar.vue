@@ -103,7 +103,9 @@
             </div>
 
             <!-- Card body -->
-            <div class="card-body p-0 card-calendar-body">
+            <div
+              :class="{ 'bg-other-agenda': searchInput }"
+              class="card-body p-0 card-calendar-body">
               <full-calendar
                 id="calendar"
                 ref="fullCalendar"
@@ -158,8 +160,7 @@ export default {
       activeDate: new Date(),
       windowWidth: window.innerWidth,
       headerDate: '',
-      searchInput: '',
-      expandSearchInput: false
+      searchInput: ''
     }
   },
   computed: {
@@ -512,5 +513,11 @@ export default {
 
   .h5-5 {
     font-size: 0.75rem
+  }
+
+  .bg-other-agenda {
+    .fc-time-grid-event, .fc-event, .fc-start, .fc-end {
+      background-color: #6E7A90 !important;
+    }
   }
 </style>
