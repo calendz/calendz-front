@@ -80,7 +80,7 @@
             <div class="row">
               <div class="col-md-6">
                 <base-input
-                  :value="user.firstname"
+                  :value="user.firstname || 'error'"
                   label="Prénom"
                   placeholder="Votre prénom"
                   disabled/>
@@ -141,7 +141,9 @@
 
               <div class="row">
                 <div class="col-md-12 mx-auto">
-                  <GroupsSelect v-model="group"/>
+                  <GroupsSelect
+                    v-model="group"
+                    label="Groupe"/>
                 </div>
               </div>
 

@@ -52,8 +52,7 @@
 </template>
 
 <script>
-// TODO
-// import store from '@/store'
+import store from '@/store'
 import { Select, Option } from 'element-ui'
 
 export default {
@@ -105,8 +104,7 @@ export default {
     }
   },
   mounted () {
-    // TODO :
-    // this.inputValue = store.state.account.user.group
+    this.inputValue = store.getters['account/isLoggedIn'] ? store.state.account.user.group : ''
   },
   methods: {
     getError (name) {

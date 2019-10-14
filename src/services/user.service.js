@@ -50,8 +50,8 @@ const UserService = {
   },
 
   // update user informations
-  updateInformations: (id, firstname, lastname, email, permissionLevel, grade, city, bts, isActive) => {
-    return ApiService.patch(`/user/${id}`, { firstname, lastname, email, permissionLevel, grade, city, bts, isActive })
+  updateInformations: (id, firstname, lastname, email, permissionLevel, grade, group, city, bts, isActive) => {
+    return ApiService.patch(`/user/${id}`, { firstname, lastname, email, permissionLevel, grade, group, city, bts, isActive })
       .then(res => {
         return res
       })
