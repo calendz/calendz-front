@@ -110,9 +110,9 @@ const accountModule = {
   // == Actions
   // ==================================
   actions: {
-    register: ({ commit }, { firstname, lastname, grade, city, email, password, password2, agree }) => {
+    register: ({ commit }, { firstname, lastname, grade, group, city, email, password, password2, agree }) => {
       commit('REGISTER_REQUEST')
-      UserService.register(firstname, lastname, grade, city, email, password, password2, agree)
+      UserService.register(firstname, lastname, grade, group, city, email, password, password2, agree)
         .then(
           res => {
             commit('REGISTER_SUCCESS')

@@ -6,8 +6,8 @@ const UserService = {
   // ================================================
 
   // register
-  register: (firstname, lastname, grade, city, email, password, password2, agree) => {
-    return ApiService.post('/user', { firstname, lastname, grade, city, email, password, password2, agree })
+  register: (firstname, lastname, grade, group, city, email, password, password2, agree) => {
+    return ApiService.post('/user', { firstname, lastname, grade, group, city, email, password, password2, agree })
       .then(res => {
         return res.data
       })

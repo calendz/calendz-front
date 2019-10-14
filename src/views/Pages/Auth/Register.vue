@@ -82,6 +82,11 @@
                   </select>
                 </base-input>
 
+                <GroupsSelect
+                  v-model="registerForm.group"
+                  :disabled="false"
+                  :legacy="true"/>
+
                 <base-input
                   :error="getError('ville')"
                   :valid="isValid('ville')"
@@ -195,9 +200,12 @@
 <script>
 import swal from 'sweetalert2'
 import { mapState } from 'vuex'
+import GroupsSelect from '@/components/Inputs/custom/GroupsSelect'
 
 export default {
-  name: 'Register',
+  components: {
+    GroupsSelect
+  },
   data () {
     return {
       triedSubmit: false,
@@ -205,6 +213,7 @@ export default {
         firstname: '',
         lastname: '',
         grade: '',
+        group: '',
         city: '',
         email: '',
         password: '',
