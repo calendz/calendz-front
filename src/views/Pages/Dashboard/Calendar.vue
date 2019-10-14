@@ -7,7 +7,7 @@
       type="primary"
       class="pb-6">
       <div class="row align-items-center py-4">
-        <div class="col-lg-7 col-5">
+        <div class="col-5">
           <h6 class="h2 text-white d-inline-block mb-0">Emploi du temps</h6>
           <nav
             aria-label="breadcrumb"
@@ -15,37 +15,73 @@
             <route-bread-crumb/>
           </nav>
         </div>
-        <div class="col-lg-5 col-7 text-right">
-          <a
-            href=""
-            class="fullcalendar-btn-prev btn btn-sm btn-default my-1"
-            @click.prevent="prev">
-            <i class="fas fa-angle-left"/>
-          </a>
-          <a
-            href=""
-            class="fullcalendar-btn-next btn btn-sm btn-default my-1"
-            @click.prevent="next">
-            <i class="fas fa-angle-right"/>
-          </a>
-          <base-button
-            :class="{'active': activeView === 'dayGridMonth'}"
-            class="btn btn-sm btn-default my-1"
-            @click="changeView('dayGridMonth')">
-            Mois
-          </base-button>
-          <base-button
-            :class="{'active': activeView === 'timeGridWeek'}"
-            class="btn btn-sm btn-defaul my-1"
-            @click="changeView('timeGridWeek')">
-            Semaine
-          </base-button>
-          <base-button
-            :class="{'active': activeView === 'timeGridDay'}"
-            class="btn btn-sm btn-default mr-2 my-1"
-            @click="changeView('timeGridDay')">
-            Jour
-          </base-button>
+        <div class="col-7 text-right">
+
+          <form
+            v-if="windowWidth > 1095"
+            class="agenda-search navbar-search navbar-search-light d-inline-block mr-3"
+            @submit.prevent
+            @change="handleSearchInputChange"
+            @mouseenter="handleSearchInputMouseEnter"
+            @mouseleave="handleSearchInputMouseLeave">
+            <div class="form-group mb-0">
+              <div class="input-group input-group-alternative input-group-merge">
+                <div class="input-group-prepend">
+                  <span
+                    class="input-group-text"
+                    style="padding: .9rem 1rem"><i class="fas fa-search"/></span>
+                </div>
+                <input
+                  id="agenda-search-input"
+                  v-model.lazy="searchInput"
+                  autocomplete="off"
+                  class="form-control p-0"
+                  placeholder="Entrez : prénom.nom"
+                  type="text">
+                <!-- :class="showSearchInput ? 'visible ' : 'invisible'" -->
+                <div
+                  v-show="showSearchInput"
+                  class="input-group-text input-group-append text-black"
+                  @click="handleSearchInputClear">
+                  <i class="fas fa-times fade-in"/>
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <div class="d-inline-block">
+            <a
+              href=""
+              class="fullcalendar-btn-prev btn btn-sm btn-default my-1"
+              @click.prevent="prev">
+              <i class="fas fa-angle-left"/>
+            </a>
+            <a
+              href=""
+              class="fullcalendar-btn-next btn btn-sm btn-default my-1"
+              @click.prevent="next">
+              <i class="fas fa-angle-right"/>
+            </a>
+            <base-button
+              :class="{'active': activeView === 'dayGridMonth'}"
+              class="btn btn-sm btn-default my-1"
+              @click="changeView('dayGridMonth')">
+              Mois
+            </base-button>
+            <base-button
+              :class="{'active': activeView === 'timeGridWeek'}"
+              class="btn btn-sm btn-defaul my-1"
+              @click="changeView('timeGridWeek')">
+              Semaine
+            </base-button>
+            <base-button
+              :class="{'active': activeView === 'timeGridDay'}"
+              class="btn btn-sm btn-default mr-2 my-1"
+              @click="changeView('timeGridDay')">
+              Jour
+            </base-button>
+          </div>
+
         </div>
       </div>
     </base-header>
@@ -73,7 +109,9 @@
             </div>
 
             <!-- Card body -->
-            <div class="card-body p-0 card-calendar-body">
+            <div
+              :class="{ 'bg-other-agenda': searchInput }"
+              class="card-body p-0 card-calendar-body">
               <full-calendar
                 id="calendar"
                 ref="fullCalendar"
@@ -127,7 +165,9 @@ export default {
       activeView: 'timeGridWeek',
       activeDate: new Date(),
       windowWidth: window.innerWidth,
-      headerDate: ''
+      headerDate: '',
+      searchInput: '',
+      showSearchInput: false
     }
   },
   computed: {
@@ -140,14 +180,27 @@ export default {
     windowWidth: function (newVal, oldVal) {
       if (newVal < 800 && oldVal >= 800) this.changeView('timeGridDay')
       if (newVal >= 800 && oldVal < 800) this.changeView('timeGridWeek')
+    },
+    searchInput: function (newVal) {
+      localStorage.setItem('calendz.calendar.searchInput', newVal)
+      if (newVal === '') this.handleSearchInputMouseLeave()
+      else this.handleSearchInputMouseEnter()
     }
   },
   mounted () {
     // initialize fullcalendar
     const calendarApi = this.$refs.fullCalendar.getApi()
     calendarApi.setOption('locale', 'fr')
-
+    // set correct header date
     this.updateHeaderDate()
+    // initialize the search input
+    const searchInput = localStorage.getItem('calendz.calendar.searchInput')
+    if (searchInput) {
+      this.searchInput = searchInput
+      document.querySelector('#agenda-search-input').style.width = ''
+    } else {
+      document.querySelector('#agenda-search-input').style.width = '0'
+    }
 
     // add events listeners
     window.addEventListener('keyup', (e) => {
@@ -372,6 +425,37 @@ export default {
         case 'timeGridDay':
           return { weekday: 'long', day: 'numeric', month: 'long' }
       }
+    },
+    handleSearchInputMouseEnter () {
+      document.querySelector('#agenda-search-input').style.width = ''
+      // setTimeout(() => {
+      this.showSearchInput = true
+      // }, 230)
+    },
+    handleSearchInputMouseLeave () {
+      if (!this.searchInput) {
+        document.querySelector('#agenda-search-input').style.width = '0'
+        this.showSearchInput = false
+      }
+    },
+    handleSearchInputClear () {
+      this.searchInput = ''
+      localStorage.setItem('calendz.calendar.searchInput', '')
+      this.handleSearchInputChange()
+    },
+    handleSearchInputChange () {
+      // if input is incorrect
+      if ((!this.searchInput.includes('.') || this.searchInput.length <= 5) && this.searchInput !== '') {
+        return this.$notify({ type: 'warning', message: 'Veuillez indiquer un nom valide !' })
+      }
+
+      this.backToToday()
+      let date = new Date()
+      if (date.getDay() === 6) date.setDate(date.getDate() + 2)
+      if (date.getDay() === 0) date.setDate(date.getDate() + 1)
+      date = this.dateToMonthDayYear(date)
+      this.$store.dispatch('calendar/resetFetchedWeeks')
+      this.$store.dispatch('calendar/fetchDate', { date: date })
     }
   }
 }
@@ -447,5 +531,15 @@ export default {
 
   .h5-5 {
     font-size: 0.75rem
+  }
+
+  #agenda-search-input {
+    transition-duration: 400ms;
+  }
+
+  .bg-other-agenda {
+    .fc-time-grid-event, .fc-event, .fc-start, .fc-end {
+      background-color: #6E7A90 !important;
+    }
   }
 </style>
