@@ -133,43 +133,13 @@
             <div class="card-body py-3 mb-1">
               <div class="row">
                 <div class="col-md-12 mx-auto">
-                  <base-input
-                    :error="getError('bts')"
-                    :valid="isValid('bts')"
-                    class="w-100"
-                    label="Option BTS">
-                    <el-select
-                      v-validate="'required'"
-                      v-model="bts.select.target"
-                      name="bts">
-                      <el-option
-                        v-for="(option, index) in bts.select.options"
-                        :key="index"
-                        :label="option.label"
-                        :value="option.value"/>
-                    </el-select>
-                  </base-input>
+                  <BtsSelect v-model="bts"/>
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-md-12 mx-auto">
-                  <base-input
-                    :error="getError('groupe')"
-                    :valid="isValid('groupe')"
-                    class="w-100"
-                    label="Groupe">
-                    <el-select
-                      v-validate="'required'"
-                      v-model="groups.select.target"
-                      name="bts">
-                      <el-option
-                        v-for="(option, index) in groups.select.options"
-                        :key="index"
-                        :label="option.label"
-                        :value="option.value"/>
-                    </el-select>
-                  </base-input>
+                  <GroupsSelect v-model="group"/>
                 </div>
               </div>
 
@@ -292,11 +262,15 @@ import { mapState } from 'vuex'
 import { Modal } from '@/components'
 import { Select, Option } from 'element-ui'
 import DropzoneFileUpload from '@/components/Inputs/DropzoneFileUpload'
+import BtsSelect from '@/components/Inputs/custom/BtsSelect'
+import GroupsSelect from '@/components/Inputs/custom/GroupsSelect'
 
 export default {
   components: {
     Modal,
     DropzoneFileUpload,
+    BtsSelect,
+    GroupsSelect,
     [Select.name]: Select,
     [Option.name]: Option
   },
@@ -308,26 +282,8 @@ export default {
         password: '',
         password2: ''
       },
-      bts: {
-        select: {
-          target: this.$store.state.account.user.bts ? 'Oui' : 'Non',
-          options: [
-            { label: 'Oui', value: true },
-            { label: 'Non', value: false }
-          ]
-        }
-      },
-      groups: {
-        select: {
-          target: '', // this.$store.state.account.user.group
-          options: [
-            { value: 'G1' },
-            { value: 'G2' },
-            { value: 'G3' },
-            { value: 'G4' }
-          ]
-        }
-      }
+      group: '',
+      bts: ''
     }
   },
   computed: {
