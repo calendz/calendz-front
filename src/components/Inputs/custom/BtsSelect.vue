@@ -7,6 +7,7 @@
     <el-select
       v-validate="'required|boolean'"
       v-model="inputValue"
+      :disabled="disabled"
       name="bts">
       <el-option
         v-for="(option, index) in options"
@@ -30,7 +31,12 @@ export default {
     value: {
       type: Boolean,
       default: false,
-      doc: 'Value'
+      doc: `Select's value`
+    },
+    disabled: {
+      type: Boolean,
+      default: true,
+      doc: 'Whether the select should be disabled or not'
     }
   },
   data () {

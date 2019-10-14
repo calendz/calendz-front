@@ -133,7 +133,9 @@
             <div class="card-body py-3 mb-1">
               <div class="row">
                 <div class="col-md-12 mx-auto">
-                  <BtsSelect v-model="bts"/>
+                  <BtsSelect
+                    v-model="bts"
+                    :disabled="user.grade !== 'B1' && user.grade !== 'B2'"/>
                 </div>
               </div>
 

@@ -7,7 +7,8 @@
     <el-select
       v-validate="'required|valid_group'"
       v-model="inputValue"
-      name="groupe">
+      name="groupe"
+      disabled>
       <el-option
         v-for="(option, index) in options"
         :key="index"
