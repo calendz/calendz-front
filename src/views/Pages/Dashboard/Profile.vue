@@ -74,7 +74,7 @@
         <!-- ======================================= -->
         <!-- == Informations profil -->
         <!-- ======================================= -->
-        <div class="col-md-9">
+        <div class="col-md-5">
           <card type="frame">
 
             <div class="row">
@@ -97,9 +97,9 @@
             <div class="row">
               <div class="col-md-6">
                 <base-input
-                  :value="user.email"
-                  label="Adresse mail"
-                  placeholder="Votre adresse mail"
+                  :value="user.grade"
+                  label="Classe"
+                  placeholder="Votre classe"
                   disabled/>
               </div>
               <div class="col-md-6">
@@ -112,22 +112,80 @@
             </div>
 
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-12">
                 <base-input
-                  :value="user.grade"
-                  label="Classe"
-                  placeholder="Votre classe"
-                  disabled/>
-              </div>
-              <div class="col-md-6">
-                <base-input
-                  :value="user.bts ? 'Oui' : 'Non'"
-                  class="mb-3"
-                  label="Option BTS"
+                  :value="user.email"
+                  class=" mb-3"
+                  label="Adresse mail"
+                  placeholder="Votre adresse mail"
                   disabled/>
               </div>
             </div>
           </card>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-header py-3">
+              <h3 class="mb-0">Modifier mes informations</h3>
+            </div>
+
+            <div class="card-body py-3 mb-1">
+              <div class="row">
+                <div class="col-md-12 mx-auto">
+                  <base-input
+                    :error="getError('bts')"
+                    :valid="isValid('bts')"
+                    class="w-100"
+                    label="Option BTS">
+                    <el-select
+                      v-validate="'required'"
+                      v-model="bts.select.target"
+                      name="bts">
+                      <el-option
+                        v-for="(option, index) in bts.select.options"
+                        :key="index"
+                        :label="option.label"
+                        :value="option.value"/>
+                    </el-select>
+                  </base-input>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12 mx-auto">
+                  <base-input
+                    :error="getError('groupe')"
+                    :valid="isValid('groupe')"
+                    class="w-100"
+                    label="Groupe">
+                    <el-select
+                      v-validate="'required'"
+                      v-model="groups.select.target"
+                      name="bts">
+                      <el-option
+                        v-for="(option, index) in groups.select.options"
+                        :key="index"
+                        :label="option.label"
+                        :value="option.value"/>
+                    </el-select>
+                  </base-input>
+                </div>
+              </div>
+
+              <div class="row">
+                <base-button
+                  :disabled="changing"
+                  type="primary"
+                  class="mx-auto"
+                  size="md"
+                  native-type="submit">
+                  Enregistrer
+                </base-button>
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
 
@@ -232,12 +290,15 @@
 import swal from 'sweetalert2'
 import { mapState } from 'vuex'
 import { Modal } from '@/components'
+import { Select, Option } from 'element-ui'
 import DropzoneFileUpload from '@/components/Inputs/DropzoneFileUpload'
 
 export default {
   components: {
     Modal,
-    DropzoneFileUpload
+    DropzoneFileUpload,
+    [Select.name]: Select,
+    [Option.name]: Option
   },
   data () {
     return {
@@ -246,6 +307,26 @@ export default {
       changePasswordForm: {
         password: '',
         password2: ''
+      },
+      bts: {
+        select: {
+          target: this.$store.state.account.user.bts ? 'Oui' : 'Non',
+          options: [
+            { label: 'Oui', value: true },
+            { label: 'Non', value: false }
+          ]
+        }
+      },
+      groups: {
+        select: {
+          target: '', // this.$store.state.account.user.group
+          options: [
+            { value: 'G1' },
+            { value: 'G2' },
+            { value: 'G3' },
+            { value: 'G4' }
+          ]
+        }
       }
     }
   },
