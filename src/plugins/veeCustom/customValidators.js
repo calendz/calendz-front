@@ -13,25 +13,24 @@ Validator.extend('contains_one_letter', {
 })
 
 Validator.extend('valid_grade', {
-  validate: value => ['B1', 'B2', 'B3', 'I1', 'I2'].indexOf(value) !== -1
+  validate: value => [
+    'B1', 'B2', 'B3', 'I1', 'I2'
+  ].indexOf(value) !== -1
 })
 
 Validator.extend('valid_group', {
   validate: value => [
-    'G1',
-    'G2',
-    'G3',
-    'G1 (dev)',
-    'G2 (dev)',
-    'G3 (dev)',
-    'G1 (infra-réseau)',
-    'G2 (infra-réseau)',
-    'G3 (infra-réseau)'
-  ].indexOf(value) !== 1
+    'G1', 'G2', 'G3',
+    'G1 (dev)', 'G2 (dev)', 'G3 (dev)',
+    'G1 (infra-réseau)', 'G2 (infra-réseau)', 'G3 (infra-réseau)'
+  ].indexOf(value) !== -1
 })
 
 Validator.extend('valid_city', {
-  validate: value => ['Arras', 'Auxerre', 'Bordeaux', 'Brest', 'Grenoble', 'Lille', 'Lyon', 'Montpellier', 'Nantes', 'Paris', 'Dakar'].indexOf(value) !== -1
+  validate: value => [
+    'Arras', 'Auxerre', 'Bordeaux', 'Brest',
+    'Grenoble', 'Lille', 'Lyon', 'Montpellier',
+    'Nantes', 'Paris', 'Dakar'].indexOf(value) !== -1
 })
 
 Validator.extend('boolean', {
