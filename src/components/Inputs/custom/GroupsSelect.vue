@@ -5,7 +5,7 @@
     class="w-100"
     label="Groupe">
     <el-select
-      v-validate="'required'"
+      v-validate="'required|valid_group'"
       v-model="inputValue"
       name="groupe">
       <el-option
@@ -41,7 +41,12 @@ export default {
         { value: 'G1' },
         { value: 'G2' },
         { value: 'G3' },
-        { value: 'G4' }
+        { value: 'G1 (dev)' },
+        { value: 'G2 (dev)' },
+        { value: 'G3 (dev)' },
+        { value: 'G1 (infra-réseau)' },
+        { value: 'G2 (infra-réseau)' },
+        { value: 'G3 (infra-réseau)' }
       ]
     }
   },

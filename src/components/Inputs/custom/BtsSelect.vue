@@ -5,7 +5,7 @@
     class="w-100"
     label="Option BTS">
     <el-select
-      v-validate="'required'"
+      v-validate="'required|boolean'"
       v-model="inputValue"
       name="bts">
       <el-option
