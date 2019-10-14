@@ -38,6 +38,13 @@
                   class="form-control p-0"
                   placeholder="Entrez : prénom.nom"
                   type="text">
+                <!-- :class="showSearchInput ? 'visible ' : 'invisible'" -->
+                <div
+                  v-show="showSearchInput"
+                  class="input-group-text input-group-append text-black"
+                  @click="handleSearchInputClear">
+                  <i class="fas fa-times fade-in"/>
+                </div>
               </div>
             </div>
           </form>
@@ -159,7 +166,8 @@ export default {
       activeDate: new Date(),
       windowWidth: window.innerWidth,
       headerDate: '',
-      searchInput: ''
+      searchInput: '',
+      showSearchInput: false
     }
   },
   computed: {
@@ -190,6 +198,8 @@ export default {
     if (searchInput) {
       this.searchInput = searchInput
       document.querySelector('#agenda-search-input').style.width = ''
+    } else {
+      document.querySelector('#agenda-search-input').style.width = '0'
     }
 
     // add events listeners
@@ -217,7 +227,6 @@ export default {
     // == CALENDAR RENDERING
     // ======================================
     customRender (element) {
-      console.log('idk')
       switch (this.activeView) {
         // ============================
         // == MONTH VIEW
@@ -419,11 +428,20 @@ export default {
     },
     handleSearchInputMouseEnter () {
       document.querySelector('#agenda-search-input').style.width = ''
+      // setTimeout(() => {
+      this.showSearchInput = true
+      // }, 230)
     },
     handleSearchInputMouseLeave () {
       if (!this.searchInput) {
         document.querySelector('#agenda-search-input').style.width = '0'
+        this.showSearchInput = false
       }
+    },
+    handleSearchInputClear () {
+      this.searchInput = ''
+      localStorage.setItem('calendz.calendar.searchInput', '')
+      this.handleSearchInputChange()
     },
     handleSearchInputChange () {
       // if input is incorrect
@@ -513,6 +531,10 @@ export default {
 
   .h5-5 {
     font-size: 0.75rem
+  }
+
+  #agenda-search-input {
+    transition-duration: 400ms;
   }
 
   .bg-other-agenda {
