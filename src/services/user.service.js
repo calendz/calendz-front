@@ -38,6 +38,17 @@ const UserService = {
       })
   },
 
+  // change user's bts status
+  changeBts: (bts) => {
+    return ApiService.patch('/user/bts', { bts })
+      .then(res => {
+        return res.data
+      })
+      .catch(err => {
+        return Promise.reject(err)
+      })
+  },
+
   // change user's password
   changePassword: (password, password2) => {
     return ApiService.patch('/user/password', { password, password2 })
@@ -45,7 +56,7 @@ const UserService = {
         return res.data
       })
       .catch(err => {
-        return Promise.reject(err.data)
+        return Promise.reject(err)
       })
   },
 

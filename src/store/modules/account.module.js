@@ -56,6 +56,18 @@ const accountModule = {
       state.status = { reason }
     },
 
+    CHANGE_BTS_REQUEST: (state) => {
+      state.status = { isChanging: true }
+    },
+
+    CHANGE_BTS_SUCCESS: (state, bts) => {
+      state.status = {}
+    },
+
+    CHANGE_BTS_FAILURE: (state, reason) => {
+      state.status = { changeBtsError: reason }
+    },
+
     CHANGE_PASSWORD_REQUEST: (state) => {
       state.status = { isChanging: true }
     },
@@ -171,6 +183,20 @@ const accountModule = {
       localStorage.removeItem('user')
       ApiService.post('/auth/logout')
       router.push('/login')
+    },
+
+    changeBts: ({ commit }, { bts }) => {
+      commit('CHANGE_BTS_REQUEST')
+      UserService.changeBts(bts)
+        .then(
+          res => {
+            commit('CHANGE_BTS_SUCCESS')
+            Vue.prototype.$notify({ type: 'success', message: `Modification effectuée avec succès !` })
+          },
+          err => {
+            commit('CHANGE_BTS_FAILURE', err.data.message)
+            Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.data.message || 'Erreur inconnue...'}` })
+          })
     },
 
     changePassword: ({ commit, dispatch }, { password, password2 }) => {
