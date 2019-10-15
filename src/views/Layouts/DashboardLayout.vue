@@ -93,28 +93,22 @@
         <h6 class="navbar-heading p-0 text-muted">Autres</h6>
 
         <ul class="navbar-nav mb-md-3">
-          <!-- Bug report -->
-          <li class="nav-item">
-            <a
-              href="https://docs.api-calendar.calendz.app/autres/faq#comment-signaler-des-bugs"
-              target="_blank"
-              rel="noreferrer noopenner"
-              class="nav-link">
-              <i class="fas fa-bug text-grey"/>
-              <span class="nav-link-text">Signaler un bug</span>
-            </a>
-          </li>
+          <!-- Contact & support -->
+          <sidebar-item
+            :link="{
+              name: 'Contact & support',
+              icon: 'fas fa-question-circle',
+              path: '/contact'
+          }"/>
 
-          <!-- Documentation -->
+          <!-- Logout -->
           <li class="nav-item">
-            <a
-              href="https://docs.calendz.app/"
-              target="_blank"
-              rel="noreferrer noopenner"
-              class="nav-link">
-              <i class="fas fa-newspaper text-grey"/>
-              <span class="nav-link-text">Documentation</span>
-            </a>
+            <span
+              class="nav-link"
+              @click.prevent="logout">
+              <i class="ni ni-user-run text-grey"/>
+              <span class="nav-link-text">Se déconnecter</span>
+            </span>
           </li>
         </ul>
       </template>
@@ -186,6 +180,32 @@ export default {
       } else {
         docClasses.add('perfect-scrollbar-off')
       }
+    },
+    logout () {
+      swal.fire({
+        title: 'Êtes vous sûr ?',
+        text: 'Vous serez déconnecté du site !',
+        type: 'info',
+        customClass: {
+          confirmButton: 'btn btn-primary',
+          cancelButton: 'btn btn-secondary'
+        },
+        buttonsStyling: false,
+        showCancelButton: true,
+        cancelButtonText: 'Annuler',
+        confirmButtonText: 'Oui !'
+      }).then((result) => {
+        if (result.value) {
+          this.$store.dispatch('account/logout', {})
+          swal.fire({
+            title: 'Vous avez été déconnecté',
+            type: 'success',
+            customClass: {
+              confirmButton: 'btn btn-primary'
+            }
+          })
+        }
+      })
     },
     comingSoon () {
       swal.fire({
