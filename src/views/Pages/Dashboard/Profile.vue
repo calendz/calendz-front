@@ -74,13 +74,13 @@
         <!-- ======================================= -->
         <!-- == Informations profil -->
         <!-- ======================================= -->
-        <div class="col-md-9">
+        <div class="col-md-5">
           <card type="frame">
 
             <div class="row">
               <div class="col-md-6">
                 <base-input
-                  :value="user.firstname"
+                  :value="user.firstname || 'error'"
                   label="Prénom"
                   placeholder="Votre prénom"
                   disabled/>
@@ -97,9 +97,9 @@
             <div class="row">
               <div class="col-md-6">
                 <base-input
-                  :value="user.email"
-                  label="Adresse mail"
-                  placeholder="Votre adresse mail"
+                  :value="user.grade"
+                  label="Classe"
+                  placeholder="Votre classe"
                   disabled/>
               </div>
               <div class="col-md-6">
@@ -112,22 +112,63 @@
             </div>
 
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-12">
                 <base-input
-                  :value="user.grade"
-                  label="Classe"
-                  placeholder="Votre classe"
-                  disabled/>
-              </div>
-              <div class="col-md-6">
-                <base-input
-                  :value="user.bts ? 'Oui' : 'Non'"
-                  class="mb-3"
-                  label="Option BTS"
+                  :value="user.email"
+                  class=" mb-3"
+                  label="Adresse mail"
+                  placeholder="Votre adresse mail"
                   disabled/>
               </div>
             </div>
           </card>
+        </div>
+
+        <!-- ======================================= -->
+        <!-- == Modifier informations -->
+        <!-- ======================================= -->
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-header py-3">
+              <h3 class="mb-0">Modifier mes informations</h3>
+            </div>
+
+            <div class="card-body py-3 mb-1">
+
+              <form
+                class="needs-validation"
+                data-vv-scope="bts-form"
+                @submit.prevent="handleProfileSubmit('bts-form')">
+                <div class="row">
+                  <div class="col-md-12 mx-auto">
+                    <BtsSelect
+                      v-model="bts"
+                      :disabled="user.grade !== 'B1' && user.grade !== 'B2'"/>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12 mx-auto">
+                    <GroupsSelect
+                      v-model="group"
+                      label="Groupe"/>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <base-button
+                    :disabled="changing || btsFormDisabled"
+                    type="primary"
+                    class="mx-auto"
+                    size="md"
+                    native-type="submit">
+                    Enregistrer
+                  </base-button>
+                </div>
+              </form>
+            </div>
+
+          </div>
         </div>
       </div>
 
@@ -142,7 +183,8 @@
               class="mb-0">Modifier mon mot de passe</h3>
             <form
               class="needs-validation"
-              @submit.prevent="handleSubmit">
+              data-vv-scope="password-form"
+              @submit.prevent="handlePasswordSubmit('password-form')">
 
               <div class="row">
                 <div class="col-md-12">
@@ -232,12 +274,19 @@
 import swal from 'sweetalert2'
 import { mapState } from 'vuex'
 import { Modal } from '@/components'
+import { Select, Option } from 'element-ui'
 import DropzoneFileUpload from '@/components/Inputs/DropzoneFileUpload'
+import BtsSelect from '@/components/Inputs/custom/BtsSelect'
+import GroupsSelect from '@/components/Inputs/custom/GroupsSelect'
 
 export default {
   components: {
     Modal,
-    DropzoneFileUpload
+    DropzoneFileUpload,
+    BtsSelect,
+    GroupsSelect,
+    [Select.name]: Select,
+    [Option.name]: Option
   },
   data () {
     return {
@@ -246,7 +295,10 @@ export default {
       changePasswordForm: {
         password: '',
         password2: ''
-      }
+      },
+      group: '',
+      bts: '',
+      btsFormDisabled: false
     }
   },
   computed: {
@@ -257,9 +309,9 @@ export default {
     })
   },
   methods: {
-    handleSubmit (e) {
+    handlePasswordSubmit (scope) {
       // vérification validation des champs
-      this.$validator.validate().then(valid => {
+      this.$validator.validateAll(scope).then(valid => {
         if (!valid) return
 
         swal.fire({
@@ -278,6 +330,17 @@ export default {
           if (result.value) {
             this.$store.dispatch('account/changePassword', this.changePasswordForm)
           }
+        })
+      })
+    },
+    handleProfileSubmit (scope) {
+      this.$validator.validateAll(scope).then(valid => {
+        if (!valid) return
+        this.$store.dispatch('account/changeBts', { bts: this.bts }).then(() => {
+          this.btsFormDisabled = true
+          setTimeout(() => {
+            this.btsFormDisabled = false
+          }, 5000)
         })
       })
     },

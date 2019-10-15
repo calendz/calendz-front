@@ -6,8 +6,8 @@ const UserService = {
   // ================================================
 
   // register
-  register: (firstname, lastname, grade, city, email, password, password2, agree) => {
-    return ApiService.post('/user', { firstname, lastname, grade, city, email, password, password2, agree })
+  register: (firstname, lastname, grade, group, city, email, password, password2, agree) => {
+    return ApiService.post('/user', { firstname, lastname, grade, group, city, email, password, password2, agree })
       .then(res => {
         return res.data
       })
@@ -38,6 +38,17 @@ const UserService = {
       })
   },
 
+  // change user's bts status
+  changeBts: (bts) => {
+    return ApiService.patch('/user/bts', { bts })
+      .then(res => {
+        return res.data
+      })
+      .catch(err => {
+        return Promise.reject(err)
+      })
+  },
+
   // change user's password
   changePassword: (password, password2) => {
     return ApiService.patch('/user/password', { password, password2 })
@@ -45,13 +56,13 @@ const UserService = {
         return res.data
       })
       .catch(err => {
-        return Promise.reject(err.data)
+        return Promise.reject(err)
       })
   },
 
   // update user informations
-  updateInformations: (id, firstname, lastname, email, permissionLevel, grade, city, bts, isActive) => {
-    return ApiService.patch(`/user/${id}`, { firstname, lastname, email, permissionLevel, grade, city, bts, isActive })
+  updateInformations: (id, firstname, lastname, email, permissionLevel, grade, group, city, bts, isActive) => {
+    return ApiService.patch(`/user/${id}`, { firstname, lastname, email, permissionLevel, grade, group, city, bts, isActive })
       .then(res => {
         return res
       })

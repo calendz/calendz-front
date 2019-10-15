@@ -56,6 +56,19 @@ const accountModule = {
       state.status = { reason }
     },
 
+    CHANGE_BTS_REQUEST: (state) => {
+      state.status = { isChanging: true }
+    },
+
+    CHANGE_BTS_SUCCESS: (state, bts) => {
+      state.status = {}
+      state.user.bts = bts
+    },
+
+    CHANGE_BTS_FAILURE: (state, reason) => {
+      state.status = { changeBtsError: reason }
+    },
+
     CHANGE_PASSWORD_REQUEST: (state) => {
       state.status = { isChanging: true }
     },
@@ -110,9 +123,9 @@ const accountModule = {
   // == Actions
   // ==================================
   actions: {
-    register: ({ commit }, { firstname, lastname, grade, city, email, password, password2, agree }) => {
+    register: ({ commit }, { firstname, lastname, grade, group, city, email, password, password2, agree }) => {
       commit('REGISTER_REQUEST')
-      UserService.register(firstname, lastname, grade, city, email, password, password2, agree)
+      UserService.register(firstname, lastname, grade, group, city, email, password, password2, agree)
         .then(
           res => {
             commit('REGISTER_SUCCESS')
@@ -173,6 +186,23 @@ const accountModule = {
       router.push('/login')
     },
 
+    changeBts: ({ commit }, { bts }) => {
+      commit('CHANGE_BTS_REQUEST')
+      UserService.changeBts(bts)
+        .then(
+          res => {
+            commit('CHANGE_BTS_SUCCESS', bts)
+            const user = JSON.parse(localStorage.user)
+            user.bts = bts
+            localStorage.user = JSON.stringify(user)
+            Vue.prototype.$notify({ type: 'success', message: `Modification effectuée avec succès !` })
+          },
+          err => {
+            commit('CHANGE_BTS_FAILURE', err.data.message)
+            Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.data.message || 'Erreur inconnue...'}` })
+          })
+    },
+
     changePassword: ({ commit, dispatch }, { password, password2 }) => {
       commit('CHANGE_PASSWORD_REQUEST')
       UserService.changePassword(password, password2)
@@ -209,9 +239,9 @@ const accountModule = {
           })
     },
 
-    update: ({ commit }, { _id, firstname, lastname, email, permissionLevel, grade, city, bts, isActive }) => {
+    update: ({ commit }, { _id, firstname, lastname, email, permissionLevel, grade, group, city, bts, isActive }) => {
       commit('UPDATE_USER_REQUEST')
-      UserService.updateInformations(_id, firstname, lastname, email, permissionLevel, grade, city, bts, isActive)
+      UserService.updateInformations(_id, firstname, lastname, email, permissionLevel, grade, group, city, bts, isActive)
         .then(
           res => {
             commit('UPDATE_USER_SUCCESS')
