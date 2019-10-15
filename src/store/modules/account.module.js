@@ -62,6 +62,7 @@ const accountModule = {
 
     CHANGE_BTS_SUCCESS: (state, bts) => {
       state.status = {}
+      state.user.bts = bts
     },
 
     CHANGE_BTS_FAILURE: (state, reason) => {
@@ -190,7 +191,10 @@ const accountModule = {
       UserService.changeBts(bts)
         .then(
           res => {
-            commit('CHANGE_BTS_SUCCESS')
+            commit('CHANGE_BTS_SUCCESS', bts)
+            const user = JSON.parse(localStorage.user)
+            user.bts = bts
+            localStorage.user = JSON.stringify(user)
             Vue.prototype.$notify({ type: 'success', message: `Modification effectuée avec succès !` })
           },
           err => {
