@@ -106,6 +106,33 @@
 
                   <div class="row mt-3">
                     <div class="col-lg-1 col-md-2 my-2 d-flex justify-content-center">
+                      <i class="fas fa-palette my-auto"/>
+                    </div>
+
+                    <div class="col-lg-9 col-md-8 my-2">
+                      <p class="text-justify my-auto">Modifier les couleurs de l'emploi du temps.</p>
+                    </div>
+
+                    <div class="col-lg-2 my-2 d-flex justify-content-center my-auto mx-auto">
+                      <base-button
+                        outline
+                        type="primary"
+                        style="width:30px; font-size: 1.1em"
+                        @click="colorInput = '#172b4d'">X</base-button>
+                      <base-input
+                        id="example-color-input"
+                        v-model.lazy="colorInput"
+                        type="color"
+                        value="#172b4d"
+                        style="width:110px; margin-bottom:auto;"
+                        @change="Test()"/>
+                    </div>
+                  </div>
+
+                  <hr class="my-2">
+
+                  <div class="row mt-3">
+                    <div class="col-lg-1 col-md-2 my-2 d-flex justify-content-center">
                       <i class="fas fa-moon my-auto"/>
                     </div>
 
@@ -116,33 +143,6 @@
                     </div>
 
                     <div class="col-lg-2 my-2 d-flex justify-content-center my-auto mx-auto">
-                      <el-tooltip
-                        content="Cette fonctionnalité n'est pas encore disponible !"
-                        placement="top">
-                        <base-switch
-                          :value="false"
-                          type="primary"
-                          on-text="Oui"
-                          off-text="Non"
-                          disabled/>
-                      </el-tooltip>
-                    </div>
-                  </div>
-
-                  <hr class="my-2">
-
-                  <div class="row mt-3">
-                    <div class="col-lg-1 col-md-2 my-2 d-flex justify-content-center">
-                      <i class="fas fa-palette my-auto"/>
-                    </div>
-
-                    <div class="col-lg-9 col-md-8 my-2">
-                      <p class="text-justify my-auto">
-                        <del>Modifier les couleurs de l'emploi du temps.</del>
-                      </p>
-                    </div>
-
-                    <div class="col-m-2 d-flex justify-content-center my-auto mx-auto">
                       <el-tooltip
                         content="Cette fonctionnalité n'est pas encore disponible !"
                         placement="top">
@@ -255,6 +255,7 @@
 <script>
 import { mapState } from 'vuex'
 import { Select, Option } from 'element-ui'
+import debounce from 'debounce'
 
 export default {
   name: 'Settings',
@@ -277,13 +278,17 @@ export default {
             value: '/calendar'
           }
         ]
-      }
+      },
+      colorInput: '#5e72e4'
     }
   },
   computed: {
     ...mapState({
       user: state => state.account.user
     })
+  },
+  created () {
+    this.Test = debounce(this.Test, 2000)
   },
   methods: {
     toggleInformationEmails (element) {
@@ -297,6 +302,9 @@ export default {
     },
     handleDefaultPageChange (newPage) {
       localStorage.setItem('calendz.settings.defaultPage', newPage)
+    },
+    Test (test) {
+      console.log(this.colorInput)
     }
   }
 }
