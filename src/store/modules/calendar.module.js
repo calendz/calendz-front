@@ -16,20 +16,23 @@ const calendarModule = {
   // == Mutations
   // ==================================
   mutations: {
-    FETCH_REQUEST: (state) => {
+    FETCH_REQUEST: (state, { currentWeek }) => {
+      state.fetchedWeeks.push(currentWeek)
       state.status = { isLoading: true }
     },
 
-    FETCH_SUCCESS: (state, { currentWeek, weekCourses }) => {
+    FETCH_SUCCESS: (state, { weekCourses }) => {
       weekCourses.forEach(course => {
         state.courses.push(course) // [...arr]
       })
-      state.fetchedWeeks.push(currentWeek)
       state.status = {}
     },
 
-    FETCH_FAILURE: (state, reason) => {
+    FETCH_FAILURE: (state, { currentWeek, reason }) => {
       state.status = { error: reason }
+      state.fetchedWeeks = state.fetchedWeeks.filter(val => {
+        return val !== currentWeek
+      })
     },
 
     RESET_FETCHED_WEEKS: (state) => {
@@ -65,12 +68,12 @@ const calendarModule = {
         })
 
         const userToFetch = localStorage.getItem('calendz.calendar.searchInput') || rootState.account.user.email
-        commit('FETCH_REQUEST')
+        commit('FETCH_REQUEST', { currentWeek })
         CalendarService.getWeek(userToFetch, date)
           .then(
             res => {
               const weekCourses = reformatWeek(res.week)
-              commit('FETCH_SUCCESS', { currentWeek, weekCourses })
+              commit('FETCH_SUCCESS', { weekCourses })
               Vue.prototype.$notifications.removeNotification(notificationTimestamp)
               // if week is empty
               if (!res.week || Object.keys(res.week).length === 0) {
@@ -78,9 +81,9 @@ const calendarModule = {
               }
             },
             err => {
-              commit('FETCH_FAILURE', err.message)
+              commit('FETCH_FAILURE', { currentWeek, reason: err.message })
               Vue.prototype.$notifications.removeNotification(notificationTimestamp)
-              Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.message || `Erreur lors du chargement la semaine...`}` })
+              Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.message || `Erreur lors du chargement de l'emploi du temps...`}` })
             })
       } else {
         if (process.env.NODE_ENV === 'development') console.log(`Year ${currentWeek.year}, week ${currentWeek.number}: ALREADY FETCHED`)
