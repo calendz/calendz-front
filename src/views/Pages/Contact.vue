@@ -29,7 +29,7 @@
             <div class="col-lg-6">
               <div class="row pt-5">
                 <iframe
-                  class="mx-auto"
+                  class="mx-auto px-2"
                   src="https://discordapp.com/widget?id=605472256780402718&theme=dark"
                   width="400"
                   height="400"
@@ -58,7 +58,7 @@
     <!-- Page content -->
     <section class="py-6 pb-9 bg-default">
       <div class="row justify-content-center text-center">
-        <div class="col-md-6 col-11">
+        <div class="col-xl-5 col-lg-7 col-md-9 col-11">
 
           <div>
             <h2
@@ -71,37 +71,71 @@
             </p>
           </div>
 
-          <div class="form-group row pt-5">
-            <div class="col-md-6">
-              <base-input
-                type="text"
-                label="Sujet"
-                label-classes="text-white"
-                class="text-left text-white"
-                autocomplete="email"
-                placeholder="Votre adresse mail"/>
-            </div>
+          <div class="mt-5 mb--9">
+            <div class="card bg-secondary border-0">
+              <div class="card-body">
 
-            <div class="col-md-6">
-              <base-input
-                type="email"
-                label="Adresse mail (afin de vous recontacter)"
-                label-classes="text-white"
-                class="text-left text-white"
-                autocomplete="email"
-                placeholder="Votre adresse mail"/>
-            </div>
+                <form
+                  class="form-group row"
+                  role="form"
+                  @submit.prevent="handleSubmit">
 
-            <div class="col-md-12 mb--9">
-              <base-input>
-                <textarea
-                  rows="12"
-                  placeholder="Votre message..."
-                  class="form-control"/>
-              </base-input>
+                  <div class="col-md-6">
+                    <base-input
+                      v-validate="'required|min:3|max:64'"
+                      :error="getError('sujet')"
+                      :valid="isValid('sujet')"
+                      v-model="contactForm.subject"
+                      name="sujet"
+                      type="text"
+                      label="Sujet"
+                      class="text-left"
+                      placeholder="Sujet de votre message"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <base-input
+                      v-validate="'required|email|min:3|max:64'"
+                      :error="getError('email')"
+                      :valid="isValid('email')"
+                      v-model="contactForm.email"
+                      name="email"
+                      type="email"
+                      label="Votre adresse mail"
+                      class="text-left"
+                      autocomplete="email"
+                      placeholder="Votre adresse mail"/>
+                  </div>
+
+                  <div class="col-md-12">
+                    <base-input>
+                      <textarea
+                        v-validate="'required|min:15|max:4000'"
+                        :error="getError('message')"
+                        :valid="isValid('message')"
+                        v-model="contactForm.message"
+                        name="message"
+                        rows="12"
+                        placeholder="Votre message..."
+                        class="form-control"/>
+                    </base-input>
+                  </div>
+
+                  <div class="col-md-12">
+                    <base-button
+                      :disabled="!sendMailEnabled"
+                      class="mb--4"
+                      size="lg"
+                      type="primary"
+                      native-type="submit">
+                      Envoyer mon message
+                    </base-button>
+                  </div>
+                </form>
+
+              </div>
             </div>
           </div>
-
         </div>
 
       </div>
@@ -110,7 +144,40 @@
 </template>
 
 <script>
+import ApiService from '../../services/api.service.js'
+
 export default {
+  data () {
+    return {
+      sendMailEnabled: true,
+      contactForm: {
+        subject: '',
+        email: '',
+        message: ''
+      }
+    }
+  },
+  methods: {
+    handleSubmit () {
+      this.$validator.validate().then(valid => {
+        if (!valid) return
+        this.sendMailEnabled = false
+
+        ApiService.post('/contact', this.contactForm).then((res) => {
+          this.$notify({ type: 'success', message: 'Votre message a bien été envoyé !' })
+        }).catch(() => {
+          this.sendMailEnabled = true
+          this.$notify({ type: 'danger', message: `<b>Erreur !</b> Une erreur est survenue lors de l'envoi de votre message...` })
+        })
+      })
+    },
+    getError (name) {
+      return this.errors.first(name)
+    },
+    isValid (name) {
+      return this.validated && !this.errors.has(name)
+    }
+  }
 }
 </script>
 
