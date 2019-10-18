@@ -79,18 +79,17 @@
                       <i class="fas fa-door-open my-auto"/>
                     </div>
 
-                    <div class="col-lg-9 col-md-8 my-2">
+                    <div class="col-lg-8 col-md-8 my-2">
                       <p class="text-justify my-auto">
                         Page par défaut
                         <span style="color: #adb5bd">(page sur laquelle vous arrivez après vous être connecté).</span>
                       </p>
                     </div>
 
-                    <div class="col-lg-2 my-2 d-flex justify-content-center my-auto mx-auto">
+                    <div class="col-lg-3 my-2 d-flex justify-content-center my-auto mx-auto">
                       <el-select
                         v-model="select.target"
-                        class="select-danger"
-                        style="width: 150px"
+                        class="select-danger w-100"
                         @change="handleDefaultPageChange(select.target)">
                         <el-option
                           v-for="(option, index) in select.options"
@@ -109,23 +108,23 @@
                       <i class="fas fa-palette my-auto"/>
                     </div>
 
-                    <div class="col-lg-9 col-md-8 my-2">
-                      <p class="text-justify my-auto">Modifier les couleurs de l'emploi du temps.</p>
+                    <div class="col-lg-8 col-md-8 my-2">
+                      <p class="text-justify my-auto">Modifier la couleur principale de l'emploi du temps.</p>
                     </div>
 
-                    <div class="col-lg-2 my-2 d-flex justify-content-center my-auto mx-auto">
+                    <div class="col-lg-3 my-2 d-flex justify-content-center my-auto">
+                      <input
+                        :value="colorInput"
+                        type="color"
+                        class="col-8 form-control p-1"
+                        @change="handleCalendarColorChange($event)">
                       <base-button
                         outline
                         type="primary"
-                        style="width:30px; font-size: 1.1em"
-                        @click="colorInput = '#172b4d'">X</base-button>
-                      <base-input
-                        id="example-color-input"
-                        v-model.lazy="colorInput"
-                        type="color"
-                        value="#172b4d"
-                        style="width:110px; margin-bottom:auto;"
-                        @change="Test()"/>
+                        class="col-3 ml-3"
+                        @click="handleCalendarColorReset()">
+                        <i class="fas fa-undo"/>
+                      </base-button>
                     </div>
                   </div>
 
@@ -136,13 +135,13 @@
                       <i class="fas fa-moon my-auto"/>
                     </div>
 
-                    <div class="col-lg-9 col-md-8 my-2">
+                    <div class="col-lg-8 col-md-8 my-2">
                       <p class="text-justify my-auto">
                         <del>Activer le mode sombre (intégralité du site).</del>
                       </p>
                     </div>
 
-                    <div class="col-lg-2 my-2 d-flex justify-content-center my-auto mx-auto">
+                    <div class="col-lg-3 my-2 d-flex justify-content-center my-auto mx-auto">
                       <el-tooltip
                         content="Cette fonctionnalité n'est pas encore disponible !"
                         placement="top">
@@ -255,7 +254,6 @@
 <script>
 import { mapState } from 'vuex'
 import { Select, Option } from 'element-ui'
-import debounce from 'debounce'
 
 export default {
   name: 'Settings',
@@ -279,16 +277,13 @@ export default {
           }
         ]
       },
-      colorInput: '#5e72e4'
+      colorInput: '#5e72e4' // TODO: load default value from user's state
     }
   },
   computed: {
     ...mapState({
       user: state => state.account.user
     })
-  },
-  created () {
-    this.Test = debounce(this.Test, 2000)
   },
   methods: {
     toggleInformationEmails (element) {
@@ -303,8 +298,13 @@ export default {
     handleDefaultPageChange (newPage) {
       localStorage.setItem('calendz.settings.defaultPage', newPage)
     },
-    Test (test) {
-      console.log(this.colorInput)
+    handleCalendarColorChange (event) {
+      // TODO: call API with val = event.target.value
+      console.log('newVal:', event.target.value)
+    },
+    handleCalendarColorReset () {
+      // TODO: call API with val = #172b4d
+      console.log('reset:  #172b4d')
     }
   }
 }
