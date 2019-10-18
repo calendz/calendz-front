@@ -47,7 +47,7 @@
 
               <template slot="footer">
                 <i class="fas fa-external-link-alt mr-2"/>
-                <span class="text-nowrap">cliquez pour accéder</span>
+                <span class="text-nowrap">cliquez pour y accéder</span>
               </template>
             </stats-card>
           </a>

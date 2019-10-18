@@ -38,21 +38,27 @@
           to="/calendar"
           class="nav-link p-0">
           <i class="fas fa-clock mr-1 text-default"/>
-          <span class="text-nowrap">
-            <span v-show="calendarLoading">
-              ------- -- ------- - --h--
-            </span>
-            <span v-show="!calendarLoading">
-              <span v-if="nextCourse">
+
+          <!-- loading -->
+          <span v-show="calendarLoading">
+            ------- -- ------- - --h--
+          </span>
+
+          <span v-show="!calendarLoading">
+            <!-- next course -->
+            <span v-if="nextCourse">
+              <span class="mr-2">
                 {{ `${dateToFullString(nextCourse.start)} - ${dateToTimeString(nextCourse.start, 'h').slice(0, -3)}` }}
-                <i class="fas fa-door-open mx-2 text-primary"/>
-                {{ nextCourse.room }}
               </span>
-              <span v-if="!nextCourse">
-                cliquez pour accéder
-              </span>
+              <i class="fas fa-door-open mr-2 text-primary"/>
+              {{ nextCourse.room }}
+            </span>
+            <!-- no next course -->
+            <span v-if="!nextCourse">
+              cliquez pour accéder aux détails
             </span>
           </span>
+
         </router-link>
       </slot>
     </p>
