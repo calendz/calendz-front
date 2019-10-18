@@ -14,6 +14,7 @@ import NotFound from '@/views/Pages/Errors/NotFound.vue'
 
 // Authentication
 const Home = () => import(/* webpackChunkName: "pages" */ '@/views/Pages/Home.vue')
+const Contact = () => import(/* webpackChunkName: "pages" */ '@/views/Pages/Contact.vue')
 const Login = () => import(/* webpackChunkName: "pages" */ '@/views/Pages/Auth/Login.vue')
 const Register = () => import(/* webpackChunkName: "pages" */ '@/views/Pages/Auth/Register.vue')
 const EmailConfirmation = () => import(/* webpackChunkName: "pages" */ '@/views/Pages/Auth/EmailConfirmation.vue')
@@ -145,6 +146,14 @@ const authPages = {
       meta: {
         noBodyBackground: true,
         title: 'Accueil - Calendz'
+      }
+    },
+    {
+      path: '/contact',
+      name: 'Contact',
+      component: Contact,
+      meta: {
+        title: 'Contact - Calendz'
       }
     },
     {
