@@ -24,6 +24,7 @@
             @change="handleSearchInputChange"
             @mouseenter="handleSearchInputMouseEnter"
             @mouseleave="handleSearchInputMouseLeave">
+
             <div class="form-group mb-0">
               <div class="input-group input-group-alternative input-group-merge">
                 <div class="input-group-prepend">
@@ -37,13 +38,12 @@
                   autocomplete="off"
                   class="form-control p-0"
                   placeholder="Entrez : prénom.nom"
-                  type="text">
-                <!-- :class="showSearchInput ? 'visible ' : 'invisible'" -->
+                  type="text"
+                  style="width: 0">
                 <div
-                  v-show="showSearchInput"
                   class="input-group-text input-group-append text-black"
                   @click="handleSearchInputClear">
-                  <i class="fas fa-times fade-in"/>
+                  <i class="fas fa-times"/>
                 </div>
               </div>
             </div>
@@ -110,7 +110,7 @@
 
             <!-- Card body -->
             <div
-              :class="{ 'bg-other-agenda': searchInput }"
+              :class="{ 'bg-other-agenda': searchInput.includes('.') }"
               class="card-body p-0 card-calendar-body">
               <full-calendar
                 id="calendar"
@@ -193,14 +193,6 @@ export default {
     calendarApi.setOption('locale', 'fr')
     // set correct header date
     this.updateHeaderDate()
-    // initialize the search input
-    const searchInput = localStorage.getItem('calendz.calendar.searchInput')
-    if (searchInput) {
-      this.searchInput = searchInput
-      document.querySelector('#agenda-search-input').style.width = ''
-    } else {
-      document.querySelector('#agenda-search-input').style.width = '0'
-    }
 
     // add events listeners
     window.addEventListener('keyup', (e) => {
@@ -215,6 +207,9 @@ export default {
     // set correct view according to screen's size
     if (this.windowWidth < 800) this.changeView('timeGridDay')
     if (this.windowWidth >= 800) this.changeView('timeGridWeek')
+  },
+  beforeDestroy () {
+    this.handleSearchInputClear()
   },
   methods: {
     // ===========================================
@@ -428,9 +423,7 @@ export default {
     },
     handleSearchInputMouseEnter () {
       document.querySelector('#agenda-search-input').style.width = ''
-      // setTimeout(() => {
       this.showSearchInput = true
-      // }, 230)
     },
     handleSearchInputMouseLeave () {
       if (!this.searchInput) {
@@ -439,8 +432,10 @@ export default {
       }
     },
     handleSearchInputClear () {
+      if (this.searchInput === '') return
+
       this.searchInput = ''
-      localStorage.setItem('calendz.calendar.searchInput', '')
+      localStorage.removeItem('calendz.calendar.searchInput')
       this.handleSearchInputChange()
     },
     handleSearchInputChange () {
@@ -534,7 +529,7 @@ export default {
   }
 
   #agenda-search-input {
-    transition-duration: 400ms;
+    transition-duration: 450ms;
   }
 
   .bg-other-agenda {
