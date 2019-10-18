@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import DateUtil from '../../mixins/dateUtilMixin'
 import CalendarService from '../../services/calendar.service'
 
 const calendarModule = {
@@ -102,6 +103,25 @@ const calendarModule = {
     },
     getCourses: state => {
       return state.courses
+    },
+    getTodayCourses: state => {
+      const today = DateUtil.methods.dateToDayMonthYear(new Date())
+
+      return state.courses.filter(course => {
+        const start = DateUtil.methods.dateToDayMonthYear(course.start)
+        return (today === start)
+      })
+    },
+    getUpcomingCourses: state => {
+      const now = new Date().getTime()
+
+      return state.courses.filter(course => {
+        const start = new Date(course.start).getTime()
+        return now < start
+      })
+    },
+    getNextCourse: (state, getters) => {
+      return getters.getUpcomingCourses[0]
     }
   }
 }
