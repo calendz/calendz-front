@@ -65,6 +65,9 @@
     <div class="container-fluid mt--6">
       <div class="row">
         <div class="col-lg-4">
+          <today-courses/>
+        </div>
+        <div class="col-lg-4">
           <latest-homeworks/>
         </div>
         <div class="col-lg-4">
@@ -78,6 +81,7 @@
 import Clock from './Widgets/Clock'
 import NextCourse from './Widgets/NextCourse'
 import NextHomework from './Widgets/NextHomework'
+import TodayCourses from './Widgets/TodayCourses'
 import LatestHomeworks from './Widgets/LatestHomeworks'
 import LatestNotifications from './Widgets/LatestNotifications'
 
@@ -86,6 +90,7 @@ export default {
     Clock,
     NextCourse,
     NextHomework,
+    TodayCourses,
     LatestHomeworks,
     LatestNotifications
   }
