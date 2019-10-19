@@ -153,6 +153,13 @@ export default {
       end = new Date(end).getTime()
       const now = new Date().getTime()
       return now > start && now < end
+    },
+
+    getProgress (start, end) {
+      start = new Date(start).getTime()
+      end = new Date(end).getTime()
+      const now = new Date().getTime()
+      return Math.round(((now - start) / (end - start)) * 100)
     }
   }
 }
