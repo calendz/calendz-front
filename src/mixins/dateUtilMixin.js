@@ -126,16 +126,33 @@ export default {
       }
     },
 
-    timeToHour (toFormat) {
+    timeToHour (toFormat, separator = ':') {
       const date = new Date(toFormat)
       const hours = (`0${date.getHours()}`).slice(-2)
       const minutes = (`0${date.getMinutes()}`).slice(-2)
-      return hours + ':' + minutes
+      return hours + separator + minutes
     },
 
     timestampToDate (timestamp) {
       const date = new Date(timestamp * 1000 / 1000)
       return date
+    },
+
+    // ============================
+    // == Others
+    // ============================
+
+    hasPassed (date) {
+      date = new Date(date).getTime()
+      const now = new Date().getTime()
+      return now > date
+    },
+
+    isBetween (start, end) {
+      start = new Date(start).getTime()
+      end = new Date(end).getTime()
+      const now = new Date().getTime()
+      return now > start && now < end
     }
   }
 }
