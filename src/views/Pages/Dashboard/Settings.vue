@@ -114,7 +114,7 @@
 
                     <div class="col-lg-3 my-2 d-flex justify-content-center my-auto">
                       <input
-                        :value="colorInput"
+                        v-model="colorInput"
                         type="color"
                         class="col-8 form-control p-1"
                         @change="handleCalendarColorChange($event)">
@@ -277,13 +277,16 @@ export default {
           }
         ]
       },
-      colorInput: '#5e72e4' // TODO: load default value from user's state
+      colorInput: '#172b4d'
     }
   },
   computed: {
     ...mapState({
       user: state => state.account.user
     })
+  },
+  mounted () {
+    this.colorInput = this.$store.getters['account/user'] ? '#' + this.$store.getters['account/user'].settings.calendarColor : '#172b4d'
   },
   methods: {
     toggleInformationEmails (element) {
@@ -299,12 +302,11 @@ export default {
       localStorage.setItem('calendz.settings.defaultPage', newPage)
     },
     handleCalendarColorChange (event) {
-      // TODO: call API with val = event.target.value
-      console.log('newVal:', event.target.value)
+      this.$store.dispatch('account/changeCalendarColor', { value: event.target.value.substr(1) })
     },
     handleCalendarColorReset () {
-      // TODO: call API with val = #172b4d
-      console.log('reset:  #172b4d')
+      this.colorInput = '#172b4d'
+      this.$store.dispatch('account/changeCalendarColor', { value: '172b4d' })
     }
   }
 }

@@ -128,6 +128,7 @@
                 :event-render="customRender"
                 :now-indicator="true"
                 :fixed-week-count="false"
+                :event-color="`#${user.settings.calendarColor}`"
                 content-height="auto"
                 slot-duration="01:00:00"
                 min-time="08:00:00"
@@ -172,6 +173,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      user: 'account/user',
       events: 'calendar/getCourses',
       isLoading: 'calendar/isLoading'
     })
@@ -535,6 +537,10 @@ export default {
 
   #agenda-search-input {
     transition-duration: 400ms;
+  }
+
+  .custom-event:hover {
+    filter: contrast(1.5) !important;
   }
 
   .bg-other-agenda {

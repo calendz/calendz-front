@@ -114,7 +114,7 @@ const reformatWeek = (week) => {
         title: course.subject.toUpperCase(),
         start: formatDate(course.date, course.start),
         end: formatDate(course.date, course.end),
-        className: 'bg-default',
+        className: 'custom-event',
         professor: course.professor,
         room: course.room.split('-')[0].split('(')[0]
       })

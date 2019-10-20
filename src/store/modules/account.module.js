@@ -94,6 +94,19 @@ const accountModule = {
       state.status = { changeParameterError: reason }
     },
 
+    CHANGE_CALENDAR_COLOR_REQUEST: (state) => {
+      state.status = { isLoading: true }
+    },
+
+    CHANGE_CALENDAR_COLOR_SUCCESS: (state, value) => {
+      state.user.settings.calendarColor = value
+      state.status = {}
+    },
+
+    CHANGE_CALENDAR_COLOR_FAILURE: (state, reason) => {
+      state.status = { changeParameterError: reason }
+    },
+
     UPDATE_USER_REQUEST: (state) => {
       state.status = { isUpdating: true }
     },
@@ -239,6 +252,23 @@ const accountModule = {
           })
     },
 
+    changeCalendarColor: ({ commit }, { value }) => {
+      commit('CHANGE_CALENDAR_COLOR_REQUEST')
+      UserService.setCalendarColor(value)
+        .then(
+          res => {
+            commit('CHANGE_CALENDAR_COLOR_SUCCESS', value)
+            const user = JSON.parse(localStorage.user)
+            user.settings.calendarColor = value
+            localStorage.user = JSON.stringify(user)
+            Vue.prototype.$notify({ type: 'success', message: `La couleur de l'emploi du temps à été changé avec succès.` })
+          },
+          err => {
+            commit('CHANGE_CALENDAR_COLOR_FAILURE', err.message)
+            Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.message || 'Erreur inconnue...'}` })
+          })
+    },
+
     update: ({ commit }, { _id, firstname, lastname, email, permissionLevel, grade, group, city, bts, isActive }) => {
       commit('UPDATE_USER_REQUEST')
       UserService.updateInformations(_id, firstname, lastname, email, permissionLevel, grade, group, city, bts, isActive)
@@ -293,6 +323,9 @@ const accountModule = {
   getters: {
     isLoggedIn: state => {
       return !!state.user
+    },
+    user: state => {
+      return state.user
     }
   }
 }

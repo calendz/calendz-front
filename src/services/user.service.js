@@ -102,6 +102,17 @@ const UserService = {
       .catch(err => {
         return Promise.reject(err.data)
       })
+  },
+
+  // change user's calendar color
+  setCalendarColor: (value) => {
+    return ApiService.patch(`/user/calendar-color/${value}`)
+      .then(res => {
+        return res.data
+      })
+      .catch(err => {
+        return Promise.reject(err.data)
+      })
   }
 }
 
