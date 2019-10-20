@@ -261,7 +261,7 @@ const accountModule = {
             const user = JSON.parse(localStorage.user)
             user.settings.calendarColor = value
             localStorage.user = JSON.stringify(user)
-            Vue.prototype.$notify({ type: 'success', message: `La couleur de l'emploi du temps à été changé avec succès.` })
+            Vue.prototype.$notify({ type: 'success', message: `Couleur de l'emploi du temps modifiée avec succès.` })
           },
           err => {
             commit('CHANGE_CALENDAR_COLOR_FAILURE', err.message)
