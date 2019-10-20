@@ -88,6 +88,14 @@ export default {
       return `${day} ${dayNumber} ${month}`
     },
 
+    dateToShortFullString (date) {
+      date = new Date(date)
+      const day = this.dayNbToString(date.getDay()).substring(0, 3)
+      const dayNumber = ('0' + date.getDate()).slice(-2)
+      const month = this.monthNbToShortString(date.getMonth())
+      return `${day}. ${dayNumber} ${month}`
+    },
+
     // eg: '07:12:42'
     dateToTimeString (date, separator = ':') {
       date = new Date(date)
@@ -119,10 +127,27 @@ export default {
         case 5: return 'juin'
         case 6: return 'juillet'
         case 7: return 'août'
-        case 8: return 'setpembre'
+        case 8: return 'septembre'
         case 9: return 'octobre'
         case 10: return 'novembre'
         case 11: return 'décembre'
+      }
+    },
+
+    monthNbToShortString (month) {
+      switch (month) {
+        case 0: return 'jan'
+        case 1: return 'fév'
+        case 2: return 'mars'
+        case 3: return 'avr'
+        case 4: return 'mai'
+        case 5: return 'juin'
+        case 6: return 'juil'
+        case 7: return 'août'
+        case 8: return 'sep'
+        case 9: return 'oct'
+        case 10: return 'nov'
+        case 11: return 'déc'
       }
     },
 

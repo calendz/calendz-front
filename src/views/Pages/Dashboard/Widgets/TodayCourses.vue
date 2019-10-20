@@ -4,7 +4,7 @@
     <!-- card header -->
     <div class="card-header h3 mb-0">
       <div class="row align-items-center">
-        <div class="col-8">
+        <div class="col-8 pr-0">
           <h5 class="h3 mb-0">
             {{ headerText }}
           </h5>
@@ -125,7 +125,7 @@ export default {
       let day = this.courses[0]
       if (!day) return `Aucun cours à afficher`
 
-      day = this.dateToDayMonthYear(day.start, '/')
+      day = this.dateToShortFullString(day.start)
       const today = this.dateToDayMonthYear(new Date(), '/')
 
       if (today === day) return `Cours d'aujourd'hui`
