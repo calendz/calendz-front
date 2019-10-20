@@ -1,5 +1,6 @@
 <template>
   <div class="card">
+
     <!-- card header -->
     <div class="card-header h3 mb-0">
       <div class="row align-items-center">
@@ -15,7 +16,43 @@
         </div>
       </div>
     </div>
-    <div class="card-body py-1">
+
+    <!-- card body - loading-->
+    <div
+      v-show="calendarLoading"
+      class="card-body py-1">
+      <div class="list-group list-group-flush">
+        <div
+          v-for="(number, index) in [1, 2, 3]"
+          :key="index"
+          class="list-group-item flex-column align-items-start px-2">
+          <div class="row">
+            <div class="col-8 pr-1">
+              <placeholder class="w-100"/>
+            </div>
+            <div class="col-4 pl-0 text-right">
+              <h4 class="text-sm mb-0">
+                <placeholder class="w-100"/>
+              </h4>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-8 pr-1 text-left">
+              <placeholder class="w-100 mb-0"/>
+            </div>
+            <div class="col-4 pl-0 text-right">
+              <placeholder class="w-100 mb-0"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- card body - not loading-->
+    <div
+      v-show="!calendarLoading"
+      class="card-body py-1">
       <!-- show next day courses -->
       <div
         v-if="courses.length > 0"
@@ -41,7 +78,7 @@
             <div class="col-8 pr-1 text-left">
               <p class="text-sm mb-0">{{ capitalizeFirstLetterEachWords(course.professor) }}</p>
             </div>
-            <div class="col-4 pl-1 text-right">
+            <div class="col-4 pl-0 text-right">
               <p class="text-sm mb-0">{{ course.room }}</p>
             </div>
           </div>
@@ -75,6 +112,7 @@ export default {
   mixins: [dateUtilMixin, stringUtilMixin],
   computed: {
     ...mapGetters({
+      calendarLoading: 'calendar/isLoading',
       todayCourses: 'calendar/getTodayCourses',
       nextDayCourses: 'calendar/getNextDayCourses'
     }),

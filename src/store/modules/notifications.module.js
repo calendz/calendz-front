@@ -170,6 +170,9 @@ const notificationsModule = {
   // == Getters
   // ==================================
   getters: {
+    isLoading: state => {
+      return !!state.status.isRetrieving
+    },
     all: state => {
       const array = [...state.notifications]
       array.sort((a, b) => (a.timestamp > b.timestamp) ? -1 : 1)

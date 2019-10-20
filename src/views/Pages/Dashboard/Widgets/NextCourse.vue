@@ -12,7 +12,7 @@
 
           <span class="h3">
             <span v-show="calendarLoading">
-              Chargement en cours
+              <placeholder class="w-100"/>
             </span>
             <span v-show="!calendarLoading">
               {{ nextCourse ? nextCourse.title : 'Aucun cours à venir...' }}
@@ -39,13 +39,11 @@
           <!-- loading -->
           <span v-show="calendarLoading">
             <div class="row">
-              <div class="col-8 pr-1">
-                <i class="fas fa-clock mr-1 text-default"/>
-                --------- -- --------- - --h--
+              <div class="col-8 pb-1 pr-1">
+                <placeholder class="w-100"/>
               </div>
               <div class="col-4 pl-1 text-right">
-                <i class="fas fa-door-open mr-2 text-primary"/>
-                ------
+                <placeholder class="w-100"/>
               </div>
             </div>
           </span>
