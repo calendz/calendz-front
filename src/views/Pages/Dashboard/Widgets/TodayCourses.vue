@@ -61,7 +61,7 @@
       <div
         v-if="courses.length === 0"
         class="my-4 text-center">
-        <h3 class="text-muted">Aucun cours à venir</h3>
+        <h4 class="text-muted">Aucun cours à venir</h4>
       </div>
     </div>
   </div>

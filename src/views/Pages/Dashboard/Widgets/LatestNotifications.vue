@@ -19,8 +19,8 @@
     <div class="card-body pb-3 ">
       <div
         v-if="notifications.length < 1"
-        class="text-muted text-center">
-        <i>Vous n'avez aucune notification !</i>
+        class="text-center">
+        <h4 class="text-muted">Vous n'avez aucune notification !</h4>
       </div>
       <div
         v-if="notifications.length > 0"

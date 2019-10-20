@@ -11,10 +11,10 @@
           </h5>
 
           <span class="h3">
-            <span v-if="calendarLoading">
+            <span v-show="calendarLoading">
               Chargement en cours
             </span>
-            <span v-if="!calendarLoading">
+            <span v-show="!calendarLoading">
               {{ nextCourse ? nextCourse.title : 'Aucun cours à venir...' }}
             </span>
           </span>
@@ -24,9 +24,7 @@
       <div class="col-auto">
         <slot name="icon">
           <div class="icon icon-shape bg-gradient-info text-white rounded-circle shadow">
-            <i
-              :class="calendarLoading ? 'fa-circle-notch fa-spin' : 'fa-calendar-week'"
-              class="fas"/>
+            <i class="fas fa-calendar-week"/>
           </div>
         </slot>
       </div>
@@ -37,22 +35,36 @@
         <router-link
           to="/calendar"
           class="nav-link p-0">
-          <i class="fas fa-clock mr-1 text-default"/>
 
           <!-- loading -->
           <span v-show="calendarLoading">
-            ------- -- ------- - --h--
+            <div class="row">
+              <div class="col-8 pr-1">
+                <i class="fas fa-clock mr-1 text-default"/>
+                --------- -- --------- - --h--
+              </div>
+              <div class="col-4 pl-1 text-right">
+                <i class="fas fa-door-open mr-2 text-primary"/>
+                ------
+              </div>
+            </div>
           </span>
 
+          <!-- not loading -->
           <span v-show="!calendarLoading">
             <!-- next course -->
-            <span v-if="nextCourse">
-              <span class="mr-2">
+            <div
+              v-if="nextCourse"
+              class="row">
+              <div class="col-8 pr-1">
+                <i class="fas fa-clock mr-1 text-default"/>
                 {{ `${dateToFullString(nextCourse.start)} - ${dateToTimeString(nextCourse.start, 'h').slice(0, -3)}` }}
-              </span>
-              <i class="fas fa-door-open mr-2 text-primary"/>
-              {{ nextCourse.room }}
-            </span>
+              </div>
+              <div class="col-4 pl-1 text-right">
+                <i class="fas fa-door-open mr-2 text-primary"/>
+                {{ nextCourse.room }}
+              </div>
+            </div>
             <!-- no next course -->
             <span v-if="!nextCourse">
               cliquez pour accéder aux détails

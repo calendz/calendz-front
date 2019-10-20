@@ -6,12 +6,9 @@
       class="h3 mb-0">
       <div class="row align-items-center">
         <div class="col-8">
-          <!-- Title -->
           <h5 class="h3 mb-0">
             Prochains devoirs
-            <span
-              class="small ml-1"
-              style="color: #8898aa">(à venir)</span>
+            <span class="small ml-1 text-muted">(à venir)</span>
           </h5>
         </div>
         <div class="col-4 text-right">
@@ -21,14 +18,14 @@
         </div>
       </div>
     </div>
-    <ul
-      class="list-group list-group-flush"
-      data-toggle="checklist">
+
+    <!-- card body -->
+    <ul class="list-group list-group-flush">
       <li
-        v-for="item in items"
-        :key="item.title"
-        class="list-group-item px-0"
-      >
+        v-for="(item, index) in items"
+        :key="index"
+        :class="(index === 0) ? 'pt-1' : index === items.length - 1 ? 'pb-1' : ''"
+        class="list-group-item px-0">
         <div
           :class="{'checklist-item-checked': item.done, [`checklist-item-${item.checkType}`]: item.checkType}"
           class="checklist-item">
@@ -45,7 +42,6 @@
               :type="item.checkType"/>
           </div>
         </div>
-
       </li>
     </ul>
   </card>
