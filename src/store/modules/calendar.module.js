@@ -105,7 +105,7 @@ const calendarModule = {
       return state.courses
     },
     getTodayCourses: state => {
-      const today = DateUtil.methods.dateToDayMonthYear(new Date())
+      const today = DateUtil.methods.dateToDayMonthYear()
 
       return state.courses.filter(course => {
         const start = DateUtil.methods.dateToDayMonthYear(course.start)
@@ -122,6 +122,17 @@ const calendarModule = {
     },
     getNextCourse: (state, getters) => {
       return getters.getUpcomingCourses[0]
+    },
+    getNextDayCourses: (state, getters) => {
+      const nextCourse = getters.getNextCourse
+      if (!nextCourse) return []
+
+      const nextCourseDay = DateUtil.methods.dateToDayMonthYear(nextCourse.start)
+      const res = getters.getUpcomingCourses.filter(course => {
+        const start = DateUtil.methods.dateToDayMonthYear(course.start)
+        return (nextCourseDay === start)
+      })
+      return res
     }
   }
 }

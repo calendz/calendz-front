@@ -63,12 +63,12 @@ export default {
     // == Conversions
     // ============================
 
-    dateToDayMonthYear (date) {
+    dateToDayMonthYear (date, separator = '-') {
       date = new Date(date)
       const day = (`0${date.getDate()}`).slice(-2)
       const month = (`0${date.getMonth() + 1}`).slice(-2)
       const year = date.getFullYear().toString().substr(-2)
-      return `${day}-${month}-${year}`
+      return `${day}${separator}${month}${separator}${year}`
     },
 
     dateToMonthDayYear (date) {
@@ -126,16 +126,40 @@ export default {
       }
     },
 
-    timeToHour (toFormat) {
+    timeToHour (toFormat, separator = ':') {
       const date = new Date(toFormat)
       const hours = (`0${date.getHours()}`).slice(-2)
       const minutes = (`0${date.getMinutes()}`).slice(-2)
-      return hours + ':' + minutes
+      return hours + separator + minutes
     },
 
     timestampToDate (timestamp) {
       const date = new Date(timestamp * 1000 / 1000)
       return date
+    },
+
+    // ============================
+    // == Others
+    // ============================
+
+    hasPassed (date) {
+      date = new Date(date).getTime()
+      const now = new Date().getTime()
+      return now > date
+    },
+
+    isBetween (start, end) {
+      start = new Date(start).getTime()
+      end = new Date(end).getTime()
+      const now = new Date().getTime()
+      return now > start && now < end
+    },
+
+    getProgress (start, end) {
+      start = new Date(start).getTime()
+      end = new Date(end).getTime()
+      const now = new Date().getTime()
+      return Math.round(((now - start) / (end - start)) * 100)
     }
   }
 }
