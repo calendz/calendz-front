@@ -16,6 +16,7 @@ import BaseNav from '@/components/Navbar/BaseNav'
 import BaseHeader from '@/components/BaseHeader'
 import PasswordStrength from '@/components/PasswordStrength'
 import ApiErrors from '@/components/ApiErrors'
+import Placeholder from '@/components/Placeholder'
 import { Input, Tooltip, Popover } from 'element-ui'
 import { ValidationProvider } from 'vee-validate'
 
@@ -40,6 +41,7 @@ const GlobalComponents = {
     Vue.component(Input.name, Input)
     Vue.component(PasswordStrength.name, PasswordStrength)
     Vue.component(ApiErrors.name, ApiErrors)
+    Vue.component(Placeholder.name, Placeholder)
     Vue.component('ValidationProvider', ValidationProvider)
     Vue.use(Tooltip)
     Vue.use(Popover)

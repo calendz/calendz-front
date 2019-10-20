@@ -9,6 +9,8 @@ import Badge from './Badge'
 import BaseProgress from './BaseProgress.vue'
 import BaseButton from './BaseButton.vue'
 
+import Placeholder from './Placeholder.vue'
+
 import BaseDropdown from './BaseDropdown.vue'
 import BaseTable from './BaseTable.vue'
 
@@ -45,6 +47,7 @@ export {
   BaseRadio,
   BaseInput,
   TagsInput,
+  Placeholder,
   Card,
   StatsCard,
   BaseTable,
