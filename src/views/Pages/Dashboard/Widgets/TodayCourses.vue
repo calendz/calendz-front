@@ -5,7 +5,7 @@
       <div class="row align-items-center">
         <div class="col-8">
           <h5 class="h3 mb-0">
-            Cours d'aujourd'hui
+            {{ headerText }}
           </h5>
         </div>
         <div class="col-4 text-right">
@@ -15,14 +15,17 @@
         </div>
       </div>
     </div>
-    <div class="card-body py-0">
-      <div class="list-group list-group-flush">
+    <div class="card-body py-1">
+      <!-- show next day courses -->
+      <div
+        v-if="courses.length > 0"
+        class="list-group list-group-flush">
         <div
-          v-for="(course, index) in todayCourses"
+          v-for="(course, index) in courses"
           :key="index"
           :style="hasPassed(course.end) ? 'text-decoration: line-through' : ''"
           :class="isBetween(course.start, course.end) ? 'pt-3 pb-1' : 'py-3'"
-          class="list-group-item list-group-item-action flex-column align-items-start px-2">
+          class="list-group-item flex-column align-items-start px-2">
           <div class="row">
             <div class="col-8 pr-1">
               <h4>{{ course.title }}</h4>
@@ -53,6 +56,13 @@
             class="mt-3"/>
         </div>
       </div>
+
+      <!-- if no courses -->
+      <div
+        v-if="courses.length === 0"
+        class="my-4 text-center">
+        <h3 class="text-muted">Aucun cours à venir</h3>
+      </div>
     </div>
   </div>
 </template>
@@ -65,11 +75,24 @@ export default {
   mixins: [dateUtilMixin, stringUtilMixin],
   computed: {
     ...mapGetters({
-      todayCourses: 'calendar/getTodayCourses'
-    })
-  },
-  methods: {
+      todayCourses: 'calendar/getTodayCourses',
+      nextDayCourses: 'calendar/getNextDayCourses'
+    }),
+    courses () {
+      if (this.todayCourses.length !== 0) return this.todayCourses
+      if (this.nextDayCourses.length !== 0) return this.nextDayCourses
+      return []
+    },
+    headerText () {
+      let day = this.courses[0]
+      if (!day) return `Aucun cours à afficher`
 
+      day = this.dateToDayMonthYear(day.start, '/')
+      const today = this.dateToDayMonthYear(new Date(), '/')
+
+      if (today === day) return `Cours d'aujourd'hui`
+      else return `Cours du ${day}`
+    }
   }
 }
 </script>
