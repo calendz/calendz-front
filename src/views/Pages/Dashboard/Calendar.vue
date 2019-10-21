@@ -141,11 +141,32 @@
         </div>
       </div>
     </div>
+    <div>
+      <modal :show.sync="modal">
+        <template slot="header">
+          <h6
+            id="exampleModalLabel"
+            class="modal-title">Titre du cours :</h6>
+          <p>{{ modalCourse.title }}</p>
+        </template>
+        <div>
+          <h4>
+            {{ modalCourse.start }}
+          </h4>
+        </div>
+        <template slot="footer">
+          <base-button
+            type="secondary"
+            @click="modal = false">Fermer</base-button>
+        </template>
+      </modal>
 
+    </div>
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import { Modal } from '@/components'
 import FullCalendar from '@fullcalendar/vue'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -156,11 +177,21 @@ import stringUtilMixin from '@/mixins/stringUtilMixin'
 export default {
   name: 'Calendar',
   components: {
-    FullCalendar
+    FullCalendar,
+    Modal
   },
   mixins: [dateUtilMixin, stringUtilMixin],
   data () {
     return {
+      modal: false,
+      modalCourse: {
+        title: '',
+        date: '',
+        start: '',
+        end: '',
+        professor: '',
+        room: ''
+      },
       calendarPlugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
       activeView: 'timeGridWeek',
       activeDate: new Date(),
@@ -297,6 +328,15 @@ export default {
       if (this.activeView === 'dayGridMonth') {
         this.calendarApi().gotoDate(clicked.event.start)
         this.changeView('timeGridWeek')
+      } else if (this.activeView === 'timeGridWeek') {
+        console.log(clicked.event)
+        this.modal = true
+
+        this.modalCourse.title = clicked.event.title
+        this.modalCourse.start = this.timeToHour(clicked.event.start)
+        this.modalCourse.end = this.timeToHour(clicked.event.end)
+        this.modalCourse.professor = this.capitalizeFirstLetterEachWords(clicked.event.extendedProps.professor)
+        this.modalCourse.room = clicked.event.extendedProps.room
       }
     },
     // ===========================================
