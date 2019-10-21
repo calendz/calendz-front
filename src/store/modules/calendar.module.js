@@ -133,6 +133,15 @@ const calendarModule = {
         return (nextCourseDay === start)
       })
       return res
+    },
+    getCurrentCourse (state) {
+      const now = new Date().getTime()
+
+      return state.courses.filter(course => {
+        const start = new Date(course.start).getTime()
+        const end = new Date(course.end).getTime()
+        return start <= now && now < end
+      })[0]
     }
   }
 }

@@ -84,9 +84,9 @@
           </div>
 
           <base-progress
-            v-if="isBetween(course.start, course.end)"
+            v-if="currentCourse && isBetween(course.start, course.end)"
             :height="8"
-            :value="getProgress(course.start, course.end)"
+            :value="currentCourseProgress"
             type="primary"
             animated
             striped
@@ -110,9 +110,15 @@ import stringUtilMixin from '@/mixins/stringUtilMixin'
 
 export default {
   mixins: [dateUtilMixin, stringUtilMixin],
+  data () {
+    return {
+      ticker: Date.now()
+    }
+  },
   computed: {
     ...mapGetters({
       calendarLoading: 'calendar/isLoading',
+      currentCourse: 'calendar/getCurrentCourse',
       todayCourses: 'calendar/getTodayCourses',
       nextDayCourses: 'calendar/getNextDayCourses'
     }),
@@ -130,7 +136,18 @@ export default {
 
       if (today === day) return `Cours d'aujourd'hui`
       else return `Cours du ${day}`
+    },
+    currentCourseProgress () {
+      // eslint-disable-next-line no-unused-vars
+      const dummyTicker = this.$data.ticker
+      return this.getProgress(this.currentCourse.start, this.currentCourse.end)
     }
+  },
+  beforeCreate () {
+    this.$options.interval = setInterval(() => { this.ticker = Date.now() }, 1000 * 60)
+  },
+  beforeDestroy () {
+    clearInterval(this.$options.interval)
   }
 }
 </script>
