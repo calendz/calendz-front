@@ -142,11 +142,50 @@
         </div>
       </div>
     </div>
+    <!-- ======================================== -->
+    <!-- == Detail modal ======================== -->
+    <!-- ======================================== -->
+    <modal :show.sync="showModal">
+      <template
+        slot="header"
+        class="pb-0">
+        <h2 class="mb-0">Détail du cours</h2>
+      </template>
 
+      <div class="row">
+        <div class="col-6">
+          <h3>Intitulé :</h3>
+          <p>{{ modalCourse.title }}</p>
+        </div>
+        <div class="col-6">
+          <h3>Enseignant :</h3>
+          <p>{{ modalCourse.professor }}</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <h3>Horaire :</h3>
+          <p>{{ modalCourse.start }} - {{ modalCourse.end }}</p>
+        </div>
+        <div class="col-6">
+          <h3>Salle :</h3>
+          <p>{{ modalCourse.room }}</p>
+        </div>
+      </div>
+
+      <template slot="footer">
+        <base-button
+          type="primary"
+          size="md"
+          @click="showModal = false">Fermer</base-button>
+      </template>
+    </modal>
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import { Modal } from '@/components'
 import FullCalendar from '@fullcalendar/vue'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -157,11 +196,14 @@ import stringUtilMixin from '@/mixins/stringUtilMixin'
 export default {
   name: 'Calendar',
   components: {
-    FullCalendar
+    FullCalendar,
+    Modal
   },
   mixins: [dateUtilMixin, stringUtilMixin],
   data () {
     return {
+      showModal: false,
+      modalCourse: {},
       calendarPlugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
       activeView: 'timeGridWeek',
       activeDate: new Date(),
@@ -252,12 +294,12 @@ export default {
         case 'timeGridWeek':
           if (this.windowWidth < 800) {
             element.el.innerHTML = `
-              <div class="fade-in">
+              <div>
                 <h4 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h4>
               </div>`
           } else {
             element.el.innerHTML = `
-              <div class="fade-in">
+              <div>
                 <h5 class="h5-5 pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
                 <h3 class="px-2 text-white text-center" style="max-width: 90%; width: 90%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">${element.event.title}</h3>
                 <h5 class="h5-5 pl-2 mb-1 text-white col-7" style="position: absolute; bottom: 0; left: 0">${this.capitalizeFirstLetterEachWords(element.event.extendedProps.professor)}<h5>
@@ -271,7 +313,7 @@ export default {
         case 'timeGridDay':
           if (this.windowWidth < 800) {
             element.el.innerHTML = `
-              <div class="fade-in">
+              <div>
                 <h5 class="h5-5 pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
                 <h2 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h2>
                 <h5 class="h5-5 pl-2 mb-1 text-white" style="position: absolute; bottom: 0; left: 0">${this.capitalizeFirstLetterEachWords(element.event.extendedProps.professor)}<h5>
@@ -279,7 +321,7 @@ export default {
               </div>`
           } else {
             element.el.innerHTML = `
-              <div class="fade-in">
+              <div>
                 <h5 class="h5-5 pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
                 <h3 class="px-2 text-white text-center" style="max-width: 90%; width: 90%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">${element.event.title}</h3>
                 <h5 class="h5-5 pl-2 mb-1 text-white col-7" style="position: absolute; bottom: 0; left: 0">${this.capitalizeFirstLetterEachWords(element.event.extendedProps.professor)}<h5>
@@ -299,6 +341,13 @@ export default {
       if (this.activeView === 'dayGridMonth') {
         this.calendarApi().gotoDate(clicked.event.start)
         this.changeView('timeGridWeek')
+      } else if (this.activeView === 'timeGridWeek') {
+        this.showModal = true
+        this.modalCourse.title = clicked.event.title
+        this.modalCourse.start = this.timeToHour(clicked.event.start)
+        this.modalCourse.end = this.timeToHour(clicked.event.end)
+        this.modalCourse.professor = this.capitalizeFirstLetterEachWords(clicked.event.extendedProps.professor)
+        this.modalCourse.room = clicked.event.extendedProps.room
       }
     },
     // ===========================================
