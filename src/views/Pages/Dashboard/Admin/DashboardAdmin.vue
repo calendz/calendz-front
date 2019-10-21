@@ -29,6 +29,9 @@
         <div class="col-xl-3 col-md-5">
           <toggle-login/>
         </div>
+        <div class="col-xl-3 col-md-5">
+          <disconnect-users/>
+        </div>
         <div class="col-lg-5">
           <create-notifications/>
         </div>
@@ -39,12 +42,14 @@
 <script>
 import ToggleLogin from './Widgets/ToggleLogin'
 import ToggleRegister from './Widgets/ToggleRegister'
+import DisconnectUsers from './Widgets/DisconnectUsers'
 import CreateNotifications from './Widgets/CreateNotifications'
 
 export default {
   components: {
     ToggleLogin,
     ToggleRegister,
+    DisconnectUsers,
     CreateNotifications
   },
   mounted () {

@@ -6,7 +6,7 @@
 
       <div class="col">
         <slot>
-          <h5 class="card-title text-uppercase text-muted mb-3">TOGGLE CONNEXION</h5>
+          <h5 class="card-title text-uppercase text-muted mb-1">TOGGLE CONNEXION</h5>
           <div class="row mt-2 mb--3">
             <div class="col-12 pr-0">
               <span
