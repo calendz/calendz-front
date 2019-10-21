@@ -105,7 +105,7 @@ const calendarModule = {
       return state.courses
     },
     getTodayCourses: state => {
-      const today = DateUtil.methods.dateToDayMonthYear()
+      const today = DateUtil.methods.dateToDayMonthYear(new Date())
 
       return state.courses.filter(course => {
         const start = DateUtil.methods.dateToDayMonthYear(course.start)
