@@ -27,16 +27,7 @@
       <!-- Card stats -->
       <div class="row">
         <div class="col-xl-3 col-md-6">
-          <stats-card
-            title="PROCHAIN COURS"
-            type="gradient-info"
-            sub-title="à venir..."
-            icon="fas fa-calendar-week">
-            <template slot="footer">
-              <i class="fas fa-external-link-alt mr-2"/>
-              <span class="text-nowrap">cliquez pour accéder</span>
-            </template>
-          </stats-card>
+          <next-course/>
         </div>
 
         <div class="col-xl-3 col-md-6">
@@ -56,7 +47,7 @@
 
               <template slot="footer">
                 <i class="fas fa-external-link-alt mr-2"/>
-                <span class="text-nowrap">cliquez pour accéder</span>
+                <span class="text-nowrap">cliquez pour y accéder</span>
               </template>
             </stats-card>
           </a>
@@ -74,6 +65,9 @@
     <div class="container-fluid mt--6">
       <div class="row">
         <div class="col-lg-4">
+          <today-courses/>
+        </div>
+        <div class="col-lg-4">
           <latest-homeworks/>
         </div>
         <div class="col-lg-4">
@@ -85,14 +79,18 @@
 </template>
 <script>
 import Clock from './Widgets/Clock'
+import NextCourse from './Widgets/NextCourse'
 import NextHomework from './Widgets/NextHomework'
+import TodayCourses from './Widgets/TodayCourses'
 import LatestHomeworks from './Widgets/LatestHomeworks'
 import LatestNotifications from './Widgets/LatestNotifications'
 
 export default {
   components: {
     Clock,
+    NextCourse,
     NextHomework,
+    TodayCourses,
     LatestHomeworks,
     LatestNotifications
   }

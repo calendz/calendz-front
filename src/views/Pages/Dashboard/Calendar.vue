@@ -7,7 +7,7 @@
       type="primary"
       class="pb-6">
       <div class="row align-items-center py-4">
-        <div class="col-lg-7 col-5">
+        <div class="col-5">
           <h6 class="h2 text-white d-inline-block mb-0">Emploi du temps</h6>
           <nav
             aria-label="breadcrumb"
@@ -15,37 +15,73 @@
             <route-bread-crumb/>
           </nav>
         </div>
-        <div class="col-lg-5 col-7 text-right">
-          <a
-            href=""
-            class="fullcalendar-btn-prev btn btn-sm btn-default my-1"
-            @click.prevent="prev">
-            <i class="fas fa-angle-left"/>
-          </a>
-          <a
-            href=""
-            class="fullcalendar-btn-next btn btn-sm btn-default my-1"
-            @click.prevent="next">
-            <i class="fas fa-angle-right"/>
-          </a>
-          <base-button
-            :class="{'active': activeView === 'dayGridMonth'}"
-            class="btn btn-sm btn-default my-1"
-            @click="changeView('dayGridMonth')">
-            Mois
-          </base-button>
-          <base-button
-            :class="{'active': activeView === 'timeGridWeek'}"
-            class="btn btn-sm btn-defaul my-1"
-            @click="changeView('timeGridWeek')">
-            Semaine
-          </base-button>
-          <base-button
-            :class="{'active': activeView === 'timeGridDay'}"
-            class="btn btn-sm btn-default mr-2 my-1"
-            @click="changeView('timeGridDay')">
-            Jour
-          </base-button>
+        <div class="col-7 text-right">
+
+          <form
+            v-if="windowWidth > 1095"
+            class="agenda-search navbar-search navbar-search-light d-inline-block mr-3"
+            @submit.prevent
+            @change="handleSearchInputChange"
+            @mouseenter="handleSearchInputMouseEnter"
+            @mouseleave="handleSearchInputMouseLeave">
+
+            <div class="form-group mb-0">
+              <div class="input-group input-group-alternative input-group-merge">
+                <div class="input-group-prepend">
+                  <span
+                    class="input-group-text"
+                    style="padding: .9rem 1rem"><i class="fas fa-search"/></span>
+                </div>
+                <input
+                  id="agenda-search-input"
+                  v-model.lazy="searchInput"
+                  autocomplete="off"
+                  class="form-control p-0"
+                  placeholder="Entrez : prénom.nom"
+                  type="text"
+                  style="width: 0">
+                <div
+                  class="input-group-text input-group-append text-black"
+                  @click="handleSearchInputClear">
+                  <i class="fas fa-times"/>
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <div class="d-inline-block">
+            <a
+              href=""
+              class="fullcalendar-btn-prev btn btn-sm btn-default my-1"
+              @click.prevent="prev">
+              <i class="fas fa-angle-left"/>
+            </a>
+            <a
+              href=""
+              class="fullcalendar-btn-next btn btn-sm btn-default my-1"
+              @click.prevent="next">
+              <i class="fas fa-angle-right"/>
+            </a>
+            <base-button
+              :class="{'active': activeView === 'dayGridMonth'}"
+              class="btn btn-sm btn-default my-1"
+              @click="changeView('dayGridMonth')">
+              Mois
+            </base-button>
+            <base-button
+              :class="{'active': activeView === 'timeGridWeek'}"
+              class="btn btn-sm btn-defaul my-1"
+              @click="changeView('timeGridWeek')">
+              Semaine
+            </base-button>
+            <base-button
+              :class="{'active': activeView === 'timeGridDay'}"
+              class="btn btn-sm btn-default mr-2 my-1"
+              @click="changeView('timeGridDay')">
+              Jour
+            </base-button>
+          </div>
+
         </div>
       </div>
     </base-header>
@@ -73,7 +109,9 @@
             </div>
 
             <!-- Card body -->
-            <div class="card-body p-0 card-calendar-body">
+            <div
+              :class="{ 'bg-other-agenda': searchInput.includes('.') }"
+              class="card-body p-0 card-calendar-body">
               <full-calendar
                 id="calendar"
                 ref="fullCalendar"
@@ -90,6 +128,7 @@
                 :event-render="customRender"
                 :now-indicator="true"
                 :fixed-week-count="false"
+                :event-color="`#${user.settings.calendarColor}`"
                 content-height="auto"
                 slot-duration="01:00:00"
                 min-time="08:00:00"
@@ -103,50 +142,80 @@
         </div>
       </div>
     </div>
+    <!-- ======================================== -->
+    <!-- == Detail modal ======================== -->
+    <!-- ======================================== -->
+    <modal :show.sync="showModal">
+      <template
+        slot="header"
+        class="pb-0">
+        <h2 class="mb-0">Détail du cours</h2>
+      </template>
 
+      <div class="row">
+        <div class="col-6">
+          <h3>Intitulé :</h3>
+          <p>{{ modalCourse.title }}</p>
+        </div>
+        <div class="col-6">
+          <h3>Enseignant :</h3>
+          <p>{{ modalCourse.professor }}</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <h3>Horaire :</h3>
+          <p>{{ modalCourse.start }} - {{ modalCourse.end }}</p>
+        </div>
+        <div class="col-6">
+          <h3>Salle :</h3>
+          <p>{{ modalCourse.room }}</p>
+        </div>
+      </div>
+
+      <template slot="footer">
+        <base-button
+          type="primary"
+          size="md"
+          @click="showModal = false">Fermer</base-button>
+      </template>
+    </modal>
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import Modal from '@/components/Modal'
+import { Modal } from '@/components'
 import FullCalendar from '@fullcalendar/vue'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import RouteBreadCrumb from '@/components/Breadcrumb/RouteBreadcrumb'
 import dateUtilMixin from '@/mixins/dateUtilMixin'
 import stringUtilMixin from '@/mixins/stringUtilMixin'
 
 export default {
   name: 'Calendar',
   components: {
-    Modal,
     FullCalendar,
-    RouteBreadCrumb
+    Modal
   },
   mixins: [dateUtilMixin, stringUtilMixin],
   data () {
     return {
+      showModal: false,
+      modalCourse: {},
       calendarPlugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
       activeView: 'timeGridWeek',
       activeDate: new Date(),
-      fakeEvents: [
-        {
-          title: 'Français',
-          start: new Date('2019-09-23T10:00:00'),
-          end: new Date('2019-09-23T12:00:00'),
-          className: 'bg-lightgrey',
-          professor: 'Amy',
-          room: 'L-230',
-          description: 'Test Description'
-        }
-      ],
       windowWidth: window.innerWidth,
-      headerDate: ''
+      headerDate: '',
+      searchInput: '',
+      showSearchInput: false
     }
   },
   computed: {
     ...mapGetters({
+      user: 'account/user',
       events: 'calendar/getCourses',
       isLoading: 'calendar/isLoading'
     })
@@ -155,13 +224,18 @@ export default {
     windowWidth: function (newVal, oldVal) {
       if (newVal < 800 && oldVal >= 800) this.changeView('timeGridDay')
       if (newVal >= 800 && oldVal < 800) this.changeView('timeGridWeek')
+    },
+    searchInput: function (newVal) {
+      localStorage.setItem('calendz.calendar.searchInput', newVal)
+      if (newVal === '') this.handleSearchInputMouseLeave()
+      else this.handleSearchInputMouseEnter()
     }
   },
   mounted () {
     // initialize fullcalendar
     const calendarApi = this.$refs.fullCalendar.getApi()
     calendarApi.setOption('locale', 'fr')
-
+    // set correct header date
     this.updateHeaderDate()
 
     // add events listeners
@@ -178,6 +252,9 @@ export default {
     if (this.windowWidth < 800) this.changeView('timeGridDay')
     if (this.windowWidth >= 800) this.changeView('timeGridWeek')
   },
+  beforeDestroy () {
+    this.handleSearchInputClear()
+  },
   methods: {
     // ===========================================
     // == Core functions
@@ -185,90 +262,73 @@ export default {
     calendarApi () {
       return this.$refs.fullCalendar.getApi()
     },
+    // ======================================
+    // == CALENDAR RENDERING
+    // ======================================
     customRender (element) {
-      // ======================================
-      // == LOADING
-      // ======================================
-      if (this.isLoading) {
-        switch (this.activeView) {
-          case 'dayGridMonth':
+      switch (this.activeView) {
+        // ============================
+        // == MONTH VIEW
+        // ============================
+        case 'dayGridMonth':
+          if (this.windowWidth < 800) {
             element.el.innerHTML = `
               <div>
-                <h5 class="pl-1 py-1 mb-0">
-                  <div class="ml-1 placeholder-md"></div>
+                <h5 class="pl-1 mb-0 text-white w-auto">
+                  ${new Date(element.event.start).getHours()}-${new Date(element.event.end).getHours()}h
                 </h5>
               </div>`
-            break
-          case 'timeGridWeek':
-          case 'timeGridDay':
+          } else {
             element.el.innerHTML = `
               <div>
-                <div class="ml-2 mt-2 placeholder-sm"></div>
-                <div class="ml-0 mt--2 placeholder-md" style="position: absolute; top: 50%; left: 50%; transform: translateY(-50%); transform: translateX(-50%)"></div>
-                <div class="ml-2 mb-2 placeholder-sm" style="position: absolute; bottom: 0; left: 0"></div>
-                <div class="mr-2 mb-2 placeholder-sm" style="position: absolute; bottom: 0; right: 0"></div>
+                <h5 class="pl-1 mb-0 text-white w-auto">
+                  ${new Date(element.event.start).getHours()}h
+                  <span class="ml-1 h5 text-white">${element.event.title}</span>
+                </h5>
               </div>`
-            break
-        }
-      // ======================================
-      // == RENDERING
-      // ======================================
-      } else {
-        // ======================================
-        // == MOBILE VIEW
-        // ======================================
-        if (this.windowWidth < 800) {
-          switch (this.activeView) {
-            case 'dayGridMonth':
-              element.el.innerHTML = `
-                <div>
-                  <h5 class="pl-1 mb-0 text-white w-auto">
-                    ${new Date(element.event.start).getHours()}-${new Date(element.event.end).getHours()}h
-                  </h5>
-                </div>`
-              break
-            case 'timeGridWeek':
-              element.el.innerHTML = `
-                <div class="fade-in">
-                  <h4 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h4>
-                </div>`
-              break
-            case 'timeGridDay':
-              element.el.innerHTML = `
-                <div class="fade-in">
-                  <h5 class="h5-5 pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
-                  <h2 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h2>
-                  <h5 class="h5-5 pl-2 mb-1 text-white" style="position: absolute; bottom: 0; left: 0">${this.capitalizeFirstLetterEachWords(element.event.extendedProps.professor)}<h5>
-                  <h5 class="h5-5 pr-2 mb-1 text-white" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h5>
-                </div>`
-              break
           }
-        // ======================================
-        // == DESKTOP VIEW
-        // ======================================
-        } else {
-          switch (this.activeView) {
-            case 'dayGridMonth':
-              element.el.innerHTML = `
-                <div>
-                  <h5 class="pl-1 mb-0 text-white w-auto">
-                    ${new Date(element.event.start).getHours()}h
-                    <span class="ml-1 h5 text-white">${element.event.title}</span>
-                  </h5>
-                </div>`
-              break
-            case 'timeGridWeek':
-            case 'timeGridDay':
-              element.el.innerHTML = `
-                <div class="fade-in">
-                  <h5 class="h5-5 pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
-                  <h3 class="px-2 text-white text-center" style="max-width: 90%; width: 90%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">${element.event.title}</h3>
-                  <h5 class="h5-5 pl-2 mb-1 text-white col-7" style="position: absolute; bottom: 0; left: 0">${this.capitalizeFirstLetterEachWords(element.event.extendedProps.professor)}<h5>
-                  <h5 class="h5-5 pr-2 mb-1 text-white col-3 text-right" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h5>
-                </div>`
-              break
+          break
+        // ============================
+        // == WEEK VIEW
+        // ============================
+        case 'timeGridWeek':
+          if (this.windowWidth < 800) {
+            element.el.innerHTML = `
+              <div>
+                <h4 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h4>
+              </div>`
+          } else {
+            element.el.innerHTML = `
+              <div>
+                <h5 class="h5-5 pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
+                <h3 class="px-2 text-white text-center" style="max-width: 90%; width: 90%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">${element.event.title}</h3>
+                <h5 class="h5-5 pl-2 mb-1 text-white col-7" style="position: absolute; bottom: 0; left: 0">${this.capitalizeFirstLetterEachWords(element.event.extendedProps.professor)}<h5>
+                <h5 class="h5-5 pr-2 mb-1 text-white col-3 text-right" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h5>
+              </div>`
           }
-        }
+          break
+        // ============================
+        // == DAY VIEW
+        // ============================
+        case 'timeGridDay':
+          if (this.windowWidth < 800) {
+            element.el.innerHTML = `
+              <div>
+                <h5 class="h5-5 pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
+                <h2 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h2>
+                <h5 class="h5-5 pl-2 mb-1 text-white" style="position: absolute; bottom: 0; left: 0">${this.capitalizeFirstLetterEachWords(element.event.extendedProps.professor)}<h5>
+                <h5 class="h5-5 pr-2 mb-1 text-white" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h5>
+              </div>`
+          } else {
+            element.el.innerHTML = `
+              <div>
+                <h5 class="h5-5 pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
+                <h3 class="px-2 text-white text-center" style="max-width: 90%; width: 90%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">${element.event.title}</h3>
+                <h5 class="h5-5 pl-2 mb-1 text-white col-7" style="position: absolute; bottom: 0; left: 0">${this.capitalizeFirstLetterEachWords(element.event.extendedProps.professor)}<h5>
+                <h5 class="h5-5 pr-2 mb-1 text-white col-3 text-right" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h5>
+              </div>`
+          }
+          break
       }
     },
     handleDateClick (clicked) {
@@ -279,8 +339,15 @@ export default {
     },
     handleEventClick (clicked) {
       if (this.activeView === 'dayGridMonth') {
-        this.calendarApi().gotoDate(new Date(clicked.event.start))
+        this.calendarApi().gotoDate(clicked.event.start)
         this.changeView('timeGridWeek')
+      } else if (this.activeView === 'timeGridWeek') {
+        this.showModal = true
+        this.modalCourse.title = clicked.event.title
+        this.modalCourse.start = this.timeToHour(clicked.event.start)
+        this.modalCourse.end = this.timeToHour(clicked.event.end)
+        this.modalCourse.professor = this.capitalizeFirstLetterEachWords(clicked.event.extendedProps.professor)
+        this.modalCourse.room = clicked.event.extendedProps.room
       }
     },
     // ===========================================
@@ -294,11 +361,11 @@ export default {
         // get first day of the month
         const firstOfTheMonth = this.getFirstFridayOfMonth(this.activeDate)
 
-        this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate())) })
-        this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
-        this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
-        this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
-        this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+        this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate())) })
+        this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+        this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+        this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+        this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
       }
 
       this.calendarApi().changeView(viewType)
@@ -317,11 +384,11 @@ export default {
           dateToFetch = this.getMonday(dateToFetch.setMonth(dateToFetch.getMonth() + 1))
 
           const firstOfTheMonth = this.getFirstFridayOfMonth(dateToFetch)
-          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate())) })
-          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
-          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
-          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
-          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate())) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
 
           this.calendarApi().next()
           this.updateHeaderDate()
@@ -336,7 +403,7 @@ export default {
           break
       }
 
-      this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(dateToFetch) })
+      this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(dateToFetch) })
 
       this.calendarApi().next()
       this.updateHeaderDate()
@@ -356,11 +423,11 @@ export default {
           dateToFetch = this.getMonday(dateToFetch.setMonth(dateToFetch.getMonth() - 1))
 
           const firstOfTheMonth = this.getFirstFridayOfMonth(dateToFetch)
-          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate())) })
-          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
-          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
-          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
-          this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate())) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
+          this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(firstOfTheMonth.setDate(firstOfTheMonth.getDate() + 7)) })
 
           this.calendarApi().prev()
           this.updateHeaderDate()
@@ -375,7 +442,7 @@ export default {
           break
       }
 
-      this.$store.dispatch('calendar/fetchDate', { date: this.toMonthDayYear(dateToFetch) })
+      this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(dateToFetch) })
 
       this.calendarApi().prev()
       this.updateHeaderDate()
@@ -393,37 +460,48 @@ export default {
     },
     getColumnHeaderFormat () {
       switch (this.activeView) {
+        // week
         case 'timeGridWeek':
-          // mobile
           if (this.windowWidth < 800) return { month: 'numeric', day: 'numeric', omitCommas: true }
-          // desktop
           else return { weekday: 'long', month: 'numeric', day: 'numeric', omitCommas: true }
+        // month
         case 'dayGridMonth':
           return { weekday: 'long' }
+        // day
         case 'timeGridDay':
           return { weekday: 'long', day: 'numeric', month: 'long' }
       }
     },
-    getMonday (d) {
-      d = new Date(d)
-      const day = d.getDay()
-      const diff = d.getDate() - day + (day === 0 ? -6 : 1) // adjust when day is sunday
-      return new Date(d.setDate(diff))
+    handleSearchInputMouseEnter () {
+      document.querySelector('#agenda-search-input').style.width = ''
+      this.showSearchInput = true
     },
-    getFirstFridayOfMonth (date) {
-      date = new Date(date)
-      let targetDay = ''
-      const seekDay = 5
-      let i = 1
-      const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
-        'July', 'August', 'September', 'October', 'November', 'December'
-      ]
-
-      while (i < 31) {
-        targetDay = new Date(`${i++} ${monthNames[date.getMonth()]} ${date.getFullYear()}`)
-        if (targetDay.getDay() === seekDay) return targetDay
+    handleSearchInputMouseLeave () {
+      if (!this.searchInput) {
+        document.querySelector('#agenda-search-input').style.width = '0'
+        this.showSearchInput = false
       }
-      return false
+    },
+    handleSearchInputClear () {
+      if (this.searchInput === '') return
+
+      this.searchInput = ''
+      localStorage.removeItem('calendz.calendar.searchInput')
+      this.handleSearchInputChange()
+    },
+    handleSearchInputChange () {
+      // if input is incorrect
+      if ((!this.searchInput.includes('.') || this.searchInput.length <= 5) && this.searchInput !== '') {
+        return this.$notify({ type: 'warning', message: 'Veuillez indiquer un nom valide !' })
+      }
+
+      this.backToToday()
+      let date = new Date()
+      if (date.getDay() === 6) date.setDate(date.getDate() + 2)
+      if (date.getDay() === 0) date.setDate(date.getDate() + 1)
+      date = this.dateToMonthDayYear(date)
+      this.$store.dispatch('calendar/resetFetchedWeeks')
+      this.$store.dispatch('calendar/fetchDate', { date: date })
     }
   }
 }
@@ -435,37 +513,8 @@ export default {
   @import "~@/assets/sass/core/vendors/fullcalendar";
 
   // =========================================
-  // == Loading placeholder
+  // == Loading animations
   // =========================================
-
-  // placeholders (coming soon)
-  // .placeholder-sm {
-  //   width: 60px;
-  //   height: 10px;
-  //   border-radius: 6px;
-  //   animation-name: pulse;
-  //   animation-duration: 2s;
-  //   animation-iteration-count: infinite;
-  // }
-
-  // .placeholder-md {
-  //   width: 80px;
-  //   height: 14px;
-  //   border-radius: 6px;
-  //   animation-name: pulse;
-  //   animation-duration: 2s;
-  //   animation-iteration-count: infinite;
-  // }
-
-  // .bg-lightgrey {
-  //   background-color: #ced4da !important;
-  // }
-
-  // @keyframes pulse {
-  //   0% { background-color: #dee2e6; }
-  //   50% { background-color: #f6f9fc; }
-  //   100% { background-color: #dee2e6; }
-  // }
 
   .fade-in {
     animation-name: fade-in;
@@ -528,5 +577,19 @@ export default {
 
   .h5-5 {
     font-size: 0.75rem
+  }
+
+  #agenda-search-input {
+    transition-duration: 450ms;
+  }
+
+  .custom-event:hover {
+    filter: contrast(1.5) !important;
+  }
+
+  .bg-other-agenda {
+    .fc-time-grid-event, .fc-event, .fc-start, .fc-end {
+      background-color: #6E7A90 !important;
+    }
   }
 </style>

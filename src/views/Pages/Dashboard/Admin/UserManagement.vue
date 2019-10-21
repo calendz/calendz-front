@@ -126,7 +126,7 @@
               <template v-slot="{row}">
                 <div class="d-flex">
                   <div class="col-auto text-center pl-1 pr-0">
-                    {{ timestampToDate(row.creationDate) }}
+                    {{ dateToDayMonthYear(timestampToDate(row.creationDate)) }}
                   </div>
                 </div>
               </template>
@@ -230,29 +230,6 @@
                 </div>
                 <div class="col-md-6">
                   <base-input
-                    :error="getError('classe')"
-                    :valid="isValid('classe')"
-                    class="mb-3"
-                    prepend-icon="ni ni-hat-3"
-                    label="Classe">
-                    <select
-                      v-validate="'required|valid_grade'"
-                      v-model="modifyForm.grade"
-                      name="classe"
-                      class="form-control">
-                      <option>B1</option>
-                      <option>B2</option>
-                      <option>B3</option>
-                      <option>I1</option>
-                      <option>I2</option>
-                    </select>
-                  </base-input>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-6">
-                  <base-input
                     :error="getError('ville')"
                     :valid="isValid('ville')"
                     class="mb-3"
@@ -280,6 +257,39 @@
                     </select>
                   </base-input>
                 </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <base-input
+                    :error="getError('classe')"
+                    :valid="isValid('classe')"
+                    class="mb-3"
+                    prepend-icon="ni ni-hat-3"
+                    label="Classe">
+                    <select
+                      v-validate="'required|valid_grade'"
+                      v-model="modifyForm.grade"
+                      name="classe"
+                      class="form-control">
+                      <option>B1</option>
+                      <option>B2</option>
+                      <option>B3</option>
+                      <option>I1</option>
+                      <option>I2</option>
+                    </select>
+                  </base-input>
+                </div>
+                <div class="col-md-6">
+                  <GroupsSelect
+                    v-model="modifyForm.group"
+                    :disabled="false"
+                    :legacy="true"
+                    label="Groupe"/>
+                </div>
+              </div>
+
+              <div class="row">
                 <div class="col-md-6">
                   <base-input
                     :error="getError('bts')"
@@ -291,26 +301,6 @@
                       v-validate="'required|boolean'"
                       v-model="modifyForm.bts"
                       name="bts"
-                      class="form-control">
-                      <option :value="true">Oui</option>
-                      <option :value="false">Non</option>
-                    </select>
-                  </base-input>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-6">
-                  <base-input
-                    :error="getError('actif')"
-                    :valid="isValid('actif')"
-                    class="mb-3"
-                    label="Actif"
-                    prepend-icon="ni ni-check-bold">
-                    <select
-                      v-validate="'required|boolean'"
-                      v-model="modifyForm.isActive"
-                      name="actif"
                       class="form-control">
                       <option :value="true">Oui</option>
                       <option :value="false">Non</option>
@@ -332,6 +322,26 @@
                         hidden>Selectionner la permission</option>
                       <option>ADMIN</option>
                       <option>MEMBER</option>
+                    </select>
+                  </base-input>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <base-input
+                    :error="getError('actif')"
+                    :valid="isValid('actif')"
+                    class="mb-3"
+                    label="Actif"
+                    prepend-icon="ni ni-check-bold">
+                    <select
+                      v-validate="'required|boolean'"
+                      v-model="modifyForm.isActive"
+                      name="actif"
+                      class="form-control">
+                      <option :value="true">Oui</option>
+                      <option :value="false">Non</option>
                     </select>
                   </base-input>
                 </div>
@@ -379,6 +389,7 @@ import clientPaginationMixin from '@/mixins/clientPaginationMixin'
 import dateUtilMixin from '@/mixins/dateUtilMixin'
 import UserService from '@/services/user.service'
 import { mapState } from 'vuex'
+import GroupsSelect from '@/components/Inputs/custom/GroupsSelect'
 
 export default {
   components: {
@@ -387,13 +398,14 @@ export default {
     [Select.name]: Select,
     [Table.name]: Table,
     [TableColumn.name]: TableColumn,
-    Modal
+    Modal,
+    GroupsSelect
   },
   mixins: [clientPaginationMixin, dateUtilMixin],
   data () {
     return {
       modal: false,
-      propsToSearch: ['firstname', 'lastname', 'grade', 'email', 'permissionLevel'],
+      propsToSearch: ['firstname', 'lastname', 'grade', 'group', 'email', 'permissionLevel'],
       tableColumns: [
         {
           prop: 'firstname',
@@ -411,6 +423,12 @@ export default {
           prop: 'grade',
           label: 'Classe',
           minWidth: 115,
+          sortable: true
+        },
+        {
+          prop: 'group',
+          label: 'Groupe',
+          minWidth: 125,
           sortable: true
         },
         {

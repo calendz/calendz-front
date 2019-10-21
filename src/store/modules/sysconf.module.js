@@ -55,6 +55,18 @@ const sysconfModule = {
 
     TOGGLE_REGISTER_FAILURE: (state, reason) => {
       state.status = { toggleRegisterError: reason }
+    },
+
+    DISCONNECT_USERS_REQUEST: (state) => {
+      state.status = { isDisconnecting: true }
+    },
+
+    DISCONNECT_USERS_SUCCESS: (state) => {
+      state.status = { isDisconnecting: false }
+    },
+
+    DISCONNECT_USERS_FAILURE: (state, reason) => {
+      state.status = { disconnectUsersError: reason }
     }
   },
 
@@ -111,6 +123,19 @@ const sysconfModule = {
           },
           err => {
             commit('TOGGLE_REGISTER_FAILURE', err.message)
+            Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.message || 'Une erreur est survenue...'}` })
+          })
+    },
+    disconnectAllUsers: ({ commit }) => {
+      commit('DISCONNECT_USERS_REQUEST')
+      SysconfService.disconnectAllUsers()
+        .then(
+          res => {
+            commit('DISCONNECT_USERS_SUCCESS')
+            Vue.prototype.$notify({ type: 'success', message: `Les utilisateurs ont bien été déconnectés.` })
+          },
+          err => {
+            commit('DISCONNECT_USERS_FAILURE', err.message)
             Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.message || 'Une erreur est survenue...'}` })
           })
     }

@@ -34,6 +34,16 @@ const SysconfService = {
       .catch(err => {
         return Promise.reject(err.data)
       })
+  },
+
+  disconnectAllUsers: () => {
+    return ApiService.delete(`/sysconf/refresh-tokens/all`)
+      .then(res => {
+        return res
+      })
+      .catch(err => {
+        return Promise.reject(err.data)
+      })
   }
 }
 

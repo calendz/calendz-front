@@ -30,15 +30,16 @@ export default {
   },
   created () {
     this.update()
-    setInterval(() => {
-      this.update()
-    }, 1000)
+    this.$options.interval = setInterval(() => { this.update() }, 1000)
+  },
+  beforeDestroy () {
+    clearInterval(this.$options.interval)
   },
   methods: {
     update: function () {
       const now = new Date()
       this.currentTime = this.dateToTimeString(now)
-      this.currentDate = this.dateToString(now)
+      this.currentDate = this.dateToFullString(now)
     }
   }
 }
