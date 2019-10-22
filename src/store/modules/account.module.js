@@ -138,7 +138,7 @@ const accountModule = {
   actions: {
     register: ({ commit }, { firstname, lastname, grade, group, city, email, password, password2, agree }) => {
       commit('REGISTER_REQUEST')
-      UserService.register(firstname, lastname, grade, group, city, email, password, password2, agree)
+      UserService.register(firstname, lastname, grade, group, city, email.toLowerCase(), password, password2, agree)
         .then(
           res => {
             commit('REGISTER_SUCCESS')
@@ -155,7 +155,7 @@ const accountModule = {
 
     login: ({ state, commit }, { email, password, rememberMe }) => {
       commit('LOGIN_REQUEST')
-      UserService.login(email, password, rememberMe)
+      UserService.login(email.toLowerCase(), password, rememberMe)
         .then(
           res => {
             localStorage.setItem('user', JSON.stringify(res.user))

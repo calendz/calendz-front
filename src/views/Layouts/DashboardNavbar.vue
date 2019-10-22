@@ -196,7 +196,7 @@
     <!-- == Profile =============================================== -->
     <!-- ========================================================== -->
 
-    <ul class="navbar-nav align-items-center ml-auto ml-md-0">
+    <ul class="navbar-nav align-items-center ml-auto ml-md-0 cursor-pointer">
       <li
         v-click-outside="closeDropDown"
         class="nav-item dropdown">

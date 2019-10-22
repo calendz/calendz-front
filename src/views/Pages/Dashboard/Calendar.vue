@@ -231,6 +231,10 @@ export default {
       else this.handleSearchInputMouseEnter()
     }
   },
+  beforeMount () {
+    // clear search input
+    localStorage.removeItem('calendz.calendar.searchInput')
+  },
   mounted () {
     // initialize fullcalendar
     const calendarApi = this.$refs.fullCalendar.getApi()
@@ -585,6 +589,7 @@ export default {
 
   .custom-event:hover {
     filter: contrast(1.5) !important;
+    cursor: pointer;
   }
 
   .bg-other-agenda {

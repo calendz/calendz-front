@@ -104,7 +104,7 @@
           <!-- Logout -->
           <li class="nav-item">
             <span
-              class="nav-link"
+              class="nav-link cursor-pointer"
               @click.prevent="logout">
               <i class="ni ni-user-run text-grey"/>
               <span class="nav-link-text">Se déconnecter</span>

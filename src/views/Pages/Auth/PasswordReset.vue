@@ -105,7 +105,7 @@ export default {
         }
 
         // request sur l'api
-        ApiService.post('/auth/password-reset/send-mail', this.form).then((res) => {
+        ApiService.post('/auth/password-reset/send-mail', { email: this.form.email.toLowerCase() }).then((res) => {
           this.$notify({ type: 'success', message: 'Le mail a bien été envoyé, veuillez vérifiez vos mails.' })
           this.$router.push('/login')
         // on catch les erreurs
