@@ -257,7 +257,7 @@
               <p>Pour tout autres changements concernant votre profil, n'hésitez pas à contacter le support en cliquant sur le bouton ci-dessous.</p>
               <div class="text-center">
                 <router-link
-                  to="/support"
+                  to="/contact"
                   class="btn btn-info mt-4">
                   <i class="ni ni-send mr-2"/>
                   Contacter le support
