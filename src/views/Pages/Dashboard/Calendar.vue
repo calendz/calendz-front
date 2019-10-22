@@ -585,6 +585,7 @@ export default {
 
   .custom-event:hover {
     filter: contrast(1.5) !important;
+    cursor: pointer;
   }
 
   .bg-other-agenda {
