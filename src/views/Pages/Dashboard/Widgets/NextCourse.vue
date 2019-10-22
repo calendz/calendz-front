@@ -23,9 +23,12 @@
 
       <div class="col-auto">
         <slot name="icon">
-          <div class="icon icon-shape bg-gradient-info text-white rounded-circle shadow">
-            <i class="fas fa-calendar-week"/>
-          </div>
+          <router-link
+            to="/calendar">
+            <div class="icon icon-shape bg-gradient-info text-white rounded-circle shadow">
+              <i class="fas fa-calendar-week"/>
+            </div>
+          </router-link>
         </slot>
       </div>
     </div>

@@ -46,7 +46,8 @@
                   name="email"
                   class="mb-3"
                   prepend-icon="ni ni-email-83"
-                  placeholder="Adresse mail"/>
+                  placeholder="Adresse mail"
+                  autocapitalize="none"/>
 
                 <base-input
                   v-validate="'required|min:6|max:64'"

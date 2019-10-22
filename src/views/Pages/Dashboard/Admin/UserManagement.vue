@@ -226,7 +226,8 @@
                     class="mb-3"
                     prepend-icon="ni ni-email-83"
                     placeholder="Adresse mail"
-                    label="Adresse mail"/>
+                    label="Adresse mail"
+                    autocapitalize="none"/>
                 </div>
                 <div class="col-md-6">
                   <base-input
