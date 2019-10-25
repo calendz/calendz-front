@@ -84,7 +84,8 @@
 
                 <GroupsSelect
                   v-model="registerForm.group"
-                  :disabled="false"
+                  :grade="registerForm.grade"
+                  :disabled="!registerForm.grade"
                   :legacy="true"/>
 
                 <base-input

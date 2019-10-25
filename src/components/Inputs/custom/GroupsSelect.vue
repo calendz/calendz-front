@@ -76,6 +76,11 @@ export default {
       default: '',
       doc: `Ìnput's label`
     },
+    grade: {
+      type: String,
+      default: null,
+      doc: `Previously selected grade`
+    },
     legacy: {
       type: Boolean,
       default: false,
@@ -84,18 +89,35 @@ export default {
   },
   data () {
     return {
-      inputValue: this.value,
-      options: [
-        { value: 'G1' },
-        { value: 'G2' },
-        { value: 'G3' },
-        { value: 'G1 (dev)' },
-        { value: 'G2 (dev)' },
-        { value: 'G3 (dev)' },
-        { value: 'G1 (infra-réseau)' },
-        { value: 'G2 (infra-réseau)' },
-        { value: 'G3 (infra-réseau)' }
-      ]
+      inputValue: this.value
+    }
+  },
+  computed: {
+    options () {
+      switch (this.grade) {
+        case 'B1':
+        case 'B2':
+          return [
+            { value: 'G1' },
+            { value: 'G2' },
+            { value: 'G3' }
+          ]
+        case 'B3':
+        case 'I1':
+        case 'I2':
+          return [
+            { value: 'G1 (dev)' },
+            { value: 'G2 (dev)' },
+            { value: 'G3 (dev)' },
+            { value: 'G1 (infra-réseau)' },
+            { value: 'G2 (infra-réseau)' },
+            { value: 'G3 (infra-réseau)' }
+          ]
+        default:
+          return [
+            { value: 'Commencez par séléctionner votre classe' }
+          ]
+      }
     }
   },
   watch: {

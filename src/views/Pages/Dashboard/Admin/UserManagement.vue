@@ -285,6 +285,7 @@
                   <GroupsSelect
                     v-model="modifyForm.group"
                     :disabled="false"
+                    :grade="modifyForm.grade"
                     :legacy="true"
                     label="Groupe"/>
                 </div>
