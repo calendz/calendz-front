@@ -136,6 +136,13 @@
               </li>
               <li class="nav-item">
                 <a
+                  href="https://changelog.calendz.app"
+                  rel="noreferrer noopener"
+                  class="nav-link"
+                  target="_blank">Changelog</a>
+              </li>
+              <li class="nav-item">
+                <a
                   href="https://github.com/calendz"
                   rel="noreferrer noopener"
                   class="nav-link"
@@ -147,13 +154,6 @@
                   target="_blank"
                   rel="noreferrer noopener"
                   class="nav-link">Status</a>
-              </li>
-              <li class="nav-item">
-                <a
-                  href="https://travis-ci.com/calendz"
-                  rel="noreferrer noopener"
-                  class="nav-link"
-                  target="_blank">Travis CI</a>
               </li>
             </ul>
           </div>

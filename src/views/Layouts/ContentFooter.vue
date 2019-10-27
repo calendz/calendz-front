@@ -27,6 +27,13 @@
           <li class="nav-item">
             <a
               class="nav-link"
+              href="https://changelog.calendz.app"
+              rel="noreferrer noopener"
+              target="_blank">Changelog</a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
               href="https://github.com/calendz"
               rel="noreferrer noopener"
               target="_blank">Github</a>

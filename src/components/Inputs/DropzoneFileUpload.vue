@@ -2,6 +2,11 @@
   <div
     :class="[multiple ? 'dropzone-multiple': 'dropzone-single']"
     class="dropzone mb-3 dz-clickable">
+    <div
+      class="dz-message"
+      data-dz-message>
+      <span>Déposez votre image ici</span>
+    </div>
     <div class="fallback">
       <div class="custom-file">
         <input

@@ -101,6 +101,17 @@
               path: '/contact'
           }"/>
 
+          <!-- Changelog -->
+          <li class="nav-item">
+            <a
+              href="https://changelog.calendz.app"
+              target="_blank"
+              class="nav-link cursor-pointer">
+              <i class="fas fa-book-open text-grey mt-1"/>
+              <span class="nav-link-text">Changelog</span>
+            </a>
+          </li>
+
           <!-- Logout -->
           <li class="nav-item">
             <span

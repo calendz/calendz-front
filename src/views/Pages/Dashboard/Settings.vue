@@ -195,7 +195,7 @@
 
                     <div class="col-lg-9 col-md-8 my-2">
                       <p class="text-justify my-auto">
-                        Recevoir un mail à chaque nouvelle notification.
+                        <del>Recevoir un mail à chaque nouvelle notification.</del>
                       </p>
                     </div>
 
