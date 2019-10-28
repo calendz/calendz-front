@@ -244,8 +244,8 @@ export default {
 
     // add events listeners
     window.addEventListener('keyup', (e) => {
-      if (e.keyCode === 39) this.next()
-      if (e.keyCode === 37) this.prev()
+      if (e.keyCode === 39 && !this.showSearchInput) this.next()
+      if (e.keyCode === 37 && !this.showSearchInput) this.prev()
     })
 
     window.onresize = () => {
