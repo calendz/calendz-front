@@ -9,7 +9,10 @@
       <span
         :class="remainingDays < 7 ? 'text-danger' : 'text-warning'"
         class="mr-2"><i class="fas fa-clock"/> Prochain :</span>
-      <span class="text-nowrap">{{ dateToFullString(date) }}</span>
+      <router-link
+        :to="`/calendar?date=${dateToDayMonthYear(date)}`">
+        <span class="nav-link p-0 d-inline text-nowrap">{{ dateToFullString(date) }}</span>
+      </router-link>
     </template>
   </stats-card>
 </template>
@@ -27,7 +30,7 @@ export default {
     },
     date: {
       type: Date,
-      default: () => { return new Date('November 1, 2019') },
+      default: () => { return new Date('November 21, 2019') },
       doc: 'Due date'
     }
   },
