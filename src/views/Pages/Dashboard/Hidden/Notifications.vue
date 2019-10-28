@@ -106,12 +106,33 @@
                       </template>
                     </el-table-column>
 
-                    <!-- other columns -->
+                    <!-- title -->
                     <el-table-column
-                      v-for="column in tableColumns"
-                      :key="column.label"
-                      v-bind="column"
-                    />
+                      label="Titre"
+                      min-width="120px"
+                      class="text-center">
+                      <template v-slot="{row}">
+                        <div class="d-flex">
+                          <div class="col-auto text-left pl-1 pr-0">
+                            <span v-html="row.title"/>
+                          </div>
+                        </div>
+                      </template>
+                    </el-table-column>
+
+                    <!-- message -->
+                    <el-table-column
+                      label="Message"
+                      min-width="200px"
+                      class="text-center">
+                      <template v-slot="{row}">
+                        <div class="d-flex">
+                          <div class="col-auto text-left pl-1 pr-0">
+                            <span v-html="row.message"/>
+                          </div>
+                        </div>
+                      </template>
+                    </el-table-column>
 
                     <!-- timestamp -->
                     <el-table-column

@@ -79,9 +79,9 @@
           <div class="timeline-content container">
             <div class="row">
               <div class="col pr-0 ml--4">
-                <h6 class="text-sm font-weight-bold mb-0 text-justify">
-                  {{ notif.title }}
-                </h6>
+                <h6
+                  class="text-sm font-weight-bold mb-0 text-justify"
+                  v-html="notif.title"/>
               </div>
 
               <div class="col-auto px-1 text-right">
@@ -98,7 +98,9 @@
               </div>
 
               <div class="row w-100 py-2 pl-2 ">
-                <p class="text-sm font-weigth-light mb-0 text-justify">{{ notif.message }}</p>
+                <p
+                  class="text-sm font-weigth-light mb-0 text-justify"
+                  v-html="notif.message"/>
               </div>
             </div>
           </div>
