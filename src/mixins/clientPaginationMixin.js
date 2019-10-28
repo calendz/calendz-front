@@ -34,7 +34,7 @@ export default {
   data () {
     return {
       pagination: {
-        perPage: 5,
+        perPage: 25,
         currentPage: 1,
         perPageOptions: [5, 10, 25, 50],
         total: 0
