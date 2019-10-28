@@ -157,7 +157,7 @@
 
                 <div class="row">
                   <base-button
-                    :disabled="changing || btsFormDisabled"
+                    :disabled="changing || btsFormDisabled || (user.grade !== 'B1' && user.grade !== 'B2')"
                     type="primary"
                     class="mx-auto"
                     size="md"
