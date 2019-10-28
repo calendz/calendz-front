@@ -40,7 +40,7 @@ const UserService = {
 
   // change user's bts status
   changeBts: (bts) => {
-    return ApiService.patch('/user/bts', { bts })
+    return ApiService.patch(`/user/bts/${bts}`)
       .then(res => {
         return res.data
       })
