@@ -30,9 +30,11 @@
               class="mb-0">Photo de profil</h3>
             <div class="text-center">
               <img
-                src="img/theme/default-pp.png"
+                :src="user.avatarUrl || 'img/theme/default-pp.png'"
                 alt="Photo de profil"
-                width="150px">
+                height="150px"
+                width="150px"
+                class="rounded-circle">
               <br>
               <base-button
                 class="mt-4 mb-1 mr-0"
@@ -49,11 +51,30 @@
                 </template>
 
                 <div>
-                  <base-alert type="danger">
-                    <strong>Attention !</strong> Cette fonctionnalité n'est pas encore disponible.
+                  <base-alert type="warning">
+                    <strong>Attention !</strong>
+                    Nous ne sommes actuellement pas en mesure de stocker vos images. Veuillez l'héberger sur un site tel que
+                    <a
+                      href="https://imgur.com/upload?beta"
+                      target="_blank"
+                      class="text-white text-underline">Imgur</a>, puis renseignez le lien.
                   </base-alert>
-                  <p class="my-4">Veuillez importer votre photo ci-dessous :</p>
-                  <dropzone-file-upload v-model="fileSingle"/>
+
+                  <p class="my-4">Veuillez indiquez le lien de votre avatar ci-dessous :</p>
+
+                  <img
+                    :src="avatar || user.avatarUrl || 'img/theme/default-pp.png'"
+                    alt="Photo de profil"
+                    height="150px"
+                    width="150px"
+                    class="rounded-circle">
+
+                  <base-input
+                    v-model="avatar"
+                    type="url"
+                    pattern="https://.*"
+                    class="mt-4 mx-auto"
+                    placeholder="Lien vers votre image"/>
                 </div>
 
                 <template slot="footer">
@@ -62,8 +83,10 @@
                     size="md"
                     @click="modal = false">Fermer</base-button>
                   <base-button
+                    :disabled="changing || !avatar"
                     size="md"
-                    type="primary">Sauvegarder</base-button>
+                    type="primary"
+                    @click="handleAvatarSubmit">Sauvegarder</base-button>
                 </template>
               </modal>
 
@@ -291,7 +314,7 @@ export default {
   data () {
     return {
       modal: false,
-      fileSingle: [],
+      avatar: '',
       changePasswordForm: {
         password: '',
         password2: ''
@@ -343,6 +366,10 @@ export default {
           }, 5000)
         })
       })
+    },
+    handleAvatarSubmit () {
+      if (!this.avatar) return
+      this.$store.dispatch('account/changeAvatar', { avatar: this.avatar })
     },
     getError (name) {
       return this.errors.first(name)
