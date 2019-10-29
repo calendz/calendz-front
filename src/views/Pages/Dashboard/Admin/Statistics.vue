@@ -27,6 +27,10 @@
                   <h5 class="card-title text-uppercase text-muted mb-1">UTILISATEURS</h5>
                   <div class="row mt-2 mb--3">
                     <div class="col-12 pr-0">
+                      <div v-if="!stats.users">
+                        <placeholder class="w-75"/>
+                      </div>
+
                       <div v-if="stats.users">
                         <span class="h2 font-weight-bold mt--1 mr-2 float-left">
                           {{ stats.users.total }}
@@ -69,6 +73,10 @@
                   <h5 class="card-title text-uppercase text-muted mb-1">UTILISATEURS INACTIFS</h5>
                   <div class="row mt-2 mb--3">
                     <div class="col-12 pr-0">
+                      <div v-if="!stats.users">
+                        <placeholder class="w-75"/>
+                      </div>
+
                       <div v-if="stats.users">
                         <span class="h2 font-weight-bold mt--1 mr-2 float-left">
                           {{ `${stats.users.inactive}/${stats.users.total}` }}
@@ -111,6 +119,10 @@
                   <h5 class="card-title text-uppercase text-muted mb-1">MAILING LIST</h5>
                   <div class="row mt-2 mb--3">
                     <div class="col-12 pr-0">
+                      <div v-if="!stats.users">
+                        <placeholder class="w-75"/>
+                      </div>
+
                       <div v-if="stats.users">
                         <span class="h2 font-weight-bold mt--1 mr-2 float-left">
                           {{ `${stats.users.mailing}/${stats.users.total}` }}
@@ -153,6 +165,10 @@
                   <h5 class="card-title text-uppercase text-muted mb-1">INSCRITS EN BTS</h5>
                   <div class="row mt-2 mb--3">
                     <div class="col-12 pr-0">
+                      <div v-if="!stats.users">
+                        <placeholder class="w-75"/>
+                      </div>
+
                       <div v-if="stats.users">
                         <span class="h2 font-weight-bold mt--1 mr-2 float-left">
                           {{ `${stats.users.bts}/${stats.users.total}` }}
