@@ -60,6 +60,17 @@ const UserService = {
       })
   },
 
+  // change user's avatar
+  setAvatar: (avatar) => {
+    return ApiService.patch('/user/avatar', { avatar })
+      .then(res => {
+        return res.data
+      })
+      .catch(err => {
+        return Promise.reject(err)
+      })
+  },
+
   // update user informations
   updateInformations: (id, firstname, lastname, email, permissionLevel, grade, group, city, bts, isActive) => {
     return ApiService.patch(`/user/${id}`, { firstname, lastname, email, permissionLevel, grade, group, city, bts, isActive })

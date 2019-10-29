@@ -107,6 +107,19 @@ const accountModule = {
       state.status = { changeParameterError: reason }
     },
 
+    CHANGE_AVATAR_REQUEST: (state) => {
+      state.status = { isChanging: true }
+    },
+
+    CHANGE_AVATAR_SUCCESS: (state, value) => {
+      state.user.avatarUrl = value
+      state.status = {}
+    },
+
+    CHANGE_AVATAR_FAILURE: (state, reason) => {
+      state.status = { changeAvatarError: reason }
+    },
+
     UPDATE_USER_REQUEST: (state) => {
       state.status = { isUpdating: true }
     },
@@ -313,6 +326,20 @@ const accountModule = {
               type: 'error',
               customClass: { confirmButton: 'btn btn-primary' }
             })
+          })
+    },
+
+    changeAvatar: ({ commit }, { avatar }) => {
+      commit('CHANGE_AVATAR_REQUEST')
+      UserService.setAvatar(avatar)
+        .then(
+          res => {
+            commit('CHANGE_AVATAR_SUCCESS', avatar)
+            Vue.prototype.$notify({ type: 'success', message: `Avatar modifié avec succès.` })
+          },
+          err => {
+            commit('CHANGE_AVATAR_FAILURE', err.data.message)
+            Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.data.message || 'Une erreur est survenue...'}` })
           })
     }
   },
