@@ -8,6 +8,7 @@ const sysconfModule = {
   // ==================================
   state: {
     status: {},
+    stats: {},
     settings: {
       loginEnabled: true,
       registerEnabled: true
@@ -28,6 +29,19 @@ const sysconfModule = {
     },
 
     FETCH_SETTINGS_FAILURE: (state, reason) => {
+      state.status = { error: reason }
+    },
+
+    FETCH_STATS_REQUEST: (state) => {
+      state.status = { isLoadingStats: true }
+    },
+
+    FETCH_STATS_SUCCESS: (state, stats) => {
+      state.stats = stats
+      state.status = {}
+    },
+
+    FETCH_STATS_FAILURE: (state, reason) => {
       state.status = { error: reason }
     },
 
@@ -88,6 +102,18 @@ const sysconfModule = {
             Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b>Une erreur est survenue, veuillez réessayer...` })
           })
     },
+    fetchStats: ({ commit }) => {
+      commit('FETCH_STATS_REQUEST')
+      SysconfService.getStats()
+        .then(
+          res => {
+            commit('FETCH_STATS_SUCCESS', res.data.stats)
+          },
+          err => {
+            commit('FETCH_STATS_FAILURE', err.data.message)
+            Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.data.message || 'Une erreur est survenue...'}` })
+          })
+    },
     toggleLogin: ({ commit }, { value }) => {
       commit('TOGGLE_LOGIN_REQUEST')
       SysconfService.toggleLogin(value)
@@ -146,6 +172,9 @@ const sysconfModule = {
   getters: {
     getSettings: state => {
       return state.settings
+    },
+    getStats: state => {
+      return state.stats || null
     }
   }
 }
