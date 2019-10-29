@@ -27,12 +27,14 @@
                   <h5 class="card-title text-uppercase text-muted mb-1">UTILISATEURS</h5>
                   <div class="row mt-2 mb--3">
                     <div class="col-12 pr-0">
-                      <span class="h2 font-weight-bold mt--1 mr-2 float-left">
-                        {{ users }}
-                      </span>
-                      <span class="text-muted">
-                        {{ `(au total)` }}
-                      </span>
+                      <div v-if="stats.users">
+                        <span class="h2 font-weight-bold mt--1 mr-2 float-left">
+                          {{ stats.users.total }}
+                        </span>
+                        <span class="text-muted">
+                          {{ `(au total)` }}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </slot>
@@ -67,12 +69,14 @@
                   <h5 class="card-title text-uppercase text-muted mb-1">UTILISATEURS INACTIFS</h5>
                   <div class="row mt-2 mb--3">
                     <div class="col-12 pr-0">
-                      <span class="h2 font-weight-bold mt--1 mr-2 float-left">
-                        {{ `${inactiveUsers}/${users}` }}
-                      </span>
-                      <span class="text-muted">
-                        {{ `(${Math.ceil(inactiveUsers/users*100)}%)` }}
-                      </span>
+                      <div v-if="stats.users">
+                        <span class="h2 font-weight-bold mt--1 mr-2 float-left">
+                          {{ `${stats.users.inactive}/${stats.users.total}` }}
+                        </span>
+                        <span class="text-muted">
+                          {{ `(${Math.ceil(stats.users.inactive/stats.users.total*100)}%)` }}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </slot>
@@ -107,12 +111,14 @@
                   <h5 class="card-title text-uppercase text-muted mb-1">MAILING LIST</h5>
                   <div class="row mt-2 mb--3">
                     <div class="col-12 pr-0">
-                      <span class="h2 font-weight-bold mt--1 mr-2 float-left">
-                        {{ `${usersWithMailing}/${users}` }}
-                      </span>
-                      <span class="text-muted">
-                        {{ `(${Math.ceil(usersWithMailing/users*100)}%)` }}
-                      </span>
+                      <div v-if="stats.users">
+                        <span class="h2 font-weight-bold mt--1 mr-2 float-left">
+                          {{ `${stats.users.mailing}/${stats.users.total}` }}
+                        </span>
+                        <span class="text-muted">
+                          {{ `(${Math.ceil(stats.users.mailing/stats.users.total*100)}%)` }}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </slot>
@@ -147,12 +153,14 @@
                   <h5 class="card-title text-uppercase text-muted mb-1">INSCRITS EN BTS</h5>
                   <div class="row mt-2 mb--3">
                     <div class="col-12 pr-0">
-                      <span class="h2 font-weight-bold mt--1 mr-2 float-left">
-                        {{ `${usersWithBTS}/${users}` }}
-                      </span>
-                      <span class="text-muted">
-                        {{ `(${Math.ceil(usersWithBTS/users*100)}%)` }}
-                      </span>
+                      <div v-if="stats.users">
+                        <span class="h2 font-weight-bold mt--1 mr-2 float-left">
+                          {{ `${stats.users.bts}/${stats.users.total}` }}
+                        </span>
+                        <span class="text-muted">
+                          {{ `(${Math.ceil(stats.users.bts/stats.users.total*100)}%)` }}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </slot>
@@ -224,26 +232,22 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import BarChart from '@/components/Charts/BarChart'
 import PieChart from '@/components/Charts/PieChart'
 import { Charts } from '@/components/Charts/config'
-
-function randomScalingFactor () {
-  return Math.round(Math.random() * 100)
-}
 
 export default {
   components: {
     BarChart,
     PieChart
   },
-  data () {
-    return {
-      users: '124',
-      inactiveUsers: '2',
-      usersWithMailing: '89',
-      usersWithBTS: '12',
-      pieChart: {
+  computed: {
+    ...mapGetters({
+      stats: 'sysconf/getStats'
+    }),
+    pieChart () {
+      return {
         chartData: {
           labels: [
             'B1',
@@ -254,11 +258,11 @@ export default {
           ],
           datasets: [{
             data: [
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor()
+              this.stats.grades ? this.stats.grades.b1 : 0,
+              this.stats.grades ? this.stats.grades.b2 : 0,
+              this.stats.grades ? this.stats.grades.b3 : 0,
+              this.stats.grades ? this.stats.grades.i1 : 0,
+              this.stats.grades ? this.stats.grades.i2 : 0
             ],
             backgroundColor: [
               Charts.colors.theme['info'],
@@ -276,89 +280,91 @@ export default {
             animateRotate: true
           }
         }
-      },
-      barChartStacked: {
+      }
+    },
+    barChartStacked () {
+      return {
         chartData: {
           labels: ['Arras', 'Auxerre', 'Bordeaux', 'Brest', 'Grenoble', 'Lille', 'Lyon', 'Montpellier', 'Nantes', 'Paris', 'Dakar'],
           datasets: [{
             label: 'B1',
             backgroundColor: Charts.colors.theme['info'],
             data: [
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor()
+              this.stats.cities ? this.stats.cities.arras.b1 : 0,
+              this.stats.cities ? this.stats.cities.auxerre.b1 : 0,
+              this.stats.cities ? this.stats.cities.bordeaux.b1 : 0,
+              this.stats.cities ? this.stats.cities.brest.b1 : 0,
+              this.stats.cities ? this.stats.cities.grenoble.b1 : 0,
+              this.stats.cities ? this.stats.cities.lille.b1 : 0,
+              this.stats.cities ? this.stats.cities.lyon.b1 : 0,
+              this.stats.cities ? this.stats.cities.montpellier.b1 : 0,
+              this.stats.cities ? this.stats.cities.nantes.b1 : 0,
+              this.stats.cities ? this.stats.cities.paris.b1 : 0,
+              this.stats.cities ? this.stats.cities.dakar.b1 : 0
             ]
           }, {
             label: 'B2',
             backgroundColor: Charts.colors.theme['primary'],
             data: [
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor()
+              this.stats.cities ? this.stats.cities.arras.b2 : 0,
+              this.stats.cities ? this.stats.cities.auxerre.b2 : 0,
+              this.stats.cities ? this.stats.cities.bordeaux.b2 : 0,
+              this.stats.cities ? this.stats.cities.brest.b2 : 0,
+              this.stats.cities ? this.stats.cities.grenoble.b2 : 0,
+              this.stats.cities ? this.stats.cities.lille.b2 : 0,
+              this.stats.cities ? this.stats.cities.lyon.b2 : 0,
+              this.stats.cities ? this.stats.cities.montpellier.b2 : 0,
+              this.stats.cities ? this.stats.cities.nantes.b2 : 0,
+              this.stats.cities ? this.stats.cities.paris.b2 : 0,
+              this.stats.cities ? this.stats.cities.dakar.b2 : 0
             ]
           }, {
             label: 'B3',
             backgroundColor: Charts.colors.theme['success'],
             data: [
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor()
+              this.stats.cities ? this.stats.cities.arras.b3 : 0,
+              this.stats.cities ? this.stats.cities.auxerre.b3 : 0,
+              this.stats.cities ? this.stats.cities.bordeaux.b3 : 0,
+              this.stats.cities ? this.stats.cities.brest.b3 : 0,
+              this.stats.cities ? this.stats.cities.grenoble.b3 : 0,
+              this.stats.cities ? this.stats.cities.lille.b3 : 0,
+              this.stats.cities ? this.stats.cities.lyon.b3 : 0,
+              this.stats.cities ? this.stats.cities.montpellier.b3 : 0,
+              this.stats.cities ? this.stats.cities.nantes.b3 : 0,
+              this.stats.cities ? this.stats.cities.paris.b3 : 0,
+              this.stats.cities ? this.stats.cities.dakar.b3 : 0
             ]
           }, {
             label: 'I1 ',
             backgroundColor: Charts.colors.theme['warning'],
             data: [
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor()
+              this.stats.cities ? this.stats.cities.arras.i1 : 0,
+              this.stats.cities ? this.stats.cities.auxerre.i1 : 0,
+              this.stats.cities ? this.stats.cities.bordeaux.i1 : 0,
+              this.stats.cities ? this.stats.cities.brest.i1 : 0,
+              this.stats.cities ? this.stats.cities.grenoble.i1 : 0,
+              this.stats.cities ? this.stats.cities.lille.i1 : 0,
+              this.stats.cities ? this.stats.cities.lyon.i1 : 0,
+              this.stats.cities ? this.stats.cities.montpellier.i1 : 0,
+              this.stats.cities ? this.stats.cities.nantes.i1 : 0,
+              this.stats.cities ? this.stats.cities.paris.i1 : 0,
+              this.stats.cities ? this.stats.cities.dakar.i1 : 0
             ]
           }, {
             label: 'I2 ',
             backgroundColor: Charts.colors.theme['danger'],
             data: [
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor()
+              this.stats.cities ? this.stats.cities.arras.i2 : 0,
+              this.stats.cities ? this.stats.cities.auxerre.i2 : 0,
+              this.stats.cities ? this.stats.cities.bordeaux.i2 : 0,
+              this.stats.cities ? this.stats.cities.brest.i2 : 0,
+              this.stats.cities ? this.stats.cities.grenoble.i2 : 0,
+              this.stats.cities ? this.stats.cities.lille.i2 : 0,
+              this.stats.cities ? this.stats.cities.lyon.i2 : 0,
+              this.stats.cities ? this.stats.cities.montpellier.i2 : 0,
+              this.stats.cities ? this.stats.cities.nantes.i2 : 0,
+              this.stats.cities ? this.stats.cities.paris.i2 : 0,
+              this.stats.cities ? this.stats.cities.dakar.i2 : 0
             ]
           }]
 
@@ -380,6 +386,9 @@ export default {
         }
       }
     }
+  },
+  created () {
+    this.$store.dispatch('sysconf/fetchStats')
   }
 }
 </script>

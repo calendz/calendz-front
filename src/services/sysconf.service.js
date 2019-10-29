@@ -16,6 +16,17 @@ const SysconfService = {
       })
   },
 
+  // get statistics
+  getStats: () => {
+    return ApiService.get(`/sysconf/stats`)
+      .then(res => {
+        return res
+      })
+      .catch(err => {
+        return Promise.reject(err)
+      })
+  },
+
   toggleLogin: (value) => {
     return ApiService.patch(`/sysconf/settings/login-enabled/${value}`)
       .then(res => {
