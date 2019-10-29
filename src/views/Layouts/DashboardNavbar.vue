@@ -212,11 +212,10 @@
           aria-expanded="false"
           @click="toggleProfileDropdown">
           <div class="media align-items-center">
-            <span class="avatar avatar-sm rounded-circle">
-              <img
-                alt="Image placeholder"
-                src="img/theme/default-pp.png">
-            </span>
+            <img
+              :src="user.avatarUrl || 'img/theme/default-pp.png'"
+              alt="Image placeholder"
+              class="avatar avatar-sm rounded-circle">
             <div class="media-body ml-2 d-none d-lg-block">
               <span class="mb-0 text-sm font-weight-bold">{{ user ? user.firstname : 'Prénom' }}</span>
             </div>

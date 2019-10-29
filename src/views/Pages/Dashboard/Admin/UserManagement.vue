@@ -68,7 +68,7 @@
               <template v-slot="{row}">
                 <div class="d-flex justify-content-center">
                   <img
-                    src="img/theme/default-pp.png"
+                    :src="row.avatarUrl || 'img/theme/default-pp.png'"
                     alt="Photo de profil"
                     class="avatar avatar-sm rounded-circle">
                 </div>
