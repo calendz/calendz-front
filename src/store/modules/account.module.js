@@ -329,6 +329,26 @@ const accountModule = {
           })
     },
 
+    deleteSelf: ({ commit, dispatch }) => {
+      commit('DELETE_USER_REQUEST')
+      UserService.deleteSelf()
+        .then(
+          res => {
+            commit('DELETE_USER_SUCCESS')
+            Vue.prototype.$notify({ type: 'success', message: `Votre compte a bien été supprimé...` })
+            dispatch('logout', {})
+          },
+          err => {
+            commit('DELETE_USER_FAILURE', err.data.message)
+            swal.fire({
+              title: 'Une erreur est survenue !',
+              text: err.data.message || 'Erreur inconnue...',
+              type: 'error',
+              customClass: { confirmButton: 'btn btn-primary' }
+            })
+          })
+    },
+
     changeAvatar: ({ commit }, { avatar }) => {
       commit('CHANGE_AVATAR_REQUEST')
       UserService.setAvatar(avatar)

@@ -93,6 +93,16 @@ const UserService = {
       })
   },
 
+  deleteSelf: () => {
+    return ApiService.delete(`/user`)
+      .then(res => {
+        return res.data
+      })
+      .catch(err => {
+        return Promise.reject(err)
+      })
+  },
+
   // get all users
   getAll: () => {
     return ApiService.get('/user/all')

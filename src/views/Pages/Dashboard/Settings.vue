@@ -45,6 +45,14 @@
                   Emails
                 </li>
               </ul>
+              <base-button
+                size="md"
+                type="danger"
+                class="mt-4 w-100"
+                @click="deleteAccount">
+                <i class="fas fa-trash-alt text-white mr-1"/>
+                Supprimer le compte
+              </base-button>
             </div>
 
             <!-- ======================================= -->
@@ -252,6 +260,7 @@
   </div>
 </template>
 <script>
+import swal from 'sweetalert2'
 import { mapState } from 'vuex'
 import { Select, Option } from 'element-ui'
 
@@ -307,6 +316,23 @@ export default {
     handleCalendarColorReset () {
       this.colorInput = '#172b4d'
       this.$store.dispatch('account/changeCalendarColor', { value: '172b4d' })
+    },
+    deleteAccount () {
+      swal.fire({
+        title: `Êtes-vous sûr de vouloir supprimer votre compte ?`,
+        text: 'Vous pourrez toujours vous réinscrire plus tard, mais toutes vos données seront perdues...',
+        type: 'warning',
+        customClass: {
+          confirmButton: 'btn btn-warning mt-2',
+          cancelButton: 'btn btn-secondary mt-2'
+        },
+        buttonsStyling: false,
+        showCancelButton: true,
+        cancelButtonText: 'Annuler',
+        confirmButtonText: 'Confimer'
+      }).then((result) => {
+        if (result.value) this.$store.dispatch('account/deleteSelf')
+      })
     }
   }
 }
