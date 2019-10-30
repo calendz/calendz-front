@@ -130,7 +130,9 @@
 
                       <div class="row">
                         <div class="col">
-                          <h4 class="mb-0 text-sm">{{ title || `Le titre de la notification !` }}</h4>
+                          <h4
+                            class="mb-0 text-sm"
+                            v-html="title || `Le titre de la notification !`"/>
                         </div>
                         <div class="col-auto text-right">
                           <small class="text-muted">
@@ -141,7 +143,9 @@
                       </div>
 
                       <div class="row mt-1 px-3">
-                        <p class="text-sm mb-0">{{ message || `Commencez à taper votre message pour voir la prévisualisation s'actualiser.` }}</p>
+                        <p
+                          class="text-sm mb-0"
+                          v-html="message || `Commencez à taper votre message pour voir la prévisualisation s'actualiser.`"/>
                       </div>
                     </div>
                   </div>

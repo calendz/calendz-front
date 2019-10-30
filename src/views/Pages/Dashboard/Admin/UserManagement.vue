@@ -68,7 +68,7 @@
               <template v-slot="{row}">
                 <div class="d-flex justify-content-center">
                   <img
-                    src="img/theme/default-pp.png"
+                    :src="row.avatarUrl || 'img/theme/default-pp.png'"
                     alt="Photo de profil"
                     class="avatar avatar-sm rounded-circle">
                 </div>
@@ -127,6 +127,23 @@
                 <div class="d-flex">
                   <div class="col-auto text-center pl-1 pr-0">
                     {{ dateToDayMonthYear(timestampToDate(row.creationDate)) }}
+                  </div>
+                </div>
+              </template>
+            </el-table-column>
+
+            <!-- last active date -->
+            <el-table-column
+              label="Last seen"
+              width="150px"
+              min-width="150px"
+              class="text-center"
+              prop="row.lastActiveDate"
+              sortable>
+              <template v-slot="{row}">
+                <div class="d-flex">
+                  <div class="col-auto text-center pl-1 pr-0">
+                    {{ dateToDayMonthYear(timestampToDate(row.lastActiveDate)) + ' - ' + timeToHour(timestampToDate(row.lastActiveDate)) }}
                   </div>
                 </div>
               </template>

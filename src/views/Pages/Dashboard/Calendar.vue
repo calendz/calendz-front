@@ -239,13 +239,31 @@ export default {
     // initialize fullcalendar
     const calendarApi = this.$refs.fullCalendar.getApi()
     calendarApi.setOption('locale', 'fr')
+
+    const queryUser = this.$route.query.user
+    if (queryUser) {
+      this.searchInput = queryUser
+      localStorage.setItem('calendz.calendar.searchInput', queryUser)
+    }
+
+    const queryDate = this.$route.query.date
+    if (queryDate) {
+      let date = queryDate.split('-')
+      date = new Date(`${date[1]}-${date[0]}-${date[2]}`)
+      // redirect to date
+      this.calendarApi().gotoDate(date)
+      // fetch date's week
+      const dateToFetch = this.getMonday(date)
+      this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(dateToFetch) })
+    }
+
     // set correct header date
     this.updateHeaderDate()
 
     // add events listeners
     window.addEventListener('keyup', (e) => {
-      if (e.keyCode === 39) this.next()
-      if (e.keyCode === 37) this.prev()
+      if (e.keyCode === 39 && !this.showSearchInput) this.next()
+      if (e.keyCode === 37 && !this.showSearchInput) this.prev()
     })
 
     window.onresize = () => {

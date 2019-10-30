@@ -69,14 +69,12 @@
           }"/>
 
           <!-- statistics -->
-          <div class="nav-item hover-pointer">
-            <div
-              class="nav-link"
-              @click="comingSoon()">
-              <i class="fas fa-chart-line text-info"/>
-              <span class="nav-link-text">Statistiques</span>
-            </div>
-          </div>
+          <sidebar-item
+            :link="{
+              name: 'Statistiques',
+              icon: 'fas fa-chart-line text-info',
+              path: '/stats'
+          }"/>
 
           <!-- user-management -->
           <sidebar-item

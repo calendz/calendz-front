@@ -24,7 +24,7 @@
       <div class="col-auto">
         <slot name="icon">
           <router-link
-            to="/calendar">
+            :to="nextCourse ? `/calendar?date=${dateToDayMonthYear(nextCourse.start)}` : '/calendar'">
             <div class="icon icon-shape bg-gradient-info text-white rounded-circle shadow">
               <i class="fas fa-calendar-week"/>
             </div>
@@ -36,7 +36,7 @@
     <p class="mt-3 mb-0 text-sm">
       <slot name="footer">
         <router-link
-          to="/calendar"
+          :to="nextCourse ? `/calendar?date=${dateToDayMonthYear(nextCourse.start)}` : '/calendar'"
           class="nav-link p-0">
 
           <!-- loading -->
