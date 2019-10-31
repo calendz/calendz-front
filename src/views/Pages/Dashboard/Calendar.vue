@@ -261,10 +261,7 @@ export default {
     this.updateHeaderDate()
 
     // add events listeners
-    window.addEventListener('keyup', (e) => {
-      if (e.keyCode === 39 && !this.showSearchInput) this.next()
-      if (e.keyCode === 37 && !this.showSearchInput) this.prev()
-    })
+    window.addEventListener('keyup', this.injectListeners)
 
     window.onresize = () => {
       this.windowWidth = window.innerWidth
@@ -275,6 +272,8 @@ export default {
     if (this.windowWidth >= 800) this.changeView('timeGridWeek')
   },
   beforeDestroy () {
+    window.removeEventListener('keyup', this.injectListeners)
+
     this.handleSearchInputClear()
   },
   methods: {
@@ -473,6 +472,10 @@ export default {
       this.activeDate = new Date()
       this.calendarApi().today()
       this.updateHeaderDate()
+    },
+    injectListeners (e) {
+      if (e.keyCode === 39 && !this.showSearchInput) this.next()
+      if (e.keyCode === 37 && !this.showSearchInput) this.prev()
     },
     // ===========================================
     // == Random functions

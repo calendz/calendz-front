@@ -55,9 +55,9 @@
                     <strong>Attention !</strong>
                     Nous ne sommes actuellement pas en mesure de stocker vos images. Veuillez l'héberger sur un site tel que
                     <a
-                      href="https://imgur.com/upload?beta"
+                      href="https://www.noelshack.com/"
                       target="_blank"
-                      class="text-white text-underline">Imgur</a>, puis renseignez le lien.
+                      class="text-white text-underline">Noelshack</a>, puis renseignez le lien.
                   </base-alert>
 
                   <p class="my-4">Veuillez indiquez le lien de votre avatar ci-dessous :</p>

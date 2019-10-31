@@ -355,6 +355,9 @@ const accountModule = {
         .then(
           res => {
             commit('CHANGE_AVATAR_SUCCESS', avatar)
+            const user = JSON.parse(localStorage.user)
+            user.avatarUrl = avatar
+            localStorage.user = JSON.stringify(user)
             Vue.prototype.$notify({ type: 'success', message: `Avatar modifié avec succès.` })
           },
           err => {

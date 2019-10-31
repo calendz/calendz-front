@@ -140,7 +140,10 @@ export default {
     currentCourseProgress () {
       // eslint-disable-next-line no-unused-vars
       const dummyTicker = this.$data.ticker
-      return this.getProgress(this.currentCourse.start, this.currentCourse.end)
+
+      const progress = this.getProgress(this.currentCourse.start, this.currentCourse.end)
+      if (progress === 100) return 0
+      else return progress
     }
   },
   beforeCreate () {
