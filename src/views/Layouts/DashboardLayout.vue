@@ -28,9 +28,9 @@
           <!-- homeworks -->
           <sidebar-item
             :link="{
-              name: 'Devoirs',
+              name: 'Devoirs et tâches',
               icon: 'fas fa-book text-primary',
-              path: '/homeworks'
+              path: '/tasks'
           }"/>
 
           <!-- settings -->
