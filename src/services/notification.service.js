@@ -1,6 +1,6 @@
 import ApiService from './api.service'
 
-const UserService = {
+const NotificationService = {
   // ================================================
   // == Methods
   // ================================================
@@ -50,4 +50,4 @@ const UserService = {
   }
 }
 
-export default UserService
+export default NotificationService
