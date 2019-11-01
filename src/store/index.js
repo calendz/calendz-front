@@ -4,6 +4,7 @@ import AccountModule from './modules/account.module'
 import NotificationsModule from './modules/notifications.module'
 import CalendarModule from './modules/calendar.module'
 import SysconfModule from './modules/sysconf.module'
+import TasksModule from './modules/tasks.module'
 
 Vue.use(Vuex)
 
@@ -12,7 +13,8 @@ export default new Vuex.Store({
     account: AccountModule,
     calendar: CalendarModule,
     notifications: NotificationsModule,
-    sysconf: SysconfModule
+    sysconf: SysconfModule,
+    tasks: TasksModule
   },
   strict: process.env.NODE_ENV !== 'production'
 })
