@@ -36,12 +36,11 @@
                   :class="active === 1 ? 'bg-primary text-white' : 'bg-white text-primary'"
                   class="list-group-item d-flex justify-content-between align-items-center hover-click"
                   @click="active = 1">
-                  Non-faits
+                  À faire
                   <badge
                     type="primary"
                     pill>
-                    0
-                    <!-- {{ notReadNotifications.length || 0 }} -->
+                    {{ todoTasks.length || 0 }}
                   </badge>
                 </li>
                 <li
@@ -52,20 +51,29 @@
                   <badge
                     type="primary"
                     pill>
-                    0
-                    <!-- {{ readNotifications.length || 0 }} -->
+                    {{ doneTasks.length || 0 }}
                   </badge>
                 </li>
                 <li
                   :class="active === 3 ? 'bg-primary text-white' : 'bg-white text-primary'"
                   class="list-group-item d-flex justify-content-between align-items-center hover-click"
                   @click="active = 3">
+                  Non-faits
+                  <badge
+                    type="primary"
+                    pill>
+                    {{ notdoneTasks.length || 0 }}
+                  </badge>
+                </li>
+                <li
+                  :class="active === 4 ? 'bg-primary text-white' : 'bg-white text-primary'"
+                  class="list-group-item d-flex justify-content-between align-items-center hover-click"
+                  @click="active = 4">
                   Tous
                   <badge
                     type="primary"
                     pill>
-                    0
-                    <!-- {{ allNotifications.length || 0 }} -->
+                    {{ allTasks.length || 0 }}
                   </badge>
                 </li>
               </ul>
@@ -103,8 +111,8 @@
 
                     <!-- type -->
                     <el-table-column
-                      width="85px"
-                      min-width="85px"
+                      width="62px"
+                      min-width="62px"
                       class="text-center">
                       <template v-slot="{row}">
                         <div class="d-flex justify-content-center">
@@ -113,33 +121,127 @@
                       </template>
                     </el-table-column>
 
-                    <!-- title -->
+                    <!-- title & description -->
                     <el-table-column
-                      label="Titre"
-                      min-width="120px"
+                      label="Titre et description"
+                      min-width="250px"
                       class="text-center">
                       <template v-slot="{row}">
                         <div class="d-flex">
-                          <div class="col-auto text-left pl-1 pr-0">
-                            <span v-html="row.title"/>
+                          <div class="col-auto text-left px-0">
+                            <span
+                              class="h4"
+                              v-html="row.title"/>
+                            <br>
+                            <span
+                              v-html="row.description || 'Aucune description...'"/>
                           </div>
                         </div>
                       </template>
                     </el-table-column>
 
-                    <!-- message -->
+                    <!-- date -->
                     <el-table-column
-                      label="Message"
+                      label="Date"
+                      width="200px"
                       min-width="200px"
                       class="text-center">
                       <template v-slot="{row}">
+                        <span class="text-left">
+                          {{ dateToFullString(timestampToDate(row.date)) }}
+                        </span>
+                      </template>
+                    </el-table-column>
+
+                    <!-- target -->
+                    <el-table-column
+                      label=""
+                      width="120px"
+                      min-width="120px"
+                      class="text-center">
+                      <template v-slot="{row}">
+                        <!-- <span
+                          v-if="row.city && row.grade && row.group"
+                          class="text-left">
+                          {{ `${row.grade} ${row.group}` }}
+                        </span>
+                        <span v-else> -->
+                        <div class="avatar-group">
+                          <el-tooltip
+                            placement="top"
+                            content="Jessica Rowland"
+                            class="avatar avatar-xs rounded-circle">
+                            <img
+                              alt="Image placeholder"
+                              src="img/theme/default-pp.png">
+                          </el-tooltip>
+
+                          <el-tooltip
+                            placement="top"
+                            content="Audrey Love"
+                            class="avatar avatar-xs rounded-circle">
+                            <img
+                              alt="Image placeholder"
+                              src="img/theme/default-pp.png">
+                          </el-tooltip>
+
+                          <el-tooltip
+                            placement="top"
+                            content="Michael Lewis"
+                            class="avatar avatar-xs rounded-circle">
+                            <img
+                              alt="Image placeholder"
+                              src="img/theme/default-pp.png">
+                          </el-tooltip>
+                        </div>
+                        <!-- </span> -->
+                      </template>
+                    </el-table-column>
+
+                    <!-- actions -->
+                    <el-table-column
+                      width="172px"
+                      min-width="172px"
+                      align="right"
+                      label="Actions">
+                      <template v-slot="{row}">
                         <div class="d-flex">
-                          <div class="col-auto text-left pl-1 pr-0">
-                            <span v-html="row.message"/>
-                          </div>
+
+                          <el-tooltip
+                            content="Marquer comme fait"
+                            placement="top">
+                            <base-button
+                              :disabled="isDone(row._id)"
+                              size="sm"
+                              type="success">
+                              <i class="text-white fas fa-check"/>
+                            </base-button>
+                          </el-tooltip>
+
+                          <el-tooltip
+                            content="Modifier"
+                            placement="top">
+                            <base-button
+                              size="sm"
+                              type="info">
+                              <i class="text-white ni ni-ruler-pencil"/>
+                            </base-button>
+                          </el-tooltip>
+
+                          <el-tooltip
+                            content="Supprimer"
+                            placement="top">
+                            <base-button
+                              size="sm"
+                              type="danger"
+                              class="remove btn-link">
+                              <i class="text-white fas fa-trash"/>
+                            </base-button>
+                          </el-tooltip>
                         </div>
                       </template>
                     </el-table-column>
+
                   </el-table>
                 </div>
 
@@ -189,43 +291,44 @@ export default {
   data () {
     return {
       active: 1,
-      tableColumns: [
-        {
-          prop: 'title',
-          label: 'Titre',
-          minWidth: 120,
-          sortable: false
-        },
-        {
-          prop: 'message',
-          label: 'Message',
-          minWidth: 220,
-          sortable: false
-        }
-      ],
       tableData: []
     }
   },
   computed: {
     ...mapGetters({
+      todoTasks: 'tasks/getTodo',
+      doneTasks: 'tasks/getDone',
+      notdoneTasks: 'tasks/getNotDone',
+      allTasks: 'tasks/getAll'
     })
   },
   watch: {
     active: function (newActive) {
       switch (newActive) {
-        case 1: this.tableData = this.notReadNotifications; break
-        case 2: this.tableData = this.readNotifications; break
-        case 3: this.tableData = this.allNotifications; break
+        case 1: this.tableData = this.todoTasks; break
+        case 2: this.tableData = this.doneTasks; break
+        case 3: this.tableData = this.notdoneTasks; break
+        case 4: this.tableData = this.allTasks; break
       }
     }
   },
   mounted () {
-    // load default table (besoin du timeout pcq vuex prend tu temps à s'actualiser)
+    // load default table
+    // (besoin du timeout pcq vuex prend tu temps à s'actualiser)
     setTimeout(() => {
-      // this.tableData = this.notReadNotifications
+      this.tableData = this.todoTasks
     }, 100)
   },
   methods: {
+    isDone (taskId) {
+      return this.doneTasks.some(task => task._id === taskId)
+    }
   }
 }
 </script>
+
+<style lang="scss">
+  table tr td:first-child {
+    padding-right: 0 !important;
+  }
+</style>
