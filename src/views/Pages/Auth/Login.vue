@@ -46,6 +46,7 @@
                   name="email"
                   class="mb-3"
                   prepend-icon="ni ni-email-83"
+                  type="email"
                   placeholder="Adresse mail"
                   autocapitalize="none"/>
 
