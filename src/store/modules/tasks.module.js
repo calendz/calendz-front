@@ -55,14 +55,19 @@ const tasksModule = {
       array.sort((a, b) => (a.date > b.date) ? -1 : 1)
       return array
     },
-    getTodo: (state, getters) => {
+    getTodo: (state, getters, rootState) => {
       const now = new Date().getTime()
-      const array = [...getters.getNotDone].filter(task => now < parseInt(task.date))
+      const doneTasks = rootState.account.user.tasks.done
+      let array = [...state.tasks].filter(task => now < parseInt(task.date))
+      array = array.filter(task => !doneTasks.includes(task._id))
+      array.sort((a, b) => (a.date < b.date) ? -1 : 1)
       return array
     },
     getNotDone: (state, getters, rootState) => {
+      const now = new Date().getTime()
       const doneTasks = rootState.account.user.tasks.done
-      const array = [...state.tasks].filter(task => !doneTasks.includes(task._id))
+      let array = [...state.tasks].filter(task => !doneTasks.includes(task._id))
+      array = array.filter(task => now > parseInt(task.date))
       array.sort((a, b) => (a.date < b.date) ? -1 : 1)
       return array
     },
