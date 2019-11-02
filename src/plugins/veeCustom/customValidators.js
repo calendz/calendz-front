@@ -33,6 +33,10 @@ Validator.extend('valid_city', {
     'Nantes', 'Paris', 'Dakar'].indexOf(value) !== -1
 })
 
+Validator.extend('valid_task_type', {
+  validate: value => ['homework', 'DS', 'task'].indexOf(value) !== -1
+})
+
 Validator.extend('boolean', {
   validate: value => ['true', 'false', true, false].includes(value)
 })
