@@ -14,6 +14,17 @@ const TaskService = {
       .catch(err => {
         return Promise.reject(err)
       })
+  },
+
+  // create a task
+  create: (title, type, subject, date, description) => {
+    return ApiService.post('/tasks', { title, type, subject, date, description })
+      .then(res => {
+        return res.data
+      })
+      .catch(err => {
+        return Promise.reject(err)
+      })
   }
 }
 

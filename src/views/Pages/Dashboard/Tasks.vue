@@ -77,6 +77,15 @@
                   </badge>
                 </li>
               </ul>
+
+              <base-button
+                size="md"
+                type="primary"
+                class="mt-4 w-100"
+                @click="showTaskCreationModal = true">
+                <i class="fas fa-plus-circle text-white mr-1"/>
+                Ajouter un devoirs
+              </base-button>
             </div>
 
             <!-- =============================== -->
@@ -166,7 +175,7 @@
                               class="mb-0 text-sm"
                               v-html="row.description || `<span class='text-muted'>Aucune description...</span>`"/>
                             <footer
-                              v-show="row.subject"
+                              v-if="row.subject"
                               class="blockquote-footer text-sm">
                               {{ capitalizeFirstLetter(row.subject.toLowerCase()) }}
                             </footer>
@@ -297,13 +306,127 @@
 
       </div>
     </div>
+
+    <!-- =============================== -->
+    <!-- == TASK CREATION MODAL ======== -->
+    <!-- =============================== -->
+    <form
+      class="needs-validation"
+      @submit.prevent="handleTaskCreateSubmit">
+      <modal :show.sync="showTaskCreationModal">
+        <template slot="header">
+          <h5 class="modal-title">Créer une tâche</h5>
+        </template>
+
+        <div class="row">
+          <div class="col-md-6">
+            <base-input
+              v-validate="'required|min:2|max:50'"
+              v-model="taskCreationForm.title"
+              :error="getError('titre')"
+              :valid="isValid('titre')"
+              name="titre"
+              label="Titre"
+              placeholder="Titre"/>
+          </div>
+
+          <div class="col-md-6">
+            <base-input
+              :error="getError('type')"
+              :valid="isValid('type')"
+              label="Type">
+              <select
+                v-validate="'required|valid_task_type'"
+                v-model="taskCreationForm.type"
+                name="type"
+                class="form-control">
+                <option
+                  value=""
+                  hidden>Séléctionnez un type</option>
+                <option value="homework">Devoirs</option>
+                <option value="DS">Contrôle</option>
+                <option value="task">Tâche</option>
+              </select>
+            </base-input>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <base-input
+              v-validate="'min:2|max:50'"
+              v-model="taskCreationForm.subject"
+              :error="getError('matière')"
+              :valid="isValid('matière')"
+              name="matière"
+              label="Matière (facultatif)"
+              placeholder="Matière"/>
+          </div>
+
+          <div class="col-md-6">
+            <base-input
+              :error="getError('date')"
+              :valid="isValid('date')"
+              label="Date de rendu">
+              <flat-picker
+                slot-scope="{focus, blur}"
+                v-model="taskCreationForm.date"
+                :config="flatPickerConfig"
+                name="date"
+                class="form-control datepicker"
+                @on-open="focus"
+                @on-close="blur"/>
+            </base-input>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <base-input
+              :error="getError('description')"
+              :valid="isValid('description')"
+              class="w-100"
+              label="Description (facultatif)">
+              <textarea
+                v-validate="'min:2|max:1000'"
+                v-model="taskCreationForm.description"
+                name="description"
+                class="form-control"
+                rows="3"
+                resize="none"
+                placeholder="Entrez la description de la tâche..."/>
+            </base-input>
+          </div>
+        </div>
+
+        <template slot="footer">
+          <base-button
+            size="md"
+            type="secondary"
+            @click="showTaskCreationModal = false">
+            Fermer
+          </base-button>
+          <base-button
+            size="md"
+            type="primary"
+            native-type="submit">
+            Ajouter
+          </base-button>
+        </template>
+      </modal>
+    </form>
+
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import { BasePagination } from '@/components'
-import { Table, TableColumn, Option } from 'element-ui'
+import { Table, TableColumn, Option, Select } from 'element-ui'
+import FlatPicker from 'vue-flatpickr-component'
+import 'flatpickr/dist/flatpickr.css'
+import { French } from 'flatpickr/dist/l10n/fr.js'
+
 import clientPaginationMixin from '@/mixins/clientPaginationMixin'
 import dateUtilMixin from '@/mixins/dateUtilMixin'
 import stringUtilMixin from '@/mixins/stringUtilMixin'
@@ -311,8 +434,10 @@ import stringUtilMixin from '@/mixins/stringUtilMixin'
 export default {
   name: 'Settings',
   components: {
+    FlatPicker,
     BasePagination,
     [Option.name]: Option,
+    [Select.name]: Select,
     [Table.name]: Table,
     [TableColumn.name]: TableColumn
   },
@@ -320,7 +445,17 @@ export default {
   data () {
     return {
       active: 1,
-      tableData: []
+      tableData: [],
+      taskCreationForm: {
+        type: '',
+        date: new Date()
+      },
+      showTaskCreationModal: false,
+      flatPickerConfig: {
+        allowInput: true,
+        locale: French,
+        dateFormat: 'd-m-Y'
+      }
     }
   },
   computed: {
@@ -349,8 +484,32 @@ export default {
     }, 100)
   },
   methods: {
+    getError (name) {
+      return this.errors.first(name)
+    },
+    isValid (name) {
+      return this.validated && !this.errors.has(name)
+    },
     isDone (taskId) {
       return this.doneTasks.some(task => task._id === taskId)
+    },
+    handleTaskCreateSubmit (e) {
+      // vérification validation des champs
+      this.$validator.validate().then(valid => {
+        if (!valid) return
+
+        this.$store.dispatch('tasks/create', this.taskCreationForm).then(response => {
+          // reset the form
+          this.taskCreationForm = { type: '', date: new Date() }
+          // close the modal
+          this.showTaskCreationModal = false
+
+          // reload the table
+          setTimeout(() => {
+            this.tableData = this.todoTasks
+          }, 100)
+        })
+      })
     }
   }
 }
