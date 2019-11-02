@@ -257,6 +257,12 @@ export default {
       this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(dateToFetch) })
     }
 
+    // if today is saturday, show next week
+    const today = new Date()
+    if (today.getDay() === 6) {
+      this.calendarApi().gotoDate(today.setDate(today.getDate() + 1))
+    }
+
     // set correct header date
     this.updateHeaderDate()
 
