@@ -49,6 +49,9 @@ const tasksModule = {
   // == Getters
   // ==================================
   getters: {
+    isRetrieving: state => {
+      return !!state.status.isRetrieving
+    },
     getDone: (state, getters, rootState) => {
       const doneTasks = rootState.account.user.tasks.done
       const array = [...state.tasks].filter(task => doneTasks.includes(task._id))
@@ -75,6 +78,12 @@ const tasksModule = {
       const array = [...state.tasks]
       array.sort((a, b) => (a.date > b.date) ? -1 : 1)
       return array
+    },
+    getNextOneNotDone: (state, getters, rootState) => {
+      const doneTasks = rootState.account.user.tasks.done
+      const array = [...state.tasks].filter(task => !doneTasks.includes(task._id))
+      array.sort((a, b) => (a.date < b.date) ? -1 : 1)
+      return array[0]
     }
   }
 }
