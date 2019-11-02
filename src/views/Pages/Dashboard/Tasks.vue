@@ -58,7 +58,7 @@
                   :class="active === 3 ? 'bg-primary text-white' : 'bg-white text-primary'"
                   class="list-group-item d-flex justify-content-between align-items-center hover-click"
                   @click="active = 3">
-                  Non-faits
+                  Oubliés
                   <badge
                     type="primary"
                     pill>
@@ -96,7 +96,7 @@
                         v-model="searchQuery"
                         prepend-icon="fas fa-search"
                         placeholder="Rechercher..."
-                        class="my-auto"/>
+                        class="my-auto w-75 float-right"/>
                     </div>
                   </div>
                 </div>
@@ -116,12 +116,28 @@
                       class="text-center">
                       <template v-slot="{row}">
                         <div class="d-flex justify-content-center">
-                          <i class="fas fa-book bg-primary avatar avatar-sm rounded-circle"/>
+                          <el-tooltip
+                            :content="row.type === 'homework'
+                              ? 'Devoirs'
+                              : row.type === 'task'
+                                ? 'Tâche'
+                                : 'Contrôle'
+                            "
+                            placement="top">
+                            <i
+                              :class="row.type === 'homework'
+                                ? 'fa-book bg-primary'
+                                : row.type === 'task'
+                                  ? 'fa-tasks bg-info'
+                                  : 'fa-graduation-cap bg-warning'
+                              "
+                              class="fas avatar avatar-sm rounded-circle"/>
+                          </el-tooltip>
                         </div>
                       </template>
                     </el-table-column>
 
-                    <!-- title & description -->
+                    <!-- title, author, description & subject -->
                     <el-table-column
                       label="Titre et description"
                       min-width="250px"
@@ -129,12 +145,34 @@
                       <template v-slot="{row}">
                         <div class="d-flex">
                           <div class="col-auto text-left px-0">
+                            <!-- title -->
                             <span
-                              class="h4"
+                              class="h4 text-sm"
                               v-html="row.title"/>
+                            <!-- author -->
+                            <span class="text-muted mr-1"> par</span>
+                            <el-tooltip
+                              :content="`${row.author.firstname} ${row.author.lastname}`"
+                              placement="top"
+                              class="avatar avatar-sm rounded-circle bg-warning">
+                              <img
+                                :src="row.author.avatarUrl || 'img/theme/default-pp.png'"
+                                alt="Photo de profil"
+                                class="rounded-circle avatar rounded-circle"
+                                style="width: 20px; height: 20px;">
+                            </el-tooltip>
                             <br>
-                            <span
-                              v-html="row.description || 'Aucune description...'"/>
+                            <!-- description -->
+                            <blockquote class="blockquote mb-3">
+                              <p
+                                class="mb-0 text-sm"
+                                v-html="row.description || `<span class='text-muted'>Aucune description...</span>`"/>
+                              <footer
+                                v-show="row.subject"
+                                class="blockquote-footer text-sm">
+                                {{ capitalizeFirstLetter(row.subject.toLowerCase()) }}
+                              </footer>
+                            </blockquote>
                           </div>
                         </div>
                       </template>
@@ -142,68 +180,58 @@
 
                     <!-- date -->
                     <el-table-column
-                      label="Date"
+                      label="Date de rendu"
                       width="200px"
                       min-width="200px"
-                      class="text-center">
+                      align="center">
                       <template v-slot="{row}">
-                        <span class="text-left">
-                          {{ dateToFullString(timestampToDate(row.date)) }}
-                        </span>
+                        {{ dateToFullString(timestampToDate(row.date)) }}
                       </template>
                     </el-table-column>
 
                     <!-- target -->
                     <el-table-column
-                      label=""
-                      width="120px"
-                      min-width="120px"
-                      class="text-center">
+                      width="70px"
+                      min-width="70px"
+                      align="center">
                       <template v-slot="{row}">
-                        <!-- <span
-                          v-if="row.city && row.grade && row.group"
-                          class="text-left">
-                          {{ `${row.grade} ${row.group}` }}
-                        </span>
-                        <span v-else> -->
-                        <div class="avatar-group">
+                        <!-- whole class -->
+                        <div v-if="row.city && row.grade && row.group">
                           <el-tooltip
+                            :content="`${row.grade} ${row.group}`"
                             placement="top"
-                            content="Jessica Rowland"
-                            class="avatar avatar-xs rounded-circle">
-                            <img
-                              alt="Image placeholder"
-                              src="img/theme/default-pp.png">
-                          </el-tooltip>
-
-                          <el-tooltip
-                            placement="top"
-                            content="Audrey Love"
-                            class="avatar avatar-xs rounded-circle">
-                            <img
-                              alt="Image placeholder"
-                              src="img/theme/default-pp.png">
-                          </el-tooltip>
-
-                          <el-tooltip
-                            placement="top"
-                            content="Michael Lewis"
-                            class="avatar avatar-xs rounded-circle">
-                            <img
-                              alt="Image placeholder"
-                              src="img/theme/default-pp.png">
+                            class="avatar avatar-sm rounded-circle bg-warning">
+                            <i class="fas fa-users"/>
                           </el-tooltip>
                         </div>
-                        <!-- </span> -->
+
+                        <!-- multiple users -->
+                        <span v-if="!row.city && !row.grade && !row.group">
+                          <div class="avatar-group">
+                            <span
+                              v-for="(target, index) in row.targets"
+                              :key="index"
+                              :class="row.targets.length < 3 ? 'avatar-sm' : 'avatar-xs'"
+                              class="avatar rounded-circle">
+                              <el-tooltip
+                                :content="`${target.firstname} ${target.lastname}`"
+                                placement="top">
+                                <img
+                                  :src="target.avatarUrl || 'img/theme/default-pp.png'"
+                                  alt="Photo de profil"
+                                  class="rounded-circle">
+                              </el-tooltip>
+                            </span>
+                          </div>
+                        </span>
                       </template>
                     </el-table-column>
 
                     <!-- actions -->
                     <el-table-column
+                      label="Actions"
                       width="172px"
-                      min-width="172px"
-                      align="right"
-                      label="Actions">
+                      min-width="172px">
                       <template v-slot="{row}">
                         <div class="d-flex">
 
@@ -212,9 +240,12 @@
                             placement="top">
                             <base-button
                               :disabled="isDone(row._id)"
+                              :outline="!isDone(row._id)"
+                              :class="isDone(row._id) ? 'text-white' : 'text-success'"
                               size="sm"
-                              type="success">
-                              <i class="text-white fas fa-check"/>
+                              type="success"
+                              class="is-done-checkbox">
+                              <i class="fas fa-check"/>
                             </base-button>
                           </el-tooltip>
 
@@ -278,6 +309,7 @@ import { BasePagination } from '@/components'
 import { Table, TableColumn, Option } from 'element-ui'
 import clientPaginationMixin from '@/mixins/clientPaginationMixin'
 import dateUtilMixin from '@/mixins/dateUtilMixin'
+import stringUtilMixin from '@/mixins/stringUtilMixin'
 
 export default {
   name: 'Settings',
@@ -287,7 +319,7 @@ export default {
     [Table.name]: Table,
     [TableColumn.name]: TableColumn
   },
-  mixins: [clientPaginationMixin, dateUtilMixin],
+  mixins: [clientPaginationMixin, dateUtilMixin, stringUtilMixin],
   data () {
     return {
       active: 1,
@@ -330,5 +362,18 @@ export default {
 <style lang="scss">
   table tr td:first-child {
     padding-right: 0 !important;
+  }
+
+  table tr td:nth-child(2) {
+    padding-bottom: 0 !important;
+  }
+
+  table tr td:nth-child(4) {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .is-done-checkbox:hover {
+    color: white !important;
   }
 </style>
