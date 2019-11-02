@@ -88,15 +88,15 @@
                 <!-- table header -->
                 <div class="card-header border-0">
                   <div class="row align-items-center">
-                    <div class="col">
+                    <div class="col-lg-7">
                       <h3 class="mb-0">Gérez vos devoirs & autres tâches...</h3>
                     </div>
-                    <div class="col">
+                    <div class="col-lg-5">
                       <base-input
                         v-model="searchQuery"
                         prepend-icon="fas fa-search"
                         placeholder="Rechercher..."
-                        class="my-auto w-75 float-right"/>
+                        class="my-auto w-100"/>
                     </div>
                   </div>
                 </div>
@@ -140,40 +140,37 @@
                     <!-- title, author, description & subject -->
                     <el-table-column
                       label="Titre et description"
-                      min-width="250px"
-                      class="text-center">
+                      min-width="250px">
                       <template v-slot="{row}">
-                        <div class="d-flex">
-                          <div class="col-auto text-left px-0">
-                            <!-- title -->
-                            <span
-                              class="h4 text-sm"
-                              v-html="row.title"/>
-                            <!-- author -->
-                            <span class="text-muted mr-1"> par</span>
-                            <el-tooltip
-                              :content="`${row.author.firstname} ${row.author.lastname}`"
-                              placement="top"
-                              class="avatar avatar-sm rounded-circle bg-warning">
-                              <img
-                                :src="row.author.avatarUrl || 'img/theme/default-pp.png'"
-                                alt="Photo de profil"
-                                class="rounded-circle avatar rounded-circle"
-                                style="width: 20px; height: 20px;">
-                            </el-tooltip>
-                            <br>
-                            <!-- description -->
-                            <blockquote class="blockquote mb-3">
-                              <p
-                                class="mb-0 text-sm"
-                                v-html="row.description || `<span class='text-muted'>Aucune description...</span>`"/>
-                              <footer
-                                v-show="row.subject"
-                                class="blockquote-footer text-sm">
-                                {{ capitalizeFirstLetter(row.subject.toLowerCase()) }}
-                              </footer>
-                            </blockquote>
-                          </div>
+                        <div class="container p-0">
+                          <!-- title -->
+                          <span
+                            class="h4 text-sm"
+                            v-html="row.title"/>
+                          <!-- author -->
+                          <span class="text-muted mr-1"> par</span>
+                          <el-tooltip
+                            :content="`${row.author.firstname} ${row.author.lastname}`"
+                            placement="top"
+                            class="avatar avatar-sm rounded-circle bg-warning">
+                            <img
+                              :src="row.author.avatarUrl || 'img/theme/default-pp.png'"
+                              alt="Photo de profil"
+                              class="rounded-circle avatar rounded-circle"
+                              style="width: 20px; height: 20px;">
+                          </el-tooltip>
+                          <br>
+                          <!-- description -->
+                          <blockquote class="blockquote mb-3">
+                            <p
+                              class="mb-0 text-sm"
+                              v-html="row.description || `<span class='text-muted'>Aucune description...</span>`"/>
+                            <footer
+                              v-show="row.subject"
+                              class="blockquote-footer text-sm">
+                              {{ capitalizeFirstLetter(row.subject.toLowerCase()) }}
+                            </footer>
+                          </blockquote>
                         </div>
                       </template>
                     </el-table-column>
@@ -181,8 +178,8 @@
                     <!-- date -->
                     <el-table-column
                       label="Date de rendu"
-                      width="200px"
-                      min-width="200px"
+                      width="160px"
+                      min-width="160px"
                       align="center">
                       <template v-slot="{row}">
                         {{ dateToFullString(timestampToDate(row.date)) }}
@@ -366,6 +363,11 @@ export default {
 
   table tr td:nth-child(2) {
     padding-bottom: 0 !important;
+  }
+
+  table tr td:nth-child(3) {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 
   table tr td:nth-child(4) {
