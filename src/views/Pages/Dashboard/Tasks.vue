@@ -242,15 +242,15 @@
                         <div class="d-flex">
 
                           <el-tooltip
-                            content="Marquer comme fait"
+                            :content="isDone(row._id) ? 'Marquer comme non fait' : 'Marquer comme fait'"
                             placement="top">
                             <base-button
-                              :disabled="isDone(row._id)"
                               :outline="!isDone(row._id)"
                               :class="isDone(row._id) ? 'text-white' : 'text-success'"
                               size="sm"
                               type="success"
-                              class="is-done-checkbox">
+                              class="is-done-checkbox"
+                              @click="toggleDone(row._id)">
                               <i class="fas fa-check"/>
                             </base-button>
                           </el-tooltip>
@@ -478,10 +478,7 @@ export default {
   },
   mounted () {
     // load default table
-    // (besoin du timeout pcq vuex prend tu temps à s'actualiser)
-    setTimeout(() => {
-      this.tableData = this.todoTasks
-    }, 100)
+    this.reloadTable()
   },
   methods: {
     getError (name) {
@@ -492,6 +489,17 @@ export default {
     },
     isDone (taskId) {
       return this.doneTasks.some(task => task._id === taskId)
+    },
+    reloadTable (page = 1) {
+      setTimeout(() => {
+        this.active = page
+        switch (page) {
+          case 1: this.tableData = this.todoTasks; break
+          case 2: this.tableData = this.doneTasks; break
+          case 3: this.tableData = this.notdoneTasks; break
+          case 4: this.tableData = this.allTasks; break
+        }
+      }, 100)
     },
     handleTaskCreateSubmit (e) {
       // vérification validation des champs
@@ -504,12 +512,20 @@ export default {
           // close the modal
           this.showTaskCreationModal = false
 
-          // reload the table
-          setTimeout(() => {
-            this.tableData = this.todoTasks
-          }, 100)
+          this.reloadTable()
         })
       })
+    },
+    toggleDone (taskId) {
+      if (this.isDone(taskId)) {
+        this.$store.dispatch('account/setTaskNotDone', { taskId }).then(() => {
+          this.reloadTable(2)
+        })
+      } else {
+        this.$store.dispatch('account/setTaskDone', { taskId }).then(() => {
+          this.reloadTable()
+        })
+      }
     }
   }
 }

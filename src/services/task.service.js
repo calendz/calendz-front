@@ -25,6 +25,26 @@ const TaskService = {
       .catch(err => {
         return Promise.reject(err)
       })
+  },
+
+  setNotDone: (userId, taskId) => {
+    return ApiService.patch(`/tasks/${userId}/notdone/${taskId}`)
+      .then(res => {
+        return res.data
+      })
+      .catch(err => {
+        return Promise.reject(err)
+      })
+  },
+
+  setDone: (userId, taskId) => {
+    return ApiService.patch(`/tasks/${userId}/done/${taskId}`)
+      .then(res => {
+        return res.data
+      })
+      .catch(err => {
+        return Promise.reject(err)
+      })
   }
 }
 
