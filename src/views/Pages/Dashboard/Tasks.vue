@@ -260,7 +260,8 @@
                             placement="top">
                             <base-button
                               size="sm"
-                              type="info">
+                              type="info"
+                              @click="showTaskModificationModal = true, taskModificationForm = {...row, date: timestampToDate(row.date)}">
                               <i class="text-white ni ni-ruler-pencil"/>
                             </base-button>
                           </el-tooltip>
@@ -417,6 +418,115 @@
       </modal>
     </form>
 
+    <!-- =============================== -->
+    <!-- == TASK MODIFICATION MODAL ==== -->
+    <!-- =============================== -->
+    <form
+      class="needs-validation"
+      @submit.prevent="handleTaskModifySubmit">
+      <modal :show.sync="showTaskModificationModal">
+        <template slot="header">
+          <h5 class="modal-title">Modification</h5>
+        </template>
+
+        <div class="row">
+          <div class="col-md-6">
+            <base-input
+              v-validate="'required|min:2|max:50'"
+              v-model="taskModificationForm.title"
+              :error="getError('titre')"
+              :valid="isValid('titre')"
+              name="titre"
+              label="Titre"
+              placeholder="Titre"/>
+          </div>
+
+          <div class="col-md-6">
+            <base-input
+              :error="getError('type')"
+              :valid="isValid('type')"
+              label="Type">
+              <select
+                v-validate="'required|valid_task_type'"
+                v-model="taskModificationForm.type"
+                name="type"
+                class="form-control">
+                <option
+                  value=""
+                  hidden>Séléctionnez un type</option>
+                <option value="homework">Devoirs</option>
+                <option value="DS">Contrôle</option>
+                <option value="task">Tâche</option>
+              </select>
+            </base-input>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <base-input
+              v-validate="'min:2|max:50'"
+              v-model="taskModificationForm.subject"
+              :error="getError('matière')"
+              :valid="isValid('matière')"
+              name="matière"
+              label="Matière (facultatif)"
+              placeholder="Matière"/>
+          </div>
+
+          <div class="col-md-6">
+            <base-input
+              :error="getError('date')"
+              :valid="isValid('date')"
+              label="Date de rendu">
+              <flat-picker
+                slot-scope="{focus, blur}"
+                v-model="taskModificationForm.date"
+                :config="flatPickerConfig"
+                name="date"
+                class="form-control datepicker"
+                @on-open="focus"
+                @on-close="blur"/>
+            </base-input>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <base-input
+              :error="getError('description')"
+              :valid="isValid('description')"
+              class="w-100"
+              label="Description (facultatif)">
+              <textarea
+                v-validate="'min:2|max:1000'"
+                v-model="taskModificationForm.description"
+                name="description"
+                class="form-control"
+                rows="3"
+                resize="none"
+                placeholder="Entrez la description de la tâche..."/>
+            </base-input>
+          </div>
+        </div>
+
+        <template slot="footer">
+          <base-button
+            size="md"
+            type="secondary"
+            @click="showTaskModificationModal = false">
+            Fermer
+          </base-button>
+          <base-button
+            size="md"
+            type="primary"
+            native-type="submit">
+            Modifier
+          </base-button>
+        </template>
+      </modal>
+    </form>
+
   </div>
 </template>
 
@@ -451,7 +561,12 @@ export default {
         type: '',
         date: new Date()
       },
+      taskModificationForm: {
+        type: '',
+        date: new Date()
+      },
       showTaskCreationModal: false,
+      showTaskModificationModal: false,
       flatPickerConfig: {
         allowInput: true,
         locale: French,
