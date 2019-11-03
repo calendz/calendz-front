@@ -271,7 +271,8 @@
                             <base-button
                               size="sm"
                               type="danger"
-                              class="remove btn-link">
+                              class="remove btn-link"
+                              @click="deleteTask(row._id)">
                               <i class="text-white fas fa-trash"/>
                             </base-button>
                           </el-tooltip>
@@ -526,6 +527,11 @@ export default {
           this.reloadTable()
         })
       }
+    },
+    deleteTask (taskId) {
+      this.$store.dispatch('tasks/delete', { taskId }).then(() => {
+        this.reloadTable()
+      })
     }
   }
 }
