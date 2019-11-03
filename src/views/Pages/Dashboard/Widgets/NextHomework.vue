@@ -69,7 +69,7 @@
               v-if="nextHomework"
               class="row">
               <span
-                :class="remainingDays > 7 ? 'text-default' : remainingDays > 2 ? 'text-warning' : 'text-danger'"
+                :class="remainingDays > 7 ? '' : remainingDays > 2 ? 'text-warning' : 'text-danger'"
                 class="mr-2 ml-3"><i class="fas fa-clock"/></span><span> Date : {{ dateToFullString(getDate) }}</span>
             </div>
             <!-- no homework -->

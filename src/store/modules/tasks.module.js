@@ -209,10 +209,9 @@ const tasksModule = {
       return array[0]
     },
     getUpcommings: (state, getters, rootState) => {
-      const doneTasks = rootState.account.user.tasks.done
-      const array = [...state.tasks].filter(task => !doneTasks.includes(task._id))
+      const now = new Date().getTime()
+      const array = [...state.tasks].filter(task => now < parseInt(task.date))
       array.sort((a, b) => (a.date < b.date) ? -1 : 1)
-      console.log(array.slice(0, 3))
       return array.slice(0, 3)
     }
   }

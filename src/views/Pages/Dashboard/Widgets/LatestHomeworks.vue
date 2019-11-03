@@ -32,12 +32,14 @@
             <h5 class="checklist-title mb-0">{{ homework.title }}</h5>
             <small v-show="homework.description">{{ homework.description }}<br></small>
             <small style="color: #8898aa">
-              <span :class="remainingDays(homework) > 7 ? 'text-default' : remainingDays(homework) > 2 ? 'text-warning' : 'text-danger'"><i class="fas fa-hourglass-half m-1"/></span>
+              <span :class="remainingDays(homework) > 7 ? '' : remainingDays(homework) > 2 ? 'text-warning' : 'text-danger'"><i class="fas fa-hourglass-half m-1"/></span>
               {{ capitalizeFirstLetter(dateToFullString(getDate(homework))) }}</small>
           </div>
           <div>
             <base-checkbox
-              :type="homework.type === 'homework' ? 'primary' : homework.type === 'task' ? 'info' : 'warning'"/>
+              :checked="homeworksDone.includes(homework)"
+              :type="homework.type === 'homework' ? 'primary' : homework.type === 'task' ? 'info' : 'warning'"
+              @input="toggleHomeworkDone($event, homework._id)"/>
           </div>
         </div>
       </li>
@@ -65,7 +67,8 @@ export default {
   computed: {
     ...mapGetters({
       homeworkloading: 'tasks/isLoading',
-      homeworks: 'tasks/getUpcommings'
+      homeworks: 'tasks/getUpcommings',
+      homeworksDone: 'tasks/getDone'
     })
   },
   methods: {
@@ -75,6 +78,9 @@ export default {
     remainingDays: function (homework) {
       const today = new Date()
       return Math.round((homework.date - today) / (1000 * 60 * 60 * 24))
+    },
+    toggleHomeworkDone: function (element, taskId) {
+      this.$store.dispatch(`account/setTask${element ? '' : 'Not'}Done`, { taskId })
     }
   }
 }
