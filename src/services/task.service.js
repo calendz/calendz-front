@@ -27,6 +27,16 @@ const TaskService = {
       })
   },
 
+  delete: (taskId) => {
+    return ApiService.delete(`/tasks/${taskId}`)
+      .then(res => {
+        return res.data
+      })
+      .catch(err => {
+        return Promise.reject(err)
+      })
+  },
+
   setNotDone: (userId, taskId) => {
     return ApiService.patch(`/tasks/${userId}/notdone/${taskId}`)
       .then(res => {

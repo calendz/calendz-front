@@ -31,10 +31,21 @@ const tasksModule = {
       state.status = { isCreating: true }
     },
     TASK_CREATE_SUCCESS: (state, task) => {
-      state.status = { isCreating: true }
+      state.status = {}
       state.tasks.push(task)
     },
     TASK_CREATE_FAILURE: (state, reason) => {
+      state.status = { error: reason }
+    },
+
+    TASK_DELETE_REQUEST: (state) => {
+      state.status = { isDeleting: true }
+    },
+    TASK_DELETE_SUCCESS: (state, taskId) => {
+      state.tasks = state.tasks.filter(task => task._id !== taskId)
+      state.status = {}
+    },
+    TASK_DELETE_FAILURE: (state, reason) => {
       state.status = { error: reason }
     }
   },
@@ -88,6 +99,20 @@ const tasksModule = {
                 confirmButton: 'btn btn-primary'
               }
             })
+          })
+    },
+
+    delete: ({ commit }, { taskId }) => {
+      commit('TASK_DELETE_REQUEST')
+      TaskService.delete(taskId)
+        .then(
+          res => {
+            commit('TASK_DELETE_SUCCESS', taskId)
+            Vue.prototype.$notify({ type: 'success', message: `La tâche a bien été supprimée !` })
+          },
+          err => {
+            commit('TASK_DELETE_FAILURE', err.data.message)
+            Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.data.message || 'Une erreur est survenue...'}` })
           })
     }
   },
