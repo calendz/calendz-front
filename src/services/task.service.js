@@ -27,6 +27,17 @@ const TaskService = {
       })
   },
 
+  // modify task
+  modify: (_id, title, type, subject, date, description) => {
+    return ApiService.patch(`/tasks/${_id}`, { title, type, subject, date, description })
+      .then(res => {
+        return res.data
+      })
+      .catch(err => {
+        return Promise.reject(err)
+      })
+  },
+
   delete: (taskId) => {
     return ApiService.delete(`/tasks/${taskId}`)
       .then(res => {

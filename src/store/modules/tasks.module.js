@@ -47,6 +47,22 @@ const tasksModule = {
     },
     TASK_DELETE_FAILURE: (state, reason) => {
       state.status = { error: reason }
+    },
+
+    TASK_MODIFY_REQUEST: (state) => {
+      state.status = { isModifying: true }
+    },
+    TASK_MODIFY_SUCCESS: (state, { id, task }) => {
+      const index = state.tasks.findIndex(task => task._id === id)
+      state.tasks[index].title = task.title
+      state.tasks[index].type = task.type
+      state.tasks[index].subject = task.subject
+      state.tasks[index].date = task.date
+      state.tasks[index].description = task.description
+      state.status = {}
+    },
+    TASK_MODIFY_FAILURE: (state, reason) => {
+      state.status = { error: reason }
     }
   },
 
@@ -113,6 +129,41 @@ const tasksModule = {
           err => {
             commit('TASK_DELETE_FAILURE', err.data.message)
             Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.data.message || 'Une erreur est survenue...'}` })
+          })
+    },
+
+    modify: ({ commit }, { _id, title, type, subject, date, description }) => {
+      commit('TASK_MODIFY_REQUEST')
+      TaskService.modify(_id, title, type, subject, date, description)
+        .then(
+          res => {
+            commit('TASK_MODIFY_SUCCESS', { id: _id, task: res.task })
+
+            let swalTitle
+            switch (type) {
+              case 'homework': swalTitle = 'Devoirs modifié avec succès'; break
+              case 'DS': swalTitle = 'Contrôle modifié avec succès'; break
+              case 'task': swalTitle = 'Tâche modifié avec succès'; break
+            }
+
+            swal.fire({
+              title: swalTitle,
+              type: 'success',
+              customClass: {
+                confirmButton: 'btn btn-primary'
+              }
+            })
+          },
+          err => {
+            commit('TASK_MODIFY_FAILURE', err.data.message)
+            swal.fire({
+              title: 'Une erreur est survenue',
+              text: err.data.message,
+              type: 'error',
+              customClass: {
+                confirmButton: 'btn btn-primary'
+              }
+            })
           })
     }
   },

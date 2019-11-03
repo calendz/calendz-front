@@ -314,6 +314,7 @@
     <!-- =============================== -->
     <form
       class="needs-validation"
+      data-vv-scope="creation-form"
       @submit.prevent="handleTaskCreateSubmit">
       <modal :show.sync="showTaskCreationModal">
         <template slot="header">
@@ -423,6 +424,7 @@
     <!-- =============================== -->
     <form
       class="needs-validation"
+      data-vv-scope="modification-form"
       @submit.prevent="handleTaskModifySubmit">
       <modal :show.sync="showTaskModificationModal">
         <template slot="header">
@@ -617,9 +619,9 @@ export default {
         }
       }, 100)
     },
-    handleTaskCreateSubmit (e) {
+    handleTaskCreateSubmit (scope) {
       // vérification validation des champs
-      this.$validator.validate().then(valid => {
+      this.$validator.validateAll(scope).then(valid => {
         if (!valid) return
 
         this.$store.dispatch('tasks/create', this.taskCreationForm).then(response => {
@@ -627,6 +629,21 @@ export default {
           this.taskCreationForm = { type: '', date: new Date() }
           // close the modal
           this.showTaskCreationModal = false
+
+          this.reloadTable()
+        })
+      })
+    },
+    handleTaskModifySubmit (scope) {
+      // vérification validation des champs
+      this.$validator.validateAll(scope).then(valid => {
+        if (!valid) return
+
+        this.$store.dispatch('tasks/modify', this.taskModificationForm).then(response => {
+          // reset the form
+          this.taskModificationForm = { type: '', date: new Date() }
+          // close the modal
+          this.showTaskModificationModal = false
 
           this.reloadTable()
         })
