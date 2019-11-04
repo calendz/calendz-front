@@ -102,6 +102,7 @@
                     </div>
                     <div class="col-lg-5">
                       <base-input
+                        v-if="active === 4"
                         v-model="searchQuery"
                         prepend-icon="fas fa-search"
                         placeholder="Rechercher..."
@@ -116,10 +117,12 @@
                     :data="queriedData"
                     row-key="id"
                     class="table-responsive table-light"
-                    header-row-class-name="thead-light">
+                    header-row-class-name="thead-light"
+                    @sort-change="sortChange">
 
                     <!-- type -->
                     <el-table-column
+                      prop="row.type"
                       width="62px"
                       min-width="62px"
                       class="text-center">
@@ -148,6 +151,7 @@
 
                     <!-- title, author, description & subject -->
                     <el-table-column
+                      prop="row.title"
                       label="Titre et description"
                       min-width="250px">
                       <template v-slot="{row}">
@@ -188,9 +192,11 @@
 
                     <!-- date -->
                     <el-table-column
+                      sortable
+                      prop="row.date"
                       label="Date de rendu"
-                      width="160px"
-                      min-width="160px"
+                      width="170px"
+                      min-width="170px"
                       align="center">
                       <template v-slot="{row}">
                         {{ dateToFullString(timestampToDate(row.date)) }}
@@ -562,6 +568,7 @@ export default {
     return {
       active: 1,
       tableData: [],
+      propsToSearch: ['type', 'title', 'description', 'subject', 'date'],
       taskCreationForm: {
         type: '',
         date: new Date()
@@ -589,6 +596,7 @@ export default {
   },
   watch: {
     active: function (newActive) {
+      this.searchQuery = ''
       switch (newActive) {
         case 1: this.tableData = this.todoTasks; break
         case 2: this.tableData = this.doneTasks; break
@@ -620,6 +628,7 @@ export default {
           case 3: this.tableData = this.notdoneTasks; break
           case 4: this.tableData = this.allTasks; break
         }
+        this.initFuseSearch(this.allTasks)
       }, 100)
     },
     handleTaskCreateSubmit (scope) {
