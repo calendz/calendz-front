@@ -154,6 +154,7 @@
                         <div class="container p-0">
                           <!-- title -->
                           <span
+                            :class="isDone(row._id) ? 'text-strikethrough' : ''"
                             class="h4 text-sm"
                             v-html="row.title"/>
                           <!-- author -->
@@ -172,6 +173,7 @@
                           <!-- description -->
                           <blockquote class="blockquote mb-3">
                             <p
+                              :class="isDone(row._id) ? 'text-strikethrough' : ''"
                               class="mb-0 text-sm"
                               v-html="row.description || `<span class='text-muted'>Aucune description...</span>`"/>
                             <footer

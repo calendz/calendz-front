@@ -29,8 +29,14 @@
           :class="{'checklist-item-checked': false, [`checklist-item-${ homework.type === 'homework' ? 'primary' : homework.type === 'task' ? 'info' : 'warning' }`]: homework.type }"
           class="checklist-item">
           <div class="checklist-info">
-            <h5 class="checklist-title mb-0">{{ homework.title }}</h5>
-            <small v-show="homework.description">{{ homework.description }}<br></small>
+            <h5
+              :class="isDone(homework._id) ? 'text-strikethrough' : ''"
+              class="checklist-title mb-0">{{ homework.title }}</h5>
+            <small
+              v-show="homework.description"
+              :class="isDone(homework._id) ? 'text-strikethrough' : ''">
+              {{ homework.description }}<br>
+            </small>
             <small style="color: #8898aa">
               <span :class="remainingDays(homework) > 7 ? '' : remainingDays(homework) > 2 ? 'text-warning' : 'text-danger'"><i class="fas fa-hourglass-half m-1"/></span>
               {{ capitalizeFirstLetter(dateToFullString(getDate(homework))) }}</small>
@@ -72,6 +78,9 @@ export default {
     })
   },
   methods: {
+    isDone (taskId) {
+      return this.homeworksDone.some(hw => hw._id === taskId)
+    },
     getDate: function (homework) {
       return new Date().setTime(homework.date)
     },
