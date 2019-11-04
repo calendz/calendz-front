@@ -116,6 +116,7 @@
                 <!-- table content -->
                 <div>
                   <el-table
+                    id="tasksTable"
                     :data="queriedData"
                     row-key="id"
                     class="table-responsive table-light"
@@ -699,22 +700,24 @@ export default {
 </script>
 
 <style lang="scss">
-  table tr td:first-child {
-    padding-right: 0 !important;
-  }
+  #tasksTable {
+    table tr td:first-child {
+      padding-right: 0 !important;
+    }
 
-  table tr td:nth-child(2) {
-    padding-bottom: 0 !important;
-  }
+    table tr td:nth-child(2) {
+      padding-bottom: 0 !important;
+    }
 
-  table tr td:nth-child(3) {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-  }
+    table tr td:nth-child(3) {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
 
-  table tr td:nth-child(4) {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
+    table tr td:nth-child(4) {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
   }
 
   .is-done-checkbox:hover {
