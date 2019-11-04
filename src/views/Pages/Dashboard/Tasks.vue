@@ -98,7 +98,9 @@
                 <div class="card-header border-0">
                   <div class="row align-items-center">
                     <div class="col-lg-7">
-                      <h3 class="mb-0">Gérez vos devoirs & autres tâches...</h3>
+                      <h3
+                        :class=" active !== 4 ? 'my-2' : ''"
+                        class="mb-0">Gérez vos devoirs & autres tâches...</h3>
                     </div>
                     <div class="col-lg-5">
                       <base-input
@@ -568,7 +570,7 @@ export default {
     return {
       active: 1,
       tableData: [],
-      propsToSearch: ['type', 'title', 'description', 'subject', 'date'],
+      propsToSearch: ['type', 'title', 'description', 'subject', 'author.firstname', 'author.lastname'],
       taskCreationForm: {
         type: '',
         date: new Date()
