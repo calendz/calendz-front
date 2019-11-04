@@ -535,6 +535,7 @@
 </template>
 
 <script>
+import swal from 'sweetalert2'
 import { mapGetters } from 'vuex'
 import { BasePagination } from '@/components'
 import { Table, TableColumn, Option, Select } from 'element-ui'
@@ -663,8 +664,23 @@ export default {
       }
     },
     deleteTask (taskId) {
-      this.$store.dispatch('tasks/delete', { taskId }).then(() => {
-        this.reloadTable()
+      swal.fire({
+        title: `Êtes-vous sûr de vouloir supprimer cette tâche ?`,
+        text: 'Elle ne sera plus visible pour aucun des utilisateurs qui lui sont associés.',
+        type: 'warning',
+        customClass: {
+          confirmButton: 'btn btn-warning mt-2',
+          cancelButton: 'btn btn-secondary mt-2'
+        },
+        buttonsStyling: false,
+        showCancelButton: true,
+        cancelButtonText: 'Annuler',
+        confirmButtonText: 'Confimer'
+      }).then((result) => {
+        if (!result.value) return
+        this.$store.dispatch('tasks/delete', { taskId }).then(() => {
+          this.reloadTable()
+        })
       })
     }
   }
