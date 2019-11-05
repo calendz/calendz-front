@@ -123,7 +123,8 @@
                 :select-helper="true"
                 :default-view="activeView"
                 :weekends="false"
-                :all-day-slot="false"
+                :all-day-slot="true"
+                :all-day-text="'Tâches'"
                 :column-header-format="getColumnHeaderFormat()"
                 :event-render="customRender"
                 :now-indicator="true"
@@ -293,6 +294,18 @@ export default {
     // == CALENDAR RENDERING
     // ======================================
     customRender (element) {
+      // render tasks
+      if (element.event.allDay) {
+        element.el.innerHTML = `
+          <div>
+            <h5 class="pl-1 mb-0 text-white w-auto">
+              Une tâche
+            </h5>
+          </div>`
+        return
+      }
+
+      // render events
       switch (this.activeView) {
         // ============================
         // == MONTH VIEW
