@@ -93,7 +93,7 @@
           <div class="card card-calendar">
 
             <!-- Card header -->
-            <div class="card-header">
+            <div class="card-header py-3">
               <div class="row align-items-center">
                 <div class="col-7">
                   <h5 class="h3 mb-0">{{ headerDate }}</h5>
@@ -282,10 +282,6 @@ export default {
     // set correct view according to screen's size
     if (this.windowWidth < 800) this.changeView('timeGridDay')
     if (this.windowWidth >= 800) this.changeView('timeGridWeek')
-
-    setTimeout(() => {
-      console.log('tasks', this.tasks)
-    }, 100)
   },
   beforeDestroy () {
     window.removeEventListener('keyup', this.injectListeners)
@@ -306,10 +302,11 @@ export default {
       // render tasks
       if (element.event.allDay) {
         element.el.innerHTML = `
-          <div>
-            <h5 class="pl-1 mb-0 text-white w-auto">
-              ${element.event.title}
-            </h5>
+          <div class="h3 custom-allday-event text-center my-0">
+            <div class="badge badge-lg badge-primary py-1">
+              <span class="pr-2">Afficher les devoirs</span>
+              <span class="badge badge-sm badge-default badge-circle badge-floating border-white">${element.event.title}</span>
+            </div>
           </div>`
         return
       }
@@ -592,6 +589,22 @@ export default {
   // =========================================
   // == fullcalendar modifications
   // =========================================
+
+  // Custom "all-day" row
+  .custom-allday-event {
+    background-color: white;
+  }
+
+  // height du la ligne "all-day"
+  .fc-timeGrid-view .fc-day-grid .fc-row {
+    min-height: 34px !important;
+    height: 34px !important;
+  }
+
+  // alignement de la colonne de l'heure
+  td .fc-axis span {
+    margin-right: 10px;
+  }
 
   // hauteur des cases
   .fc-time-grid .fc-slats td {
