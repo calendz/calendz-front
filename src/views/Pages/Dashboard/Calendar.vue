@@ -115,7 +115,7 @@
               <full-calendar
                 id="calendar"
                 ref="fullCalendar"
-                :events="isLoading ? [] : events"
+                :events="isLoading ? [] : fullcalendarEvents"
                 :plugins="calendarPlugins"
                 :editable="false"
                 :theme="false"
@@ -218,8 +218,13 @@ export default {
     ...mapGetters({
       user: 'account/user',
       events: 'calendar/getCourses',
-      isLoading: 'calendar/isLoading'
-    })
+      isLoading: 'calendar/isLoading',
+      tasks: 'tasks/getAsEvents'
+    }),
+    fullcalendarEvents () {
+      // combine both calendar & tasks arrays
+      return [...this.events, ...this.tasks]
+    }
   },
   watch: {
     windowWidth: function (newVal, oldVal) {
@@ -277,6 +282,10 @@ export default {
     // set correct view according to screen's size
     if (this.windowWidth < 800) this.changeView('timeGridDay')
     if (this.windowWidth >= 800) this.changeView('timeGridWeek')
+
+    setTimeout(() => {
+      console.log('tasks', this.tasks)
+    }, 100)
   },
   beforeDestroy () {
     window.removeEventListener('keyup', this.injectListeners)
@@ -299,7 +308,7 @@ export default {
         element.el.innerHTML = `
           <div>
             <h5 class="pl-1 mb-0 text-white w-auto">
-              Une tâche
+              ${element.event.title}
             </h5>
           </div>`
         return

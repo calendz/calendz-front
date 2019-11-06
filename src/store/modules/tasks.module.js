@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import swal from 'sweetalert2'
+import DateUtil from '../../mixins/dateUtilMixin'
 import TaskService from '../../services/task.service'
 
 const tasksModule = {
@@ -208,11 +209,36 @@ const tasksModule = {
       array.sort((a, b) => (a.date < b.date) ? -1 : 1)
       return array[0]
     },
-    getUpcommings: (state, getters, rootState) => {
+    getUpcommings: (state) => {
       const now = new Date().getTime()
       const array = [...state.tasks].filter(task => now < parseInt(task.date))
       array.sort((a, b) => (a.date < b.date) ? -1 : 1)
       return array.slice(0, 3)
+    },
+    getAsEvents: (state) => {
+      const tasks = [...state.tasks]
+      const events = []
+
+      tasks.forEach(task => {
+        const eventDate = new Date(DateUtil.methods.timestampToDate(task.date)).getTime()
+        const event = events.find(event => event.start === eventDate)
+
+        // si on a pas encore créé d'event pour la tâche
+        // alors on le créer
+        if (!event) {
+          events.push({
+            title: 1,
+            start: eventDate,
+            allDay: true
+          })
+          return
+        }
+
+        // sinon on incrément le nombre d'events pour ce jour
+        event.title++
+      })
+
+      return events
     }
   }
 }
