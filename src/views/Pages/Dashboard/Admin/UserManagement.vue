@@ -477,7 +477,8 @@ export default {
   created () {
     UserService.getAll().then(res => {
       this.tableData = res.users
-      this.isFuseSearchReady = true
+      this.initFuseSearch(res.users)
+      // this.isFuseSearchReady = true
     })
   },
   methods: {

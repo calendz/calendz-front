@@ -180,6 +180,14 @@ export default {
       return now > start && now < end
     },
 
+    isSameDay (first, second) {
+      const d1 = new Date(first)
+      const d2 = new Date(second)
+      return d1.getFullYear() === d2.getFullYear() &&
+          d1.getMonth() === d2.getMonth() &&
+          d1.getDate() === d2.getDate()
+    },
+
     getProgress (start, end) {
       start = new Date(start).getTime()
       end = new Date(end).getTime()

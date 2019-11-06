@@ -296,6 +296,8 @@ export default {
   mounted () {
     // get all notifications
     this.$store.dispatch('notifications/fetch')
+    // get all tasks
+    this.$store.dispatch('tasks/fetchAll')
 
     // get monday of current week
     // or next week if we are already in the weekend

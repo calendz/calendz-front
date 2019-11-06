@@ -3,6 +3,7 @@ import swal from 'sweetalert2'
 import router from '../../routes/router'
 import UserService from '../../services/user.service'
 import ApiService from '../../services/api.service'
+import TaskService from '../../services/task.service'
 
 const accountModule = {
   namespaced: true,
@@ -142,6 +143,28 @@ const accountModule = {
 
     DELETE_USER_FAILURE: (state, reason) => {
       state.status = { deleteError: reason }
+    },
+
+    SET_NOTDONE_REQUEST: (state) => {
+      state.status = { isToggling: true }
+    },
+    SET_NOTDONE_SUCCESS: (state, taskId) => {
+      state.user.tasks.done = state.user.tasks.done.filter(id => id !== taskId)
+      state.status = {}
+    },
+    SET_NOTDONE_FAILURE: (state, reason) => {
+      state.status = { error: reason }
+    },
+
+    SET_DONE_REQUEST: (state) => {
+      state.status = { isToggling: true }
+    },
+    SET_DONE_SUCCESS: (state, taskId) => {
+      state.user.tasks.done.push(taskId)
+      state.status = {}
+    },
+    SET_DONE_FAILURE: (state, reason) => {
+      state.status = { error: reason }
     }
   },
 
@@ -362,6 +385,40 @@ const accountModule = {
           },
           err => {
             commit('CHANGE_AVATAR_FAILURE', err.data.message)
+            Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.data.message || 'Une erreur est survenue...'}` })
+          })
+    },
+
+    setTaskNotDone: ({ commit, state }, { taskId }) => {
+      commit('SET_NOTDONE_REQUEST')
+      TaskService.setNotDone(state.user._id, taskId)
+        .then(
+          res => {
+            const user = JSON.parse(localStorage.user)
+            user.tasks.done = user.tasks.done.filter(id => id !== taskId)
+            localStorage.user = JSON.stringify(user)
+            commit('SET_NOTDONE_SUCCESS', taskId)
+            Vue.prototype.$notify({ type: 'success', message: `Tâche marquée comme non-faite !` })
+          },
+          err => {
+            commit('SET_NOTDONE_FAILURE', err.data.message)
+            Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.data.message || 'Une erreur est survenue...'}` })
+          })
+    },
+
+    setTaskDone: ({ commit, state }, { taskId }) => {
+      commit('SET_DONE_REQUEST')
+      TaskService.setDone(state.user._id, taskId)
+        .then(
+          res => {
+            const user = JSON.parse(localStorage.user)
+            user.tasks.done.push(taskId)
+            localStorage.user = JSON.stringify(user)
+            commit('SET_DONE_SUCCESS', taskId)
+            Vue.prototype.$notify({ type: 'success', message: `Tâche marquée comme faite !` })
+          },
+          err => {
+            commit('SET_DONE_FAILURE', err.data.message)
             Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.data.message || 'Une erreur est survenue...'}` })
           })
     }

@@ -61,6 +61,13 @@ export default {
           return a.id - b.id
         })
       }
+    },
+
+    initFuseSearch (data) {
+      this.fuseSearch = new Fuse(data, {
+        keys: this.propsToSearch,
+        threshold: 0.3
+      })
     }
   },
   watch: {
@@ -71,21 +78,9 @@ export default {
      */
     searchQuery (value) {
       let result = this.tableData
-      if (value !== '') {
-        result = this.fuseSearch.search(this.searchQuery)
-      }
+      if (value) result = this.fuseSearch.search(this.searchQuery)
+      else result = []
       this.searchedData = result
-    },
-
-    /**
-     * Wait for the table to have data before initializing fuseSearch
-     */
-    isFuseSearchReady (value) {
-      if (!value) return
-      this.fuseSearch = new Fuse(this.tableData, {
-        keys: this.propsToSearch,
-        threshold: 0.3
-      })
     }
   }
 }

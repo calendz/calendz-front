@@ -10,6 +10,7 @@ const dictionary = {
       valid_grade: 'La classe indiquée n\'est pas valide.',
       valid_group: 'Le groupe indiqué n\'est pas valide.',
       valid_city: 'La ville indiquée n\'est pas valide.',
+      valid_task_type: 'Le type de tâche indiqué n\'est pas valide.',
       boolean: (field) => 'Le champ ' + field + ' doit être un booléen.'
     }
     // overwrite existing rules

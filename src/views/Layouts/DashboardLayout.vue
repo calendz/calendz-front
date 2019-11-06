@@ -26,14 +26,12 @@
           }"/>
 
           <!-- homeworks -->
-          <div class="nav-item hover-pointer">
-            <div
-              class="nav-link"
-              @click="comingSoon()">
-              <i class="fas fa-book text-primary"/>
-              <span class="nav-link-text">Devoirs</span>
-            </div>
-          </div>
+          <sidebar-item
+            :link="{
+              name: 'Devoirs et tâches',
+              icon: 'fas fa-book text-primary',
+              path: '/tasks'
+          }"/>
 
           <!-- settings -->
           <sidebar-item
