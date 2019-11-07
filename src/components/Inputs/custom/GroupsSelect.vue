@@ -104,7 +104,6 @@ export default {
           ]
         case 'B3':
         case 'I1':
-        case 'I2':
           return [
             { value: 'G1 (dev)' },
             { value: 'G2 (dev)' },
@@ -112,6 +111,15 @@ export default {
             { value: 'G1 (infra-réseau)' },
             { value: 'G2 (infra-réseau)' },
             { value: 'G3 (infra-réseau)' }
+          ]
+        case 'I2':
+          return [
+            { value: 'G1 (dev)' },
+            { value: 'G2 (dev)' },
+            { value: 'G1 (infra-réseau)' },
+            { value: 'G2 (infra-réseau)' },
+            { value: 'G1 (ERP)' },
+            { value: 'G2 (ERP)' }
           ]
         default:
           return [

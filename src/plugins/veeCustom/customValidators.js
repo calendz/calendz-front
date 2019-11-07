@@ -22,7 +22,8 @@ Validator.extend('valid_group', {
   validate: value => [
     'G1', 'G2', 'G3',
     'G1 (dev)', 'G2 (dev)', 'G3 (dev)',
-    'G1 (infra-réseau)', 'G2 (infra-réseau)', 'G3 (infra-réseau)'
+    'G1 (infra-réseau)', 'G2 (infra-réseau)', 'G3 (infra-réseau)',
+    'G1 (ERP)', 'G2 (ERP)'
   ].indexOf(value) !== -1
 })
 
