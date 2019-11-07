@@ -227,7 +227,8 @@ const tasksModule = {
         // alors on le créer
         if (!event) {
           events.push({
-            title: 1,
+            amount: 1,
+            tasks: [task],
             start: eventDate,
             allDay: true
           })
@@ -235,7 +236,8 @@ const tasksModule = {
         }
 
         // sinon on incrément le nombre d'events pour ce jour
-        event.title++
+        event.amount++
+        event.tasks.push(task)
       })
 
       return events
