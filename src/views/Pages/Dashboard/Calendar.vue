@@ -195,7 +195,7 @@
         slot="header"
         class="pb-0">
         <h2 class="mb-0">
-          Tâche{{ taskModal.tasks && taskModal.tasks.length > 1 ? '(s)' : '' }}
+          Tâche{{ taskModal.tasks && taskModal.tasks.length > 1 ? 's' : '' }}
           du {{ taskModal.date }}</h2>
       </template>
 
@@ -205,17 +205,19 @@
         :class="taskModal.tasks.length-1 !== index ? 'mb-4 pb-2' : ''"
         class="row ">
         <!-- type -->
-        <div class="col-2 text-center my-auto">
+        <div class="col-2 px-0 text-center my-auto">
           <task-type :task="task"/>
         </div>
 
         <!-- core -->
-        <div class="col-8 px-0 my-auto">
+        <div class="col-8 px-2 my-auto">
           <task-core :task="task"/>
         </div>
 
         <!-- actions -->
-        <div class="col my-auto">
+        <div
+          :class="windowWidth < 800 ? 'px-0' : ''"
+          class="col my-auto">
           <div class="d-flex">
             <el-tooltip
               :content="isTaskDone(task._id) ? 'Marquer comme non fait' : 'Marquer comme fait'"
@@ -363,6 +365,36 @@ export default {
     customRender (element) {
       // render tasks
       if (element.event.allDay) {
+        if (this.windowWidth < 800) {
+          // mobile month view
+          if (this.activeView === 'dayGridMonth') {
+            element.el.innerHTML = `
+            <div class="h5 custom-allday-event float-right my-0 mt--4-5">
+              <span class="badge badge-sm badge-default badge-circle badge-floating border-white">${element.event.extendedProps.amount}</span>
+            </div>`
+            return
+          // mobile week view
+          } else if (this.activeView === 'timeGridWeek') {
+            element.el.innerHTML = `
+            <div class="h5 custom-allday-event text-center mt-2">
+              <span class="badge badge-sm badge-default badge-circle badge-floating border-white">${element.event.extendedProps.amount}</span>
+            </div>`
+            return
+          }
+        }
+
+        // desktop month view
+        if (this.activeView === 'dayGridMonth' && this.windowWidth > 800) {
+          element.el.innerHTML = `
+          <div class="h4 custom-allday-event float-right my-0 mt--4-5">
+            <div class="badge badge-lg badge-primary py-1">
+              <span class="pr-2">Tâches</span>
+              <span class="badge badge-sm badge-default badge-circle badge-floating border-white">${element.event.extendedProps.amount}</span>
+            </div>
+          </div>`
+          return
+        }
+
         element.el.innerHTML = `
           <div class="h3 custom-allday-event text-center my-0">
             <div class="badge badge-lg badge-primary py-1">
@@ -383,14 +415,14 @@ export default {
             element.el.innerHTML = `
               <div>
                 <h5 class="pl-1 mb-0 text-white w-auto">
-                  ${new Date(element.event.start).getHours()}-${new Date(element.event.end).getHours()}h
+                  ${this.timeToHour(element.event.start, 'h').slice(0, -3)}-${this.timeToHour(element.event.end, 'h').slice(0, -2)}
                 </h5>
               </div>`
           } else {
             element.el.innerHTML = `
               <div>
                 <h5 class="pl-1 mb-0 text-white w-auto">
-                  ${new Date(element.event.start).getHours()}h
+                  ${this.timeToHour(element.event.start, 'h').slice(0, -2)}
                   <span class="ml-1 h5 text-white">${element.event.title}</span>
                 </h5>
               </div>`
@@ -448,6 +480,9 @@ export default {
     handleEventClick (clicked) {
       // task
       if (clicked.event.allDay) {
+        // do nothing in mobile month view
+        if (this.activeView === 'dayGridMonth' && this.windowWidth < 800) return
+
         this.showTaskModal = true
         this.taskModal.date = this.dateToFullString(clicked.event.start)
         this.taskModal.amount = clicked.event.extendedProps.amount
@@ -459,14 +494,15 @@ export default {
       if (this.activeView === 'dayGridMonth') {
         this.calendarApi().gotoDate(clicked.event.start)
         this.changeView('timeGridWeek')
-      } else if (this.activeView === 'timeGridWeek') {
-        this.showCourseModal = true
-        this.courseModal.title = clicked.event.title
-        this.courseModal.start = this.timeToHour(clicked.event.start)
-        this.courseModal.end = this.timeToHour(clicked.event.end)
-        this.courseModal.professor = this.capitalizeFirstLetterEachWords(clicked.event.extendedProps.professor)
-        this.courseModal.room = clicked.event.extendedProps.room
+        return
       }
+
+      this.showCourseModal = true
+      this.courseModal.title = clicked.event.title
+      this.courseModal.start = this.timeToHour(clicked.event.start)
+      this.courseModal.end = this.timeToHour(clicked.event.end)
+      this.courseModal.professor = this.capitalizeFirstLetterEachWords(clicked.event.extendedProps.professor)
+      this.courseModal.room = clicked.event.extendedProps.room
     },
     // ===========================================
     // == Naviguation functions
@@ -747,5 +783,9 @@ export default {
 
   .is-done-checkbox:hover {
     color: white !important;
+  }
+
+  .mt--4-5 {
+    margin-top: -2rem !important;
   }
 </style>
