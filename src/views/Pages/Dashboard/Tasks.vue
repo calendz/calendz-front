@@ -131,23 +131,7 @@
                       class="text-center">
                       <template v-slot="{row}">
                         <div class="d-flex justify-content-center">
-                          <el-tooltip
-                            :content="row.type === 'homework'
-                              ? 'Devoirs'
-                              : row.type === 'task'
-                                ? 'Tâche'
-                                : 'Contrôle'
-                            "
-                            placement="top">
-                            <i
-                              :class="row.type === 'homework'
-                                ? 'fa-book bg-primary'
-                                : row.type === 'task'
-                                  ? 'fa-tasks bg-info'
-                                  : 'fa-graduation-cap bg-warning'
-                              "
-                              class="fas avatar avatar-sm rounded-circle"/>
-                          </el-tooltip>
+                          <task-type :task="row"/>
                         </div>
                       </template>
                     </el-table-column>
@@ -158,38 +142,9 @@
                       label="Titre et description"
                       min-width="250px">
                       <template v-slot="{row}">
-                        <div class="container p-0">
-                          <!-- title -->
-                          <span
-                            :class="isDone(row._id) ? 'text-strikethrough' : ''"
-                            class="h4 text-sm"
-                            v-html="row.title"/>
-                          <!-- author -->
-                          <span class="text-muted mr-1"> par</span>
-                          <el-tooltip
-                            :content="`${row.author.firstname} ${row.author.lastname}`"
-                            placement="top"
-                            class="avatar avatar-sm rounded-circle bg-warning">
-                            <img
-                              :src="row.author.avatarUrl || 'img/theme/default-pp.png'"
-                              alt="Photo de profil"
-                              class="rounded-circle avatar rounded-circle"
-                              style="width: 20px; height: 20px;">
-                          </el-tooltip>
-                          <br>
-                          <!-- description -->
-                          <blockquote class="blockquote mb-3">
-                            <p
-                              :class="isDone(row._id) ? 'text-strikethrough' : ''"
-                              class="mb-0 text-sm"
-                              v-html="row.description || `<span class='text-muted'>Aucune description...</span>`"/>
-                            <footer
-                              v-if="row.subject"
-                              class="blockquote-footer text-sm">
-                              {{ capitalizeFirstLetter(row.subject.toLowerCase()) }}
-                            </footer>
-                          </blockquote>
-                        </div>
+                        <task-core
+                          :task="row"
+                          class="mb-3"/>
                       </template>
                     </el-table-column>
 

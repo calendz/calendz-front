@@ -17,6 +17,11 @@ import BaseHeader from '@/components/BaseHeader'
 import PasswordStrength from '@/components/PasswordStrength'
 import ApiErrors from '@/components/ApiErrors'
 import Placeholder from '@/components/Placeholder'
+
+// Tasks
+import TaskType from '@/components/Tasks/TaskType'
+import TaskCore from '@/components/Tasks/TaskCore'
+
 import { Input, Tooltip, Popover } from 'element-ui'
 import { ValidationProvider } from 'vee-validate'
 
@@ -43,6 +48,10 @@ const GlobalComponents = {
     Vue.component(ApiErrors.name, ApiErrors)
     Vue.component(Placeholder.name, Placeholder)
     Vue.component('ValidationProvider', ValidationProvider)
+
+    Vue.component(TaskType.name, TaskType)
+    Vue.component(TaskCore.name, TaskCore)
+
     Vue.use(Tooltip)
     Vue.use(Popover)
   }

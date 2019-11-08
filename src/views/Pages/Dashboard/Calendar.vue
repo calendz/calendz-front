@@ -86,6 +86,9 @@
       </div>
     </base-header>
 
+    <!-- ======================================= -->
+    <!-- == Main (calendar) ==================== -->
+    <!-- ======================================= -->
     <div class="container-fluid mt--6">
       <div class="row">
         <div class="col">
@@ -143,10 +146,11 @@
         </div>
       </div>
     </div>
+
     <!-- ======================================== -->
-    <!-- == Detail modal ======================== -->
+    <!-- == Course detail modal ================= -->
     <!-- ======================================== -->
-    <modal :show.sync="showModal">
+    <modal :show.sync="showCourseModal">
       <template
         slot="header"
         class="pb-0">
@@ -156,22 +160,22 @@
       <div class="row">
         <div class="col-6">
           <h3>Intitulé :</h3>
-          <p>{{ modalCourse.title }}</p>
+          <p>{{ courseModal.title }}</p>
         </div>
         <div class="col-6">
           <h3>Enseignant :</h3>
-          <p>{{ modalCourse.professor }}</p>
+          <p>{{ courseModal.professor }}</p>
         </div>
       </div>
 
       <div class="row">
         <div class="col-6">
           <h3>Horaire :</h3>
-          <p>{{ modalCourse.start }} - {{ modalCourse.end }}</p>
+          <p>{{ courseModal.start }} - {{ courseModal.end }}</p>
         </div>
         <div class="col-6">
           <h3>Salle :</h3>
-          <p>{{ modalCourse.room }}</p>
+          <p>{{ courseModal.room }}</p>
         </div>
       </div>
 
@@ -179,7 +183,64 @@
         <base-button
           type="primary"
           size="md"
-          @click="showModal = false">Fermer</base-button>
+          @click="showCourseModal = false">Fermer</base-button>
+      </template>
+    </modal>
+
+    <!-- ======================================== -->
+    <!-- == Tasks detail modal ================== -->
+    <!-- ======================================== -->
+    <modal :show.sync="showTaskModal">
+      <template
+        slot="header"
+        class="pb-0">
+        <h2 class="mb-0">
+          Tâche{{ taskModal.tasks && taskModal.tasks.length > 1 ? 's' : '' }}
+          du {{ taskModal.date }}</h2>
+      </template>
+
+      <div
+        v-for="(task, index) in taskModal.tasks"
+        :key="index"
+        :class="taskModal.tasks.length-1 !== index ? 'mb-4 pb-2' : ''"
+        class="row ">
+        <!-- type -->
+        <div class="col-2 px-0 text-center my-auto">
+          <task-type :task="task"/>
+        </div>
+
+        <!-- core -->
+        <div class="col-8 px-2 my-auto">
+          <task-core :task="task"/>
+        </div>
+
+        <!-- actions -->
+        <div
+          :class="windowWidth < 800 ? 'px-0' : ''"
+          class="col my-auto">
+          <div class="d-flex">
+            <el-tooltip
+              :content="isTaskDone(task._id) ? 'Marquer comme non fait' : 'Marquer comme fait'"
+              placement="top">
+              <base-button
+                :outline="!isTaskDone(task._id)"
+                :class="isTaskDone(task._id) ? 'text-white' : 'text-success'"
+                size="sm"
+                type="success"
+                class="is-done-checkbox"
+                @click="toggleTaskDone(task._id)">
+                <i class="fas fa-check"/>
+              </base-button>
+            </el-tooltip>
+          </div>
+        </div>
+      </div>
+
+      <template slot="footer">
+        <base-button
+          type="primary"
+          size="md"
+          @click="showTaskModal = false">Fermer</base-button>
       </template>
     </modal>
   </div>
@@ -203,8 +264,10 @@ export default {
   mixins: [dateUtilMixin, stringUtilMixin],
   data () {
     return {
-      showModal: false,
-      modalCourse: {},
+      taskModal: {},
+      courseModal: {},
+      showTaskModal: false,
+      showCourseModal: false,
       calendarPlugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
       activeView: 'timeGridWeek',
       activeDate: new Date(),
@@ -219,6 +282,7 @@ export default {
       user: 'account/user',
       events: 'calendar/getCourses',
       isLoading: 'calendar/isLoading',
+      doneTasks: 'tasks/getDone',
       tasks: 'tasks/getAsEvents'
     }),
     fullcalendarEvents () {
@@ -301,11 +365,41 @@ export default {
     customRender (element) {
       // render tasks
       if (element.event.allDay) {
+        if (this.windowWidth < 800) {
+          // mobile month view
+          if (this.activeView === 'dayGridMonth') {
+            element.el.innerHTML = `
+            <div class="h5 custom-allday-event float-right my-0 mt--4-5">
+              <span class="badge badge-sm badge-default badge-circle badge-floating border-white">${element.event.extendedProps.amount}</span>
+            </div>`
+            return
+          // mobile week view
+          } else if (this.activeView === 'timeGridWeek') {
+            element.el.innerHTML = `
+            <div class="h5 custom-allday-event text-center mt-2">
+              <span class="badge badge-sm badge-default badge-circle badge-floating border-white">${element.event.extendedProps.amount}</span>
+            </div>`
+            return
+          }
+        }
+
+        // desktop month view
+        if (this.activeView === 'dayGridMonth' && this.windowWidth > 800) {
+          element.el.innerHTML = `
+          <div class="h4 custom-allday-event float-right my-0 mt--4-5">
+            <div class="badge badge-lg badge-primary py-1">
+              <span class="pr-2">Tâches</span>
+              <span class="badge badge-sm badge-default badge-circle badge-floating border-white">${element.event.extendedProps.amount}</span>
+            </div>
+          </div>`
+          return
+        }
+
         element.el.innerHTML = `
           <div class="h3 custom-allday-event text-center my-0">
             <div class="badge badge-lg badge-primary py-1">
               <span class="pr-2">Afficher les devoirs</span>
-              <span class="badge badge-sm badge-default badge-circle badge-floating border-white">${element.event.title}</span>
+              <span class="badge badge-sm badge-default badge-circle badge-floating border-white">${element.event.extendedProps.amount}</span>
             </div>
           </div>`
         return
@@ -321,14 +415,14 @@ export default {
             element.el.innerHTML = `
               <div>
                 <h5 class="pl-1 mb-0 text-white w-auto">
-                  ${new Date(element.event.start).getHours()}-${new Date(element.event.end).getHours()}h
+                  ${this.timeToHour(element.event.start, 'h').slice(0, -3)}-${this.timeToHour(element.event.end, 'h').slice(0, -2)}
                 </h5>
               </div>`
           } else {
             element.el.innerHTML = `
               <div>
                 <h5 class="pl-1 mb-0 text-white w-auto">
-                  ${new Date(element.event.start).getHours()}h
+                  ${this.timeToHour(element.event.start, 'h').slice(0, -2)}
                   <span class="ml-1 h5 text-white">${element.event.title}</span>
                 </h5>
               </div>`
@@ -384,17 +478,31 @@ export default {
       }
     },
     handleEventClick (clicked) {
+      // task
+      if (clicked.event.allDay) {
+        // do nothing in mobile month view
+        if (this.activeView === 'dayGridMonth' && this.windowWidth < 800) return
+
+        this.showTaskModal = true
+        this.taskModal.date = this.dateToFullString(clicked.event.start)
+        this.taskModal.amount = clicked.event.extendedProps.amount
+        this.taskModal.tasks = clicked.event.extendedProps.tasks
+        return
+      }
+
+      // event
       if (this.activeView === 'dayGridMonth') {
         this.calendarApi().gotoDate(clicked.event.start)
         this.changeView('timeGridWeek')
-      } else if (this.activeView === 'timeGridWeek') {
-        this.showModal = true
-        this.modalCourse.title = clicked.event.title
-        this.modalCourse.start = this.timeToHour(clicked.event.start)
-        this.modalCourse.end = this.timeToHour(clicked.event.end)
-        this.modalCourse.professor = this.capitalizeFirstLetterEachWords(clicked.event.extendedProps.professor)
-        this.modalCourse.room = clicked.event.extendedProps.room
+        return
       }
+
+      this.showCourseModal = true
+      this.courseModal.title = clicked.event.title
+      this.courseModal.start = this.timeToHour(clicked.event.start)
+      this.courseModal.end = this.timeToHour(clicked.event.end)
+      this.courseModal.professor = this.capitalizeFirstLetterEachWords(clicked.event.extendedProps.professor)
+      this.courseModal.room = clicked.event.extendedProps.room
     },
     // ===========================================
     // == Naviguation functions
@@ -416,7 +524,7 @@ export default {
 
       this.calendarApi().changeView(viewType)
     },
-    next: function () {
+    next () {
       let toAdd
       let dateToFetch = this.activeDate
       switch (this.activeView) {
@@ -501,6 +609,19 @@ export default {
     injectListeners (e) {
       if (e.keyCode === 39 && !this.showSearchInput) this.next()
       if (e.keyCode === 37 && !this.showSearchInput) this.prev()
+    },
+    // ===========================================
+    // == Task functions
+    // ===========================================
+    isTaskDone (taskId) {
+      return this.doneTasks.some(task => task._id === taskId)
+    },
+    toggleTaskDone (taskId) {
+      if (this.isTaskDone(taskId)) {
+        this.$store.dispatch('account/setTaskNotDone', { taskId })
+      } else {
+        this.$store.dispatch('account/setTaskDone', { taskId })
+      }
     },
     // ===========================================
     // == Random functions
@@ -658,5 +779,13 @@ export default {
     .fc-time-grid-event, .fc-event, .fc-start, .fc-end {
       background-color: #6E7A90 !important;
     }
+  }
+
+  .is-done-checkbox:hover {
+    color: white !important;
+  }
+
+  .mt--4-5 {
+    margin-top: -2rem !important;
   }
 </style>
