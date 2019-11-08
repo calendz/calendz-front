@@ -221,7 +221,7 @@ const tasksModule = {
 
       tasks.forEach(task => {
         const eventDate = new Date(DateUtil.methods.timestampToDate(task.date)).getTime()
-        const event = events.find(event => event.start === eventDate)
+        const event = events.find(event => DateUtil.methods.isSameDay(event.start, eventDate))
 
         // si on a pas encore créé d'event pour la tâche
         // alors on le créer
