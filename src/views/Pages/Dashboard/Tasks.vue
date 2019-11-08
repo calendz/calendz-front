@@ -566,6 +566,14 @@ export default {
   mounted () {
     // load default table
     this.reloadTable()
+    if (Object.entries(this.$route.query).length) {
+      this.showTaskCreationModal = true
+      this.taskCreationForm.subject = decodeURIComponent(this.$route.query.subject)
+      this.taskCreationForm.date = new Date(decodeURIComponent(this.$route.query.date))
+    }
+  },
+  beforeDestroy () {
+    console.log('destroyed')
   },
   methods: {
     getError (name) {

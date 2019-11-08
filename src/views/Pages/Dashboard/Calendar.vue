@@ -150,7 +150,8 @@
     <!-- ======================================== -->
     <!-- == Course detail modal ================= -->
     <!-- ======================================== -->
-    <modal :show.sync="showCourseModal">
+    <modal
+      :show.sync="showCourseModal">
       <template
         slot="header"
         class="pb-0">
@@ -181,9 +182,18 @@
 
       <template slot="footer">
         <base-button
+          type="secondary"
+          size="md"
+          class="text-default"
+          @click="gotoTaskCreation()">
+          Ajouter une tâche
+        </base-button>
+        <base-button
           type="primary"
           size="md"
-          @click="showCourseModal = false">Fermer</base-button>
+          @click="showCourseModal = false">
+          Fermer
+        </base-button>
       </template>
     </modal>
 
@@ -622,6 +632,9 @@ export default {
       } else {
         this.$store.dispatch('account/setTaskDone', { taskId })
       }
+    },
+    gotoTaskCreation () {
+      this.$router.push({ path: '/tasks', query: { subject: encodeURIComponent(this.courseModal.title), date: encodeURIComponent(this.courseModal.date) } })
     },
     // ===========================================
     // == Random functions
