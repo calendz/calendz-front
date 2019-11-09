@@ -509,6 +509,7 @@ export default {
 
       this.showCourseModal = true
       this.courseModal.title = clicked.event.title
+      this.courseModal.date = this.dateToDayMonthYear(clicked.event.start)
       this.courseModal.start = this.timeToHour(clicked.event.start)
       this.courseModal.end = this.timeToHour(clicked.event.end)
       this.courseModal.professor = this.capitalizeFirstLetterEachWords(clicked.event.extendedProps.professor)

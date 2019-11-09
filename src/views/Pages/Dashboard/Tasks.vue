@@ -569,11 +569,10 @@ export default {
     if (Object.entries(this.$route.query).length) {
       this.showTaskCreationModal = true
       this.taskCreationForm.subject = decodeURIComponent(this.$route.query.subject)
-      this.taskCreationForm.date = new Date(decodeURIComponent(this.$route.query.date))
+      this.taskCreationForm.date = decodeURIComponent(this.$route.query.date)
+
+      this.$router.replace({ path: this.$route.path })
     }
-  },
-  beforeDestroy () {
-    console.log('destroyed')
   },
   methods: {
     getError (name) {
