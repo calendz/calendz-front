@@ -90,10 +90,10 @@ export default {
 
     dateToShortFullString (date) {
       date = new Date(date)
-      const day = this.dayNbToString(date.getDay()).substring(0, 3)
+      const day = this.dayNbToString(date.getDay())
       const dayNumber = ('0' + date.getDate()).slice(-2)
       const month = this.monthNbToShortString(date.getMonth())
-      return `${day}. ${dayNumber} ${month}`
+      return `${day} ${dayNumber} ${month}`
     },
 
     // eg: '07:12:42'
