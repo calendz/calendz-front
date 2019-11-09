@@ -566,6 +566,13 @@ export default {
   mounted () {
     // load default table
     this.reloadTable()
+    if (Object.entries(this.$route.query).length) {
+      this.showTaskCreationModal = true
+      this.taskCreationForm.subject = decodeURIComponent(this.$route.query.subject)
+      this.taskCreationForm.date = decodeURIComponent(this.$route.query.date)
+
+      this.$router.replace({ path: this.$route.path })
+    }
   },
   methods: {
     getError (name) {
