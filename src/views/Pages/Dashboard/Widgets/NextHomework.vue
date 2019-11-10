@@ -73,7 +73,7 @@
               v-if="nextHomework"
               class="row">
               <span
-                :class="remainingDays > 7 ? '' : remainingDays > 2 ? 'text-warning' : 'text-danger'"
+                :class="remainingDays > 7 ? 'text-success' : remainingDays > 2 ? 'text-warning' : 'text-danger'"
                 class="mr-1 ml-3">
                 <i class="fas fa-clock"/>
                 Pour :
