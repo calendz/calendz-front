@@ -117,7 +117,7 @@
                 <div>
                   <el-table
                     id="tasksTable"
-                    :data="queriedData"
+                    :data="tasksLoading || isLoading ? [{}, {}, {}, {}] : queriedData"
                     row-key="id"
                     class="table-responsive table-light"
                     header-row-class-name="thead-light"
@@ -131,7 +131,13 @@
                       class="text-center">
                       <template v-slot="{row}">
                         <div class="d-flex justify-content-center">
-                          <task-type :task="row"/>
+                          <task-type
+                            v-show="!tasksLoading && !isLoading"
+                            :task="row"/>
+
+                          <placeholder
+                            v-show="tasksLoading || isLoading"
+                            type="circle"/>
                         </div>
                       </template>
                     </el-table-column>
@@ -143,8 +149,16 @@
                       min-width="250px">
                       <template v-slot="{row}">
                         <task-core
+                          v-show="!tasksLoading && !isLoading"
                           :task="row"
                           class="mb-3"/>
+
+                        <placeholder
+                          v-show="tasksLoading || isLoading"
+                          class="mb-2 w-100"/>
+                        <placeholder
+                          v-show="tasksLoading || isLoading"
+                          class="mb-3 w-100"/>
                       </template>
                     </el-table-column>
 
@@ -157,7 +171,13 @@
                       min-width="170px"
                       align="center">
                       <template v-slot="{row}">
-                        {{ dateToFullString(timestampToDate(row.date)) }}
+                        <span v-show="!tasksLoading && !isLoading">
+                          {{ dateToFullString(timestampToDate(row.date)) }}
+                        </span>
+
+                        <placeholder
+                          v-show="tasksLoading || isLoading"
+                          class="w-100"/>
                       </template>
                     </el-table-column>
 
@@ -168,34 +188,40 @@
                       align="center">
                       <template v-slot="{row}">
                         <!-- whole class -->
-                        <div v-if="row.city && row.grade && row.group">
-                          <el-tooltip
-                            :content="`${row.grade} ${row.group}`"
-                            placement="top"
-                            class="avatar avatar-sm rounded-circle bg-warning">
-                            <i class="fas fa-users"/>
-                          </el-tooltip>
-                        </div>
-
-                        <!-- multiple users -->
-                        <span v-if="!row.city && !row.grade && !row.group">
-                          <div class="avatar-group">
-                            <span
-                              v-for="(target, index) in row.targets"
-                              :key="index"
-                              :class="row.targets.length < 3 ? 'avatar-sm' : 'avatar-xs'"
-                              class="avatar rounded-circle">
-                              <el-tooltip
-                                :content="`${target.firstname} ${target.lastname}`"
-                                placement="top">
-                                <img
-                                  :src="target.avatarUrl || 'img/theme/default-pp.png'"
-                                  alt="Photo de profil"
-                                  class="rounded-circle">
-                              </el-tooltip>
-                            </span>
+                        <span v-show="!tasksLoading && !isLoading">
+                          <div v-if="row.city && row.grade && row.group">
+                            <el-tooltip
+                              :content="`${row.grade} ${row.group}`"
+                              placement="top"
+                              class="avatar avatar-sm rounded-circle bg-warning">
+                              <i class="fas fa-users"/>
+                            </el-tooltip>
                           </div>
+
+                          <!-- multiple users -->
+                          <span v-if="!row.city && !row.grade && !row.group">
+                            <div class="avatar-group">
+                              <span
+                                v-for="(target, index) in row.targets"
+                                :key="index"
+                                :class="row.targets.length < 3 ? 'avatar-sm' : 'avatar-xs'"
+                                class="avatar rounded-circle">
+                                <el-tooltip
+                                  :content="`${target.firstname} ${target.lastname}`"
+                                  placement="top">
+                                  <img
+                                    :src="target.avatarUrl || 'img/theme/default-pp.png'"
+                                    alt="Photo de profil"
+                                    class="rounded-circle">
+                                </el-tooltip>
+                              </span>
+                            </div>
+                          </span>
                         </span>
+
+                        <placeholder
+                          v-show="tasksLoading || isLoading"
+                          type="circle"/>
                       </template>
                     </el-table-column>
 
@@ -211,6 +237,7 @@
                             :content="isDone(row._id) ? 'Marquer comme non fait' : 'Marquer comme fait'"
                             placement="top">
                             <base-button
+                              :disabled="tasksLoading"
                               :outline="!isDone(row._id)"
                               :class="isDone(row._id) ? 'text-white' : 'text-success'"
                               size="sm"
@@ -225,6 +252,7 @@
                             content="Modifier"
                             placement="top">
                             <base-button
+                              :disabled="tasksLoading"
                               size="sm"
                               type="info"
                               @click="showTaskModificationModal = true, taskModificationForm = {...row, date: timestampToDate(row.date)}">
@@ -236,6 +264,7 @@
                             content="Supprimer"
                             placement="top">
                             <base-button
+                              :disabled="tasksLoading"
                               size="sm"
                               type="danger"
                               class="remove btn-link"
@@ -525,6 +554,7 @@ export default {
   data () {
     return {
       active: 1,
+      isLoading: true,
       tableData: [],
       propsToSearch: ['type', 'title', 'description', 'subject', 'author.firstname', 'author.lastname'],
       taskCreationForm: {
@@ -546,6 +576,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      tasksLoading: 'tasks/isRetrieving',
       todoTasks: 'tasks/getTodo',
       doneTasks: 'tasks/getDone',
       notdoneTasks: 'tasks/getNotDone',
@@ -564,6 +595,10 @@ export default {
     }
   },
   mounted () {
+    setTimeout(() => {
+      this.isLoading = false
+    }, 500)
+
     // load default table
     this.reloadTable()
     if (Object.entries(this.$route.query).length) {

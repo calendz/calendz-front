@@ -1,10 +1,19 @@
 <template>
-  <div class="placeholder"/>
+  <div
+    :class="type === 'circle' ? 'placeholder placeholder-circle avatar avatar-sm rounded-circle' : ''"
+    class="placeholder"/>
 </template>
 
 <script>
 export default {
-  name: 'Placeholder'
+  name: 'Placeholder',
+  props: {
+    type: {
+      type: String,
+      default: 'div',
+      description: `Placeholder's type`
+    }
+  }
 }
 </script>
 
@@ -20,6 +29,11 @@ export default {
 
     width: 100px;
     height: 20px;
+  }
+
+  .placeholder-circle {
+    width: 36px;
+    height: 36px;
   }
 
   @keyframes pulse {

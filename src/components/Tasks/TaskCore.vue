@@ -11,11 +11,11 @@
     <!-- author -->
     <span class="text-muted mr-1"> par</span>
     <el-tooltip
-      :content="`${task.author.firstname || '?'} ${task.author.lastname || '?'}`"
+      :content="`${task.author && task.author.firstname || '?'} ${task.author && task.author.lastname || '?'}`"
       placement="top"
       class="avatar avatar-sm rounded-circle bg-warning">
       <img
-        :src="task.author.avatarUrl || 'img/theme/default-pp.png'"
+        :src="task.author && task.author.avatarUrl || 'img/theme/default-pp.png'"
         alt="Photo de profil"
         class="rounded-circle avatar rounded-circle"
         style="width: 20px; height: 20px;">
