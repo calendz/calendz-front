@@ -43,7 +43,7 @@
             <stats-card
               title="ACCÈS DIRECT À"
               type="gradient-blue"
-              sub-title="beecome"
+              sub-title="beecome.io"
               icon="fas fa-bold">
 
               <template slot="footer">

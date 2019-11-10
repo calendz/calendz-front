@@ -33,12 +33,13 @@
               :class="isDone(homework._id) ? 'text-strikethrough' : ''"
               class="checklist-title mb-0">{{ homework.title }}</h5>
             <small
-              v-show="homework.description"
-              :class="isDone(homework._id) ? 'text-strikethrough' : ''">
-              {{ homework.description }}<br>
-            </small>
-            <small style="color: #8898aa">
-              <span :class="remainingDays(homework) > 7 ? '' : remainingDays(homework) > 2 ? 'text-warning' : 'text-danger'"><i class="fas fa-hourglass-half m-1"/></span>
+              :class="isDone(homework._id) ? 'text-strikethrough' : ''"
+              v-html="homework.description || `<span class='text-muted'>Aucune description...</span>`"/>
+            <br>
+            <small class="text-muted">
+              <span>
+                <i class="fas fa-hourglass-half m-1"/>
+              </span>
               {{ capitalizeFirstLetter(dateToFullString(getDate(homework))) }}</small>
           </div>
           <div>

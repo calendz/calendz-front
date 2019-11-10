@@ -4,20 +4,24 @@
     class="card-stats">
     <div class="row">
 
-      <div class="col">
+      <div class="col pr-0">
         <slot>
-          <h5 class="card-title text-uppercase text-muted mb-1">
+          <h5 class="card-title text-muted mb-1">
             PROCHAIN COURS
           </h5>
 
-          <span class="h3">
+          <div style="height: 36px !important">
             <span v-show="calendarLoading">
               <placeholder class="w-100"/>
             </span>
-            <span v-show="!calendarLoading">
+            <p
+              v-show="!calendarLoading"
+              class="h3 mb-0 my-auto"
+              style="line-height: 18px">
               {{ nextCourse ? nextCourse.title : 'Aucun cours à venir...' }}
-            </span>
-          </span>
+              <!-- LE LANGAGE DE PROGRAMMATION PY -->
+            </p>
+          </div>
         </slot>
       </div>
 
@@ -25,7 +29,7 @@
         <slot name="icon">
           <router-link
             :to="nextCourse ? `/calendar?date=${dateToDayMonthYear(nextCourse.start)}` : '/calendar'">
-            <div class="icon icon-shape bg-gradient-info text-white rounded-circle shadow">
+            <div class="icon icon-shape bg-gradient-red text-white rounded-circle shadow">
               <i class="fas fa-calendar-week"/>
             </div>
           </router-link>
@@ -33,7 +37,7 @@
       </div>
     </div>
 
-    <p class="mt-3 mb-0 text-sm">
+    <p class="mt-1 mb-0 text-sm">
       <slot name="footer">
         <router-link
           :to="nextCourse ? `/calendar?date=${dateToDayMonthYear(nextCourse.start)}` : '/calendar'"
@@ -57,12 +61,12 @@
             <div
               v-if="nextCourse"
               class="row">
-              <div class="col-8 pr-1">
-                <i class="fas fa-clock mr-1 text-default"/>
-                {{ `${dateToFullString(nextCourse.start)} - ${dateToTimeString(nextCourse.start, 'h').slice(0, -3)}` }}
+              <div class="col-8 pr-0">
+                <i class="fas fa-clock mr-1"/>
+                {{ `${dateToShortFullString(nextCourse.start)} - ${dateToTimeString(nextCourse.start, 'h').slice(0, -5)}` }}
               </div>
-              <div class="col-4 pl-1 text-right">
-                <i class="fas fa-door-open mr-2 text-primary"/>
+              <div class="col-4 pl-0 text-right">
+                <i class="fas fa-door-open text-primary"/>
                 {{ nextCourse.room }}
               </div>
             </div>

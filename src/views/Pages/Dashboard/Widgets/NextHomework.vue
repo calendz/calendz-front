@@ -4,20 +4,24 @@
     class="card-stats">
     <div class="row">
 
-      <div class="col">
+      <div class="col pr-0">
         <slot>
-          <h5 class="card-title text-uppercase text-muted mb-1">
+          <h5 class="card-title text-muted mb-1">
             PROCHAIN DEVOIR
           </h5>
 
-          <span class="h3">
+          <div style="height: 36px !important">
             <span v-show="homeworksRetrieving">
               <placeholder class="w-100"/>
             </span>
-            <span v-show="!homeworksRetrieving">
+            <p
+              v-show="!homeworksRetrieving"
+              class="h3 mb-0 my-auto"
+              style="line-height: 18px">
               {{ nextHomework ? nextHomework.title : 'Aucun devoir non-fait à venir...' }}
-            </span>
-          </span>
+              <!-- LE LANGAGE DE PROGRAMMATION PY -->
+            </p>
+          </div>
         </slot>
       </div>
 
@@ -44,7 +48,7 @@
       </div>
     </div>
 
-    <p class="mt-3 mb-0 text-sm">
+    <p class="mt-1 mb-0 text-sm">
       <slot name="footer">
         <router-link
           to="/tasks"
@@ -69,8 +73,12 @@
               v-if="nextHomework"
               class="row">
               <span
-                :class="remainingDays > 7 ? '' : remainingDays > 2 ? 'text-warning' : 'text-danger'"
-                class="mr-2 ml-3"><i class="fas fa-clock"/></span><span> Date : {{ dateToFullString(getDate) }}</span>
+                :class="remainingDays > 7 ? 'text-success' : remainingDays > 2 ? 'text-warning' : 'text-danger'"
+                class="mr-1 ml-3">
+                <i class="fas fa-clock"/>
+                Pour :
+              </span>
+              <span>{{ dateToFullString(getDate) }}</span>
             </div>
             <!-- no homework -->
             <span v-if="!nextHomework">
