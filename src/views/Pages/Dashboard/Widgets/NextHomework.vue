@@ -74,10 +74,11 @@
               class="row">
               <span
                 :class="remainingDays > 7 ? '' : remainingDays > 2 ? 'text-warning' : 'text-danger'"
-                class="mr-2 ml-3">
+                class="mr-1 ml-3">
                 <i class="fas fa-clock"/>
+                Pour :
               </span>
-              <span> Pour : {{ dateToFullString(getDate) }}</span>
+              <span>{{ dateToFullString(getDate) }}</span>
             </div>
             <!-- no homework -->
             <span v-if="!nextHomework">
