@@ -326,10 +326,13 @@ export default {
       localStorage.setItem('calendz.calendar.searchInput', queryUser)
     }
 
+    let date = new Date()
     const queryDate = this.$route.query.date
+
+    // if querydate is set, override current date
     if (queryDate) {
-      let date = queryDate.split('-')
-      date = new Date(`${date[1]}-${date[0]}-${date[2]}`)
+      const splitted = queryDate.split('-')
+      date = new Date(`${splitted[1]}-${splitted[0]}-${splitted[2]}`)
       // redirect to date
       this.calendarApi().gotoDate(date)
       // fetch date's week
@@ -337,10 +340,9 @@ export default {
       this.$store.dispatch('calendar/fetchDate', { date: this.dateToMonthDayYear(dateToFetch) })
     }
 
-    // if today is saturday, show next week
-    const today = new Date()
-    if (today.getDay() === 6) {
-      this.calendarApi().gotoDate(today.setDate(today.getDate() + 1))
+    // if date is saturday, show next week
+    if (date.getDay() === 6) {
+      this.calendarApi().gotoDate(date.setDate(date.getDate() + 1))
     }
 
     // set correct header date
