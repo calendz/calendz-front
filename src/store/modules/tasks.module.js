@@ -110,7 +110,7 @@ const tasksModule = {
             commit('TASK_CREATE_FAILURE', err.data.message)
             swal.fire({
               title: 'Une erreur est survenue',
-              text: err.data.message,
+              text: err.data.errors[0],
               type: 'error',
               customClass: {
                 confirmButton: 'btn btn-primary'
@@ -159,7 +159,7 @@ const tasksModule = {
             commit('TASK_MODIFY_FAILURE', err.data.message)
             swal.fire({
               title: 'Une erreur est survenue',
-              text: err.data.message,
+              text: err.data.errors[0],
               type: 'error',
               customClass: {
                 confirmButton: 'btn btn-primary'
@@ -185,7 +185,7 @@ const tasksModule = {
     getTodo: (state, getters, rootState) => {
       const now = new Date().getTime()
       const doneTasks = rootState.account.user.tasks.done
-      let array = [...state.tasks].filter(task => now < parseInt(task.date))
+      let array = [...state.tasks].filter(task => now <= parseInt(task.date) + 3600000 * 24)
       array = array.filter(task => !doneTasks.includes(task._id))
       array.sort((a, b) => (a.date < b.date) ? -1 : 1)
       return array
@@ -194,7 +194,7 @@ const tasksModule = {
       const now = new Date().getTime()
       const doneTasks = rootState.account.user.tasks.done
       let array = [...state.tasks].filter(task => !doneTasks.includes(task._id))
-      array = array.filter(task => now > parseInt(task.date))
+      array = array.filter(task => now > parseInt(task.date) + 3600000 * 24)
       array.sort((a, b) => (a.date < b.date) ? -1 : 1)
       return array
     },
@@ -211,7 +211,7 @@ const tasksModule = {
     },
     getUpcommings: (state) => {
       const now = new Date().getTime()
-      const array = [...state.tasks].filter(task => now < parseInt(task.date))
+      const array = [...state.tasks].filter(task => now < parseInt(task.date) + 3600000 * 24)
       array.sort((a, b) => (a.date < b.date) ? -1 : 1)
       return array.slice(0, 3)
     },
