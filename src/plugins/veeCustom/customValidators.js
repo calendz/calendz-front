@@ -1,7 +1,7 @@
 import { Validator } from 'vee-validate'
 
-Validator.extend('email_epsi_wis', {
-  validate: value => value.includes('@epsi.fr') || value.includes('@wis.fr')
+Validator.extend('email_epsi', {
+  validate: value => value.includes('@epsi.fr')
 })
 
 Validator.extend('contains_one_number', {
@@ -22,7 +22,8 @@ Validator.extend('valid_group', {
   validate: value => [
     'G1', 'G2', 'G3',
     'G1 (dev)', 'G2 (dev)', 'G3 (dev)',
-    'G1 (infra-réseau)', 'G2 (infra-réseau)', 'G3 (infra-réseau)'
+    'G1 (infra-réseau)', 'G2 (infra-réseau)', 'G3 (infra-réseau)',
+    'G1 (ERP)', 'G2 (ERP)'
   ].indexOf(value) !== -1
 })
 
@@ -31,6 +32,10 @@ Validator.extend('valid_city', {
     'Arras', 'Auxerre', 'Bordeaux', 'Brest',
     'Grenoble', 'Lille', 'Lyon', 'Montpellier',
     'Nantes', 'Paris', 'Dakar'].indexOf(value) !== -1
+})
+
+Validator.extend('valid_task_type', {
+  validate: value => ['homework', 'DS', 'task'].indexOf(value) !== -1
 })
 
 Validator.extend('boolean', {

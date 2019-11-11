@@ -166,7 +166,8 @@
                   <div class="col-md-12 mx-auto">
                     <BtsSelect
                       v-model="bts"
-                      :disabled="user.grade !== 'B1' && user.grade !== 'B2'"/>
+                      :disabled="user.grade !== 'B1' && user.grade !== 'B2'"
+                      vee-scope="bts-form"/>
                   </div>
                 </div>
 
@@ -174,7 +175,8 @@
                   <div class="col-md-12 mx-auto">
                     <GroupsSelect
                       v-model="group"
-                      label="Groupe"/>
+                      label="Groupe"
+                      vee-scope="bts-form"/>
                   </div>
                 </div>
 
@@ -215,8 +217,8 @@
                     v-validate="'required|min:6|max:64|contains_one_letter|contains_one_number'"
                     ref="mot de passe"
                     v-model="changePasswordForm.password"
-                    :error="getError('mot de passe')"
-                    :valid="isValid('mot de passe')"
+                    :error="getError('password-form.mot de passe')"
+                    :valid="isValid('password-form.mot de passe')"
                     name="mot de passe"
                     class="mb-3"
                     prepend-icon="ni ni-lock-circle-open"
@@ -230,8 +232,8 @@
                   <base-input
                     v-validate="{ required: true, confirmed: 'mot de passe' }"
                     v-model="changePasswordForm.password2"
-                    :error="getError('confirmation du mot de passe')"
-                    :valid="isValid('confirmation du mot de passe')"
+                    :error="getError('password-form.confirmation du mot de passe')"
+                    :valid="isValid('password-form.confirmation du mot de passe')"
                     name="confirmation du mot de passe"
                     class="mb-3"
                     prepend-icon="ni ni-lock-circle-open"

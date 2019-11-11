@@ -8,10 +8,12 @@
         <slot>
           <h5
             v-if="title"
-            class="card-title text-uppercase text-muted mb-0">{{ title }}</h5>
-          <span
+            class="card-title text-muted mb-1">{{ title }}</h5>
+          <div
             v-if="subTitle"
-            class="h2 font-weight-bold mb-0">{{ subTitle }}</span>
+            style="height: 36px !important">
+            <p class="h3 mb-0 my-auto">{{ subTitle }}</p>
+          </div>
         </slot>
       </div>
 
@@ -28,7 +30,7 @@
       </div>
     </div>
 
-    <p class="mt-3 mb-0 text-sm">
+    <p class="mt-1 mb-0 text-sm">
       <slot name="footer"/>
     </p>
   </card>

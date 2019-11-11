@@ -67,7 +67,7 @@ export default {
       date = new Date(date)
       const day = (`0${date.getDate()}`).slice(-2)
       const month = (`0${date.getMonth() + 1}`).slice(-2)
-      const year = date.getFullYear().toString().substr(-2)
+      const year = date.getFullYear().toString()
       return `${day}${separator}${month}${separator}${year}`
     },
 
@@ -90,10 +90,10 @@ export default {
 
     dateToShortFullString (date) {
       date = new Date(date)
-      const day = this.dayNbToString(date.getDay()).substring(0, 3)
+      const day = this.dayNbToString(date.getDay())
       const dayNumber = ('0' + date.getDate()).slice(-2)
       const month = this.monthNbToShortString(date.getMonth())
-      return `${day}. ${dayNumber} ${month}`
+      return `${day} ${dayNumber} ${month}`
     },
 
     // eg: '07:12:42'
@@ -178,6 +178,14 @@ export default {
       end = new Date(end).getTime()
       const now = new Date().getTime()
       return now > start && now < end
+    },
+
+    isSameDay (first, second) {
+      const d1 = new Date(first)
+      const d2 = new Date(second)
+      return d1.getFullYear() === d2.getFullYear() &&
+          d1.getMonth() === d2.getMonth() &&
+          d1.getDate() === d2.getDate()
     },
 
     getProgress (start, end) {

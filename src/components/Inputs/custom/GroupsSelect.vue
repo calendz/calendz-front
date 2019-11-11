@@ -6,8 +6,8 @@
     <!-- =================================== -->
     <base-input
       v-if="!legacy"
-      :error="getError('groupe')"
-      :valid="isValid('groupe')"
+      :error="getError(veeScope ? `${veeScope}.groupe` : 'groupe')"
+      :valid="isValid(veeScope ? `${veeScope}.groupe` : 'groupe')"
       :label="label"
       class="w-100">
       <el-select
@@ -85,6 +85,11 @@ export default {
       type: Boolean,
       default: false,
       doc: `Whether we should use a legacy select or element-ui's select`
+    },
+    veeScope: {
+      type: String,
+      default: '',
+      doc: 'If form has a scope'
     }
   },
   data () {
@@ -104,7 +109,6 @@ export default {
           ]
         case 'B3':
         case 'I1':
-        case 'I2':
           return [
             { value: 'G1 (dev)' },
             { value: 'G2 (dev)' },
@@ -112,6 +116,15 @@ export default {
             { value: 'G1 (infra-réseau)' },
             { value: 'G2 (infra-réseau)' },
             { value: 'G3 (infra-réseau)' }
+          ]
+        case 'I2':
+          return [
+            { value: 'G1 (dev)' },
+            { value: 'G2 (dev)' },
+            { value: 'G1 (infra-réseau)' },
+            { value: 'G2 (infra-réseau)' },
+            { value: 'G1 (ERP)' },
+            { value: 'G2 (ERP)' }
           ]
         default:
           return [

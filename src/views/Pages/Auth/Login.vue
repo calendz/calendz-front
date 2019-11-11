@@ -39,13 +39,14 @@
                 role="form"
                 @submit.prevent="handleSubmit">
                 <base-input
-                  v-validate="'required|email|email_epsi_wis|min:12|max:64'"
+                  v-validate="'required|email|email_epsi|min:12|max:64'"
                   v-model="loginForm.email"
                   :error="getError('email')"
                   :valid="isValid('email')"
                   name="email"
                   class="mb-3"
                   prepend-icon="ni ni-email-83"
+                  type="email"
                   placeholder="Adresse mail"
                   autocapitalize="none"/>
 

@@ -55,6 +55,7 @@
             </div>
           </div>
           <el-table
+            id="userManagementTable"
             :data="queriedData"
             row-key="id"
             header-row-class-name="thead-light"
@@ -62,8 +63,8 @@
 
             <!-- profile picture -->
             <el-table-column
-              width="85px"
-              min-width="85px"
+              width="62px"
+              min-width="62px"
               class="text-center">
               <template v-slot="{row}">
                 <div class="d-flex justify-content-center">
@@ -84,8 +85,8 @@
             <!-- bts -->
             <el-table-column
               label="BTS"
-              width="100px"
-              min-width="100px"
+              width="74px"
+              min-width="74px"
               class="text-center"
               prop="row.bts"
               sortable>
@@ -101,8 +102,8 @@
             <!-- permissionLevel -->
             <el-table-column
               label="Rôle"
-              width="110px"
-              min-width="110px"
+              width="90px"
+              min-width="90px"
               class="text-center"
               prop="row.permissionLevel"
               sortable>
@@ -118,8 +119,8 @@
             <!-- register date -->
             <el-table-column
               label="Inscription"
-              width="150px"
-              min-width="150px"
+              width="126px"
+              min-width="126px"
               class="text-center"
               prop="row.creationDate"
               sortable>
@@ -135,8 +136,8 @@
             <!-- last active date -->
             <el-table-column
               label="Last seen"
-              width="150px"
-              min-width="150px"
+              width="126px"
+              min-width="126px"
               class="text-center"
               prop="row.lastActiveDate"
               sortable>
@@ -152,8 +153,8 @@
             <!-- isActive -->
             <el-table-column
               label="Actif"
-              width="110px"
-              min-width="110px"
+              width="86px"
+              min-width="86px"
               class="text-center"
               prop="row.isActive"
               sortable>
@@ -235,7 +236,7 @@
               <div class="row">
                 <div class="col-md-6">
                   <base-input
-                    v-validate="'required|email|email_epsi_wis|min:12|max:64'"
+                    v-validate="'required|email|email_epsi|min:12|max:64'"
                     v-model="modifyForm.email"
                     :error="getError('email')"
                     :valid="isValid('email')"
@@ -429,31 +430,31 @@ export default {
         {
           prop: 'firstname',
           label: 'Prénom',
-          minWidth: 125,
+          minWidth: 110,
           sortable: true
         },
         {
           prop: 'lastname',
           label: 'Nom',
-          minWidth: 120,
+          minWidth: 100,
           sortable: true
         },
         {
           prop: 'grade',
           label: 'Classe',
-          minWidth: 115,
+          minWidth: 84,
           sortable: true
         },
         {
           prop: 'group',
           label: 'Groupe',
-          minWidth: 125,
+          minWidth: 100,
           sortable: true
         },
         {
           prop: 'city',
           label: 'Ville',
-          minWidth: 110,
+          minWidth: 86,
           sortable: true
         },
         {
@@ -477,7 +478,8 @@ export default {
   created () {
     UserService.getAll().then(res => {
       this.tableData = res.users
-      this.isFuseSearchReady = true
+      this.initFuseSearch(res.users)
+      // this.isFuseSearchReady = true
     })
   },
   methods: {
@@ -537,3 +539,55 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+  #userManagementTable {
+    table tr td:first-child {
+      padding-right: 0 !important;
+    }
+
+    // firstname
+    table tr td:nth-child(2) { padding-right: 0 !important; }
+    table tr th:nth-child(2) { padding-right: 0 !important; }
+
+    // lastname
+    table tr td:nth-child(3) { padding-right: 0 !important; }
+    table tr th:nth-child(3) { padding-right: 0 !important; }
+
+    // grade
+    table tr td:nth-child(4) { padding-right: 0 !important; }
+    table tr th:nth-child(4) { padding-right: 0 !important; }
+
+    // grouo
+    table tr td:nth-child(5) { padding-right: 0 !important; }
+    table tr th:nth-child(5) { padding-right: 0 !important; }
+
+    // city
+    table tr td:nth-child(6) { padding-right: 0 !important; }
+    table tr th:nth-child(6) { padding-right: 0 !important; }
+
+    // email
+    table tr td:nth-child(7) { padding-right: 0 !important; }
+    table tr th:nth-child(7) { padding-right: 0 !important; }
+
+    // bts
+    table tr td:nth-child(8) { padding-right: 0 !important; }
+    table tr th:nth-child(8) { padding-right: 0 !important; }
+
+    // role/permissionLevel
+    table tr td:nth-child(9) { padding-right: 0 !important; }
+    table tr th:nth-child(9) { padding-right: 0 !important; }
+
+    // register date
+    table tr td:nth-child(10) { padding-right: 0 !important; }
+    table tr th:nth-child(10) { padding-right: 0 !important; }
+
+    // last seen (date)
+    table tr td:nth-child(11) { padding-left: 0 !important; padding-right: 0 !important; }
+    table tr th:nth-child(11) { padding-left: 10px !important; padding-right: 0 !important; }
+
+    // active (email confirmed)
+    table tr td:nth-child(12) { padding-right: 0 !important; }
+    table tr th:nth-child(12) { padding-right: 0 !important; }
+  }
+</style>

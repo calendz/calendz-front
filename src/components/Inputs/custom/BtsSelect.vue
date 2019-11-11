@@ -1,7 +1,7 @@
 <template>
   <base-input
-    :error="getError('bts')"
-    :valid="isValid('bts')"
+    :error="getError(veeScope ? `${veeScope}.bts` : 'bts')"
+    :valid="isValid(veeScope ? `${veeScope}.bts` : 'bts')"
     class="w-100"
     label="Option BTS">
     <el-select
@@ -37,6 +37,11 @@ export default {
       type: Boolean,
       default: true,
       doc: 'Whether the select should be disabled or not'
+    },
+    veeScope: {
+      type: String,
+      default: '',
+      doc: 'If form has a scope'
     }
   },
   data () {

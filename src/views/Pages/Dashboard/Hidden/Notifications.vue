@@ -87,6 +87,7 @@
                 </div>
                 <div>
                   <el-table
+                    id="notificationsTable"
                     :data="queriedData"
                     row-key="id"
                     class="table-responsive table-light"
@@ -94,8 +95,8 @@
 
                     <!-- icon -->
                     <el-table-column
-                      width="85px"
-                      min-width="85px"
+                      width="62px"
+                      min-width="62px"
                       class="text-center">
                       <template v-slot="{row}">
                         <div class="d-flex justify-content-center">
@@ -137,8 +138,8 @@
                     <!-- timestamp -->
                     <el-table-column
                       label="Date"
-                      width="120px"
-                      min-width="120px"
+                      width="130px"
+                      min-width="130px"
                       class="text-center">
                       <template v-slot="{row}">
                         <div class="d-flex">
@@ -281,3 +282,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+  #notificationsTable {
+    table tr td:first-child {
+      padding-right: 0 !important;
+    }
+  }
+</style>

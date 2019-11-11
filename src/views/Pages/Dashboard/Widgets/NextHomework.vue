@@ -1,44 +1,116 @@
 <template>
-  <stats-card
-    :sub-title="name"
-    title="Prochain devoir"
-    type="gradient-danger"
-    icon="fas fa-th-list">
+  <card
+    :show-footer-line="true"
+    class="card-stats">
+    <div class="row">
 
-    <template slot="footer">
-      <span
-        :class="remainingDays < 7 ? 'text-danger' : 'text-warning'"
-        class="mr-2"><i class="fas fa-clock"/> Prochain :</span>
-      <router-link
-        :to="`/calendar?date=${dateToDayMonthYear(date)}`">
-        <span class="nav-link p-0 d-inline text-nowrap">{{ dateToFullString(date) }}</span>
-      </router-link>
-    </template>
-  </stats-card>
+      <div class="col pr-0">
+        <slot>
+          <h5 class="card-title text-muted mb-1">
+            PROCHAIN DEVOIR
+          </h5>
+
+          <div style="height: 36px !important">
+            <span v-show="homeworksRetrieving">
+              <placeholder class="w-100"/>
+            </span>
+            <p
+              v-show="!homeworksRetrieving"
+              class="h3 mb-0 my-auto"
+              style="line-height: 18px">
+              {{ nextHomework ? nextHomework.title : 'Aucun devoir non-fait à venir...' }}
+              <!-- LE LANGAGE DE PROGRAMMATION PY -->
+            </p>
+          </div>
+        </slot>
+      </div>
+
+      <div class="col-auto">
+        <slot name="icon">
+          <router-link
+            to="/tasks">
+            <div
+              v-if="nextHomework"
+              :class="nextHomework.type === 'homework' ? 'bg-primary' : nextHomework.type === 'task' ? 'bg-info' : 'bg-warning'"
+              class="icon icon-shape text-white rounded-circle shadow">
+              <i
+                :class="nextHomework.type === 'homework' ? 'fa-book' : nextHomework.type === 'task' ? 'fa-tasks' : 'fa-graduation-cap'"
+                class="fas"/>
+            </div>
+
+            <div
+              v-if="!nextHomework"
+              class="icon icon-shape bg-success text-white rounded-circle shadow">
+              <i class="fas fa-check"/>
+            </div>
+          </router-link>
+        </slot>
+      </div>
+    </div>
+
+    <p class="mt-1 mb-0 text-sm">
+      <slot name="footer">
+        <router-link
+          to="/tasks"
+          class="nav-link p-0">
+
+          <!-- loading -->
+          <span v-show="homeworksRetrieving">
+            <div class="row">
+              <div class="col-8 pb-1 pr-1">
+                <placeholder class="w-100"/>
+              </div>
+              <div class="col-4 pl-1 text-right">
+                <placeholder class="w-100"/>
+              </div>
+            </div>
+          </span>
+
+          <!-- not loading -->
+          <span v-show="!homeworksRetrieving">
+            <!-- homework -->
+            <div
+              v-if="nextHomework"
+              class="row">
+              <span
+                :class="remainingDays > 7 ? 'text-success' : remainingDays > 2 ? 'text-warning' : 'text-danger'"
+                class="mr-1 ml-3">
+                <i class="fas fa-clock"/>
+                Pour :
+              </span>
+              <span>{{ dateToFullString(getDate) }}</span>
+            </div>
+            <!-- no homework -->
+            <span v-if="!nextHomework">
+              cliquez pour accéder aux détails
+            </span>
+          </span>
+
+        </router-link>
+      </slot>
+    </p>
+  </card>
+
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import dateUtilMixin from '@/mixins/dateUtilMixin'
 
 export default {
   mixins: [dateUtilMixin],
-  props: {
-    name: {
-      type: String,
-      default: 'à venir...',
-      doc: 'Next due task'
-    },
-    date: {
-      type: Date,
-      default: () => { return new Date('November 21, 2019') },
-      doc: 'Due date'
-    }
-  },
   computed: {
     remainingDays: function () {
       const today = new Date()
-      return Math.round((this.date - today) / (1000 * 60 * 60 * 24))
-    }
+      return Math.round((this.nextHomework.date - today) / (1000 * 60 * 60 * 24))
+    },
+    getDate: function () {
+      return new Date().setTime(this.nextHomework.date)
+    },
+    ...mapGetters({
+      nextHomework: 'tasks/getNextOneNotDone',
+      homeworksRetrieving: 'tasks/isRetrieving'
+    })
   }
 }
 </script>

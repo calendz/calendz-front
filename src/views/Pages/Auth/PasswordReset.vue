@@ -40,7 +40,7 @@
                 @submit.prevent="handleSubmit">
 
                 <base-input
-                  v-validate="'required|email|email_epsi_wis|min:12|max:64'"
+                  v-validate="'required|email|email_epsi|min:12|max:64'"
                   v-model="form.email"
                   :error="getError('email')"
                   :valid="isValid('email')"

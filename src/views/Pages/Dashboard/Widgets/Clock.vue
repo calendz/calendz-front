@@ -2,8 +2,10 @@
   <stats-card class="bg-gradient-default">
     <div class="row">
       <div class="col">
-        <h5 class="card-title text-uppercase text-muted mb-0 text-white">DATE & HEURE</h5>
-        <span class="h2 font-weight-bold mb-0 text-white">{{ currentTime }}</span>
+        <h5 class="card-title text-uppercase text-muted mb-1 text-white">DATE & HEURE</h5>
+        <div style="height: 36px !important">
+          <span class="h2 font-weight-bold mb-0 text-white">{{ currentTime }}</span>
+        </div>
       </div>
       <div class="col-auto">
         <div class="icon icon-shape bg-white text-dark rounded-circle shadow">

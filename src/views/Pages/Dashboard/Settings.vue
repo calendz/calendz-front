@@ -195,6 +195,30 @@
 
                   <hr class="my-2">
 
+                  <!-- Mail nouvelle tâche -->
+                  <div class="row mt-3">
+                    <div class="col-lg-1 col-md-2 my-2 d-flex justify-content-center">
+                      <i class="fas fa-tasks my-auto"/>
+                    </div>
+
+                    <div class="col-lg-9 col-md-8 my-2">
+                      <p class="text-justify my-auto">
+                        Recevoir un mail lorsqu'une tâche me concernant est ajoutée.
+                      </p>
+                    </div>
+
+                    <div class="col-m-2 my-2 d-flex justify-content-center my-auto mx-auto">
+                      <base-switch
+                        :value="user.settings.mail.taskCreate || false"
+                        type="primary"
+                        on-text="Oui"
+                        off-text="Non"
+                        @input="toggleMailTaskCreate($event)"/>
+                    </div>
+                  </div>
+
+                  <hr class="my-2">
+
                   <!-- Nouvelles notifications -->
                   <div class="row mt-3">
                     <div class="col-lg-1 col-md-2 my-2 d-flex justify-content-center">
@@ -299,13 +323,22 @@ export default {
   },
   methods: {
     toggleInformationEmails (element) {
-      // disable the switch and re-enable it after 5 seconds
+      console.log('info')
       element.disabled = true
       setTimeout(() => {
         element.disabled = false
-      }, 5000)
+      }, 2500)
 
       this.$store.dispatch('account/setInformationMails', { value: element.checked })
+    },
+    toggleMailTaskCreate (element) {
+      console.log('task create')
+      element.disabled = true
+      setTimeout(() => {
+        element.disabled = false
+      }, 2500)
+
+      this.$store.dispatch('account/setMailTaskCreate', { value: element.checked })
     },
     handleDefaultPageChange (newPage) {
       localStorage.setItem('calendz.settings.defaultPage', newPage)

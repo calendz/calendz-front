@@ -24,7 +24,7 @@ const PasswordResetChangePassword = () => import(/* webpackChunkName: "pages" */
 // Dashboard
 const Dashboard = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Dashboard.vue')
 const Calendar = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Calendar.vue')
-const Homeworks = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Homeworks.vue')
+const Tasks = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Tasks.vue')
 const Profile = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Profile.vue')
 const Settings = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Settings.vue')
 
@@ -67,11 +67,11 @@ const dashboardPages = {
       }
     },
     {
-      path: 'homeworks',
-      name: 'Devoirs',
-      component: Homeworks,
+      path: 'tasks',
+      name: 'Devoirs & tâches',
+      component: Tasks,
       meta: {
-        title: 'Devoirs - Calendz'
+        title: 'Devoirs & tâches - Calendz'
       }
     },
     {
