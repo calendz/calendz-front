@@ -125,6 +125,17 @@ const UserService = {
       })
   },
 
+  // change user's subscription to email when new tasks are created
+  setMailTaskCreate: (value) => {
+    return ApiService.patch(`/user/settings/mail-task-create/${value}`)
+      .then(res => {
+        return res.data
+      })
+      .catch(err => {
+        return Promise.reject(err)
+      })
+  },
+
   // change user's calendar color
   setCalendarColor: (value) => {
     return ApiService.patch(`/user/calendar-color/${value}`)
