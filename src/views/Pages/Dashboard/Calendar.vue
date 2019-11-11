@@ -408,7 +408,7 @@ export default {
         }
 
         element.el.innerHTML = `
-          <div class="h3 custom-allday-event text-center my-0">
+          <div class="h3 custom-allday-event text-center my-0 hover-pointer">
             <div class="badge badge-lg badge-primary py-1">
               <span class="pr-2">Afficher les devoirs</span>
               <span class="badge badge-sm badge-default badge-circle badge-floating border-white">${element.event.extendedProps.amount}</span>
