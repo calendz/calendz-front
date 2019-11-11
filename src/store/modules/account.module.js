@@ -95,6 +95,19 @@ const accountModule = {
       state.status = { changeParameterError: reason }
     },
 
+    CHANGE_SETTINGS_MAIL_TASK_CREATE_REQUEST: (state) => {
+      state.status = { isLoading: true }
+    },
+
+    CHANGE_SETTINGS_MAIL_TASK_CREATE_SUCCESS: (state, value) => {
+      state.user.settings.mail.taskCreate = value
+      state.status = {}
+    },
+
+    CHANGE_SETTINGS_MAIL_TASK_CREATE_FAILURE: (state, reason) => {
+      state.status = { changeSettingsError: reason }
+    },
+
     CHANGE_CALENDAR_COLOR_REQUEST: (state) => {
       state.status = { isLoading: true }
     },
@@ -285,6 +298,23 @@ const accountModule = {
           err => {
             commit('CHANGE_PARAMETER_FAILURE', err.message)
             Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.message || 'Erreur inconnue...'}` })
+          })
+    },
+
+    setMailTaskCreate: ({ commit }, { value }) => {
+      commit('CHANGE_SETTINGS_MAIL_TASK_CREATE_REQUEST')
+      UserService.setMailTaskCreate(value)
+        .then(
+          res => {
+            commit('CHANGE_SETTINGS_MAIL_TASK_CREATE_SUCCESS', value)
+            const user = JSON.parse(localStorage.user)
+            user.settings.mail.taskCreate = value
+            localStorage.user = JSON.stringify(user)
+            Vue.prototype.$notify({ type: 'success', message: `Changement effectué avec succès.` })
+          },
+          err => {
+            commit('CHANGE_SETTINGS_MAIL_TASK_CREATE_FAILURE', err.data.message)
+            Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.data.message || 'Erreur inconnue...'}` })
           })
     },
 
