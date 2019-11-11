@@ -18,8 +18,7 @@
               v-show="!homeworksRetrieving"
               class="h3 mb-0 my-auto"
               style="line-height: 18px">
-              {{ nextHomework ? nextHomework.title : 'Aucun devoir non-fait à venir...' }}
-              <!-- LE LANGAGE DE PROGRAMMATION PY -->
+              {{ nextHomework ? nextHomework.title : 'Aucun devoir à venir...' }}
             </p>
           </div>
         </slot>
