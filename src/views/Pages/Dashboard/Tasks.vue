@@ -629,7 +629,7 @@ export default {
           case 4: this.tableData = this.allTasks; break
         }
         this.initFuseSearch(this.allTasks)
-      }, 100)
+      }, 200)
     },
     handleTaskCreateSubmit (scope) {
       // vérification validation des champs
