@@ -310,7 +310,7 @@
     <form
       class="needs-validation"
       data-vv-scope="creation-form"
-      @submit.prevent="handleTaskCreateSubmit">
+      @submit.prevent="handleTaskCreateSubmit('creation-form')">
       <modal :show.sync="showTaskCreationModal">
         <template slot="header">
           <h5 class="modal-title">Créer une tâche</h5>
@@ -321,8 +321,8 @@
             <base-input
               v-validate="'required|min:2|max:50'"
               v-model="taskCreationForm.title"
-              :error="getError('titre')"
-              :valid="isValid('titre')"
+              :error="getError('creation-form.titre')"
+              :valid="isValid('creation-form.titre')"
               name="titre"
               label="Titre"
               placeholder="Titre"/>
@@ -330,8 +330,8 @@
 
           <div class="col-md-6">
             <base-input
-              :error="getError('type')"
-              :valid="isValid('type')"
+              :error="getError('creation-form.type')"
+              :valid="isValid('creation-form.type')"
               label="Type">
               <select
                 v-validate="'required|valid_task_type'"
@@ -354,8 +354,8 @@
             <base-input
               v-validate="'min:2|max:50'"
               v-model="taskCreationForm.subject"
-              :error="getError('matière')"
-              :valid="isValid('matière')"
+              :error="getError('creation-form.matière')"
+              :valid="isValid('creation-form.matière')"
               name="matière"
               label="Matière (facultatif)"
               placeholder="Matière"/>
@@ -363,8 +363,8 @@
 
           <div class="col-md-6">
             <base-input
-              :error="getError('date')"
-              :valid="isValid('date')"
+              :error="getError('creation-form.date')"
+              :valid="isValid('creation-form.date')"
               label="Date de rendu">
               <flat-picker
                 slot-scope="{focus, blur}"
@@ -381,8 +381,8 @@
         <div class="row">
           <div class="col-md-12">
             <base-input
-              :error="getError('description')"
-              :valid="isValid('description')"
+              :error="getError('creation-form.description')"
+              :valid="isValid('creation-form.description')"
               class="w-100"
               label="Description (facultatif)">
               <textarea
@@ -420,7 +420,7 @@
     <form
       class="needs-validation"
       data-vv-scope="modification-form"
-      @submit.prevent="handleTaskModifySubmit">
+      @submit.prevent="handleTaskModifySubmit('modification-form')">
       <modal :show.sync="showTaskModificationModal">
         <template slot="header">
           <h5 class="modal-title">Modification</h5>
@@ -431,8 +431,8 @@
             <base-input
               v-validate="'required|min:2|max:50'"
               v-model="taskModificationForm.title"
-              :error="getError('titre')"
-              :valid="isValid('titre')"
+              :error="getError('modification-form.titre')"
+              :valid="isValid('modification-form.titre')"
               name="titre"
               label="Titre"
               placeholder="Titre"/>
@@ -440,8 +440,8 @@
 
           <div class="col-md-6">
             <base-input
-              :error="getError('type')"
-              :valid="isValid('type')"
+              :error="getError('modification-form.type')"
+              :valid="isValid('modification-form.type')"
               label="Type">
               <select
                 v-validate="'required|valid_task_type'"
@@ -464,8 +464,8 @@
             <base-input
               v-validate="'min:2|max:50'"
               v-model="taskModificationForm.subject"
-              :error="getError('matière')"
-              :valid="isValid('matière')"
+              :error="getError('modification-form.matière')"
+              :valid="isValid('modification-form.matière')"
               name="matière"
               label="Matière (facultatif)"
               placeholder="Matière"/>
@@ -473,8 +473,8 @@
 
           <div class="col-md-6">
             <base-input
-              :error="getError('date')"
-              :valid="isValid('date')"
+              :error="getError('modification-form.date')"
+              :valid="isValid('modification-form.date')"
               label="Date de rendu">
               <flat-picker
                 slot-scope="{focus, blur}"
@@ -491,8 +491,8 @@
         <div class="row">
           <div class="col-md-12">
             <base-input
-              :error="getError('description')"
-              :valid="isValid('description')"
+              :error="getError('modification-form.description')"
+              :valid="isValid('modification-form.description')"
               class="w-100"
               label="Description (facultatif)">
               <textarea
@@ -634,6 +634,7 @@ export default {
     handleTaskCreateSubmit (scope) {
       // vérification validation des champs
       this.$validator.validateAll(scope).then(valid => {
+        console.log('valid', valid)
         if (!valid) return
 
         this.$store.dispatch('tasks/create', this.taskCreationForm).then(response => {

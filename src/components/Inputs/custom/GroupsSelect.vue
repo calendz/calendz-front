@@ -6,8 +6,8 @@
     <!-- =================================== -->
     <base-input
       v-if="!legacy"
-      :error="getError('groupe')"
-      :valid="isValid('groupe')"
+      :error="getError(veeScope ? `${veeScope}.groupe` : 'groupe')"
+      :valid="isValid(veeScope ? `${veeScope}.groupe` : 'groupe')"
       :label="label"
       class="w-100">
       <el-select
@@ -85,6 +85,11 @@ export default {
       type: Boolean,
       default: false,
       doc: `Whether we should use a legacy select or element-ui's select`
+    },
+    veeScope: {
+      type: String,
+      default: '',
+      doc: 'If form has a scope'
     }
   },
   data () {
