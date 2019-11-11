@@ -242,9 +242,9 @@ const accountModule = {
       if (reason) {
         Vue.prototype.$notify({ type: 'danger', message: `${reason}.` })
       }
-      commit('LOGOUT', reason)
-      localStorage.removeItem('user')
       ApiService.post('/auth/logout')
+      localStorage.removeItem('user')
+      commit('LOGOUT', reason)
       router.push('/login')
     },
 
