@@ -296,7 +296,10 @@ export default {
       tasks: 'tasks/getAsEvents'
     }),
     fullcalendarEvents () {
-      // combine both calendar & tasks arrays
+      // if looking for another user's agenda: return his events
+      if (this.searchInput !== '') return this.events
+
+      // otherwise combine both calendar & tasks arrays
       return [...this.events, ...this.tasks]
     }
   },
