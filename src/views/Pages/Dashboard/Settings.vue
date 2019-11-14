@@ -323,7 +323,6 @@ export default {
   },
   methods: {
     toggleInformationEmails (element) {
-      console.log('info')
       element.disabled = true
       setTimeout(() => {
         element.disabled = false
@@ -332,7 +331,6 @@ export default {
       this.$store.dispatch('account/setInformationMails', { value: element.checked })
     },
     toggleMailTaskCreate (element) {
-      console.log('task create')
       element.disabled = true
       setTimeout(() => {
         element.disabled = false

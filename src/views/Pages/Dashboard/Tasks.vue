@@ -634,7 +634,6 @@ export default {
     handleTaskCreateSubmit (scope) {
       // vérification validation des champs
       this.$validator.validateAll(scope).then(valid => {
-        console.log('valid', valid)
         if (!valid) return
 
         this.$store.dispatch('tasks/create', this.taskCreationForm).then(response => {
