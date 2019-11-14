@@ -292,15 +292,16 @@ export default {
       user: 'account/user',
       events: 'calendar/getCourses',
       isLoading: 'calendar/isLoading',
+      allTasks: 'tasks/getAll',
       doneTasks: 'tasks/getDone',
-      tasks: 'tasks/getAsEvents'
+      tasksAsEvents: 'tasks/getAsEvents'
     }),
     fullcalendarEvents () {
       // if looking for another user's agenda: return his events
       if (this.searchInput !== '') return this.events
 
       // otherwise combine both calendar & tasks arrays
-      return [...this.events, ...this.tasks]
+      return [...this.events, ...this.tasksAsEvents]
     }
   },
   watch: {
@@ -420,6 +421,22 @@ export default {
         return
       }
 
+      let html = ''
+      // add task badge on course
+      if (!(this.activeView === 'dayGridMonth' && this.windowWidth < 800)) {
+        // if course has corresponsponding task
+        if (this.allTasks.some(task => {
+          const sameDay = this.isSameDay(this.timestampToDate(task.date), element.event.start)
+          // console.log(task.subject)
+          const sameSubject = element.event.title.toLowerCase().includes(task.subject.toLowerCase())
+          return (sameDay && sameSubject)
+        })) {
+          html += `
+            <span class="h5-5 mr-2 mt-2 badge badge-light badge-circle float-right" style="width: 12px; height: 12px;"> </span>
+          `
+        }
+      }
+
       // render events
       switch (this.activeView) {
         // ============================
@@ -427,14 +444,14 @@ export default {
         // ============================
         case 'dayGridMonth':
           if (this.windowWidth < 800) {
-            element.el.innerHTML = `
+            html += `
               <div>
                 <h5 class="pl-1 mb-0 text-white w-auto">
                   ${this.timeToHour(element.event.start, 'h').slice(0, -3)}-${this.timeToHour(element.event.end, 'h').slice(0, -2)}
                 </h5>
               </div>`
           } else {
-            element.el.innerHTML = `
+            html += `
               <div>
                 <h5 class="pl-1 mb-0 text-white w-auto">
                   ${this.timeToHour(element.event.start, 'h').slice(0, -2)}
@@ -448,12 +465,12 @@ export default {
         // ============================
         case 'timeGridWeek':
           if (this.windowWidth < 800) {
-            element.el.innerHTML = `
+            html += `
               <div>
                 <h4 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h4>
               </div>`
           } else {
-            element.el.innerHTML = `
+            html += `
               <div>
                 <h5 class="h5-5 pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
                 <h3 class="px-2 text-white text-center" style="max-width: 90%; width: 90%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">${element.event.title}</h3>
@@ -467,7 +484,7 @@ export default {
         // ============================
         case 'timeGridDay':
           if (this.windowWidth < 800) {
-            element.el.innerHTML = `
+            html += `
               <div>
                 <h5 class="h5-5 pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
                 <h2 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h2>
@@ -475,7 +492,7 @@ export default {
                 <h5 class="h5-5 pr-2 mb-1 text-white" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h5>
               </div>`
           } else {
-            element.el.innerHTML = `
+            html += `
               <div>
                 <h5 class="h5-5 pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
                 <h3 class="px-2 text-white text-center" style="max-width: 90%; width: 90%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">${element.event.title}</h3>
@@ -485,6 +502,9 @@ export default {
           }
           break
       }
+
+      // apply new style
+      element.el.innerHTML = html
     },
     handleDateClick (clicked) {
       if (this.activeView === 'dayGridMonth') {
