@@ -593,8 +593,6 @@ export default {
         const sameSubject = clicked.event.title.toLowerCase().includes(task.subject.toLowerCase())
         return (sameDay && sameSubject)
       })
-
-      console.log(this.courseModal.tasks)
     },
     // ===========================================
     // == Naviguation functions
