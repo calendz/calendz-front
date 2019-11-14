@@ -180,6 +180,56 @@
         </div>
       </div>
 
+      <!-- show tasks (if there are) -->
+      <div v-if="courseModal.tasks && courseModal.tasks.length">
+        <hr class="mt-3 mb-4">
+
+        <div class="row">
+          <div class="col-12">
+            <h3>Devoirs :</h3>
+          </div>
+        </div>
+
+        <div
+          v-for="(task, index) in courseModal.tasks"
+          :key="index"
+          :class="courseModal.tasks.length-1 !== index ? 'mb-4 pb-2' : ''"
+          class="row ">
+          <!-- type -->
+          <div class="col-2 px-0 text-center my-auto">
+            <task-type :task="task"/>
+          </div>
+
+          <!-- core -->
+          <div class="col-8 px-2 my-auto">
+            <task-core :task="task"/>
+          </div>
+
+          <!-- actions -->
+          <div
+            :class="windowWidth < 800 ? 'px-0' : ''"
+            class="col my-auto">
+            <div class="d-flex">
+              <el-tooltip
+                :content="isTaskDone(task._id) ? 'Marquer comme non fait' : 'Marquer comme fait'"
+                placement="top">
+                <base-button
+                  :outline="!isTaskDone(task._id)"
+                  :class="isTaskDone(task._id) ? 'text-white' : 'text-success'"
+                  size="sm"
+                  type="success"
+                  class="is-done-checkbox"
+                  @click="toggleTaskDone(task._id)">
+                  <i class="fas fa-check"/>
+                </base-button>
+              </el-tooltip>
+            </div>
+          </div>
+        </div>
+
+        <hr class="mb-0">
+      </div>
+
       <template slot="footer">
         <base-button
           type="secondary"
@@ -427,7 +477,6 @@ export default {
         // if course has corresponsponding task
         if (this.allTasks.some(task => {
           const sameDay = this.isSameDay(this.timestampToDate(task.date), element.event.start)
-          // console.log(task.subject)
           const sameSubject = element.event.title.toLowerCase().includes(task.subject.toLowerCase())
           return (sameDay && sameSubject)
         })) {
@@ -539,6 +588,13 @@ export default {
       this.courseModal.end = this.timeToHour(clicked.event.end)
       this.courseModal.professor = this.capitalizeFirstLetterEachWords(clicked.event.extendedProps.professor)
       this.courseModal.room = clicked.event.extendedProps.room
+      this.courseModal.tasks = this.allTasks.filter(task => {
+        const sameDay = this.isSameDay(this.timestampToDate(task.date), clicked.event.start)
+        const sameSubject = clicked.event.title.toLowerCase().includes(task.subject.toLowerCase())
+        return (sameDay && sameSubject)
+      })
+
+      console.log(this.courseModal.tasks)
     },
     // ===========================================
     // == Naviguation functions
