@@ -236,7 +236,7 @@
               <div class="row">
                 <div class="col-md-6">
                   <base-input
-                    v-validate="'required|email|email_epsi|min:12|max:64'"
+                    v-validate="'required|email|email_valid_school|min:12|max:64'"
                     v-model="modifyForm.email"
                     :error="getError('email')"
                     :valid="isValid('email')"

@@ -117,7 +117,7 @@
                 </base-input>
 
                 <base-input
-                  v-validate="'required|email|email_epsi|min:12|max:64'"
+                  v-validate="'required|email|email_valid_school|min:12|max:64'"
                   v-model="registerForm.email"
                   :error="getError('email')"
                   :valid="isValid('email')"
