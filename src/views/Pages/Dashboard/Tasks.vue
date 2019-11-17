@@ -189,7 +189,7 @@
                       <template v-slot="{row}">
                         <!-- whole class -->
                         <span v-show="!tasksLoading && !isLoading">
-                          <div v-if="row.city && row.grade && row.group">
+                          <div v-if="row.targets && row.targets.length === 0">
                             <el-tooltip
                               :content="`${row.grade} ${row.group}`"
                               placement="top"
@@ -199,7 +199,7 @@
                           </div>
 
                           <!-- multiple users -->
-                          <span v-if="!row.city && !row.grade && !row.group">
+                          <span v-if="row.targets && row.targets.length > 0">
                             <div class="avatar-group">
                               <span
                                 v-for="(target, index) in row.targets"
@@ -310,7 +310,7 @@
     <form
       class="needs-validation"
       data-vv-scope="creation-form"
-      @submit.prevent="handleTaskCreateSubmit('creation-form')">
+      @submit.prevent>
       <modal :show.sync="showTaskCreationModal">
         <template slot="header">
           <h5 class="modal-title">Créer une tâche</h5>
@@ -397,6 +397,32 @@
           </div>
         </div>
 
+        <hr class="mt-3">
+
+        <div class="row">
+          <div class="col-md-12">
+            <label class="form-control-label mb-1">
+              Sélection des utilisateurs concernés
+              <el-tooltip>
+                <i class="fas fa-question-circle"/>
+                <span
+                  slot="content"
+                  style="font-size: 0.9rem">
+                  <strong>Attention !</strong> Par défaut, chaque tâche concerne toute votre classe.
+                  <br>
+                  En remplissant le champ ci-dessus, seules les personnes indiquées pourront alors voir cette tâche.
+                </span>
+              </el-tooltip>
+            </label>
+            <br>
+            <p class="small text-gray">(Laissez vide si cette tâche concerne toute votre classe)</p>
+
+            <tags-input
+              v-model="taskCreationForm.targets"
+              placeholder="Entrez l'adresse mail de l'utilisateur cible"/>
+          </div>
+        </div>
+
         <template slot="footer">
           <base-button
             size="md"
@@ -407,7 +433,7 @@
           <base-button
             size="md"
             type="primary"
-            native-type="submit">
+            @click="handleTaskCreateSubmit('creation-form')">
             Ajouter
           </base-button>
         </template>
@@ -559,11 +585,13 @@ export default {
       propsToSearch: ['type', 'title', 'description', 'subject', 'author.firstname', 'author.lastname'],
       taskCreationForm: {
         type: '',
-        date: new Date()
+        date: new Date(),
+        targets: []
       },
       taskModificationForm: {
         type: '',
-        date: new Date()
+        date: new Date(),
+        targets: []
       },
       showTaskCreationModal: false,
       showTaskModificationModal: false,

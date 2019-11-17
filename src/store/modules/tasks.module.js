@@ -89,9 +89,9 @@ const tasksModule = {
           })
     },
 
-    create: ({ commit }, { title, type, subject, date, description }) => {
+    create: ({ commit }, { title, type, subject, date, description, targets }) => {
       commit('TASK_CREATE_REQUEST')
-      TaskService.create(title, type, subject, date, description)
+      TaskService.create(title, type, subject, date, description, targets)
         .then(
           res => {
             commit('TASK_CREATE_SUCCESS', res.task)
