@@ -477,7 +477,7 @@ export default {
         // if course has corresponsponding task
         if (this.allTasks.some(task => {
           const sameDay = this.isSameDay(this.timestampToDate(task.date), element.event.start)
-          const sameSubject = element.event.title.toLowerCase().includes(task.subject.toLowerCase())
+          const sameSubject = task.subject ? element.event.title.toLowerCase().includes(task.subject.toLowerCase()) : false
           return (sameDay && sameSubject)
         })) {
           html += `
@@ -590,7 +590,7 @@ export default {
       this.courseModal.room = clicked.event.extendedProps.room
       this.courseModal.tasks = this.allTasks.filter(task => {
         const sameDay = this.isSameDay(this.timestampToDate(task.date), clicked.event.start)
-        const sameSubject = clicked.event.title.toLowerCase().includes(task.subject.toLowerCase())
+        const sameSubject = task.subject ? clicked.event.title.toLowerCase().includes(task.subject.toLowerCase()) : false
         return (sameDay && sameSubject)
       })
     },
