@@ -20,16 +20,20 @@ const accountModule = {
   // == Mutations
   // ==================================
   mutations: {
+    RESET: (state) => {
+      state.user = null
+      state.status = {}
+      state.attempts = 0
+    },
+
     REGISTER_REQUEST: (state) => {
       state.user = null
       state.status = { isRegistering: true }
     },
-
     REGISTER_SUCCESS: (state) => {
       state.user = null
       state.status = {}
     },
-
     REGISTER_FAILURE: (state, reasons) => {
       state.user = null
       state.status = { registerErrors: reasons }
@@ -39,13 +43,11 @@ const accountModule = {
       state.user = null
       state.status = { isLoggingIn: true }
     },
-
     LOGIN_SUCCESS: (state, user) => {
       state.user = user
       state.status = {}
       state.attempts = 0
     },
-
     LOGIN_FAILURE: (state, { reason, userId = null }) => {
       state.user = null
       state.status = { loginError: reason, userId: userId }
@@ -60,12 +62,10 @@ const accountModule = {
     CHANGE_BTS_REQUEST: (state) => {
       state.status = { isChanging: true }
     },
-
     CHANGE_BTS_SUCCESS: (state, bts) => {
       state.status = {}
       state.user.bts = bts
     },
-
     CHANGE_BTS_FAILURE: (state, reason) => {
       state.status = { changeBtsError: reason }
     },
@@ -73,11 +73,9 @@ const accountModule = {
     CHANGE_PASSWORD_REQUEST: (state) => {
       state.status = { isChanging: true }
     },
-
     CHANGE_PASSWORD_SUCCESS: (state) => {
       state.status = {}
     },
-
     CHANGE_PASSWORD_FAILURE: (state, reason) => {
       state.status = { changePasswordError: reason }
     },
@@ -85,12 +83,10 @@ const accountModule = {
     CHANGE_PARAMETER_REQUEST: (state) => {
       state.status = { isLoading: true }
     },
-
     CHANGE_PARAMETER_SUCCESS: (state, value) => {
       state.user.hasInformationMails = value
       state.status = {}
     },
-
     CHANGE_PARAMETER_FAILURE: (state, reason) => {
       state.status = { changeParameterError: reason }
     },
@@ -98,12 +94,10 @@ const accountModule = {
     CHANGE_SETTINGS_MAIL_TASK_CREATE_REQUEST: (state) => {
       state.status = { isLoading: true }
     },
-
     CHANGE_SETTINGS_MAIL_TASK_CREATE_SUCCESS: (state, value) => {
       state.user.settings.mail.taskCreate = value
       state.status = {}
     },
-
     CHANGE_SETTINGS_MAIL_TASK_CREATE_FAILURE: (state, reason) => {
       state.status = { changeSettingsError: reason }
     },
@@ -111,12 +105,10 @@ const accountModule = {
     CHANGE_CALENDAR_COLOR_REQUEST: (state) => {
       state.status = { isLoading: true }
     },
-
     CHANGE_CALENDAR_COLOR_SUCCESS: (state, value) => {
       state.user.settings.calendarColor = value
       state.status = {}
     },
-
     CHANGE_CALENDAR_COLOR_FAILURE: (state, reason) => {
       state.status = { changeParameterError: reason }
     },
@@ -124,12 +116,10 @@ const accountModule = {
     CHANGE_AVATAR_REQUEST: (state) => {
       state.status = { isChanging: true }
     },
-
     CHANGE_AVATAR_SUCCESS: (state, value) => {
       state.user.avatarUrl = value
       state.status = {}
     },
-
     CHANGE_AVATAR_FAILURE: (state, reason) => {
       state.status = { changeAvatarError: reason }
     },
@@ -137,11 +127,9 @@ const accountModule = {
     UPDATE_USER_REQUEST: (state) => {
       state.status = { isUpdating: true }
     },
-
     UPDATE_USER_SUCCESS: (state) => {
       state.status = {}
     },
-
     UPDATE_USER_FAILURE: (state, reason) => {
       state.status = { reason }
     },
@@ -149,11 +137,9 @@ const accountModule = {
     DELETE_USER_REQUEST: (state) => {
       state.status = { isDeleting: true }
     },
-
     DELETE_USER_SUCCESS: (state) => {
       state.status = {}
     },
-
     DELETE_USER_FAILURE: (state, reason) => {
       state.status = { deleteError: reason }
     },
@@ -245,6 +231,10 @@ const accountModule = {
       ApiService.post('/auth/logout')
       localStorage.removeItem('user')
       commit('LOGOUT', reason)
+      commit('RESET')
+      commit('notifications/RESET', {}, { root: true })
+      commit('calendar/RESET', {}, { root: true })
+      commit('tasks/RESET', {}, { root: true })
       router.push('/login')
     },
 

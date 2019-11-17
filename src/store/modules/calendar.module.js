@@ -17,18 +17,20 @@ const calendarModule = {
   // == Mutations
   // ==================================
   mutations: {
+    RESET: (state) => {
+      state.courses = []
+      state.fetchedWeeks = []
+      state.status = {}
+    },
+
     FETCH_REQUEST: (state, { currentWeek }) => {
       state.fetchedWeeks.push(currentWeek)
       state.status = { isLoading: true }
     },
-
     FETCH_SUCCESS: (state, { weekCourses }) => {
-      weekCourses.forEach(course => {
-        state.courses.push(course) // [...arr]
-      })
+      weekCourses.forEach(course => state.courses.push(course))
       state.status = {}
     },
-
     FETCH_FAILURE: (state, { currentWeek, reason }) => {
       state.status = { error: reason }
       state.fetchedWeeks = state.fetchedWeeks.filter(val => {

@@ -17,6 +17,11 @@ const tasksModule = {
   // == Mutations
   // ==================================
   mutations: {
+    RESET: (state) => {
+      state.tasks = []
+      state.status = {}
+    },
+
     FETCH_ALL_REQUEST: (state) => {
       state.status = { isRetrieving: true }
     },

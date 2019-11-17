@@ -19,15 +19,22 @@ const sysconfModule = {
   // == Mutations
   // ==================================
   mutations: {
+    RESET: (state) => {
+      state.status = {}
+      state.stats = {}
+      state.settings = {
+        loginEnabled: true,
+        registerEnabled: true
+      }
+    },
+
     FETCH_SETTINGS_REQUEST: (state) => {
       state.status = { isLoading: true }
     },
-
     FETCH_SETTINGS_SUCCESS: (state, { loginEnabled, registerEnabled }) => {
       state.settings = { loginEnabled, registerEnabled }
       state.status = {}
     },
-
     FETCH_SETTINGS_FAILURE: (state, reason) => {
       state.status = { error: reason }
     },
@@ -35,12 +42,10 @@ const sysconfModule = {
     FETCH_STATS_REQUEST: (state) => {
       state.status = { isLoadingStats: true }
     },
-
     FETCH_STATS_SUCCESS: (state, stats) => {
       state.stats = stats
       state.status = {}
     },
-
     FETCH_STATS_FAILURE: (state, reason) => {
       state.status = { error: reason }
     },
@@ -48,12 +53,10 @@ const sysconfModule = {
     TOGGLE_LOGIN_REQUEST: (state) => {
       state.status = { isUpdatingLogin: true }
     },
-
     TOGGLE_LOGIN_SUCCESS: (state, value) => {
       state.status = { isUpdatingLogin: false }
       state.settings.loginEnabled = value
     },
-
     TOGGLE_LOGIN_FAILURE: (state, reason) => {
       state.status = { toggleLoginError: reason }
     },
@@ -61,12 +64,10 @@ const sysconfModule = {
     TOGGLE_REGISTER_REQUEST: (state) => {
       state.status = { isUpdatingRegister: true }
     },
-
     TOGGLE_REGISTER_SUCCESS: (state, value) => {
       state.status = { isUpdatingRegister: false }
       state.settings.registerEnabled = value
     },
-
     TOGGLE_REGISTER_FAILURE: (state, reason) => {
       state.status = { toggleRegisterError: reason }
     },
@@ -74,11 +75,9 @@ const sysconfModule = {
     DISCONNECT_USERS_REQUEST: (state) => {
       state.status = { isDisconnecting: true }
     },
-
     DISCONNECT_USERS_SUCCESS: (state) => {
       state.status = { isDisconnecting: false }
     },
-
     DISCONNECT_USERS_FAILURE: (state, reason) => {
       state.status = { disconnectUsersError: reason }
     }
