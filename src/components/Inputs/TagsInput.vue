@@ -9,7 +9,7 @@
       size="small"
       @close="handleClose(tag)"
     >
-      {{ tag }}
+      {{ tag[tagLabel] ? tag[tagLabel] : tag }}
     </el-tag>
 
     <input
@@ -43,6 +43,11 @@ export default {
       type: Array,
       default: () => [],
       description: 'List of tags'
+    },
+    tagLabel: {
+      type: String,
+      default: 'default',
+      description: `Tag's label`
     },
     tagType: {
       type: String,
