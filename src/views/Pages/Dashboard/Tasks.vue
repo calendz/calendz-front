@@ -193,7 +193,7 @@
                             <el-tooltip
                               :content="`${row.grade} ${row.group}`"
                               placement="top"
-                              class="avatar avatar-sm rounded-circle bg-warning">
+                              class="avatar avatar-sm rounded-circle bg-gradient-primary">
                               <i class="fas fa-users"/>
                             </el-tooltip>
                           </div>
@@ -203,11 +203,12 @@
                             <div class="avatar-group">
                               <span
                                 v-for="(target, index) in row.targets"
+                                v-show="index < 6"
                                 :key="index"
                                 :class="row.targets.length < 3 ? 'avatar-sm' : 'avatar-xs'"
                                 class="avatar rounded-circle">
                                 <el-tooltip
-                                  :content="`${target.firstname} ${target.lastname}`"
+                                  :content="getTargetsName(row.targets)"
                                   placement="top">
                                   <img
                                     :src="target.avatarUrl || 'img/theme/default-pp.png'"
@@ -746,6 +747,17 @@ export default {
           this.reloadTable()
         })
       })
+    },
+    getTargetsName (targets) {
+      if (targets.length <= 6) {
+        let string = ''
+        targets.forEach(target => {
+          string += `${target.firstname || '?'} ${target.lastname[0] || '?'}. `
+        })
+        return string.slice(0, -1)
+      } else {
+        return `${targets[0].firstname} ${targets[0].lastname[0] || '?'}. & ${targets.length - 1} autres...`
+      }
     }
   }
 }
