@@ -148,9 +148,12 @@ const tasksModule = {
 
     modify: ({ commit }, { _id, title, type, subject, date, description, targets }) => {
       commit('TASK_MODIFY_REQUEST')
+
       let newTargets = []
       targets.forEach(target => {
+        if (newTargets.some(v => v.email === target)) return
         if (!target.email) newTargets.push({ email: target })
+        else newTargets.push(target)
       })
 
       TaskService.modify(_id, title, type, subject, date, description, newTargets)
