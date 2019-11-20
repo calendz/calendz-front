@@ -9,14 +9,14 @@
       size="small"
       @close="handleClose(tag)"
     >
-      {{ tag }}
+      {{ tag[tagLabel] ? tag[tagLabel] : tag }}
     </el-tag>
 
     <input
       ref="saveTagInput"
       v-model="inputValue"
+      :placeholder="placeholder"
       type="text"
-      placeholder="Add new tag"
       class="form-control"
       size="mini"
       @input="onInput"
@@ -44,10 +44,20 @@ export default {
       default: () => [],
       description: 'List of tags'
     },
+    tagLabel: {
+      type: String,
+      default: 'default',
+      description: `Tag's label`
+    },
     tagType: {
       type: String,
       default: 'primary',
       description: 'Tag type (primary|danger etc)'
+    },
+    placeholder: {
+      type: String,
+      default: 'Entrez une valeur...',
+      description: `Input's placeholder`
     }
   },
   data () {

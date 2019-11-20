@@ -65,6 +65,7 @@ const tasksModule = {
       state.tasks[index].subject = task.subject
       state.tasks[index].date = task.date
       state.tasks[index].description = task.description
+      state.tasks[index].targets = task.targets
       state.status = {}
     },
     TASK_MODIFY_FAILURE: (state, reason) => {
@@ -89,9 +90,16 @@ const tasksModule = {
           })
     },
 
-    create: ({ commit }, { title, type, subject, date, description }) => {
+    create: ({ commit }, { title, type, subject, date, description, targets }) => {
       commit('TASK_CREATE_REQUEST')
-      TaskService.create(title, type, subject, date, description)
+      let newTargets = []
+      if (targets.length > 0) {
+        targets.forEach(target => {
+          newTargets.push({ email: target })
+        })
+      }
+
+      TaskService.create(title, type, subject, date, description, newTargets)
         .then(
           res => {
             commit('TASK_CREATE_SUCCESS', res.task)
@@ -138,9 +146,17 @@ const tasksModule = {
           })
     },
 
-    modify: ({ commit }, { _id, title, type, subject, date, description }) => {
+    modify: ({ commit }, { _id, title, type, subject, date, description, targets }) => {
       commit('TASK_MODIFY_REQUEST')
-      TaskService.modify(_id, title, type, subject, date, description)
+
+      let newTargets = []
+      targets.forEach(target => {
+        if (newTargets.some(v => v.email === target)) return
+        if (!target.email) newTargets.push({ email: target })
+        else newTargets.push(target)
+      })
+
+      TaskService.modify(_id, title, type, subject, date, description, newTargets)
         .then(
           res => {
             commit('TASK_MODIFY_SUCCESS', { id: _id, task: res.task })

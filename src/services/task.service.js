@@ -17,8 +17,8 @@ const TaskService = {
   },
 
   // create a task
-  create: (title, type, subject, date, description) => {
-    return ApiService.post('/tasks', { title, type, subject, date, description })
+  create: (title, type, subject, date, description, targets) => {
+    return ApiService.post('/tasks', { title, type, subject, date, description, targets })
       .then(res => {
         return res.data
       })
@@ -28,8 +28,8 @@ const TaskService = {
   },
 
   // modify task
-  modify: (_id, title, type, subject, date, description) => {
-    return ApiService.patch(`/tasks/${_id}`, { title, type, subject, date, description })
+  modify: (_id, title, type, subject, date, description, targets) => {
+    return ApiService.patch(`/tasks/${_id}`, { title, type, subject, date, description, targets })
       .then(res => {
         return res.data
       })
