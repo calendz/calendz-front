@@ -61,26 +61,20 @@
                   placeholder="Nom"/>
 
                 <base-input
-                  :error="getError('classe')"
-                  :valid="isValid('classe')"
+                  v-validate="'required|email|email_valid_school|min:12|max:64'"
+                  v-model="registerForm.email"
+                  :error="getError('email')"
+                  :valid="isValid('email')"
+                  name="email"
                   class="mb-3"
-                  prepend-icon="ni ni-hat-3"
-                >
-                  <select
-                    v-validate="'required|valid_grade'"
-                    v-model="registerForm.grade"
-                    name="classe"
-                    class="form-control">
-                    <option
-                      value=""
-                      hidden>Séléctionnez votre classe</option>
-                    <option>B1</option>
-                    <option>B2</option>
-                    <option>B3</option>
-                    <option>I1</option>
-                    <option>I2</option>
-                  </select>
-                </base-input>
+                  prepend-icon="ni ni-email-83"
+                  placeholder="Adresse mail"
+                  autocapitalize="none"/>
+
+                <GradeSelect
+                  v-model="registerForm.grade"
+                  :school="registerForm.email.includes('@epsi.fr') ? 'EPSI' : registerForm.email.includes('@wis.fr') ? 'WIS' : ''"
+                  :disabled="!registerForm.email"/>
 
                 <GroupsSelect
                   v-model="registerForm.group"
@@ -115,17 +109,6 @@
                     <option>Dakar</option>
                   </select>
                 </base-input>
-
-                <base-input
-                  v-validate="'required|email|email_epsi|min:12|max:64'"
-                  v-model="registerForm.email"
-                  :error="getError('email')"
-                  :valid="isValid('email')"
-                  name="email"
-                  class="mb-3"
-                  prepend-icon="ni ni-email-83"
-                  placeholder="Adresse mail"
-                  autocapitalize="none"/>
 
                 <base-input
                   v-validate="'required|min:6|max:64|contains_one_letter|contains_one_number'"
@@ -202,10 +185,12 @@
 <script>
 import swal from 'sweetalert2'
 import { mapState } from 'vuex'
+import GradeSelect from '@/components/Inputs/custom/GradeSelect'
 import GroupsSelect from '@/components/Inputs/custom/GroupsSelect'
 
 export default {
   components: {
+    GradeSelect,
     GroupsSelect
   },
   data () {

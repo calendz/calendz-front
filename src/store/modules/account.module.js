@@ -341,6 +341,7 @@ const accountModule = {
             commit('UPDATE_USER_FAILURE', err.data.message)
             swal.fire({
               title: 'Erreur dans la modification des informations !',
+              text: err.data.errors[0] || 'Erreur inconnue...',
               type: 'error',
               customClass: { confirmButton: 'btn btn-primary' }
             })

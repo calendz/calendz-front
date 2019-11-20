@@ -1,7 +1,7 @@
 import { Validator } from 'vee-validate'
 
-Validator.extend('email_epsi', {
-  validate: value => value.includes('@epsi.fr')
+Validator.extend('email_valid_school', {
+  validate: value => value.includes('@epsi.fr') || value.includes('@wis.fr')
 })
 
 Validator.extend('contains_one_number', {
@@ -14,7 +14,7 @@ Validator.extend('contains_one_letter', {
 
 Validator.extend('valid_grade', {
   validate: value => [
-    'B1', 'B2', 'B3', 'I1', 'I2'
+    'B1', 'B2', 'B3', 'I1', 'I2', 'WIS1', 'WIS2', 'WIS3', 'WIS4', 'WIS5'
   ].indexOf(value) !== -1
 })
 
