@@ -232,6 +232,7 @@
 
       <template slot="footer">
         <base-button
+          v-show="!searchInput"
           type="secondary"
           size="md"
           class="text-default"
