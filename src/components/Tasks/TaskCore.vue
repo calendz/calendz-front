@@ -55,12 +55,12 @@ export default {
   },
   computed: {
     ...mapGetters({
-      doneTasks: 'tasks/getDone'
+      allDoneTasks: 'tasks/getAllDone'
     })
   },
   methods: {
     isDone (taskId) {
-      return this.doneTasks.some(task => task._id === taskId)
+      return this.allDoneTasks.some(task => task._id === taskId)
     }
   }
 }

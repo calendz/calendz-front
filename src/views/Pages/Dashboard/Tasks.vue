@@ -58,11 +58,11 @@
                   :class="active === 3 ? 'bg-primary text-white' : 'bg-white text-primary'"
                   class="list-group-item d-flex justify-content-between align-items-center hover-click"
                   @click="active = 3">
-                  Oubliés
+                  Archivées
                   <badge
                     type="primary"
                     pill>
-                    {{ notdoneTasks.length || 0 }}
+                    {{ archivedTasks.length || 0 }}
                   </badge>
                 </li>
                 <li
@@ -635,8 +635,9 @@ export default {
       tasksLoading: 'tasks/isRetrieving',
       todoTasks: 'tasks/getTodo',
       doneTasks: 'tasks/getDone',
-      notdoneTasks: 'tasks/getNotDone',
-      allTasks: 'tasks/getAll'
+      archivedTasks: 'tasks/getArchived',
+      allTasks: 'tasks/getAll',
+      allDoneTasks: 'tasks/getAllDone'
     })
   },
   watch: {
@@ -645,7 +646,7 @@ export default {
       switch (newActive) {
         case 1: this.tableData = this.todoTasks; break
         case 2: this.tableData = this.doneTasks; break
-        case 3: this.tableData = this.notdoneTasks; break
+        case 3: this.tableData = this.archivedTasks; break
         case 4: this.tableData = this.allTasks; break
       }
     }
@@ -673,7 +674,7 @@ export default {
       return this.validated && !this.errors.has(name)
     },
     isDone (taskId) {
-      return this.doneTasks.some(task => task._id === taskId)
+      return this.allDoneTasks.some(task => task._id === taskId)
     },
     reloadTable (page = 1) {
       setTimeout(() => {
@@ -681,7 +682,7 @@ export default {
         switch (page) {
           case 1: this.tableData = this.todoTasks; break
           case 2: this.tableData = this.doneTasks; break
-          case 3: this.tableData = this.notdoneTasks; break
+          case 3: this.tableData = this.archivedTasks; break
           case 4: this.tableData = this.allTasks; break
         }
         this.initFuseSearch(this.allTasks)
@@ -720,11 +721,11 @@ export default {
     toggleDone (taskId) {
       if (this.isDone(taskId)) {
         this.$store.dispatch('account/setTaskNotDone', { taskId }).then(() => {
-          this.reloadTable(2)
+          this.reloadTable(this.active)
         })
       } else {
         this.$store.dispatch('account/setTaskDone', { taskId }).then(() => {
-          this.reloadTable()
+          this.reloadTable(this.active)
         })
       }
     },

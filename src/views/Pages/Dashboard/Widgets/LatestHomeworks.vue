@@ -74,13 +74,13 @@ export default {
   computed: {
     ...mapGetters({
       homeworkloading: 'tasks/isLoading',
-      homeworks: 'tasks/getUpcommings',
-      homeworksDone: 'tasks/getDone'
+      homeworks: 'tasks/get3Upcommings',
+      allDoneTasks: 'tasks/getAllDone'
     })
   },
   methods: {
     isDone (taskId) {
-      return this.homeworksDone.some(hw => hw._id === taskId)
+      return this.allDoneTasks.some(task => task._id === taskId)
     },
     getDate: function (homework) {
       return new Date().setTime(homework.date)

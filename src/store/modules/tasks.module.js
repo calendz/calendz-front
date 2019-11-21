@@ -197,47 +197,58 @@ const tasksModule = {
     isRetrieving: state => {
       return !!state.status.isRetrieving
     },
-    getDone: (state, getters, rootState) => {
-      const doneTasks = rootState.account.user.tasks.done
-      const array = [...state.tasks].filter(task => doneTasks.includes(task._id))
-      array.sort((a, b) => (a.date > b.date) ? -1 : 1)
-      return array
-    },
-    getTodo: (state, getters, rootState) => {
-      const now = new Date().getTime()
-      const doneTasks = rootState.account.user.tasks.done
-      let array = [...state.tasks].filter(task => now <= parseInt(task.date) + 3600000 * 24)
-      array = array.filter(task => !doneTasks.includes(task._id))
-      array.sort((a, b) => (a.date < b.date) ? -1 : 1)
-      return array
-    },
-    getNotDone: (state, getters, rootState) => {
-      const now = new Date().getTime()
-      const doneTasks = rootState.account.user.tasks.done
-      let array = [...state.tasks].filter(task => !doneTasks.includes(task._id))
-      array = array.filter(task => now > parseInt(task.date) + 3600000 * 24)
-      array.sort((a, b) => (a.date < b.date) ? -1 : 1)
-      return array
-    },
-    getAll: state => {
+    // all tasks
+    getAll: (state) => {
       const array = [...state.tasks]
       array.sort((a, b) => (a.date > b.date) ? -1 : 1)
       return array
     },
-    getNextOneNotDone: (state, getters, rootState) => {
+    // all done tasks
+    getAllDone: (state, getters, rootState) => {
       const doneTasks = rootState.account.user.tasks.done
-      const array = [...state.tasks].filter(task => !doneTasks.includes(task._id))
+      let array = [...getters.getAll].filter(task => doneTasks.includes(task._id))
       array.sort((a, b) => (a.date < b.date) ? -1 : 1)
-      return array[0]
+      return array
     },
-    getUpcommings: (state) => {
+    // all tasks in the future
+    getUpcommings: (state, getters) => {
       const now = new Date().getTime()
-      const array = [...state.tasks].filter(task => now < parseInt(task.date) + 3600000 * 24)
+      const array = [...getters.getAll].filter(task => now < parseInt(task.date) + 3600000 * 24)
       array.sort((a, b) => (a.date < b.date) ? -1 : 1)
-      return array.slice(0, 3)
+      return array
     },
-    getAsEvents: (state) => {
-      const tasks = [...state.tasks]
+    // 3 next tasks in the future
+    get3Upcommings: (state, getters) => {
+      return [...getters.getUpcommings].slice(0, 3) || []
+    },
+    // done tasks, in the future
+    getDone: (state, getters, rootState) => {
+      const doneTasks = rootState.account.user.tasks.done
+      const array = [...getters.getUpcommings].filter(task => doneTasks.includes(task._id))
+      array.sort((a, b) => (a.date > b.date) ? -1 : 1)
+      return array
+    },
+    // not done tasks, in the future
+    getTodo: (state, getters, rootState) => {
+      const now = new Date().getTime()
+      const doneTasks = rootState.account.user.tasks.done
+      let array = [...getters.getUpcommings].filter(task => now <= parseInt(task.date) + 3600000 * 24)
+      array = array.filter(task => !doneTasks.includes(task._id))
+      array.sort((a, b) => (a.date < b.date) ? -1 : 1)
+      return array
+    },
+    // all tasks in the past
+    getArchived: (state, getters) => {
+      const now = new Date().getTime()
+      const array = [...getters.getAll].filter(task => now > parseInt(task.date) + 3600000 * 24)
+      array.sort((a, b) => (a.date < b.date) ? -1 : 1)
+      return array
+    },
+    getNextOneNotDone: (state, getters) => {
+      return getters.getTodo[0]
+    },
+    getAsEvents: (state, getters) => {
+      const tasks = [...getters.getAll]
       const events = []
 
       tasks.forEach(task => {
