@@ -44,7 +44,7 @@
           </div>
           <div>
             <base-checkbox
-              :checked="homeworksDone.includes(homework)"
+              :checked="isDone(homework._id)"
               :type="homework.type === 'homework' ? 'primary' : homework.type === 'task' ? 'info' : 'warning'"
               @input="toggleHomeworkDone($event, homework._id)"/>
           </div>
