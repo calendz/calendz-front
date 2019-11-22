@@ -31,7 +31,7 @@
       <footer
         v-if="task.subject"
         class="blockquote-footer text-sm">
-        {{ capitalizeFirstLetter(task.subject.toLowerCase()) }}
+        {{ task.subject }}
       </footer>
     </blockquote>
 

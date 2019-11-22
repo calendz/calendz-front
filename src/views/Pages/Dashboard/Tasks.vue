@@ -420,7 +420,7 @@
 
             <tags-input
               v-model="taskCreationForm.targets"
-              placeholder="Entrez l'adresse mail de l'utilisateur cible"/>
+              placeholder="Entrez l'adresse mail d'un utilisateur cible"/>
           </div>
         </div>
 
@@ -557,7 +557,7 @@
             <tags-input
               v-model="taskModificationForm.targets"
               :tag-label="'email'"
-              placeholder="Entrez l'adresse mail de l'utilisateur cible"/>
+              placeholder="Entrez l'adresse mail d'un utilisateur cible"/>
           </div>
         </div>
 
