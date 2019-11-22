@@ -273,7 +273,9 @@
                       </div>
 
                       <div v-if="stats.users">
-                        <span :class="isPositive() ? 'h2 font-weight-bold mt--1 mr-2 float-left text-success' : 'h2 font-weight-bold mt--1 mr-2 float-left'">
+                        <span
+                          :class="isPositive() ? 'text-success' : ''"
+                          class="h2 font-weight-bold mt--1 mr-2 float-left">
                           <i
                             v-if="isPositive()"
                             class="fa fa-arrow-up"/>
