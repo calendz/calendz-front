@@ -80,7 +80,7 @@ const calendarModule = {
               Vue.prototype.$notifications.removeNotification(notificationTimestamp)
               // if week is empty
               if (!res.week || Object.keys(res.week).length === 0) {
-                Vue.prototype.$notify({ type: 'warning', message: `<b>Attention !</b> Aucun cours trouvé pour cette semaine...`, verticalAlign: 'bottom', timeout: 3000 })
+                Vue.prototype.$notify({ type: 'warning', message: `Aucun cours trouvé pour la semaine numéro ${currentWeek.number}, réssayez pour vérifier que ce ne soit pas un bug...`, verticalAlign: 'bottom', timeout: 5000 })
               }
             },
             err => {

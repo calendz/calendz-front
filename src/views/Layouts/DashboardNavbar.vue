@@ -302,9 +302,13 @@ export default {
     // get monday of current week
     // or next week if we are already in the weekend
     let date = new Date()
+    let date2 = new Date()
     if (date.getDay() === 6) date.setDate(date.getDate() + 2)
     if (date.getDay() === 0) date.setDate(date.getDate() + 1)
+    date2 = date2.setDate(date.getDate() + 7)
     date = this.dateToMonthDayYear(date)
+    this.$store.dispatch('calendar/fetchDate', { date })
+    date = this.dateToMonthDayYear(date2)
     this.$store.dispatch('calendar/fetchDate', { date })
   },
   methods: {
