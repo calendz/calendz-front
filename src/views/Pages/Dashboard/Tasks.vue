@@ -100,7 +100,7 @@
                     <div class="col-lg-7">
                       <h3
                         :class=" active !== 4 ? 'my-2' : ''"
-                        class="mb-0">Gérez vos devoirs & autres tâches...</h3>
+                        class="mb-0">{{ tableHeader }}</h3>
                     </div>
                     <div class="col-lg-5">
                       <base-input
@@ -638,7 +638,15 @@ export default {
       archivedTasks: 'tasks/getArchived',
       allTasks: 'tasks/getAll',
       allDoneTasks: 'tasks/getAllDone'
-    })
+    }),
+    tableHeader () {
+      switch (this.active) {
+        case 1: return `Liste de vos tâches à faire`
+        case 2: return `Liste de vos tâches faites`
+        case 3: return `Liste de vos tâches expirées (faites ou non)`
+        case 4: return `L'ensemble de vos tâches, expirées ou non`
+      }
+    }
   },
   watch: {
     active: function (newActive) {
