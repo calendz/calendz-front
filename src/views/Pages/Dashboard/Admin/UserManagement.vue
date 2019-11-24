@@ -236,7 +236,7 @@
               <div class="row">
                 <div class="col-md-6">
                   <base-input
-                    v-validate="'required|email|email_epsi|min:12|max:64'"
+                    v-validate="'required|email|email_valid_school|min:12|max:64'"
                     v-model="modifyForm.email"
                     :error="getError('email')"
                     :valid="isValid('email')"
@@ -280,24 +280,11 @@
 
               <div class="row">
                 <div class="col-md-6">
-                  <base-input
-                    :error="getError('classe')"
-                    :valid="isValid('classe')"
-                    class="mb-3"
-                    prepend-icon="ni ni-hat-3"
-                    label="Classe">
-                    <select
-                      v-validate="'required|valid_grade'"
-                      v-model="modifyForm.grade"
-                      name="classe"
-                      class="form-control">
-                      <option>B1</option>
-                      <option>B2</option>
-                      <option>B3</option>
-                      <option>I1</option>
-                      <option>I2</option>
-                    </select>
-                  </base-input>
+                  <GradeSelect
+                    v-model="modifyForm.grade"
+                    :school="modifyForm.email && modifyForm.email.includes('@epsi.fr') ? 'EPSI' : modifyForm.email && modifyForm.email.includes('@wis.fr') ? 'WIS' : ''"
+                    :disabled="false"
+                    label="Classe"/>
                 </div>
                 <div class="col-md-6">
                   <GroupsSelect
@@ -409,6 +396,8 @@ import clientPaginationMixin from '@/mixins/clientPaginationMixin'
 import dateUtilMixin from '@/mixins/dateUtilMixin'
 import UserService from '@/services/user.service'
 import { mapState } from 'vuex'
+
+import GradeSelect from '@/components/Inputs/custom/GradeSelect'
 import GroupsSelect from '@/components/Inputs/custom/GroupsSelect'
 
 export default {
@@ -419,6 +408,7 @@ export default {
     [Table.name]: Table,
     [TableColumn.name]: TableColumn,
     Modal,
+    GradeSelect,
     GroupsSelect
   },
   mixins: [clientPaginationMixin, dateUtilMixin],

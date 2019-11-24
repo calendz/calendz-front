@@ -58,11 +58,11 @@
                   :class="active === 3 ? 'bg-primary text-white' : 'bg-white text-primary'"
                   class="list-group-item d-flex justify-content-between align-items-center hover-click"
                   @click="active = 3">
-                  Oubliés
+                  Archivées
                   <badge
                     type="primary"
                     pill>
-                    {{ notdoneTasks.length || 0 }}
+                    {{ archivedTasks.length || 0 }}
                   </badge>
                 </li>
                 <li
@@ -100,7 +100,7 @@
                     <div class="col-lg-7">
                       <h3
                         :class=" active !== 4 ? 'my-2' : ''"
-                        class="mb-0">Gérez vos devoirs & autres tâches...</h3>
+                        class="mb-0">{{ tableHeader }}</h3>
                     </div>
                     <div class="col-lg-5">
                       <base-input
@@ -189,25 +189,26 @@
                       <template v-slot="{row}">
                         <!-- whole class -->
                         <span v-show="!tasksLoading && !isLoading">
-                          <div v-if="row.city && row.grade && row.group">
+                          <div v-if="row.targets && row.targets.length === 0">
                             <el-tooltip
                               :content="`${row.grade} ${row.group}`"
                               placement="top"
-                              class="avatar avatar-sm rounded-circle bg-warning">
+                              class="avatar avatar-sm rounded-circle bg-gradient-primary">
                               <i class="fas fa-users"/>
                             </el-tooltip>
                           </div>
 
                           <!-- multiple users -->
-                          <span v-if="!row.city && !row.grade && !row.group">
+                          <span v-if="row.targets && row.targets.length > 0">
                             <div class="avatar-group">
                               <span
                                 v-for="(target, index) in row.targets"
+                                v-show="index < 6"
                                 :key="index"
                                 :class="row.targets.length < 3 ? 'avatar-sm' : 'avatar-xs'"
                                 class="avatar rounded-circle">
                                 <el-tooltip
-                                  :content="`${target.firstname} ${target.lastname}`"
+                                  :content="getTargetsName(row.targets)"
                                   placement="top">
                                   <img
                                     :src="target.avatarUrl || 'img/theme/default-pp.png'"
@@ -310,7 +311,7 @@
     <form
       class="needs-validation"
       data-vv-scope="creation-form"
-      @submit.prevent="handleTaskCreateSubmit('creation-form')">
+      @submit.prevent>
       <modal :show.sync="showTaskCreationModal">
         <template slot="header">
           <h5 class="modal-title">Créer une tâche</h5>
@@ -397,6 +398,32 @@
           </div>
         </div>
 
+        <hr class="mt-3">
+
+        <div class="row">
+          <div class="col-md-12">
+            <label class="form-control-label mb-1">
+              Sélection des utilisateurs concernés
+              <el-tooltip>
+                <i class="fas fa-question-circle"/>
+                <span
+                  slot="content"
+                  style="font-size: 0.9rem">
+                  <strong>Attention !</strong> Par défaut, chaque tâche concerne toute votre classe.
+                  <br>
+                  En remplissant le champ ci-dessus, seules les personnes indiquées pourront alors voir cette tâche.
+                </span>
+              </el-tooltip>
+            </label>
+            <br>
+            <p class="small text-gray">(Laissez vide si cette tâche concerne toute votre classe)</p>
+
+            <tags-input
+              v-model="taskCreationForm.targets"
+              placeholder="Entrez l'adresse mail d'un utilisateur cible"/>
+          </div>
+        </div>
+
         <template slot="footer">
           <base-button
             size="md"
@@ -407,7 +434,7 @@
           <base-button
             size="md"
             type="primary"
-            native-type="submit">
+            @click="handleTaskCreateSubmit('creation-form')">
             Ajouter
           </base-button>
         </template>
@@ -420,7 +447,7 @@
     <form
       class="needs-validation"
       data-vv-scope="modification-form"
-      @submit.prevent="handleTaskModifySubmit('modification-form')">
+      @submit.prevent>
       <modal :show.sync="showTaskModificationModal">
         <template slot="header">
           <h5 class="modal-title">Modification</h5>
@@ -507,6 +534,33 @@
           </div>
         </div>
 
+        <hr class="mt-3">
+
+        <div class="row">
+          <div class="col-md-12">
+            <label class="form-control-label mb-1">
+              Sélection des utilisateurs concernés
+              <el-tooltip>
+                <i class="fas fa-question-circle"/>
+                <span
+                  slot="content"
+                  style="font-size: 0.9rem">
+                  <strong>Attention !</strong> Par défaut, chaque tâche concerne toute votre classe.
+                  <br>
+                  En remplissant le champ ci-dessus, seules les personnes indiquées pourront alors voir cette tâche.
+                </span>
+              </el-tooltip>
+            </label>
+            <br>
+            <p class="small text-gray">(Laissez vide si cette tâche concerne toute votre classe)</p>
+
+            <tags-input
+              v-model="taskModificationForm.targets"
+              :tag-label="'email'"
+              placeholder="Entrez l'adresse mail d'un utilisateur cible"/>
+          </div>
+        </div>
+
         <template slot="footer">
           <base-button
             size="md"
@@ -517,7 +571,7 @@
           <base-button
             size="md"
             type="primary"
-            native-type="submit">
+            @click="handleTaskModifySubmit('modification-form')">
             Modifier
           </base-button>
         </template>
@@ -559,11 +613,13 @@ export default {
       propsToSearch: ['type', 'title', 'description', 'subject', 'author.firstname', 'author.lastname'],
       taskCreationForm: {
         type: '',
-        date: new Date()
+        date: new Date(),
+        targets: []
       },
       taskModificationForm: {
         type: '',
-        date: new Date()
+        date: new Date(),
+        targets: []
       },
       showTaskCreationModal: false,
       showTaskModificationModal: false,
@@ -579,9 +635,18 @@ export default {
       tasksLoading: 'tasks/isRetrieving',
       todoTasks: 'tasks/getTodo',
       doneTasks: 'tasks/getDone',
-      notdoneTasks: 'tasks/getNotDone',
-      allTasks: 'tasks/getAll'
-    })
+      archivedTasks: 'tasks/getArchived',
+      allTasks: 'tasks/getAll',
+      allDoneTasks: 'tasks/getAllDone'
+    }),
+    tableHeader () {
+      switch (this.active) {
+        case 1: return `Liste de vos tâches à faire`
+        case 2: return `Liste de vos tâches faites`
+        case 3: return `Liste de vos tâches expirées (faites ou non)`
+        case 4: return `L'ensemble de vos tâches, expirées ou non`
+      }
+    }
   },
   watch: {
     active: function (newActive) {
@@ -589,7 +654,7 @@ export default {
       switch (newActive) {
         case 1: this.tableData = this.todoTasks; break
         case 2: this.tableData = this.doneTasks; break
-        case 3: this.tableData = this.notdoneTasks; break
+        case 3: this.tableData = this.archivedTasks; break
         case 4: this.tableData = this.allTasks; break
       }
     }
@@ -617,7 +682,7 @@ export default {
       return this.validated && !this.errors.has(name)
     },
     isDone (taskId) {
-      return this.doneTasks.some(task => task._id === taskId)
+      return this.allDoneTasks.some(task => task._id === taskId)
     },
     reloadTable (page = 1) {
       setTimeout(() => {
@@ -625,7 +690,7 @@ export default {
         switch (page) {
           case 1: this.tableData = this.todoTasks; break
           case 2: this.tableData = this.doneTasks; break
-          case 3: this.tableData = this.notdoneTasks; break
+          case 3: this.tableData = this.archivedTasks; break
           case 4: this.tableData = this.allTasks; break
         }
         this.initFuseSearch(this.allTasks)
@@ -634,12 +699,11 @@ export default {
     handleTaskCreateSubmit (scope) {
       // vérification validation des champs
       this.$validator.validateAll(scope).then(valid => {
-        console.log('valid', valid)
         if (!valid) return
 
         this.$store.dispatch('tasks/create', this.taskCreationForm).then(response => {
           // reset the form
-          this.taskCreationForm = { type: '', date: new Date() }
+          this.taskCreationForm = { type: '', date: new Date(), targets: [] }
           // close the modal
           this.showTaskCreationModal = false
 
@@ -654,7 +718,7 @@ export default {
 
         this.$store.dispatch('tasks/modify', this.taskModificationForm).then(response => {
           // reset the form
-          this.taskModificationForm = { type: '', date: new Date() }
+          this.taskModificationForm = { type: '', date: new Date(), targets: [] }
           // close the modal
           this.showTaskModificationModal = false
 
@@ -665,11 +729,11 @@ export default {
     toggleDone (taskId) {
       if (this.isDone(taskId)) {
         this.$store.dispatch('account/setTaskNotDone', { taskId }).then(() => {
-          this.reloadTable(2)
+          this.reloadTable(this.active)
         })
       } else {
         this.$store.dispatch('account/setTaskDone', { taskId }).then(() => {
-          this.reloadTable()
+          this.reloadTable(this.active)
         })
       }
     },
@@ -692,6 +756,17 @@ export default {
           this.reloadTable()
         })
       })
+    },
+    getTargetsName (targets) {
+      if (targets.length <= 6) {
+        let string = ''
+        targets.forEach(target => {
+          string += `${target.firstname || '?'} ${target.lastname[0] || '?'}. `
+        })
+        return string.slice(0, -1)
+      } else {
+        return `${targets[0].firstname} ${targets[0].lastname[0] || '?'}. & ${targets.length - 1} autres...`
+      }
     }
   }
 }

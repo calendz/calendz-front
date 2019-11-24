@@ -36,6 +36,11 @@ const NotificationStore = {
       }
     } else {
       notification = Object.assign({}, this.settings, notification)
+
+      // cancel duplicates
+      const dupe = this.state.find(notif => notif.message === notification.message)
+      if (dupe) this.removeNotification(dupe.timestamp)
+
       this.state.push(notification)
     }
   },

@@ -16,15 +16,18 @@ const notificationsModule = {
   // == Mutations
   // ==================================
   mutations: {
+    RESET: (state) => {
+      state.notifications = []
+      state.status = {}
+    },
+
     NOTIF_REQUEST: (state) => {
       state.status = { isRetrieving: true }
     },
-
     NOTIF_SUCCESS: (state, notifications) => {
       state.notifications = notifications
       state.status = {}
     },
-
     NOTIF_FAILURE: (state, reason) => {
       state.status = { error: reason }
     },
@@ -32,12 +35,10 @@ const notificationsModule = {
     NOTIF_READ_REQUEST: (state) => {
       state.status = { isReading: true }
     },
-
     NOTIF_READ_SUCCESS: (state, index) => {
       state.notifications[index].isRead = true
       state.status = {}
     },
-
     NOTIF_READ_FAILURE: (state, reason) => {
       state.status = { error: reason }
     },
@@ -45,12 +46,10 @@ const notificationsModule = {
     NOTIF_READALL_REQUEST: (state) => {
       state.status = { isReading: true }
     },
-
     NOTIF_READALL_SUCCESS: (state) => {
       state.notifications.forEach(notif => { notif.isRead = true })
       state.status = {}
     },
-
     NOTIF_READALL_FAILURE: (state, reason) => {
       state.status = { error: reason }
     },
@@ -58,12 +57,10 @@ const notificationsModule = {
     NOTIF_UNREAD_REQUEST: (state) => {
       state.status = { isUnreading: true }
     },
-
     NOTIF_UNREAD_SUCCESS: (state, index) => {
       state.notifications[index].isRead = false
       state.status = {}
     },
-
     NOTIF_UNREAD_FAILURE: (state, reason) => {
       state.status = { error: reason }
     },
@@ -71,11 +68,9 @@ const notificationsModule = {
     NOTIF_CREATE_REQUEST: (state) => {
       state.status = { isCreating: true }
     },
-
     NOTIF_CREATE_SUCCESS: (state) => {
       state.status = {}
     },
-
     NOTIF_CREATE_FAILURE: (state, reason) => {
       state.status = { error: reason }
     }

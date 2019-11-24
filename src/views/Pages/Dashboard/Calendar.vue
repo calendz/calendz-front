@@ -180,8 +180,59 @@
         </div>
       </div>
 
+      <!-- show tasks (if there are) -->
+      <div v-if="courseModal.tasks && courseModal.tasks.length">
+        <hr class="mt-3 mb-4">
+
+        <div class="row">
+          <div class="col-12">
+            <h3>Devoirs :</h3>
+          </div>
+        </div>
+
+        <div
+          v-for="(task, index) in courseModal.tasks"
+          :key="index"
+          :class="courseModal.tasks.length-1 !== index ? 'mb-4 pb-2' : ''"
+          class="row ">
+          <!-- type -->
+          <div class="col-2 px-0 text-center my-auto">
+            <task-type :task="task"/>
+          </div>
+
+          <!-- core -->
+          <div class="col-8 px-2 my-auto">
+            <task-core :task="task"/>
+          </div>
+
+          <!-- actions -->
+          <div
+            :class="windowWidth < 800 ? 'px-0' : ''"
+            class="col my-auto">
+            <div class="d-flex">
+              <el-tooltip
+                :content="isTaskDone(task._id) ? 'Marquer comme non fait' : 'Marquer comme fait'"
+                placement="top">
+                <base-button
+                  :outline="!isTaskDone(task._id)"
+                  :class="isTaskDone(task._id) ? 'text-white' : 'text-success'"
+                  size="sm"
+                  type="success"
+                  class="is-done-checkbox"
+                  @click="toggleTaskDone(task._id)">
+                  <i class="fas fa-check"/>
+                </base-button>
+              </el-tooltip>
+            </div>
+          </div>
+        </div>
+
+        <hr class="mb-0">
+      </div>
+
       <template slot="footer">
         <base-button
+          v-show="!searchInput"
           type="secondary"
           size="md"
           class="text-default"
@@ -292,12 +343,16 @@ export default {
       user: 'account/user',
       events: 'calendar/getCourses',
       isLoading: 'calendar/isLoading',
+      allTasks: 'tasks/getAll',
       doneTasks: 'tasks/getDone',
-      tasks: 'tasks/getAsEvents'
+      tasksAsEvents: 'tasks/getAsEvents'
     }),
     fullcalendarEvents () {
-      // combine both calendar & tasks arrays
-      return [...this.events, ...this.tasks]
+      // if looking for another user's agenda: return his events
+      if (this.searchInput !== '') return this.events
+
+      // otherwise combine both calendar & tasks arrays
+      return [...this.events, ...this.tasksAsEvents]
     }
   },
   watch: {
@@ -417,6 +472,21 @@ export default {
         return
       }
 
+      let html = ''
+      // add task badge on course
+      if (!(this.activeView === 'dayGridMonth' && this.windowWidth < 800)) {
+        // if course has corresponsponding task
+        if (this.allTasks.some(task => {
+          const sameDay = this.isSameDay(this.timestampToDate(task.date), element.event.start)
+          const sameSubject = task.subject ? element.event.title.toLowerCase().includes(task.subject.toLowerCase()) : false
+          return (sameDay && sameSubject)
+        })) {
+          html += `
+            <span class="h5-5 mr-2 mt-2 badge badge-light badge-circle float-right" style="width: 12px; height: 12px;"> </span>
+          `
+        }
+      }
+
       // render events
       switch (this.activeView) {
         // ============================
@@ -424,14 +494,14 @@ export default {
         // ============================
         case 'dayGridMonth':
           if (this.windowWidth < 800) {
-            element.el.innerHTML = `
+            html += `
               <div>
                 <h5 class="pl-1 mb-0 text-white w-auto">
                   ${this.timeToHour(element.event.start, 'h').slice(0, -3)}-${this.timeToHour(element.event.end, 'h').slice(0, -2)}
                 </h5>
               </div>`
           } else {
-            element.el.innerHTML = `
+            html += `
               <div>
                 <h5 class="pl-1 mb-0 text-white w-auto">
                   ${this.timeToHour(element.event.start, 'h').slice(0, -2)}
@@ -445,12 +515,12 @@ export default {
         // ============================
         case 'timeGridWeek':
           if (this.windowWidth < 800) {
-            element.el.innerHTML = `
+            html += `
               <div>
                 <h4 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h4>
               </div>`
           } else {
-            element.el.innerHTML = `
+            html += `
               <div>
                 <h5 class="h5-5 pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
                 <h3 class="px-2 text-white text-center" style="max-width: 90%; width: 90%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">${element.event.title}</h3>
@@ -464,7 +534,7 @@ export default {
         // ============================
         case 'timeGridDay':
           if (this.windowWidth < 800) {
-            element.el.innerHTML = `
+            html += `
               <div>
                 <h5 class="h5-5 pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
                 <h2 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h2>
@@ -472,7 +542,7 @@ export default {
                 <h5 class="h5-5 pr-2 mb-1 text-white" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h5>
               </div>`
           } else {
-            element.el.innerHTML = `
+            html += `
               <div>
                 <h5 class="h5-5 pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
                 <h3 class="px-2 text-white text-center" style="max-width: 90%; width: 90%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">${element.event.title}</h3>
@@ -482,6 +552,9 @@ export default {
           }
           break
       }
+
+      // apply new style
+      element.el.innerHTML = html
     },
     handleDateClick (clicked) {
       if (this.activeView === 'dayGridMonth') {
@@ -516,6 +589,11 @@ export default {
       this.courseModal.end = this.timeToHour(clicked.event.end)
       this.courseModal.professor = this.capitalizeFirstLetterEachWords(clicked.event.extendedProps.professor)
       this.courseModal.room = clicked.event.extendedProps.room
+      this.courseModal.tasks = this.allTasks.filter(task => {
+        const sameDay = this.isSameDay(this.timestampToDate(task.date), clicked.event.start)
+        const sameSubject = task.subject ? clicked.event.title.toLowerCase().includes(task.subject.toLowerCase()) : false
+        return (sameDay && sameSubject)
+      })
     },
     // ===========================================
     // == Naviguation functions

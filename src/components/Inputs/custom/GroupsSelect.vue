@@ -100,6 +100,11 @@ export default {
   computed: {
     options () {
       switch (this.grade) {
+        case 'WIS1':
+        case 'WIS2':
+        case 'WIS3':
+        case 'WIS4':
+        case 'WIS5':
         case 'B1':
         case 'B2':
           return [

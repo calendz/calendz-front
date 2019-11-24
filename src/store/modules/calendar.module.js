@@ -17,18 +17,20 @@ const calendarModule = {
   // == Mutations
   // ==================================
   mutations: {
+    RESET: (state) => {
+      state.courses = []
+      state.fetchedWeeks = []
+      state.status = {}
+    },
+
     FETCH_REQUEST: (state, { currentWeek }) => {
       state.fetchedWeeks.push(currentWeek)
       state.status = { isLoading: true }
     },
-
     FETCH_SUCCESS: (state, { weekCourses }) => {
-      weekCourses.forEach(course => {
-        state.courses.push(course) // [...arr]
-      })
+      weekCourses.forEach(course => state.courses.push(course))
       state.status = {}
     },
-
     FETCH_FAILURE: (state, { currentWeek, reason }) => {
       state.status = { error: reason }
       state.fetchedWeeks = state.fetchedWeeks.filter(val => {
@@ -78,7 +80,7 @@ const calendarModule = {
               Vue.prototype.$notifications.removeNotification(notificationTimestamp)
               // if week is empty
               if (!res.week || Object.keys(res.week).length === 0) {
-                Vue.prototype.$notify({ type: 'warning', message: `<b>Attention !</b> Aucun cours trouvé pour cette semaine...`, verticalAlign: 'bottom', timeout: 3000 })
+                Vue.prototype.$notify({ type: 'warning', message: `Aucun cours trouvé pour la semaine numéro ${currentWeek.number}, réssayez pour vérifier que ce ne soit pas un bug...`, verticalAlign: 'bottom', timeout: 5000 })
               }
             },
             err => {
