@@ -117,18 +117,15 @@ const calendarModule = {
     getUpcomingCourses: state => {
       const now = new Date().getTime()
 
-      return state.courses.filter(course => {
+      const array = state.courses.filter(course => {
         const start = new Date(course.start).getTime()
         return now < start
-      })
-    },
-    getNextCourse: state => {
-      const now = new Date().getTime()
+      }).sort((a, b) => (a.start < b.start) ? -1 : 1)
 
-      return state.courses.filter(course => {
-        const start = new Date(course.start).getTime()
-        return now < start
-      })[0]
+      return array
+    },
+    getNextCourse: (state, getters) => {
+      return getters.getUpcomingCourses[0]
     },
     getNextDayCourses: (state, getters) => {
       const nextCourse = getters.getNextCourse
