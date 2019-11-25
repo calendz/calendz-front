@@ -304,10 +304,11 @@ export default {
     if (date.getDay() === 6) date.setDate(date.getDate() + 2)
     if (date.getDay() === 0) date.setDate(date.getDate() + 1)
     date2 = date2.setDate(date.getDate() + 7)
+    date2 = this.dateToMonthDayYear(date2)
     date = this.dateToMonthDayYear(date)
+
     this.$store.dispatch('calendar/fetchDate', { date })
-    date = this.dateToMonthDayYear(date2)
-    this.$store.dispatch('calendar/fetchDate', { date })
+    this.$store.dispatch('calendar/fetchDate', { date: date2 })
   },
   methods: {
     toggleProfileDropdown () {
