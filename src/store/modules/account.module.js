@@ -202,6 +202,7 @@ const accountModule = {
 
     login: ({ state, commit }, { email, password, rememberMe }) => {
       commit('LOGIN_REQUEST')
+      commit('calendar/RESET', {}, { root: true })
       UserService.login(email.toLowerCase(), password, rememberMe)
         .then(
           res => {
