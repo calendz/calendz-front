@@ -122,8 +122,13 @@ const calendarModule = {
         return now < start
       })
     },
-    getNextCourse: (state, getters) => {
-      return getters.getUpcomingCourses[0]
+    getNextCourse: state => {
+      const now = new Date().getTime()
+
+      return state.courses.filter(course => {
+        const start = new Date(course.start).getTime()
+        return now < start
+      })[0]
     },
     getNextDayCourses: (state, getters) => {
       const nextCourse = getters.getNextCourse

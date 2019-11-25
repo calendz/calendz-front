@@ -26,6 +26,18 @@ const accountModule = {
       state.attempts = 0
     },
 
+    FETCH_REQUEST: (state) => {
+      state.status.isFetching = true
+    },
+    FETCH_SUCCESS: (state, user) => {
+      state.user = user
+      state.status.isFetching = false
+    },
+    FETCH_FAILURE: (state, reason) => {
+      state.status.isFetching = false
+      state.status.fetchError = reason
+    },
+
     REGISTER_REQUEST: (state) => {
       state.user = null
       state.status = { isRegistering: true }
@@ -190,6 +202,7 @@ const accountModule = {
 
     login: ({ state, commit }, { email, password, rememberMe }) => {
       commit('LOGIN_REQUEST')
+      commit('calendar/RESET', {}, { root: true })
       UserService.login(email.toLowerCase(), password, rememberMe)
         .then(
           res => {
@@ -221,6 +234,22 @@ const accountModule = {
                 if (result.value) router.push('/password-reset')
               })
             }
+          })
+    },
+
+    fetch: ({ commit }) => {
+      commit('FETCH_REQUEST')
+      UserService.fetch()
+        .then(
+          res => {
+            commit('FETCH_SUCCESS', res.user)
+            localStorage.user = JSON.stringify(res.user)
+            commit('notifications/NOTIF_SUCCESS', res.notifications, { root: true })
+            commit('tasks/FETCH_ALL_SUCCESS', res.tasks, { root: true })
+          },
+          err => {
+            commit('FETCH_FAILURE', err.data.message)
+            Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.data.message || 'Erreur inconnue...'}` })
           })
     },
 

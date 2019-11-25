@@ -38,6 +38,17 @@ const UserService = {
       })
   },
 
+  // fetch current user's data
+  fetch: () => {
+    return ApiService.get('/user/fetch')
+      .then(res => {
+        return res.data
+      })
+      .catch(err => {
+        return Promise.reject(err.data)
+      })
+  },
+
   // change user's bts status
   changeBts: (bts) => {
     return ApiService.patch(`/user/bts/${bts}`)

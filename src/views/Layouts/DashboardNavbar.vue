@@ -294,10 +294,8 @@ export default {
     if (window.innerWidth < 1200) this.hideSidebar()
   },
   mounted () {
-    // get all notifications
-    this.$store.dispatch('notifications/fetch')
-    // get all tasks
-    this.$store.dispatch('tasks/fetchAll')
+    // fetch user's data (notifications, tasks...)
+    this.$store.dispatch('account/fetch')
 
     // get monday of current week
     // or next week if we are already in the weekend
