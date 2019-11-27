@@ -16,10 +16,9 @@
             </span>
             <p
               v-show="!calendarLoading"
-              class="h3 mb-0 my-auto"
-              style="line-height: 18px">
+              class="h3 mb-0 my-auto h-100"
+              style="line-height: 18px; overflow: hidden;">
               {{ nextCourse ? nextCourse.title : 'Aucun cours à venir...' }}
-              <!-- LE LANGAGE DE PROGRAMMATION PY -->
             </p>
           </div>
         </slot>

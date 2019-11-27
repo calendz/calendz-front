@@ -26,7 +26,7 @@
     <blockquote class="blockquote mb-0">
       <p
         :class="isDone(task._id) ? 'text-strikethrough' : ''"
-        class="mb-0 text-sm"
+        class="mb-0 text-sm text-justify"
         v-html="task.description || `<span class='text-muted'>Aucune description...</span>`"/>
       <footer
         v-if="task.subject"

@@ -16,8 +16,8 @@
             </span>
             <p
               v-show="!homeworksRetrieving"
-              class="h3 mb-0 my-auto"
-              style="line-height: 18px">
+              class="h3 mb-0 my-auto h-100"
+              style="line-height: 18px; overflow: hidden;">
               {{ nextHomework ? nextHomework.title : 'Aucun devoir à venir...' }}
             </p>
           </div>
