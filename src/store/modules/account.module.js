@@ -27,15 +27,14 @@ const accountModule = {
     },
 
     FETCH_REQUEST: (state) => {
-      state.status.isFetching = true
+      state.status = { isFetching: true }
     },
     FETCH_SUCCESS: (state, user) => {
       state.user = user
-      state.status.isFetching = false
+      state.status = { isFetching: false }
     },
     FETCH_FAILURE: (state, reason) => {
-      state.status.isFetching = false
-      state.status.fetchError = reason
+      state.status = { isFetching: false, fetchError: reason }
     },
 
     REGISTER_REQUEST: (state) => {
@@ -480,6 +479,9 @@ const accountModule = {
   getters: {
     isLoggedIn: state => {
       return !!state.user
+    },
+    isFetching: state => {
+      return !!state.status.isFetching
     },
     user: state => {
       return state.user

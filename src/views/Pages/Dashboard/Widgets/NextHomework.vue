@@ -28,20 +28,28 @@
         <slot name="icon">
           <router-link
             to="/tasks">
-            <div
-              v-if="nextHomework"
-              :class="nextHomework.type === 'homework' ? 'bg-primary' : nextHomework.type === 'task' ? 'bg-info' : 'bg-warning'"
-              class="icon icon-shape text-white rounded-circle shadow">
-              <i
-                :class="nextHomework.type === 'homework' ? 'fa-book' : nextHomework.type === 'task' ? 'fa-tasks' : 'fa-graduation-cap'"
-                class="fas"/>
-            </div>
+            <span v-show="homeworksRetrieving">
+              <div class="icon icon-shape bg-primary text-white rounded-circle shadow">
+                <i class="fas fa-question"/>
+              </div>
+            </span>
 
-            <div
-              v-if="!nextHomework"
-              class="icon icon-shape bg-success text-white rounded-circle shadow">
-              <i class="fas fa-check"/>
-            </div>
+            <span v-show="!homeworksRetrieving">
+              <div
+                v-if="nextHomework"
+                :class="nextHomework.type === 'homework' ? 'bg-primary' : nextHomework.type === 'task' ? 'bg-info' : 'bg-warning'"
+                class="icon icon-shape text-white rounded-circle shadow">
+                <i
+                  :class="nextHomework.type === 'homework' ? 'fa-book' : nextHomework.type === 'task' ? 'fa-tasks' : 'fa-graduation-cap'"
+                  class="fas"/>
+              </div>
+
+              <div
+                v-if="!nextHomework"
+                class="icon icon-shape bg-success text-white rounded-circle shadow">
+                <i class="fas fa-check"/>
+              </div>
+            </span>
           </router-link>
         </slot>
       </div>
@@ -81,6 +89,7 @@
             </div>
             <!-- no homework -->
             <span v-if="!nextHomework">
+              <i class="fas fa-external-link-alt mr-1"/>
               cliquez pour accéder aux détails
             </span>
           </span>
@@ -108,7 +117,7 @@ export default {
     },
     ...mapGetters({
       nextHomework: 'tasks/getNextOneNotDone',
-      homeworksRetrieving: 'tasks/isRetrieving'
+      homeworksRetrieving: 'account/isFetching'
     })
   }
 }
