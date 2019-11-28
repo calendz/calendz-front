@@ -18,8 +18,40 @@
       </div>
     </div>
 
-    <!-- card body -->
-    <ul class="list-group list-group-flush">
+    <!-- card body loading -->
+    <ul
+      v-if="homeworksRetrieving"
+      class="list-group list-group-flush">
+      <li
+        v-for="(number, index) in [1, 2, 3]"
+        :key="index"
+        :class="(index === 0) ? 'pt-0' : index === 3 - 1 ? 'pb-1' : ''"
+        class="list-group-item px-0">
+        <div class="checklist-item">
+          <div class="checklist-info w-100 mr-3">
+            <placeholder class="w-75"/>
+            <placeholder class="mt-2 w-100"/>
+            <placeholder
+              v-if="index === 2"
+              class="mt-1 w-100"/>
+            <small class="text-muted">
+              <placeholder class="mt-1 w-50"/>
+            </small>
+          </div>
+          <div>
+            <base-checkbox
+              :checked="false"
+              :type="'primary'"
+              @input="toggleHomeworkDone($event, homework._id)"/>
+          </div>
+        </div>
+      </li>
+    </ul>
+
+    <!-- card body not-loading -->
+    <ul
+      v-if="!homeworksRetrieving"
+      class="list-group list-group-flush">
       <li
         v-for="(homework, index) in homeworks"
         :key="index"
@@ -28,7 +60,7 @@
         <div
           :class="{'checklist-item-checked': false, [`checklist-item-${ homework.type === 'homework' ? 'primary' : homework.type === 'task' ? 'info' : 'warning' }`]: homework.type }"
           class="checklist-item">
-          <div class="checklist-info">
+          <div class="checklist-info w-100 mr-3 text-justify">
             <h5
               :class="isDone(homework._id) ? 'text-strikethrough' : ''"
               class="checklist-title mb-0">{{ homework.title }}</h5>
@@ -53,7 +85,7 @@
     </ul>
 
     <span
-      v-if="!homeworks[0]"
+      v-if="!homeworksRetrieving && !homeworks[0]"
       class="h3">
       <div class="text-center">
         <span>
@@ -73,7 +105,7 @@ export default {
   mixins: [dateUtilMixin, stringUtilMixin],
   computed: {
     ...mapGetters({
-      homeworkloading: 'tasks/isLoading',
+      homeworksRetrieving: 'account/isFetching',
       homeworks: 'tasks/get3Upcommings',
       allDoneTasks: 'tasks/getAllDone'
     })

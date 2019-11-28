@@ -89,7 +89,10 @@
     <!-- ======================================= -->
     <!-- == Main (calendar) ==================== -->
     <!-- ======================================= -->
-    <div class="container-fluid mt--6">
+    <div
+      v-touch:swipe.left="handleSwipeLeft"
+      v-touch:swipe.right="handleSwipeRight"
+      class="container-fluid mt--6">
       <div class="row">
         <div class="col">
           <!-- Fullcalendar -->
@@ -614,6 +617,12 @@ export default {
       }
 
       this.calendarApi().changeView(viewType)
+    },
+    handleSwipeLeft () {
+      if (this.windowWidth < 800) this.next()
+    },
+    handleSwipeRight () {
+      if (this.windowWidth < 800) this.prev()
     },
     next () {
       let toAdd

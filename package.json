@@ -1,6 +1,6 @@
 {
   "name": "calendz-front",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -36,6 +36,7 @@
     "vue-clipboard2": "^0.3.0",
     "vue-flatpickr-component": "^8.1.2",
     "vue-router": "^3.0.6",
+    "vue2-touch-events": "^2.0.1",
     "vue2-transitions": "^0.2.3",
     "vuex": "^3.1.1"
   },

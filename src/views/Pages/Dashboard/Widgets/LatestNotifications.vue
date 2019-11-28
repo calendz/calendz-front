@@ -25,7 +25,7 @@
         data-timeline-axis-style="dashed">
 
         <div
-          v-for="(number, index) in [1, 2]"
+          v-for="(number, index) in [1, 2, 3]"
           :key="index"
           class="timeline-block mt-0 mb-2">
           <i class="fas fa-bell bg-grey avatar avatar-sm rounded-circle timeline-step"/>
@@ -46,6 +46,7 @@
 
               <div class="col-12 w-100 py-2 pr-1 ml--4">
                 <placeholder class="w-100"/>
+                <placeholder class="mt-1 w-100"/>
               </div>
             </div>
           </div>
@@ -118,7 +119,7 @@ export default {
   mixins: [dateUtilMixin],
   computed: {
     ...mapGetters({
-      isLoading: 'notifications/isLoading',
+      isLoading: 'account/isFetching',
       notifications: 'notifications/all'
     })
   }

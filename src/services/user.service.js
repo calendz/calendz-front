@@ -45,7 +45,7 @@ const UserService = {
         return res.data
       })
       .catch(err => {
-        return Promise.reject(err.data)
+        return Promise.reject(err)
       })
   },
 
