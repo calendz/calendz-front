@@ -120,7 +120,9 @@
         </ul>
       </template>
     </side-bar>
-    <div class="main-content">
+    <div
+      v-touch:swipe.right="handleSwipeRight"
+      class="main-content">
       <dashboard-navbar/>
 
       <div @click="$sidebar.displaySidebar(false)">
@@ -227,6 +229,10 @@ export default {
         showCancelButton: true,
         cancelButtonText: 'Ok'
       })
+    },
+    handleSwipeRight () {
+      if (this.$route.path === '/calendar') return
+      this.$sidebar.displaySidebar(true)
     }
   }
 }
