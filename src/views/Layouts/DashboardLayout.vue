@@ -231,6 +231,7 @@ export default {
       })
     },
     handleSwipeRight () {
+      if (this.$route.path === '/calendar') return
       this.$sidebar.displaySidebar(true)
     }
   }
