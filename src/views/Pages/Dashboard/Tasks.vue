@@ -151,6 +151,7 @@
                         <task-core
                           v-show="!tasksLoading && !isLoading"
                           :task="row"
+                          :show-more-limit="240"
                           class="mb-3"/>
 
                         <placeholder

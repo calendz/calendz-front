@@ -61,18 +61,9 @@
           :class="{'checklist-item-checked': false, [`checklist-item-${ homework.type === 'homework' ? 'primary' : homework.type === 'task' ? 'info' : 'warning' }`]: homework.type }"
           class="checklist-item">
           <div class="checklist-info w-100 mr-3 text-justify">
-            <h5
-              :class="isDone(homework._id) ? 'text-strikethrough' : ''"
-              class="checklist-title mb-0">{{ homework.title }}</h5>
-            <small
-              :class="isDone(homework._id) ? 'text-strikethrough' : ''"
-              v-html="homework.description || `<span class='text-muted'>Aucune description...</span>`"/>
-            <br>
-            <small class="text-muted">
-              <span>
-                <i class="fas fa-hourglass-half m-1"/>
-              </span>
-              {{ capitalizeFirstLetter(dateToFullString(getDate(homework))) }}</small>
+            <task-core
+              :task="homework"
+              :title-classes="'checklist-title mb-0'"/>
           </div>
           <div>
             <base-checkbox
