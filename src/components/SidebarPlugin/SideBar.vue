@@ -1,5 +1,6 @@
 <template>
   <div
+    v-touch:swipe.left="handleSwipeLeft"
     :data="backgroundColor"
     style="overflow-x: hidden"
     class="sidenav navbar navbar-vertical fixed-left navbar-expand-xs navbar-light bg-white"
@@ -117,6 +118,9 @@ export default {
       if (this.$sidebar) {
         this.$sidebar.toggleMinimize()
       }
+    },
+    handleSwipeLeft () {
+      this.$sidebar.displaySidebar(false)
     }
   }
 }
