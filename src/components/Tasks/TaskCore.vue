@@ -1,5 +1,5 @@
 <template>
-  <div class="container p-0">
+  <div class="container p-0 task-core">
 
     <!-- title -->
     <span
@@ -29,9 +29,10 @@
       <p
         :class="isDone(task._id) ? 'text-strikethrough' : ''"
         class="mb-0 text-sm text-justify"
+        style="font-size: 0.875rem !important"
         v-html="getTaskDescription(task)"/>
       <a
-        v-if="task.description && task.description.length > showMoreLimit"
+        v-if="task.description && (task.description.length > showMoreLimit || task.description.includes('</p><p>'))"
         href="javascript:void(0)"
         class="text-sm"
         @click="readMore = !readMore">
@@ -93,8 +94,20 @@ export default {
     },
     getTaskDescription (task) {
       if (!task.description) return `<span class='text-muted'>Aucune description...</span>`
-      if (task.description.length <= this.showMoreLimit) return task.description
-      if (!this.readMore) return task.description.slice(0, this.showMoreLimit) + '... <a'
+
+      // if readMore: return whole description
+      if (this.readMore) return task.description
+
+      // if text is multiline
+      if (task.description.includes('</p><p>')) {
+        return task.description.slice(0, task.description.indexOf('</p><p>')) + '...'
+      }
+
+      // if text is too long
+      if (task.description.length > this.showMoreLimit) {
+        if (!this.readMore) return task.description.slice(0, this.showMoreLimit) + '...'
+      }
+
       return task.description
     },
     getTitleClasses () {
@@ -107,6 +120,11 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss">
+  .task-core {
+    p {
+      font-size: 0.875rem !important;
+      margin-bottom: 0 !important;
+    }
+  }
 </style>
