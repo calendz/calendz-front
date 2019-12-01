@@ -172,8 +172,11 @@ const sysconfModule = {
     getSettings: state => {
       return state.settings
     },
-    getStats: state => {
-      return state.stats || null
+    getUsersStats: state => {
+      return state.stats ? state.stats.users ? state.stats.users : {} : {}
+    },
+    getTasksStats: state => {
+      return state.stats ? state.stats.tasks ? state.stats.tasks : {} : {}
     }
   }
 }

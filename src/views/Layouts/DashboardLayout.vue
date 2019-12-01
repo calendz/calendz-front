@@ -71,8 +71,11 @@
             :link="{
               name: 'Statistiques',
               icon: 'fas fa-chart-line text-info',
-              path: '/stats'
-          }"/>
+              path: '/stats/users'
+          }">
+            <sidebar-item :link="{ name: 'Utilisateurs', path: '/stats/users' }"/>
+            <sidebar-item :link="{ name: 'Tâches', path: '/stats/tasks' }"/>
+          </sidebar-item>
 
           <!-- user-management -->
           <sidebar-item

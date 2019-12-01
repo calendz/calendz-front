@@ -141,7 +141,7 @@
 
           <!-- homeworks -->
           <router-link
-            to="homeworks"
+            to="tasks"
             class="col-4 shortcut-item">
             <span class="shortcut-media avatar rounded-circle bg-gradient-orange">
               <i class="fas fa-book"/>

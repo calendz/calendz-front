@@ -127,6 +127,23 @@ export default {
 </script>
 
 <style scoped>
+  ::-webkit-scrollbar-track {
+    /* border-radius: 14px; */
+    background-color: #F5F5F5;
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.2);
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.2);
+  }
+
+  ::-webkit-scrollbar {
+    width: 5px;
+    background-color: #F5F5F5;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 14px;
+    background-color: #b4b3b3;
+  }
+
   @media (min-width: 992px) {
     .navbar-search-form-mobile,
     .nav-mobile-menu {

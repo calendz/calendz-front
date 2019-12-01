@@ -151,6 +151,7 @@
                         <task-core
                           v-show="!tasksLoading && !isLoading"
                           :task="row"
+                          :show-more-limit="220"
                           class="mb-3"/>
 
                         <placeholder
@@ -381,19 +382,11 @@
 
         <div class="row">
           <div class="col-md-12">
-            <base-input
-              :error="getError('creation-form.description')"
-              :valid="isValid('creation-form.description')"
-              class="w-100"
-              label="Description (facultatif)">
-              <textarea
-                v-validate="'min:2|max:1000'"
+            <base-input label="Description (facultatif)">
+              <html-editor
                 v-model="taskCreationForm.description"
-                name="description"
-                class="form-control"
-                rows="3"
-                resize="none"
-                placeholder="Entrez la description de la tâche..."/>
+                class="w-100"
+              />
             </base-input>
           </div>
         </div>
@@ -517,19 +510,11 @@
 
         <div class="row">
           <div class="col-md-12">
-            <base-input
-              :error="getError('modification-form.description')"
-              :valid="isValid('modification-form.description')"
-              class="w-100"
-              label="Description (facultatif)">
-              <textarea
-                v-validate="'min:2|max:1000'"
+            <base-input label="Description (facultatif)">
+              <html-editor
                 v-model="taskModificationForm.description"
-                name="description"
-                class="form-control"
-                rows="3"
-                resize="none"
-                placeholder="Entrez la description de la tâche..."/>
+                class="w-100"
+              />
             </base-input>
           </div>
         </div>
@@ -589,6 +574,7 @@ import { Table, TableColumn, Option, Select } from 'element-ui'
 import FlatPicker from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 import { French } from 'flatpickr/dist/l10n/fr.js'
+import HtmlEditor from '@/components/Inputs/HtmlEditor'
 
 import clientPaginationMixin from '@/mixins/clientPaginationMixin'
 import dateUtilMixin from '@/mixins/dateUtilMixin'
@@ -597,6 +583,7 @@ import stringUtilMixin from '@/mixins/stringUtilMixin'
 export default {
   name: 'Settings',
   components: {
+    HtmlEditor,
     FlatPicker,
     BasePagination,
     [Option.name]: Option,
@@ -773,6 +760,10 @@ export default {
 </script>
 
 <style lang="scss">
+  .ql-clipboard {
+    display: none;
+  }
+
   #tasksTable {
     table tr td:first-child {
       padding-right: 0 !important;
