@@ -29,7 +29,8 @@ const Profile = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashb
 const Settings = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Settings.vue')
 
 const DashboardAdmin = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Admin/DashboardAdmin.vue')
-const Statistics = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Admin/Statistics.vue')
+const UserStatistics = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Admin/UserStatistics.vue')
+const TaskStatistics = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Admin/TaskStatistics.vue')
 const UserManagement = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Admin/UserManagement.vue')
 
 const Notifications = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Hidden/Notifications.vue')
@@ -102,9 +103,18 @@ const dashboardPages = {
       }
     },
     {
-      path: 'stats',
+      path: '/stats/users',
       name: 'Statistiques',
-      component: Statistics,
+      component: UserStatistics,
+      meta: {
+        title: 'Statistiques - Calendz',
+        adminOnly: true
+      }
+    },
+    {
+      path: '/stats/tasks',
+      name: 'Statistiques',
+      component: TaskStatistics,
       meta: {
         title: 'Statistiques - Calendz',
         adminOnly: true
