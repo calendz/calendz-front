@@ -32,7 +32,7 @@
         style="font-size: 0.875rem !important"
         v-html="getTaskDescription(task)"/>
       <a
-        v-if="task.description && (task.description.length > showMoreLimit || task.description.includes('</p><p>'))"
+        v-if="task.description && (task.description.length > showMoreLimit || task.description.includes('</p><p>') || task.description.includes('</li><li>'))"
         href="javascript:void(0)"
         class="text-sm"
         @click="readMore = !readMore">
@@ -101,6 +101,11 @@ export default {
       // if text is multiline
       if (task.description.includes('</p><p>')) {
         return task.description.slice(0, task.description.indexOf('</p><p>')) + '...'
+      }
+
+      // if text contains a list
+      if (task.description.includes('</li><li>')) {
+        return task.description.slice(0, task.description.indexOf('</li><li>')) + '...'
       }
 
       // if text is too long
