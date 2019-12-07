@@ -94,6 +94,9 @@ export default {
     TodayCourses,
     LatestHomeworks,
     LatestNotifications
+  },
+  beforeCreate () {
+    localStorage.removeItem('calendz.calendar.searchInput')
   }
 }
 </script>
