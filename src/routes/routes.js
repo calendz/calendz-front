@@ -104,7 +104,7 @@ const dashboardPages = {
     },
     {
       path: '/stats/users',
-      name: 'Statistiques',
+      name: 'Statistiques utilisateurs',
       component: UserStatistics,
       meta: {
         title: 'Statistiques - Calendz',
@@ -113,7 +113,7 @@ const dashboardPages = {
     },
     {
       path: '/stats/tasks',
-      name: 'Statistiques',
+      name: 'Statistiques tâches',
       component: TaskStatistics,
       meta: {
         title: 'Statistiques - Calendz',
