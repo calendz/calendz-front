@@ -31,7 +31,7 @@
             <!-- == MENU ======================= -->
             <!-- =============================== -->
             <div class="col-lg-2 mb-4">
-              <ul class="list-group">
+              <ul class="list-group cursor-pointer">
                 <li
                   :class="active === 1 ? 'bg-primary text-white' : 'bg-white text-primary'"
                   class="list-group-item d-flex justify-content-between align-items-center hover-click"
@@ -84,7 +84,7 @@
                 class="mt-4 w-100"
                 @click="showTaskCreationModal = true">
                 <i class="fas fa-plus-circle text-white mr-1"/>
-                Ajouter un devoirs
+                Ajouter un devoir
               </base-button>
             </div>
 

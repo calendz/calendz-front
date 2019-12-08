@@ -29,10 +29,10 @@
 
             <!-- menu -->
             <div class="col-lg-2 mb-4">
-              <ul class="list-group">
+              <ul class="list-group cursor-pointer">
                 <li
                   :class="active === 1 ? 'bg-primary text-white' : 'bg-white text-primary'"
-                  class="list-group-item d-flex justify-content-between align-items-center hover-click"
+                  class="list-group-item d-flex justify-content-between align-items-center"
                   @click="active = 1">
                   Non-lues
                   <badge
@@ -43,7 +43,7 @@
                 </li>
                 <li
                   :class="active === 2 ? 'bg-primary text-white' : 'bg-white text-primary'"
-                  class="list-group-item d-flex justify-content-between align-items-center hover-click"
+                  class="list-group-item d-flex justify-content-between align-items-center"
                   @click="active = 2">
                   Lues
                   <badge
@@ -54,7 +54,7 @@
                 </li>
                 <li
                   :class="active === 3 ? 'bg-primary text-white' : 'bg-white text-primary'"
-                  class="list-group-item d-flex justify-content-between align-items-center hover-click"
+                  class="list-group-item d-flex justify-content-between align-items-center"
                   @click="active = 3">
                   Toutes
                   <badge
@@ -193,11 +193,7 @@
     </div>
   </div>
 </template>
-<style scoped>
-  .hover-click {
-    cursor: pointer
-  }
-</style>
+
 <script>
 import { mapGetters } from 'vuex'
 import { BasePagination } from '@/components'
