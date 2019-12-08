@@ -390,7 +390,7 @@ export default {
     // if querydate is set, override current date
     if (queryDate) {
       const splitted = queryDate.split('-')
-      date = new Date(`${splitted[1]}-${splitted[0]}-${splitted[2]}`)
+      date = new Date(`${splitted[1]}/${splitted[0]}/${splitted[2]}`)
       // redirect to date
       this.calendarApi().gotoDate(date)
       // fetch date's week
