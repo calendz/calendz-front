@@ -84,7 +84,7 @@
                 class="mt-4 w-100"
                 @click="showTaskCreationModal = true">
                 <i class="fas fa-plus-circle text-white mr-1"/>
-                Ajouter un devoirs
+                Ajouter un devoir
               </base-button>
             </div>
 
