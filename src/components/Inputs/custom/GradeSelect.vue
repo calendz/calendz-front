@@ -19,8 +19,7 @@
         <option
           v-for="(option, index) in options"
           :key="index"
-          :label="option.value"
-          :value="option.value"/>
+          :value="option.value">{{ option.value }}</option>
       </select>
     </base-input>
   </div>
