@@ -282,7 +282,7 @@
                 <div class="col-md-6">
                   <GradeSelect
                     v-model="modifyForm.grade"
-                    :school="modifyForm.email && modifyForm.email.includes('@epsi.fr') ? 'EPSI' : modifyForm.email && modifyForm.email.includes('@wis.fr') ? 'WIS' : ''"
+                    :school="modifyForm.email ? guessSchoolFromEmail(modifyForm.email) : ''"
                     :disabled="false"
                     label="Classe"/>
                 </div>
@@ -525,6 +525,10 @@ export default {
           })
         }
       })
+    },
+    guessSchoolFromEmail (email) {
+      if (email.includes('@epsi.fr')) return 'EPSI'
+      if (email.includes('@wis.fr') || email.includes('@etudes-wis.net')) return 'WIS'
     }
   }
 }

@@ -1,7 +1,7 @@
 import { Validator } from 'vee-validate'
 
 Validator.extend('email_valid_school', {
-  validate: value => value.includes('@epsi.fr') || value.includes('@wis.fr')
+  validate: value => value.includes('@epsi.fr') || value.includes('@wis.fr') || value.includes('@etudes-wis.net')
 })
 
 Validator.extend('contains_one_number', {
