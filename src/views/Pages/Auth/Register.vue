@@ -73,7 +73,7 @@
 
                 <GradeSelect
                   v-model="registerForm.grade"
-                  :school="registerForm.email.includes('@epsi.fr') ? 'EPSI' : registerForm.email.includes('@wis.fr') ? 'WIS' : ''"
+                  :school="registerForm.email ? guessSchoolFromEmail(registerForm.email) : ''"
                   :disabled="!registerForm.email"/>
 
                 <GroupsSelect
@@ -226,6 +226,10 @@ export default {
           this.$store.dispatch('account/register', this.registerForm)
         }
       })
+    },
+    guessSchoolFromEmail (email) {
+      if (email.includes('@epsi.fr')) return 'EPSI'
+      if (email.includes('@wis.fr') || email.includes('@etudes-wis.net')) return 'WIS'
     },
     showAlert (title) {
       swal({
