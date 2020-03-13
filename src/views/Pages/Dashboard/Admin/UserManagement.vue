@@ -528,7 +528,7 @@ export default {
     },
     guessSchoolFromEmail (email) {
       if (email.includes('@epsi.fr')) return 'EPSI'
-      if (email.includes('@wis.fr') || email.includes('@etudes-wis.net')) return 'WIS'
+      if (email.includes('@wis.fr') || email.includes('@ecoles-wis.net')) return 'WIS'
     }
   }
 }
