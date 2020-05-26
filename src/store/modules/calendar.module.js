@@ -163,7 +163,8 @@ const reformatWeek = (week) => {
         end: formatDate(course.date, course.end),
         className: 'custom-event',
         professor: course.professor,
-        room: course.room.split('-')[0].split('(')[0]
+        room: course.room.split('-')[0].split('(')[0],
+        bts: course.bts
       })
     })
   }
