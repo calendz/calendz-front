@@ -130,7 +130,11 @@ export default {
   methods: {
     handleSubmit (e) {
       this.$validator.validate().then(valid => {
-        if (valid) this.$store.dispatch('account/login', this.loginForm)
+        // login form + redirect (if provided)
+        const data = { ...this.loginForm }
+        if (this.$route.query.redirect) data.redirect = this.$route.query.redirect
+
+        if (valid) this.$store.dispatch('account/login', data)
       })
     },
     resendEmail () {

@@ -199,7 +199,7 @@ const accountModule = {
           })
     },
 
-    login: ({ state, commit }, { email, password, rememberMe }) => {
+    login: ({ state, commit }, { email, password, rememberMe, redirect }) => {
       commit('LOGIN_REQUEST')
       commit('calendar/RESET', {}, { root: true })
       UserService.login(email.toLowerCase(), password, rememberMe)
@@ -208,7 +208,11 @@ const accountModule = {
             localStorage.setItem('user', JSON.stringify(res.user))
             commit('LOGIN_SUCCESS', res.user)
             Vue.prototype.$notify({ type: 'success', message: 'Vous êtes désormais connecté.' })
-            router.push(localStorage.getItem('calendz.settings.defaultPage') || '/dashboard')
+
+            // si ?redirect est défini
+            redirect
+              ? router.push(decodeURI(redirect))
+              : router.push(localStorage.getItem('calendz.settings.defaultPage') || '/dashboard')
           },
           err => {
             if (err && err.userId) {
