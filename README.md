@@ -42,8 +42,8 @@ Le front de calendz est développé avec les frameworks et outils suivants* :
 * Créer un fichier `.env` à la source de ce repository contenant les valeurs suivantes (modifiables selon vos besoins)
 
       NODE_ENV=development
-      APP_PORT=3000
       VUE_APP_API_URL=http://localhost:3001/v1
+      VUE_APP_API_CALENDAR_URL=http://localhost:3000/v1
 
 ### Lancement
 

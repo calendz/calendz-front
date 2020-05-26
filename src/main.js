@@ -27,7 +27,7 @@ Vue.use(VueAnalytics, {
 
 // Set the base URL of the API
 ApiService.init(process.env.VUE_APP_API_URL)
-ApiCalendarService.init(process.env.VUE_APP_API_CALENDAR_URL, process.env.VUE_APP_API_CALENDAR_TOKEN)
+ApiCalendarService.init(process.env.VUE_APP_API_CALENDAR_URL)
 
 /* eslint-disable no-new */
 new Vue({

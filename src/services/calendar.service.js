@@ -8,7 +8,7 @@ const CalendarService = {
     const firstname = email.split('@')[0].split('.')[0]
     const lastname = email.split('@')[0].split('.')[1]
 
-    return ApiCalendarService.get(`/week/?firstname=${firstname}&lastname=${lastname}`)
+    return ApiCalendarService.get(`/week?firstname=${firstname}&lastname=${lastname}`)
       .then(res => {
         return res.data
       })
