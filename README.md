@@ -17,7 +17,7 @@
 
 Ce repository représente le front de calendz.
 
-## Ecosystème
+## Écosystème
 
 Le front de calendz est développé avec les frameworks et outils suivants* :
 
@@ -30,7 +30,7 @@ Le front de calendz est développé avec les frameworks et outils suivants* :
 | [vee-validate]   | 2.2.11  | Template Based Validation Framework for Vue.js                                                                    |
 | [Babel]          | 7.4.5   | Babel is a compiler for writing next generation JavaScript.                                                       |
 | [Node-sass]      | 4.12.0  | Node.js bindings to libsass.                                                                                      |
-| [Boostrap]       | 4.3.1   | The most popular HTML, CSS, and JavaScript framework for developing responsive, mobile first projects on the web. |
+| [Bootstrap]      | 4.3.1   | The most popular HTML, CSS, and JavaScript framework for developing responsive, mobile first projects on the web. |
 
 **(Liste non exhaustive, uniquement les librairies principales sont présentées)*
 
@@ -59,4 +59,4 @@ Le front de calendz est développé avec les frameworks et outils suivants* :
 [vee-validate]: https://github.com/baianat/vee-validate
 [Babel]: https://github.com/babel/babel
 [Node-sass]: https://github.com/sass/node-sass
-[Boostrap]: https://github.com/twbs/bootstrap
+[Bootstrap]: https://github.com/twbs/bootstrap
