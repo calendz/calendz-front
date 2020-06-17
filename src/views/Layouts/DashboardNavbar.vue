@@ -325,9 +325,9 @@ export default {
     },
     logout () {
       swal.fire({
+        icon: 'info',
         title: 'Êtes vous sûr ?',
         text: 'Vous serez déconnecté du site !',
-        type: 'info',
         customClass: {
           confirmButton: 'btn btn-primary',
           cancelButton: 'btn btn-secondary'
@@ -340,8 +340,8 @@ export default {
         if (result.value) {
           this.$store.dispatch('account/logout', {})
           swal.fire({
+            icon: 'success',
             title: 'Vous avez été déconnecté',
-            type: 'success',
             customClass: {
               confirmButton: 'btn btn-primary'
             }

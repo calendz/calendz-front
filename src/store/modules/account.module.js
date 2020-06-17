@@ -223,7 +223,7 @@ const accountModule = {
 
             if (state.attempts >= 3) {
               swal.fire({
-                type: 'question',
+                icon: 'question',
                 title: `Mot de passe oublié ?`,
                 text: `Pas de panique, indiquez votre adresse mail et nous vous enverrons un lien afin de réinitialiser votre mot de passe.`,
                 buttonsStyling: false,
@@ -294,8 +294,8 @@ const accountModule = {
           res => {
             commit('CHANGE_PASSWORD_SUCCESS')
             swal.fire({
+              icon: 'success',
               title: 'Votre mot de passe à bien été modifié. Vous avez été déconnecté',
-              type: 'success',
               customClass: { confirmButton: 'btn btn-primary' }
             })
             dispatch('logout', {})
@@ -364,17 +364,17 @@ const accountModule = {
           res => {
             commit('UPDATE_USER_SUCCESS')
             swal.fire({
+              icon: 'success',
               title: 'Les informations de l\'utilisateur ont bien été modifiés !',
-              type: 'success',
               customClass: { confirmButton: 'btn btn-primary' }
             })
           },
           err => {
             commit('UPDATE_USER_FAILURE', err.data.message)
             swal.fire({
+              icon: 'error',
               title: 'Erreur dans la modification des informations !',
               text: err.data.errors[0] || 'Erreur inconnue...',
-              type: 'error',
               customClass: { confirmButton: 'btn btn-primary' }
             })
           })
@@ -387,8 +387,8 @@ const accountModule = {
           res => {
             commit('DELETE_USER_SUCCESS')
             swal.fire({
+              icon: 'success',
               title: 'L\'utilisateur à bien été supprimé',
-              type: 'success',
               customClass: {
                 confirmButton: 'btn btn-primary'
               }
@@ -397,9 +397,9 @@ const accountModule = {
           err => {
             commit('DELETE_USER_FAILURE', err.message)
             swal.fire({
+              icon: 'error',
               title: 'Une erreur est survenue !',
               text: err.message || 'Erreur inconnue...',
-              type: 'error',
               customClass: { confirmButton: 'btn btn-primary' }
             })
           })
@@ -417,9 +417,9 @@ const accountModule = {
           err => {
             commit('DELETE_USER_FAILURE', err.data.message)
             swal.fire({
+              icon: 'error',
               title: 'Une erreur est survenue !',
               text: err.data.message || 'Erreur inconnue...',
-              type: 'error',
               customClass: { confirmButton: 'btn btn-primary' }
             })
           })

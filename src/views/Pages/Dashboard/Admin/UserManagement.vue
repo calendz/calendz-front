@@ -498,17 +498,17 @@ export default {
     deleteUser (row) {
       if (row._id === this.user._id) {
         return swal.fire({
+          icon: 'error',
           title: 'Tututut !',
           text: 'Vous ne pouvez pas vous auto-supprimer, pour cela rendez-vous dans la page "Paramètres".',
-          type: 'error',
           customClass: { confirmButton: 'btn btn-primary' }
         })
       }
 
       swal.fire({
+        icon: 'warning',
         title: `Supprimer ${row.firstname} ${row.lastname}`,
         text: 'Êtes-vous sûr de vouloir supprimer ce compte ?',
-        type: 'warning',
         customClass: {
           confirmButton: 'btn btn-warning mt-2',
           cancelButton: 'btn btn-secondary mt-2'

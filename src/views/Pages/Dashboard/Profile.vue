@@ -340,9 +340,9 @@ export default {
         if (!valid) return
 
         swal.fire({
+          icon: 'warning',
           title: 'Êtes-vous sûr de vouloir changer votre mot de passe ?',
           text: 'Vous serez déconnecté du site !',
-          type: 'warning',
           customClass: {
             confirmButton: 'btn btn-warning',
             cancelButton: 'btn btn-secondary'
