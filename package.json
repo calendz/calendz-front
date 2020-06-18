@@ -14,7 +14,7 @@
     "@fullcalendar/daygrid": "^4.4.0",
     "@fullcalendar/interaction": "^4.4.2",
     "@fullcalendar/timegrid": "^4.4.0",
-    "@fullcalendar/vue": "^4.4.0",
+    "@fullcalendar/vue": "^4.4.2",
     "@saeris/vue-spinners": "^1.0.8",
     "axios": "^0.19.2",
     "bootstrap": "4.3.1",
