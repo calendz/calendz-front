@@ -152,6 +152,41 @@
                 <span class="badge badge-md badge-pill badge-floating badge-danger border-white">2€</span>
               </a>
             </div>
+
+            <div class="mt-7">
+              <p class="display-4">Ils nous aident à financer Calendz</p>
+              <div class="avatar rounded-circle">
+                <!-- Arthur Dufour -->
+                <el-tooltip
+                  content="Arthur Dufour"
+                  placement="bottom">
+                  <img
+                    class="mx-2"
+                    src="https://cdn.discordapp.com/avatars/255065617705467912/b4b7413f8c24e7a5f5fcdee5c2f626da.png"
+                    alt="Arthur Dufour">
+                </el-tooltip>
+
+                <!-- Alexandre Tuet -->
+                <el-tooltip
+                  content="Alexandre Tuet"
+                  placement="bottom">
+                  <img
+                    class="mx-2"
+                    src="https://media-exp1.licdn.com/dms/image/C5603AQH0OnvASlMryQ/profile-displayphoto-shrink_400_400/0?e=1597881600&v=beta&t=eqk5IfYNJV9ggEQ5pVQIHWUQnnj6c5NVGmrCAe919Co"
+                    alt="Alexandre Tuet">
+                </el-tooltip>
+
+                <!-- Valentin Lardet -->
+                <el-tooltip
+                  content="Valentin Lardet"
+                  placement="bottom">
+                  <img
+                    class="mx-2"
+                    src="img/theme/default-pp.png"
+                    alt="Valentin Lardet">
+                </el-tooltip>
+              </div>
+            </div>
           </div>
         </div>
       </div>
