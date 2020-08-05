@@ -52,7 +52,6 @@
 </template>
 
 <script>
-import store from '@/store'
 import { Select, Option } from 'element-ui'
 
 export default {
@@ -142,9 +141,6 @@ export default {
     inputValue (newVal) {
       this.$emit('input', newVal)
     }
-  },
-  mounted () {
-    this.inputValue = store.getters['account/isLoggedIn'] ? store.state.account.user.group : ''
   },
   methods: {
     getError (name) {

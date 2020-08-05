@@ -26,8 +26,6 @@
 </template>
 
 <script>
-import store from '@/store'
-
 export default {
   props: {
     value: {
@@ -86,9 +84,6 @@ export default {
     inputValue (newVal) {
       this.$emit('input', newVal)
     }
-  },
-  mounted () {
-    this.inputValue = store.getters['account/isLoggedIn'] ? store.state.account.user.grade : ''
   },
   methods: {
     getError (name) {
