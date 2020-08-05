@@ -325,7 +325,9 @@ export default {
   },
   methods: {
     readAllNotifications () {
-      this.$store.dispatch('notifications/readAll')
+      this.$store.dispatch('notifications/readAll').then(() => {
+        this.$notify({ type: 'success', message: 'Vous n\'avez plus aucune notification non-lue.' })
+      })
     },
     toggleProfileDropdown () {
       this.showProfileDropdown = !this.showProfileDropdown
