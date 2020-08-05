@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import axios from 'axios'
+
 const apiCalendar = axios.create()
 
 const ApiCalendarService = {
@@ -21,12 +22,8 @@ const ApiCalendarService = {
 
   get (resource) {
     return apiCalendar.get(resource)
-      .then(response => {
-        return response
-      })
-      .catch(error => {
-        return Promise.reject(error)
-      })
+      .then(response => response)
+      .catch(error => Promise.reject(error))
   },
 
   /**
@@ -42,12 +39,8 @@ const ApiCalendarService = {
   **/
   customRequest (data) {
     return apiCalendar(data)
-      .then(response => {
-        return response
-      })
-      .catch(error => {
-        return Promise.reject(error)
-      })
+      .then(response => response)
+      .catch(error => Promise.reject(error))
   }
 }
 
