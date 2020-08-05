@@ -308,6 +308,23 @@
               <div class="row">
                 <div class="col-md-6">
                   <base-input
+                    :error="getError('informationMails')"
+                    :valid="isValid('informationMails')"
+                    class="mb-3"
+                    label="Mails d'informations"
+                    prepend-icon="ni ni-check-bold">
+                    <select
+                      v-validate="'required|boolean'"
+                      v-model="modifyForm.hasInformationMails"
+                      name="actif"
+                      class="form-control">
+                      <option :value="true">Oui</option>
+                      <option :value="false">Non</option>
+                    </select>
+                  </base-input>
+                </div>
+                <div class="col-md-6">
+                  <base-input
                     :error="getError('actif')"
                     :valid="isValid('actif')"
                     class="mb-3"
@@ -324,6 +341,7 @@
                   </base-input>
                 </div>
               </div>
+
               <template slot="footer">
                 <base-button
                   size="md"

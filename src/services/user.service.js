@@ -62,8 +62,8 @@ const UserService = {
   },
 
   // update user informations
-  updateInformations: (id, firstname, lastname, email, permissionLevel, grade, group, city, bts, isActive) => {
-    return ApiService.patch(`/user/${id}`, { firstname, lastname, email, permissionLevel, grade, group, city, bts, isActive })
+  updateInformations: (id, firstname, lastname, email, permissionLevel, grade, group, city, bts, hasInformationMails, isActive) => {
+    return ApiService.patch(`/user/${id}`, { firstname, lastname, email, permissionLevel, grade, group, city, bts, hasInformationMails, isActive })
       .then(res => res)
       .catch(err => Promise.reject(err))
   },
