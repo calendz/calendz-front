@@ -357,9 +357,9 @@ const accountModule = {
           })
     },
 
-    update: ({ commit }, { _id, firstname, lastname, email, permissionLevel, grade, group, city, bts, isActive }) => {
+    update: ({ commit }, { _id, firstname, lastname, email, permissionLevel, grade, group, city, bts, hasInformationMails, isActive }) => {
       commit('UPDATE_USER_REQUEST')
-      UserService.updateInformations(_id, firstname, lastname, email, permissionLevel, grade, group, city, bts, isActive)
+      UserService.updateInformations(_id, firstname, lastname, email, permissionLevel, grade, group, city, bts, hasInformationMails, isActive)
         .then(
           res => {
             commit('UPDATE_USER_SUCCESS')

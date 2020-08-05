@@ -54,9 +54,16 @@ const UserService = {
       .catch(err => Promise.reject(err))
   },
 
+  // get all user's data by its id
+  getById: (id) => {
+    return ApiService.get(`/user/${id}`)
+      .then(res => res.data)
+      .catch(err => Promise.reject(err))
+  },
+
   // update user informations
-  updateInformations: (id, firstname, lastname, email, permissionLevel, grade, group, city, bts, isActive) => {
-    return ApiService.patch(`/user/${id}`, { firstname, lastname, email, permissionLevel, grade, group, city, bts, isActive })
+  updateInformations: (id, firstname, lastname, email, permissionLevel, grade, group, city, bts, hasInformationMails, isActive) => {
+    return ApiService.patch(`/user/${id}`, { firstname, lastname, email, permissionLevel, grade, group, city, bts, hasInformationMails, isActive })
       .then(res => res)
       .catch(err => Promise.reject(err))
   },
@@ -74,8 +81,8 @@ const UserService = {
       .catch(err => Promise.reject(err))
   },
 
-  // get all users
-  getAll: () => {
+  // list all users
+  listAll: () => {
     return ApiService.get('/user/all')
       .then(res => res.data)
       .catch(err => Promise.reject(err.data))
