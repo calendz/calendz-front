@@ -54,6 +54,13 @@ const UserService = {
       .catch(err => Promise.reject(err))
   },
 
+  // get all user's data by its id
+  getById: (id) => {
+    return ApiService.get(`/user/${id}`)
+      .then(res => res.data)
+      .catch(err => Promise.reject(err))
+  },
+
   // update user informations
   updateInformations: (id, firstname, lastname, email, permissionLevel, grade, group, city, bts, isActive) => {
     return ApiService.patch(`/user/${id}`, { firstname, lastname, email, permissionLevel, grade, group, city, bts, isActive })

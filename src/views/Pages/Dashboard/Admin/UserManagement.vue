@@ -146,7 +146,7 @@
                     type="info"
                     size="sm"
                     icon
-                    @click="modal = true, modifyForm = {...row}">
+                    @click="editUser(row)">
                     <i class="text-white ni ni-ruler-pencil"/>
                   </base-button>
                   <base-button
@@ -167,6 +167,7 @@
           <!-- == MODAL: EDIT USER ============================= -->
           <!-- ================================================= -->
           <form
+            v-if="modal"
             class="needs-validation"
             @submit.prevent="handleSubmit">
             <modal :show.sync="modal">
@@ -253,13 +254,14 @@
                     v-model="modifyForm.grade"
                     :school="modifyForm.email ? guessSchoolFromEmail(modifyForm.email) : ''"
                     :disabled="false"
+                    :legacy="true"
                     label="Classe"/>
                 </div>
                 <div class="col-md-6">
                   <GroupsSelect
                     v-model="modifyForm.group"
-                    :disabled="false"
                     :grade="modifyForm.grade"
+                    :disabled="false"
                     :legacy="true"
                     label="Groupe"/>
                 </div>
@@ -453,14 +455,21 @@ export default {
         if (valid) {
           // envoie de la requête d'actualisation
           this.$store.dispatch('account/update', this.modifyForm).then(response => {
-            // update the user in the table without having to reload it
-            const index = this.tableData.findIndex(row => row._id === this.modifyForm._id)
-            this.tableData.splice(index, 1, this.modifyForm)
+            // TODO: update the user in the table without having to reload it
+            // const index = this.tableData.findIndex(row => row._id === this.modifyForm._id)
+            // this.tableData.splice(index, 1, this.modifyForm)
 
             // close the modal
             this.modal = false
+            this.modifyForm = {}
           })
         }
+      })
+    },
+    editUser (row) {
+      UserService.getById(row._id).then((data) => {
+        this.modifyForm = data.user
+        this.modal = true
       })
     },
     deleteUser (row) {
