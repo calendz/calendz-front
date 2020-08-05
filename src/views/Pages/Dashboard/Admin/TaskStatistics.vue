@@ -212,6 +212,7 @@ export default {
           labels: ['Arras', 'Auxerre', 'Bordeaux', 'Brest', 'Grenoble', 'Lille', 'Lyon', 'Montpellier', 'Nantes', 'Rennes', 'Paris', 'Dakar'],
           datasets: [{
             label: 'B1',
+            maxBarThickness: 10,
             backgroundColor: Charts.colors.theme['info'],
             data: [
               this.stats.cities ? this.stats.cities.arras.b1 : 0,
@@ -229,6 +230,7 @@ export default {
             ]
           }, {
             label: 'B2',
+            maxBarThickness: 10,
             backgroundColor: Charts.colors.theme['primary'],
             data: [
               this.stats.cities ? this.stats.cities.arras.b2 : 0,
@@ -246,6 +248,7 @@ export default {
             ]
           }, {
             label: 'B3',
+            maxBarThickness: 10,
             backgroundColor: Charts.colors.theme['success'],
             data: [
               this.stats.cities ? this.stats.cities.arras.b3 : 0,
@@ -263,6 +266,7 @@ export default {
             ]
           }, {
             label: 'I1 ',
+            maxBarThickness: 10,
             backgroundColor: Charts.colors.theme['warning'],
             data: [
               this.stats.cities ? this.stats.cities.arras.i1 : 0,
@@ -280,6 +284,7 @@ export default {
             ]
           }, {
             label: 'I2 ',
+            maxBarThickness: 10,
             backgroundColor: Charts.colors.theme['danger'],
             data: [
               this.stats.cities ? this.stats.cities.arras.i2 : 0,
