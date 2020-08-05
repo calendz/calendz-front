@@ -19,7 +19,7 @@
     </base-header>
 
     <!-- ======================================= -->
-    <!-- == Main =============================== -->
+    <!-- == Main table ========================= -->
     <!-- ======================================= -->
     <div class="container-fluid mt--6 card-wrapper">
       <card
@@ -82,40 +82,6 @@
               v-bind="column"
             />
 
-            <!-- bts -->
-            <el-table-column
-              label="BTS"
-              width="74px"
-              min-width="74px"
-              class="text-center"
-              prop="row.bts"
-              sortable>
-              <template v-slot="{row}">
-                <div class="d-flex">
-                  <div class="col-auto text-center pl-1 pr-0">
-                    {{ row.bts ? 'Oui' : 'Non' }}
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-
-            <!-- permissionLevel -->
-            <el-table-column
-              label="Rôle"
-              width="90px"
-              min-width="90px"
-              class="text-center"
-              prop="row.permissionLevel"
-              sortable>
-              <template v-slot="{row}">
-                <div class="d-flex">
-                  <div class="col-auto text-center pl-1 pr-0">
-                    {{ row.permissionLevel }}
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-
             <!-- register date -->
             <el-table-column
               label="Inscription"
@@ -136,8 +102,8 @@
             <!-- last active date -->
             <el-table-column
               label="Last seen"
-              width="126px"
-              min-width="126px"
+              width="150px"
+              min-width="150px"
               class="text-center"
               prop="row.lastActiveDate"
               sortable>
@@ -153,8 +119,8 @@
             <!-- isActive -->
             <el-table-column
               label="Actif"
-              width="86px"
-              min-width="86px"
+              width="100px"
+              min-width="100px"
               class="text-center"
               prop="row.isActive"
               sortable>
@@ -169,8 +135,8 @@
 
             <!-- actions -->
             <el-table-column
-              min-width="130px"
-              width="130px"
+              min-width="140px"
+              width="140px"
               align="right"
               label="Actions">
               <template v-slot="{row}">
@@ -197,7 +163,9 @@
 
           </el-table>
 
-          <!-- modal -->
+          <!-- ================================================= -->
+          <!-- == MODAL: EDIT USER ============================= -->
+          <!-- ================================================= -->
           <form
             class="needs-validation"
             @submit.prevent="handleSubmit">
@@ -416,7 +384,7 @@ export default {
   data () {
     return {
       modal: false,
-      propsToSearch: ['firstname', 'lastname', 'grade', 'group', 'email', 'permissionLevel'],
+      propsToSearch: ['firstname', 'lastname', 'city', 'grade', 'group', 'email'],
       tableColumns: [
         {
           prop: 'firstname',
@@ -467,10 +435,9 @@ export default {
     })
   },
   created () {
-    UserService.getAll().then(res => {
+    UserService.listAll().then(res => {
       this.tableData = res.users
       this.initFuseSearch(res.users)
-      // this.isFuseSearchReady = true
     })
   },
   methods: {

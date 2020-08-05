@@ -74,8 +74,8 @@ const UserService = {
       .catch(err => Promise.reject(err))
   },
 
-  // get all users
-  getAll: () => {
+  // list all users
+  listAll: () => {
     return ApiService.get('/user/all')
       .then(res => res.data)
       .catch(err => Promise.reject(err.data))
