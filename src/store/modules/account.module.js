@@ -215,6 +215,22 @@ const accountModule = {
               : router.push(localStorage.getItem('calendz.settings.defaultPage') || '/dashboard')
           },
           err => {
+            // si code ancien étudiant
+            if (err && err.code === 'OLD_STUDENT') {
+              commit('LOGIN_FAILURE', { reason: err.message })
+              swal.fire({
+                icon: 'success',
+                title: `Vous avez fini vos études !`,
+                text: `Ou du moins, vous en avez fini avec l'EPSI/WIS ! Félicitations ! Nous vous souhaitons une superbe carrière !`,
+                buttonsStyling: false,
+                focusConfirm: true,
+                confirmButtonText: 'Merci',
+                confirmButtonClass: 'btn btn-success btn-fill'
+              })
+              return
+            }
+
+            // si "erreur classique"
             if (err && err.userId) {
               commit('LOGIN_FAILURE', { reason: err.message, userId: err.userId })
             } else {
