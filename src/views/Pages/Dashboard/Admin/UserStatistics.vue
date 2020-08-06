@@ -466,7 +466,7 @@ export default {
     barChartStacked () {
       return {
         chartData: {
-          labels: ['Arras', 'Auxerre', 'Bordeaux', 'Brest', 'Grenoble', 'Lille', 'Lyon', 'Montpellier', 'Nantes', 'Rennes', 'Paris', 'Dakar'],
+          labels: ['Arras', 'Auxerre', 'Bordeaux', 'Brest', 'Grenoble', 'Lille', 'Lyon', 'Montpellier', 'Nantes', 'Rennes', 'Toulouse', 'Paris', 'Dakar'],
           datasets: [{
             label: 'B1',
             maxBarThickness: 10,
@@ -482,6 +482,7 @@ export default {
               this.stats.cities ? this.stats.cities.montpellier.b1 : 0,
               this.stats.cities ? this.stats.cities.nantes.b1 : 0,
               this.stats.cities ? this.stats.cities.rennes.b1 : 0,
+              this.stats.cities ? this.stats.cities.toulouse.b1 : 0,
               this.stats.cities ? this.stats.cities.paris.b1 : 0,
               this.stats.cities ? this.stats.cities.dakar.b1 : 0
             ]
@@ -500,6 +501,7 @@ export default {
               this.stats.cities ? this.stats.cities.montpellier.b2 : 0,
               this.stats.cities ? this.stats.cities.nantes.b2 : 0,
               this.stats.cities ? this.stats.cities.rennes.b2 : 0,
+              this.stats.cities ? this.stats.cities.toulouse.b2 : 0,
               this.stats.cities ? this.stats.cities.paris.b2 : 0,
               this.stats.cities ? this.stats.cities.dakar.b2 : 0
             ]
@@ -518,6 +520,7 @@ export default {
               this.stats.cities ? this.stats.cities.montpellier.b3 : 0,
               this.stats.cities ? this.stats.cities.nantes.b3 : 0,
               this.stats.cities ? this.stats.cities.rennes.b3 : 0,
+              this.stats.cities ? this.stats.cities.toulouse.b3 : 0,
               this.stats.cities ? this.stats.cities.paris.b3 : 0,
               this.stats.cities ? this.stats.cities.dakar.b3 : 0
             ]
@@ -536,6 +539,7 @@ export default {
               this.stats.cities ? this.stats.cities.montpellier.i1 : 0,
               this.stats.cities ? this.stats.cities.nantes.i1 : 0,
               this.stats.cities ? this.stats.cities.rennes.i1 : 0,
+              this.stats.cities ? this.stats.cities.toulouse.i1 : 0,
               this.stats.cities ? this.stats.cities.paris.i1 : 0,
               this.stats.cities ? this.stats.cities.dakar.i1 : 0
             ]
@@ -554,6 +558,7 @@ export default {
               this.stats.cities ? this.stats.cities.montpellier.i2 : 0,
               this.stats.cities ? this.stats.cities.nantes.i2 : 0,
               this.stats.cities ? this.stats.cities.rennes.i2 : 0,
+              this.stats.cities ? this.stats.cities.toulouse.i2 : 0,
               this.stats.cities ? this.stats.cities.paris.i2 : 0,
               this.stats.cities ? this.stats.cities.dakar.i2 : 0
             ]

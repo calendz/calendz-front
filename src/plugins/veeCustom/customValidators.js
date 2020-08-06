@@ -31,7 +31,7 @@ Validator.extend('valid_city', {
   validate: value => [
     'Arras', 'Auxerre', 'Bordeaux', 'Brest',
     'Grenoble', 'Lille', 'Lyon', 'Montpellier',
-    'Nantes', 'Paris', 'Rennes', 'Dakar'].indexOf(value) !== -1
+    'Nantes', 'Paris', 'Rennes', 'Toulouse', 'Dakar'].indexOf(value) !== -1
 })
 
 Validator.extend('valid_task_type', {

@@ -241,6 +241,7 @@
                       <option>Montpellier</option>
                       <option>Nantes</option>
                       <option>Rennes</option>
+                      <option>Toulouse</option>
                       <option>Paris</option>
                       <option>Dakar</option>
                     </select>

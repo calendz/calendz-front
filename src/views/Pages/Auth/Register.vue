@@ -107,6 +107,7 @@
                     <option>Nantes</option>
                     <option>Paris</option>
                     <option>Rennes</option>
+                    <option>Toulouse</option>
                     <option>Dakar</option>
                   </select>
                 </base-input>
