@@ -14,11 +14,10 @@
                 style="float:left">Cliquez</span>
               <div>
                 <base-button
-                  :disabled="isDisabled"
                   type="primary"
                   size="sm"
                   class="mt--1 mb-2"
-                  @click="disconnectAllUsers($event)">
+                  @click="disconnectAllUsers()">
                   Déconnecter
                 </base-button>
               </div>
@@ -48,26 +47,42 @@
 </template>
 
 <script>
+import swal from 'sweetalert2'
 import Card from '@/components/Cards/Card.vue'
 
 export default {
   components: {
     Card
   },
-  data () {
-    return {
-      isDisabled: false
-    }
-  },
   methods: {
-    disconnectAllUsers (element) {
-      // disable the button and re-enable it after 5 seconds
-      this.isDisabled = true
-      setTimeout(() => {
-        this.isDisabled = false
-      }, 5000)
-
-      this.$store.dispatch('sysconf/disconnectAllUsers')
+    disconnectAllUsers () {
+      swal.fire({
+        icon: 'warning',
+        title: 'Êtes vous sûr ?',
+        text: 'Tous les utilisateurs devront se reconnecter avec leur mot de passe.',
+        customClass: {
+          confirmButton: 'btn btn-warning',
+          cancelButton: 'btn btn-secondary'
+        },
+        buttonsStyling: false,
+        showCancelButton: true,
+        cancelButtonText: 'Annuler',
+        confirmButtonText: 'Oui !'
+      }).then((result) => {
+        if (result.value) {
+          this.$store.dispatch('sysconf/disconnectAllUsers')
+          swal.fire({
+            icon: 'success',
+            title: 'Les utilisateurs ont bien déconnectés',
+            text: 'Vous allez désormais être déconnecté à votre tour.',
+            customClass: {
+              confirmButton: 'btn btn-primary'
+            }
+          }).then(() => {
+            this.$store.dispatch('account/logout', {})
+          })
+        }
+      })
     }
   }
 }
