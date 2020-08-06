@@ -70,6 +70,16 @@ const accountModule = {
       state.status = { reason }
     },
 
+    MIGRATION_REQUEST: (state) => {
+      state.status = { isMigrating: true }
+    },
+    MIGRATION_SUCCESS: (state, data) => {
+      state.status = { isMigrating: false }
+    },
+    MIGRATION_FAILURE: (state, reason) => {
+      state.status = { isMigrating: false, migrationError: reason }
+    },
+
     CHANGE_BTS_REQUEST: (state) => {
       state.status = { isChanging: true }
     },
@@ -230,6 +240,25 @@ const accountModule = {
               return
             }
 
+            // si code besoin de maj
+            if (err && err.code === 'REQUIRE_MIGRATION') {
+              swal.fire({
+                icon: 'info',
+                title: `Mise-à-jour requise`,
+                text: `Il semblerait que ça soit la première fois que vous vous connectez cette année. Vous devez mettre à jour certaines informations sur votre profil.`,
+                buttonsStyling: false,
+                focusConfirm: true,
+                confirmButtonText: 'Commencer',
+                confirmButtonClass: 'btn btn-primary btn-fill'
+              }).then((result) => {
+                // affichage modal pour maj profil
+                commit('layout/OPEN_MIGRATION_MODAL', err.info, { root: true })
+                commit('LOGIN_FAILURE', { reason: err.message })
+              })
+
+              return
+            }
+
             // si "erreur classique"
             if (err && err.userId) {
               commit('LOGIN_FAILURE', { reason: err.message, userId: err.userId })
@@ -253,6 +282,26 @@ const accountModule = {
                 if (result.value) router.push('/password-reset')
               })
             }
+          })
+    },
+
+    migrate: ({ commit }, { token, grade, group, city, bts }) => {
+      commit('MIGRATION_REQUEST')
+      UserService.migrate(token, grade, group, city, bts)
+        .then(
+          res => {
+            commit('MIGRATION_SUCCESS')
+            commit('layout/CLOSE_MIGRATION_MODAL', {}, { root: true })
+            swal.fire({
+              icon: 'success',
+              title: 'Tout est prêt !',
+              text: 'Votre compte a bien été mis-à-jour, vous pouvez désormais vous connecter !',
+              customClass: { confirmButton: 'btn btn-primary' }
+            })
+          },
+          err => {
+            commit('MIGRATION_FAILURE', err.data.message)
+            Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.data.message || 'Erreur inconnue...'}` })
           })
     },
 

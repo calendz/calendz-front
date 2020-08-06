@@ -95,7 +95,7 @@
                     class="form-control">
                     <option
                       value=""
-                      hidden>Séléctionnez votre ville</option>
+                      hidden>Votre ville</option>
                     <option>Arras</option>
                     <option>Auxerre</option>
                     <option>Bordeaux</option>

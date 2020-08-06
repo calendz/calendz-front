@@ -15,7 +15,7 @@
         class="form-control">
         <option
           value=""
-          hidden>Sélectionnez votre niveau</option>
+          hidden>Votre niveau</option>
         <option
           v-for="(option, index) in options"
           :key="index"
@@ -75,7 +75,7 @@ export default {
           ]
         default:
           return [
-            { value: 'Sélectionnez votre niveau' }
+            { value: 'Votre niveau' }
           ]
       }
     }
