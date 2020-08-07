@@ -35,6 +35,12 @@ const SysconfService = {
     return ApiService.delete(`/sysconf/refresh-tokens/all`)
       .then(res => res)
       .catch(err => Promise.reject(err.data))
+  },
+
+  migrateAllUsers: () => {
+    return ApiService.patch(`/sysconf/migrate/all`)
+      .then(res => res)
+      .catch(err => Promise.reject(err.data))
   }
 }
 
