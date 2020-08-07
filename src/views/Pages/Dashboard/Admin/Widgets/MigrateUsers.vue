@@ -6,7 +6,7 @@
 
       <div class="col">
         <slot>
-          <h5 class="card-title text-uppercase text-muted mb-1">DÉMARRER MIGRATION UTILISATEURS</h5>
+          <h5 class="card-title text-uppercase text-muted mb-1">DÉMARRER MIGRATION</h5>
           <div class="row mt-2 mb--3">
             <div class="col-12 pr-0">
               <base-button
