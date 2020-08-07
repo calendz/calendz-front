@@ -9,18 +9,13 @@
           <h5 class="card-title text-uppercase text-muted mb-1">DÉCONNECTER LES UTILISATEURS</h5>
           <div class="row mt-2 mb--3">
             <div class="col-12 pr-0">
-              <span
-                class="h2 font-weight-bold mt--1 mb-2 mr-2"
-                style="float:left">Cliquez</span>
-              <div>
-                <base-button
-                  type="primary"
-                  size="sm"
-                  class="mt--1 mb-2"
-                  @click="disconnectAllUsers()">
-                  Déconnecter
-                </base-button>
-              </div>
+              <base-button
+                type="primary"
+                size="sm"
+                class="mb-2"
+                @click="disconnectAllUsers()">
+                Lancer déconnexion
+              </base-button>
             </div>
           </div>
         </slot>
