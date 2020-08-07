@@ -26,6 +26,13 @@ const UserService = {
       .catch(err => Promise.reject(err.data))
   },
 
+  // account migration
+  migrate: (token, grade, group, city, bts) => {
+    return ApiService.post('/user/migrate', { token, grade, group, city, bts })
+      .then(res => res.data)
+      .catch(err => Promise.reject(err))
+  },
+
   // fetch current user's data
   fetch: () => {
     return ApiService.get('/user/fetch')

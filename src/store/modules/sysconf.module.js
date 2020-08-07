@@ -80,6 +80,16 @@ const sysconfModule = {
     },
     DISCONNECT_USERS_FAILURE: (state, reason) => {
       state.status = { disconnectUsersError: reason }
+    },
+
+    MIGRATE_USERS_REQUEST: (state) => {
+      state.status = { isMigrating: true }
+    },
+    MIGRATE_USERS_SUCCESS: (state) => {
+      state.status = { isMigrating: false }
+    },
+    MIGRATE_USERS_FAILURE: (state, reason) => {
+      state.status = { migrateUsersError: reason }
     }
   },
 
@@ -161,6 +171,19 @@ const sysconfModule = {
           },
           err => {
             commit('DISCONNECT_USERS_FAILURE', err.message)
+            Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.message || 'Une erreur est survenue...'}` })
+          })
+    },
+    migrateAllUsers: ({ commit }) => {
+      commit('MIGRATE_USERS_REQUEST')
+      SysconfService.migrateAllUsers()
+        .then(
+          res => {
+            commit('MIGRATE_USERS_SUCCESS')
+            Vue.prototype.$notify({ type: 'success', message: `La migration a bien été effectuée.` })
+          },
+          err => {
+            commit('MIGRATE_USERS_FAILURE', err.message)
             Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.message || 'Une erreur est survenue...'}` })
           })
     }

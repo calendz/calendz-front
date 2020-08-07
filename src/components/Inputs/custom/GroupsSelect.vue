@@ -41,7 +41,7 @@
         class="form-control">
         <option
           value=""
-          hidden>Séléctionnez votre groupe</option>
+          hidden>Votre groupe</option>
         <option
           v-for="(option, index) in options"
           :key="index"

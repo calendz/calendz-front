@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- ======================================= -->
-    <!-- == "Base header" ====================== -->
+    <!-- == SMALL CARDS ======================== -->
     <!-- ======================================= -->
     <base-header
       type="primary"
@@ -36,7 +36,7 @@
                           {{ stats.users.total }}
                         </span>
                         <span class="text-muted">
-                          {{ `(au total)` }}
+                          {{ `(au total, ${stats.users.total - stats.users.neverMigrated} réels)` }}
                         </span>
                       </div>
                     </div>
@@ -110,13 +110,13 @@
           </card>
         </div>
 
-        <!-- users that are accepting mails -->
+        <!-- migrated accounts -->
         <div class="col-xl-3 col-md-6">
           <card class="card-stats">
             <div class="row">
               <div class="col">
                 <slot>
-                  <h5 class="card-title text-uppercase text-muted mb-1">MAILING LIST</h5>
+                  <h5 class="card-title text-uppercase text-muted mb-1">COMPTES MIGRÉS</h5>
                   <div class="row mt-2 mb--3">
                     <div class="col-12 pr-0">
                       <div v-if="!stats.users">
@@ -125,10 +125,10 @@
 
                       <div v-if="stats.users">
                         <span class="h2 font-weight-bold mt--1 mr-2 float-left">
-                          {{ `${stats.users.mailing}/${stats.users.total}` }}
+                          {{ `${stats.users.migrated}/${stats.users.total - stats.users.neverMigrated}` }}
                         </span>
                         <span class="text-muted">
-                          {{ `(${Math.ceil(stats.users.mailing/stats.users.total*100)}%)` }}
+                          {{ `(${Math.ceil(stats.users.migrated/(stats.users.total - stats.users.neverMigrated) * 100)}%)` }}
                         </span>
                       </div>
                     </div>
@@ -138,7 +138,7 @@
 
               <div class="col-auto">
                 <slot name="icon">
-                  <div class="icon icon-shape bg-gradient-info text-white rounded-circle shadow">
+                  <div class="icon icon-shape bg-gradient-danger text-white rounded-circle shadow">
                     <i class="fas fa-users"/>
                   </div>
                 </slot>
@@ -156,13 +156,13 @@
           </card>
         </div>
 
-        <!-- users doing bts -->
+        <!-- TODO: ajouter info, comptes qui ne seront jamais migrés car WIS 5 ou i2 -->
         <div class="col-xl-3 col-md-6">
           <card class="card-stats">
             <div class="row">
               <div class="col">
                 <slot>
-                  <h5 class="card-title text-uppercase text-muted mb-1">INSCRITS EN BTS</h5>
+                  <h5 class="card-title text-uppercase text-muted mb-1">ANCIENS COMPTES</h5>
                   <div class="row mt-2 mb--3">
                     <div class="col-12 pr-0">
                       <div v-if="!stats.users">
@@ -171,10 +171,10 @@
 
                       <div v-if="stats.users">
                         <span class="h2 font-weight-bold mt--1 mr-2 float-left">
-                          {{ `${stats.users.bts}/${stats.users.total}` }}
+                          {{ `${stats.users.neverMigrated}/${stats.users.total}` }}
                         </span>
                         <span class="text-muted">
-                          {{ `(${Math.ceil(stats.users.bts/stats.users.total*100)}%)` }}
+                          {{ `(${Math.ceil(stats.users.neverMigrated/stats.users.total*100)}%)` }}
                         </span>
                       </div>
                     </div>
@@ -184,7 +184,7 @@
 
               <div class="col-auto">
                 <slot name="icon">
-                  <div class="icon icon-shape bg-gradient-purple text-white rounded-circle shadow">
+                  <div class="icon icon-shape bg-gradient-danger text-white rounded-circle shadow">
                     <i class="fas fa-users"/>
                   </div>
                 </slot>
@@ -360,11 +360,103 @@
             </p>
           </card>
         </div>
+
+        <!-- users doing bts -->
+        <div class="col-xl-3 col-md-6">
+          <card class="card-stats">
+            <div class="row">
+              <div class="col">
+                <slot>
+                  <h5 class="card-title text-uppercase text-muted mb-1">INSCRITS EN BTS</h5>
+                  <div class="row mt-2 mb--3">
+                    <div class="col-12 pr-0">
+                      <div v-if="!stats.users">
+                        <placeholder class="w-75"/>
+                      </div>
+
+                      <div v-if="stats.users">
+                        <span class="h2 font-weight-bold mt--1 mr-2 float-left">
+                          {{ `${stats.users.bts}/${stats.users.total}` }}
+                        </span>
+                        <span class="text-muted">
+                          {{ `(${Math.ceil(stats.users.bts/stats.users.total*100)}%)` }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </slot>
+              </div>
+
+              <div class="col-auto">
+                <slot name="icon">
+                  <div class="icon icon-shape bg-gradient-purple text-white rounded-circle shadow">
+                    <i class="fas fa-users"/>
+                  </div>
+                </slot>
+              </div>
+            </div>
+
+            <p class="mt-3 mb-0 text-sm">
+              <slot name="footer">
+                <i class="fas fa-external-link-alt mr-2"/>
+                <router-link to="/user-management">
+                  <span class="nav-link p-0 d-inline text-nowrap">accéder liste utilisateurs</span>
+                </router-link>
+              </slot>
+            </p>
+          </card>
+        </div>
+
+        <!-- users that are accepting mails -->
+        <div class="col-xl-3 col-md-6">
+          <card class="card-stats">
+            <div class="row">
+              <div class="col">
+                <slot>
+                  <h5 class="card-title text-uppercase text-muted mb-1">MAILING LIST</h5>
+                  <div class="row mt-2 mb--3">
+                    <div class="col-12 pr-0">
+                      <div v-if="!stats.users">
+                        <placeholder class="w-75"/>
+                      </div>
+
+                      <div v-if="stats.users">
+                        <span class="h2 font-weight-bold mt--1 mr-2 float-left">
+                          {{ `${stats.users.mailing}/${stats.users.total}` }}
+                        </span>
+                        <span class="text-muted">
+                          {{ `(${Math.ceil(stats.users.mailing/stats.users.total*100)}%)` }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </slot>
+              </div>
+
+              <div class="col-auto">
+                <slot name="icon">
+                  <div class="icon icon-shape bg-gradient-info text-white rounded-circle shadow">
+                    <i class="fas fa-users"/>
+                  </div>
+                </slot>
+              </div>
+            </div>
+
+            <p class="mt-3 mb-0 text-sm">
+              <slot name="footer">
+                <i class="fas fa-external-link-alt mr-2"/>
+                <router-link to="/user-management">
+                  <span class="nav-link p-0 d-inline text-nowrap">accéder liste utilisateurs</span>
+                </router-link>
+              </slot>
+            </p>
+          </card>
+        </div>
       </div>
     </base-header>
 
     <!-- ======================================= -->
-    <!-- == Main =============================== -->
+    <!-- == LARGE CARDS ======================== -->
     <!-- ======================================= -->
     <div class="container-fluid mt--6 card-wrapper">
       <div class="row">
