@@ -15,7 +15,8 @@
               name: 'Dashboard',
               icon: 'ni ni-shop text-red',
               path: '/dashboard'
-          }"/>
+            }"
+          />
 
           <!-- calendar -->
           <sidebar-item
@@ -23,7 +24,8 @@
               name: 'Emploi du temps',
               icon: 'ni ni-calendar-grid-58 text-info',
               path: '/calendar'
-          }"/>
+            }"
+          />
 
           <!-- homeworks -->
           <sidebar-item
@@ -31,15 +33,17 @@
               name: 'Devoirs et tâches',
               icon: 'fas fa-book text-primary',
               path: '/tasks'
-          }"/>
+            }"
+          />
 
-          <!-- settings -->
+          <!-- profile -->
           <sidebar-item
             :link="{
               name: 'Mon profil',
               icon: 'fas fa-user-edit text-success',
               path: '/profile'
-          }"/>
+            }"
+          />
 
           <!-- settings -->
           <sidebar-item
@@ -47,7 +51,21 @@
               name: 'Paramètres',
               icon: 'fas fa-cogs text-grey',
               path: '/settings'
-          }"/>
+            }"
+          />
+
+          <!-- help -->
+          <sidebar-item
+            :link="{
+              name: 'Aide (informations)',
+              icon: 'fas fa-info-circle text-default',
+              path: '/help/calendar'
+          }">
+            <sidebar-item :link="{ name: 'Emploi du temps', path: '/help/calendar' }"/>
+            <sidebar-item :link="{ name: 'Devoirs et tâches', path: '/help/tasks' }"/>
+            <sidebar-item :link="{ name: 'Gestion des notes', path: '/help/marks' }"/>
+            <sidebar-item :link="{ name: 'Autres', path: '/help/others' }"/>
+          </sidebar-item>
         </ul>
       </template>
 
