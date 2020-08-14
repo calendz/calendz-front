@@ -48,12 +48,12 @@ const calendarModule = {
   // == Actions
   // ==================================
   actions: {
-    fetchDate: ({ state, commit, rootState }, { date }) => {
+    fetchDate: ({ state, commit, rootState }, { date, force = false }) => {
       // get week { year, number } of the date to fetch
       const currentWeek = getWeekNumber(new Date(`20${date.split('-')[2]}-${date.substr(0, 5)}T00:00:00.000Z`))
 
-      // if that week hasn't already been fetched
-      if (!state.fetchedWeeks.some(week => week.year === currentWeek.year && week.number === currentWeek.number)) {
+      // if that week hasn't already been fetched (or if using force)
+      if (force || !state.fetchedWeeks.some(week => week.year === currentWeek.year && week.number === currentWeek.number)) {
         if (process.env.NODE_ENV === 'development') console.log(`Year ${currentWeek.year}, week ${currentWeek.number}: FETCHING`)
 
         const notificationTimestamp = new Date()
@@ -72,7 +72,7 @@ const calendarModule = {
 
         const userToFetch = localStorage.getItem('calendz.calendar.searchInput') || rootState.account.user.email
         commit('FETCH_REQUEST', { currentWeek })
-        CalendarService.getWeek(userToFetch, date)
+        CalendarService.getWeek(userToFetch, date, force)
           .then(
             res => {
               const weekCourses = reformatWeek(res.week)

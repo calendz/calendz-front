@@ -80,6 +80,16 @@
               @click="changeView('timeGridDay')">
               Jour
             </base-button>
+            <el-tooltip
+              content="Forcer la réactualisation"
+              placement="top">
+              <base-button
+                type="default"
+                class="btn btn-sm py-2 my-1"
+                @click="reload()">
+                <i class="fas fa-sync-alt"/>
+              </base-button>
+            </el-tooltip>
           </div>
 
         </div>
@@ -713,6 +723,11 @@ export default {
       if (e.keyCode === 39 && !this.showSearchInput) this.next()
       if (e.keyCode === 37 && !this.showSearchInput) this.prev()
     },
+    reload () {
+      const date = this.dateToMonthDayYear(this.activeDate)
+      this.$store.dispatch('calendar/resetFetchedWeeks')
+      this.$store.dispatch('calendar/fetchDate', { date: date, force: true })
+    },
     // ===========================================
     // == Task functions
     // ===========================================
@@ -783,6 +798,7 @@ export default {
   }
 }
 </script>
+
 <style lang="scss">
   @import "~@fullcalendar/core/main.css";
   @import '~@fullcalendar/daygrid/main.css';
