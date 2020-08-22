@@ -33,7 +33,7 @@
     "vee-validate": "^2.2.15",
     "vue": "^2.6.11",
     "vue-analytics": "^5.22.1",
-    "vue-chartjs": "^3.5.0",
+    "vue-chartjs": "^3.5.1",
     "vue-clipboard2": "^0.3.1",
     "vue-flatpickr-component": "^8.1.5",
     "vue-router": "^3.4.3",
