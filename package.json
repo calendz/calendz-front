@@ -24,7 +24,7 @@
     "element-ui": "2.13.2",
     "es6-promise": "^4.1.1",
     "flatpickr": "^4.6.6",
-    "fuse.js": "^3.6.1",
+    "fuse.js": "^5.2.3",
     "nouislider": "^14.6.1",
     "perfect-scrollbar": "^1.5.0",
     "quill": "^1.3.7",
