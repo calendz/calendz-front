@@ -36,7 +36,7 @@
                           {{ stats.users.total }}
                         </span>
                         <span class="text-muted">
-                          {{ `(au total, ${stats.users.total - stats.users.neverMigrated} réels)` }}
+                          {{ `(au total)` }}
                         </span>
                       </div>
                     </div>
@@ -217,10 +217,10 @@
 
                       <div v-if="stats.users">
                         <span class="h2 font-weight-bold mt--1 mr-2 float-left">
-                          {{ `${activeUsers === 1 ? `${stats.users.activeAccount.lastDay}` : activeUsers === 3 ? `${stats.users.activeAccount.lastThreeDays}` : `${stats.users.activeAccount.lastWeek}`}/${stats.users.total}` }}
+                          {{ `${activeUsers === 1 ? `${stats.users.activeAccount.lastDay}` : activeUsers === 3 ? `${stats.users.activeAccount.lastThreeDays}` : `${stats.users.activeAccount.lastWeek}`}/${stats.users.total - stats.users.neverMigrated - stats.users.inactive}` }}
                         </span>
                         <span class="text-muted">
-                          {{ `(${Math.ceil(`${activeUsers === 1 ? `${stats.users.activeAccount.lastDay}` : activeUsers === 3 ? `${stats.users.activeAccount.lastThreeDays}` : `${stats.users.activeAccount.lastWeek}`}`/stats.users.total*100)}%)` }}
+                          {{ `(${Math.ceil(`${activeUsers === 1 ? `${stats.users.activeAccount.lastDay}` : activeUsers === 3 ? `${stats.users.activeAccount.lastThreeDays}` : `${stats.users.activeAccount.lastWeek}`}`/(stats.users.total - stats.users.neverMigrated - stats.users.inactive)*100)}%)` }}
                         </span>
                       </div>
                     </div>
