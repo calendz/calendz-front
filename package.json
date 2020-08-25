@@ -16,7 +16,7 @@
     "@fullcalendar/timegrid": "^4.4.2",
     "@fullcalendar/vue": "^4.4.2",
     "@saeris/vue-spinners": "^1.0.8",
-    "axios": "^0.19.2",
+    "axios": "^0.20.0",
     "bootstrap": "4.3.1",
     "chart.js": "^2.9.3",
     "date-fns": "^2.15.0",
