@@ -80,6 +80,16 @@
               @click="changeView('timeGridDay')">
               Jour
             </base-button>
+            <el-tooltip
+              content="Forcer la réactualisation"
+              placement="top">
+              <base-button
+                type="default"
+                class="btn btn-sm py-2 my-1"
+                @click="reload()">
+                <i class="fas fa-sync-alt"/>
+              </base-button>
+            </el-tooltip>
           </div>
 
         </div>
@@ -526,6 +536,7 @@ export default {
             html += `
               <div>
                 <h5 class="h5-5 pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
+                ${element.event.extendedProps.bts ? '<div class="ribbon ribbon-top-right"><span>BTS</span></div>' : ''}
                 <h3 class="px-2 text-white text-center" style="max-width: 90%; width: 90%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">${element.event.title}</h3>
                 <h5 class="h5-5 pl-2 mb-1 text-white col-7" style="position: absolute; bottom: 0; left: 0">${this.capitalizeFirstLetterEachWords(element.event.extendedProps.professor)}<h5>
                 <h5 class="h5-5 pr-2 mb-1 text-white col-3 text-right" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h5>
@@ -540,6 +551,7 @@ export default {
             html += `
               <div>
                 <h5 class="h5-5 pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
+                ${element.event.extendedProps.bts ? '<div class="ribbon ribbon-top-right"><span>BTS</span></div>' : ''}
                 <h2 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h2>
                 <h5 class="h5-5 pl-2 mb-1 text-white" style="position: absolute; bottom: 0; left: 0">${this.capitalizeFirstLetterEachWords(element.event.extendedProps.professor)}<h5>
                 <h5 class="h5-5 pr-2 mb-1 text-white" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h5>
@@ -548,6 +560,7 @@ export default {
             html += `
               <div>
                 <h5 class="h5-5 pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
+                ${element.event.extendedProps.bts ? '<div class="ribbon ribbon-top-right"><span>BTS</span></div>' : ''}
                 <h3 class="px-2 text-white text-center" style="max-width: 90%; width: 90%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">${element.event.title}</h3>
                 <h5 class="h5-5 pl-2 mb-1 text-white col-7" style="position: absolute; bottom: 0; left: 0">${this.capitalizeFirstLetterEachWords(element.event.extendedProps.professor)}<h5>
                 <h5 class="h5-5 pr-2 mb-1 text-white col-3 text-right" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h5>
@@ -710,6 +723,11 @@ export default {
       if (e.keyCode === 39 && !this.showSearchInput) this.next()
       if (e.keyCode === 37 && !this.showSearchInput) this.prev()
     },
+    reload () {
+      const date = this.dateToMonthDayYear(this.activeDate)
+      this.$store.dispatch('calendar/resetFetchedWeeks')
+      this.$store.dispatch('calendar/fetchDate', { date: date, force: true })
+    },
     // ===========================================
     // == Task functions
     // ===========================================
@@ -780,6 +798,7 @@ export default {
   }
 }
 </script>
+
 <style lang="scss">
   @import "~@fullcalendar/core/main.css";
   @import '~@fullcalendar/daygrid/main.css';
@@ -890,5 +909,54 @@ export default {
 
   .mt--4-5 {
     margin-top: -2rem !important;
+  }
+
+  // =========================================
+  // == ribbon (bts)
+  // =========================================
+
+  /* common */
+  .ribbon {
+    width: 60px;
+    height: 60px;
+    overflow: hidden;
+    position: absolute;
+  }
+  .ribbon span {
+    position: absolute;
+    display: block;
+    width: 100px;
+    padding: 6px 0;
+    background-color: #3498db;
+    box-shadow: 0 5px 10px rgba(0,0,0,.1);
+    color: #fff;
+    font: 650 12px/1 'Open Sans', sans-serif;
+    text-shadow: 0 1px 1px rgba(0,0,0,.2);
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  /* top right*/
+  .ribbon-top-right {
+    top: 0px;
+    right: 0px;
+  }
+  .ribbon-top-right::before,
+  .ribbon-top-right::after {
+    border-top-color: transparent;
+    border-right-color: transparent;
+  }
+  .ribbon-top-right::before {
+    top: 0;
+    left: 0;
+  }
+  .ribbon-top-right::after {
+    bottom: 0;
+    right: 0;
+  }
+  .ribbon-top-right span {
+    left: -8px;
+    top: 4px;
+    transform: rotate(45deg);
   }
 </style>

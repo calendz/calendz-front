@@ -19,7 +19,7 @@
     </base-header>
 
     <!-- ======================================= -->
-    <!-- == Main =============================== -->
+    <!-- == Main table ========================= -->
     <!-- ======================================= -->
     <div class="container-fluid mt--6 card-wrapper">
       <card
@@ -82,40 +82,6 @@
               v-bind="column"
             />
 
-            <!-- bts -->
-            <el-table-column
-              label="BTS"
-              width="74px"
-              min-width="74px"
-              class="text-center"
-              prop="row.bts"
-              sortable>
-              <template v-slot="{row}">
-                <div class="d-flex">
-                  <div class="col-auto text-center pl-1 pr-0">
-                    {{ row.bts ? 'Oui' : 'Non' }}
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-
-            <!-- permissionLevel -->
-            <el-table-column
-              label="Rôle"
-              width="90px"
-              min-width="90px"
-              class="text-center"
-              prop="row.permissionLevel"
-              sortable>
-              <template v-slot="{row}">
-                <div class="d-flex">
-                  <div class="col-auto text-center pl-1 pr-0">
-                    {{ row.permissionLevel }}
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-
             <!-- register date -->
             <el-table-column
               label="Inscription"
@@ -136,8 +102,8 @@
             <!-- last active date -->
             <el-table-column
               label="Last seen"
-              width="126px"
-              min-width="126px"
+              width="150px"
+              min-width="150px"
               class="text-center"
               prop="row.lastActiveDate"
               sortable>
@@ -153,8 +119,8 @@
             <!-- isActive -->
             <el-table-column
               label="Actif"
-              width="86px"
-              min-width="86px"
+              width="100px"
+              min-width="100px"
               class="text-center"
               prop="row.isActive"
               sortable>
@@ -169,8 +135,8 @@
 
             <!-- actions -->
             <el-table-column
-              min-width="130px"
-              width="130px"
+              min-width="140px"
+              width="140px"
               align="right"
               label="Actions">
               <template v-slot="{row}">
@@ -180,7 +146,7 @@
                     type="info"
                     size="sm"
                     icon
-                    @click="modal = true, modifyForm = {...row}">
+                    @click="editUser(row)">
                     <i class="text-white ni ni-ruler-pencil"/>
                   </base-button>
                   <base-button
@@ -197,8 +163,11 @@
 
           </el-table>
 
-          <!-- modal -->
+          <!-- ================================================= -->
+          <!-- == MODAL: EDIT USER ============================= -->
+          <!-- ================================================= -->
           <form
+            v-if="modal"
             class="needs-validation"
             @submit.prevent="handleSubmit">
             <modal :show.sync="modal">
@@ -271,6 +240,8 @@
                       <option>Lyon</option>
                       <option>Montpellier</option>
                       <option>Nantes</option>
+                      <option>Rennes</option>
+                      <option>Toulouse</option>
                       <option>Paris</option>
                       <option>Dakar</option>
                     </select>
@@ -284,13 +255,14 @@
                     v-model="modifyForm.grade"
                     :school="modifyForm.email ? guessSchoolFromEmail(modifyForm.email) : ''"
                     :disabled="false"
+                    :legacy="true"
                     label="Classe"/>
                 </div>
                 <div class="col-md-6">
                   <GroupsSelect
                     v-model="modifyForm.group"
-                    :disabled="false"
                     :grade="modifyForm.grade"
+                    :disabled="false"
                     :legacy="true"
                     label="Groupe"/>
                 </div>
@@ -337,6 +309,23 @@
               <div class="row">
                 <div class="col-md-6">
                   <base-input
+                    :error="getError('informationMails')"
+                    :valid="isValid('informationMails')"
+                    class="mb-3"
+                    label="Mails d'informations"
+                    prepend-icon="ni ni-check-bold">
+                    <select
+                      v-validate="'required|boolean'"
+                      v-model="modifyForm.hasInformationMails"
+                      name="actif"
+                      class="form-control">
+                      <option :value="true">Oui</option>
+                      <option :value="false">Non</option>
+                    </select>
+                  </base-input>
+                </div>
+                <div class="col-md-6">
+                  <base-input
                     :error="getError('actif')"
                     :valid="isValid('actif')"
                     class="mb-3"
@@ -353,6 +342,7 @@
                   </base-input>
                 </div>
               </div>
+
               <template slot="footer">
                 <base-button
                   size="md"
@@ -415,7 +405,7 @@ export default {
   data () {
     return {
       modal: false,
-      propsToSearch: ['firstname', 'lastname', 'grade', 'group', 'email', 'permissionLevel'],
+      propsToSearch: ['firstname', 'lastname', 'city', 'grade', 'group', 'email'],
       tableColumns: [
         {
           prop: 'firstname',
@@ -466,10 +456,9 @@ export default {
     })
   },
   created () {
-    UserService.getAll().then(res => {
+    UserService.listAll().then(res => {
       this.tableData = res.users
       this.initFuseSearch(res.users)
-      // this.isFuseSearchReady = true
     })
   },
   methods: {
@@ -485,30 +474,37 @@ export default {
         if (valid) {
           // envoie de la requête d'actualisation
           this.$store.dispatch('account/update', this.modifyForm).then(response => {
-            // update the user in the table without having to reload it
-            const index = this.tableData.findIndex(row => row._id === this.modifyForm._id)
-            this.tableData.splice(index, 1, this.modifyForm)
+            // TODO: update the user in the table without having to reload it
+            // const index = this.tableData.findIndex(row => row._id === this.modifyForm._id)
+            // this.tableData.splice(index, 1, this.modifyForm)
 
             // close the modal
             this.modal = false
+            this.modifyForm = {}
           })
         }
+      })
+    },
+    editUser (row) {
+      UserService.getById(row._id).then((data) => {
+        this.modifyForm = data.user
+        this.modal = true
       })
     },
     deleteUser (row) {
       if (row._id === this.user._id) {
         return swal.fire({
+          icon: 'error',
           title: 'Tututut !',
           text: 'Vous ne pouvez pas vous auto-supprimer, pour cela rendez-vous dans la page "Paramètres".',
-          type: 'error',
           customClass: { confirmButton: 'btn btn-primary' }
         })
       }
 
       swal.fire({
+        icon: 'warning',
         title: `Supprimer ${row.firstname} ${row.lastname}`,
         text: 'Êtes-vous sûr de vouloir supprimer ce compte ?',
-        type: 'warning',
         customClass: {
           confirmButton: 'btn btn-warning mt-2',
           cancelButton: 'btn btn-secondary mt-2'

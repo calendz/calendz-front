@@ -41,7 +41,7 @@
         class="form-control">
         <option
           value=""
-          hidden>Séléctionnez votre groupe</option>
+          hidden>Votre groupe</option>
         <option
           v-for="(option, index) in options"
           :key="index"
@@ -52,7 +52,6 @@
 </template>
 
 <script>
-import store from '@/store'
 import { Select, Option } from 'element-ui'
 
 export default {
@@ -142,9 +141,6 @@ export default {
     inputValue (newVal) {
       this.$emit('input', newVal)
     }
-  },
-  mounted () {
-    this.inputValue = store.getters['account/isLoggedIn'] ? store.state.account.user.group : ''
   },
   methods: {
     getError (name) {

@@ -64,16 +64,29 @@
         :menu-on-right="true"
         :menu-classes="'dropdown-menu dropdown-menu-xl py-0 overflow-hidden'"
         :pill-amount="notifications.length"
-        class="nav-item">
-        <div class="px-3 py-3">
-          <h6 class="text-sm text-muted text-center m-0">
-            <span v-if="notifications.length > 0">
-              Vous avez <strong class="text-primary">{{ notifications.length }}</strong> {{ notifications.length > 1 ? 'notifications non-lues' : 'notification non-lue' }}.
-            </span>
-            <span v-else>
-              Vous n'avez aucune notification non-lue !
-            </span>
-          </h6>
+        class="nav-item"
+      >
+        <div class="row px-3 py-3">
+          <div class="col-9">
+            <h6 class="text-sm text-muted text-left m-0">
+              <span v-if="notifications.length > 0">
+                Vous avez <strong class="text-primary">{{ notifications.length }}</strong> {{ notifications.length > 1 ? 'notifications non-lues' : 'notification non-lue' }}.
+              </span>
+              <span v-else>
+                Vous n'avez aucune notification non-lue !
+              </span>
+            </h6>
+          </div>
+
+          <div class="col-3">
+            <base-button
+              :disabled="notifications.length < 1"
+              type="primary"
+              size="sm"
+              @click="readAllNotifications()">
+              Tout lire
+            </base-button>
+          </div>
         </div>
 
         <div
@@ -311,6 +324,11 @@ export default {
     this.$store.dispatch('calendar/fetchDate', { date: date2 })
   },
   methods: {
+    readAllNotifications () {
+      this.$store.dispatch('notifications/readAll').then(() => {
+        this.$notify({ type: 'success', message: 'Vous n\'avez plus aucune notification non-lue.' })
+      })
+    },
     toggleProfileDropdown () {
       this.showProfileDropdown = !this.showProfileDropdown
     },
@@ -325,9 +343,9 @@ export default {
     },
     logout () {
       swal.fire({
+        icon: 'info',
         title: 'Êtes vous sûr ?',
         text: 'Vous serez déconnecté du site !',
-        type: 'info',
         customClass: {
           confirmButton: 'btn btn-primary',
           cancelButton: 'btn btn-secondary'
@@ -340,8 +358,8 @@ export default {
         if (result.value) {
           this.$store.dispatch('account/logout', {})
           swal.fire({
+            icon: 'success',
             title: 'Vous avez été déconnecté',
-            type: 'success',
             customClass: {
               confirmButton: 'btn btn-primary'
             }

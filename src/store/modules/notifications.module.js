@@ -140,8 +140,8 @@ const notificationsModule = {
           res => {
             commit('NOTIF_CREATE_SUCCESS')
             swal.fire({
+              icon: 'success',
               title: 'Notification créée avec succès',
-              type: 'success',
               customClass: {
                 confirmButton: 'btn btn-primary'
               }
@@ -150,9 +150,9 @@ const notificationsModule = {
           err => {
             commit('NOTIF_CREATE_FAILURE', err.message)
             swal.fire({
+              icon: 'error',
               title: 'Une erreur est survenue',
               text: err.message,
-              type: 'error',
               customClass: {
                 confirmButton: 'btn btn-primary'
               }

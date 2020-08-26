@@ -28,7 +28,7 @@ router.beforeEach((to, from, next) => {
 
   // if user isn't connected, redirect him to login
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!store.getters['account/isLoggedIn']) return router.push('/login')
+    if (!store.getters['account/isLoggedIn']) return router.push(`/login?redirect=${to.fullPath}`)
   }
 
   // if user isn't admin, redirect him to main dashboard

@@ -70,6 +70,16 @@ const accountModule = {
       state.status = { reason }
     },
 
+    MIGRATION_REQUEST: (state) => {
+      state.status = { isMigrating: true }
+    },
+    MIGRATION_SUCCESS: (state, data) => {
+      state.status = { isMigrating: false }
+    },
+    MIGRATION_FAILURE: (state, reason) => {
+      state.status = { isMigrating: false, migrationError: reason }
+    },
+
     CHANGE_BTS_REQUEST: (state) => {
       state.status = { isChanging: true }
     },
@@ -199,7 +209,7 @@ const accountModule = {
           })
     },
 
-    login: ({ state, commit }, { email, password, rememberMe }) => {
+    login: ({ state, commit }, { email, password, rememberMe, redirect }) => {
       commit('LOGIN_REQUEST')
       commit('calendar/RESET', {}, { root: true })
       UserService.login(email.toLowerCase(), password, rememberMe)
@@ -208,9 +218,48 @@ const accountModule = {
             localStorage.setItem('user', JSON.stringify(res.user))
             commit('LOGIN_SUCCESS', res.user)
             Vue.prototype.$notify({ type: 'success', message: 'Vous êtes désormais connecté.' })
-            router.push(localStorage.getItem('calendz.settings.defaultPage') || '/dashboard')
+
+            // si ?redirect est défini
+            redirect
+              ? router.push(decodeURI(redirect))
+              : router.push(localStorage.getItem('calendz.settings.defaultPage') || '/dashboard')
           },
           err => {
+            // si code ancien étudiant
+            if (err && err.code === 'OLD_STUDENT') {
+              commit('LOGIN_FAILURE', { reason: err.message })
+              swal.fire({
+                icon: 'success',
+                title: `Vous avez fini vos études !`,
+                text: `Ou du moins, vous en avez fini avec l'EPSI/WIS ! Félicitations ! Nous vous souhaitons une superbe carrière !`,
+                buttonsStyling: false,
+                focusConfirm: true,
+                confirmButtonText: 'Merci',
+                confirmButtonClass: 'btn btn-success btn-fill'
+              })
+              return
+            }
+
+            // si code besoin de maj
+            if (err && err.code === 'REQUIRE_MIGRATION') {
+              swal.fire({
+                icon: 'info',
+                title: `Mise-à-jour requise`,
+                text: `Il semblerait que ça soit la première fois que vous vous connectez cette année. Vous devez mettre à jour certaines informations sur votre profil.`,
+                buttonsStyling: false,
+                focusConfirm: true,
+                confirmButtonText: 'Commencer',
+                confirmButtonClass: 'btn btn-primary btn-fill'
+              }).then((result) => {
+                // affichage modal pour maj profil
+                commit('layout/OPEN_MIGRATION_MODAL', err.info, { root: true })
+                commit('LOGIN_FAILURE', { reason: err.message })
+              })
+
+              return
+            }
+
+            // si "erreur classique"
             if (err && err.userId) {
               commit('LOGIN_FAILURE', { reason: err.message, userId: err.userId })
             } else {
@@ -219,7 +268,7 @@ const accountModule = {
 
             if (state.attempts >= 3) {
               swal.fire({
-                type: 'question',
+                icon: 'question',
                 title: `Mot de passe oublié ?`,
                 text: `Pas de panique, indiquez votre adresse mail et nous vous enverrons un lien afin de réinitialiser votre mot de passe.`,
                 buttonsStyling: false,
@@ -233,6 +282,26 @@ const accountModule = {
                 if (result.value) router.push('/password-reset')
               })
             }
+          })
+    },
+
+    migrate: ({ commit }, { token, grade, group, city, bts }) => {
+      commit('MIGRATION_REQUEST')
+      UserService.migrate(token, grade, group, city, bts)
+        .then(
+          res => {
+            commit('MIGRATION_SUCCESS')
+            commit('layout/CLOSE_MIGRATION_MODAL', {}, { root: true })
+            swal.fire({
+              icon: 'success',
+              title: 'Tout est prêt !',
+              text: 'Votre compte a bien été mis-à-jour, vous pouvez désormais vous connecter !',
+              customClass: { confirmButton: 'btn btn-primary' }
+            })
+          },
+          err => {
+            commit('MIGRATION_FAILURE', err.data.message)
+            Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.data.message || 'Erreur inconnue...'}` })
           })
     },
 
@@ -290,8 +359,8 @@ const accountModule = {
           res => {
             commit('CHANGE_PASSWORD_SUCCESS')
             swal.fire({
+              icon: 'success',
               title: 'Votre mot de passe à bien été modifié. Vous avez été déconnecté',
-              type: 'success',
               customClass: { confirmButton: 'btn btn-primary' }
             })
             dispatch('logout', {})
@@ -353,24 +422,24 @@ const accountModule = {
           })
     },
 
-    update: ({ commit }, { _id, firstname, lastname, email, permissionLevel, grade, group, city, bts, isActive }) => {
+    update: ({ commit }, { _id, firstname, lastname, email, permissionLevel, grade, group, city, bts, hasInformationMails, isActive }) => {
       commit('UPDATE_USER_REQUEST')
-      UserService.updateInformations(_id, firstname, lastname, email, permissionLevel, grade, group, city, bts, isActive)
+      UserService.updateInformations(_id, firstname, lastname, email, permissionLevel, grade, group, city, bts, hasInformationMails, isActive)
         .then(
           res => {
             commit('UPDATE_USER_SUCCESS')
             swal.fire({
+              icon: 'success',
               title: 'Les informations de l\'utilisateur ont bien été modifiés !',
-              type: 'success',
               customClass: { confirmButton: 'btn btn-primary' }
             })
           },
           err => {
             commit('UPDATE_USER_FAILURE', err.data.message)
             swal.fire({
+              icon: 'error',
               title: 'Erreur dans la modification des informations !',
               text: err.data.errors[0] || 'Erreur inconnue...',
-              type: 'error',
               customClass: { confirmButton: 'btn btn-primary' }
             })
           })
@@ -383,8 +452,8 @@ const accountModule = {
           res => {
             commit('DELETE_USER_SUCCESS')
             swal.fire({
+              icon: 'success',
               title: 'L\'utilisateur à bien été supprimé',
-              type: 'success',
               customClass: {
                 confirmButton: 'btn btn-primary'
               }
@@ -393,9 +462,9 @@ const accountModule = {
           err => {
             commit('DELETE_USER_FAILURE', err.message)
             swal.fire({
+              icon: 'error',
               title: 'Une erreur est survenue !',
               text: err.message || 'Erreur inconnue...',
-              type: 'error',
               customClass: { confirmButton: 'btn btn-primary' }
             })
           })
@@ -413,9 +482,9 @@ const accountModule = {
           err => {
             commit('DELETE_USER_FAILURE', err.data.message)
             swal.fire({
+              icon: 'error',
               title: 'Une erreur est survenue !',
               text: err.data.message || 'Erreur inconnue...',
-              type: 'error',
               customClass: { confirmButton: 'btn btn-primary' }
             })
           })

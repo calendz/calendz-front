@@ -26,6 +26,9 @@
   </div>
 </template>
 <script>
+import Quill from 'quill'
+import 'quill/dist/quill.core.css'
+
 export default {
   name: 'HtmlEditor',
   props: {
@@ -55,8 +58,6 @@ export default {
     }
   },
   async mounted () {
-    let Quill = await import('quill')
-    Quill = Quill.default || Quill
     this.editorId = this.randomString()
     this.toolbarId = this.randomString()
     this.$nextTick(() => {

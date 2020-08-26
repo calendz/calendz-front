@@ -32,6 +32,10 @@
         <div class="col-xl-3 col-md-5">
           <disconnect-users/>
         </div>
+        <div class="col-xl-3 col-md-5">
+          <migrate-users/>
+        </div>
+
         <div class="col-lg-5">
           <create-notifications/>
         </div>
@@ -43,6 +47,7 @@
 import ToggleLogin from './Widgets/ToggleLogin'
 import ToggleRegister from './Widgets/ToggleRegister'
 import DisconnectUsers from './Widgets/DisconnectUsers'
+import MigrateUsers from './Widgets/MigrateUsers'
 import CreateNotifications from './Widgets/CreateNotifications'
 
 export default {
@@ -50,6 +55,7 @@ export default {
     ToggleLogin,
     ToggleRegister,
     DisconnectUsers,
+    MigrateUsers,
     CreateNotifications
   },
   mounted () {

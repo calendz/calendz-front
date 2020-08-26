@@ -95,7 +95,7 @@
                     class="form-control">
                     <option
                       value=""
-                      hidden>Séléctionnez votre ville</option>
+                      hidden>Votre ville</option>
                     <option>Arras</option>
                     <option>Auxerre</option>
                     <option>Bordeaux</option>
@@ -106,6 +106,8 @@
                     <option>Montpellier</option>
                     <option>Nantes</option>
                     <option>Paris</option>
+                    <option>Rennes</option>
+                    <option>Toulouse</option>
                     <option>Dakar</option>
                   </select>
                 </base-input>

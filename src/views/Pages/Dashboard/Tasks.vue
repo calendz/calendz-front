@@ -726,9 +726,9 @@ export default {
     },
     deleteTask (taskId) {
       swal.fire({
+        icon: 'warning',
         title: `Êtes-vous sûr de vouloir supprimer cette tâche ?`,
         text: 'Elle ne sera plus visible pour aucun des utilisateurs qui lui sont associés.',
-        type: 'warning',
         customClass: {
           confirmButton: 'btn btn-warning mt-2',
           cancelButton: 'btn btn-secondary mt-2'

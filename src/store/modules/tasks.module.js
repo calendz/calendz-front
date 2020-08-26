@@ -112,8 +112,8 @@ const tasksModule = {
             }
 
             swal.fire({
+              icon: 'success',
               title: swalTitle,
-              type: 'success',
               customClass: {
                 confirmButton: 'btn btn-primary'
               }
@@ -122,9 +122,9 @@ const tasksModule = {
           err => {
             commit('TASK_CREATE_FAILURE', err.data.message)
             swal.fire({
+              icon: 'error',
               title: 'Une erreur est survenue',
               text: err.data.errors[0],
-              type: 'error',
               customClass: {
                 confirmButton: 'btn btn-primary'
               }
@@ -169,8 +169,8 @@ const tasksModule = {
             }
 
             swal.fire({
+              icon: 'success',
               title: swalTitle,
-              type: 'success',
               customClass: {
                 confirmButton: 'btn btn-primary'
               }
@@ -179,9 +179,9 @@ const tasksModule = {
           err => {
             commit('TASK_MODIFY_FAILURE', err.data.message)
             swal.fire({
+              icon: 'error',
               title: 'Une erreur est survenue',
               text: err.data.errors[0],
-              type: 'error',
               customClass: {
                 confirmButton: 'btn btn-primary'
               }

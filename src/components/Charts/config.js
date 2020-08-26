@@ -137,8 +137,7 @@ function chartOptions (Chart) {
     },
     ticks: {
       padding: 20
-    },
-    maxBarThickness: 10
+    }
   })
 
   return options

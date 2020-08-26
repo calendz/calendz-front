@@ -48,12 +48,12 @@ const calendarModule = {
   // == Actions
   // ==================================
   actions: {
-    fetchDate: ({ state, commit, rootState }, { date }) => {
+    fetchDate: ({ state, commit, rootState }, { date, force = false }) => {
       // get week { year, number } of the date to fetch
-      const currentWeek = getWeekNumber(new Date('20' + date.split('-')[2] + '-' + date.substr(0, 5) + 'T00:00:00.000Z'))
+      const currentWeek = getWeekNumber(new Date(`20${date.split('-')[2]}-${date.substr(0, 5)}T00:00:00.000Z`))
 
-      // if that week hasn't already been fetched
-      if (!state.fetchedWeeks.some(week => week.year === currentWeek.year && week.number === currentWeek.number)) {
+      // if that week hasn't already been fetched (or if using force)
+      if (force || !state.fetchedWeeks.some(week => week.year === currentWeek.year && week.number === currentWeek.number)) {
         if (process.env.NODE_ENV === 'development') console.log(`Year ${currentWeek.year}, week ${currentWeek.number}: FETCHING`)
 
         const notificationTimestamp = new Date()
@@ -72,7 +72,7 @@ const calendarModule = {
 
         const userToFetch = localStorage.getItem('calendz.calendar.searchInput') || rootState.account.user.email
         commit('FETCH_REQUEST', { currentWeek })
-        CalendarService.getWeek(userToFetch, date)
+        CalendarService.getWeek(userToFetch, date, force)
           .then(
             res => {
               const weekCourses = reformatWeek(res.week)
@@ -163,7 +163,8 @@ const reformatWeek = (week) => {
         end: formatDate(course.date, course.end),
         className: 'custom-event',
         professor: course.professor,
-        room: course.room.split('-')[0].split('(')[0]
+        room: course.room.split('-')[0].split('(')[0],
+        bts: course.bts
       })
     })
   }
@@ -184,9 +185,9 @@ const getWeekNumber = (date) => {
   // Make Sunday's day number 7
   date.setUTCDate(date.getUTCDate() + 4 - (date.getUTCDay() || 7))
   // Get first day of year
-  var yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1))
+  const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1))
   // Calculate full weeks to nearest Thursday
-  var weekNo = Math.ceil((((date - yearStart) / 86400000) + 1) / 7)
+  const weekNo = Math.ceil((((date - yearStart) / 86400000) + 1) / 7)
   // Return array of year and week number
 
   // return [date.getUTCFullYear(), weekNo]

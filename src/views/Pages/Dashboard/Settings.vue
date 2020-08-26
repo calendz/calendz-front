@@ -350,9 +350,9 @@ export default {
     },
     deleteAccount () {
       swal.fire({
+        icon: 'warning',
         title: `Êtes-vous sûr de vouloir supprimer votre compte ?`,
         text: 'Vous pourrez toujours vous réinscrire plus tard, mais toutes vos données seront perdues...',
-        type: 'warning',
         customClass: {
           confirmButton: 'btn btn-warning mt-2',
           cancelButton: 'btn btn-secondary mt-2'

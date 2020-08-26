@@ -31,52 +31,32 @@ const ApiService = {
 
   get (resource) {
     return api.get(resource)
-      .then(response => {
-        return response
-      })
-      .catch(error => {
-        return Promise.reject(error)
-      })
+      .then(response => response)
+      .catch(error => Promise.reject(error))
   },
 
   post (resource, data) {
     return api.post(resource, data)
-      .then(response => {
-        return response
-      })
-      .catch(error => {
-        return Promise.reject(error)
-      })
+      .then(response => response)
+      .catch(error => Promise.reject(error))
   },
 
   put (resource, data) {
     return api.put(resource, data)
-      .then(response => {
-        return response
-      })
-      .catch(error => {
-        return Promise.reject(error)
-      })
+      .then(response => response)
+      .catch(error => Promise.reject(error))
   },
 
   patch (resource, data) {
     return api.patch(resource, data)
-      .then(response => {
-        return response
-      })
-      .catch(error => {
-        return Promise.reject(error)
-      })
+      .then(response => response)
+      .catch(error => Promise.reject(error))
   },
 
   delete (resource) {
     return api.delete(resource)
-      .then(response => {
-        return response
-      })
-      .catch(error => {
-        return Promise.reject(error)
-      })
+      .then(response => response)
+      .catch(error => Promise.reject(error))
   },
 
   /**
@@ -92,12 +72,8 @@ const ApiService = {
   **/
   customRequest (data) {
     return api(data)
-      .then(response => {
-        return response
-      })
-      .catch(error => {
-        return Promise.reject(error)
-      })
+      .then(response => response)
+      .catch(error => Promise.reject(error))
   }
 }
 

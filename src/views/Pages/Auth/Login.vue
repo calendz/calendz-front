@@ -1,6 +1,8 @@
 <template>
   <div>
-    <!-- Header -->
+    <!-- ================================================== -->
+    <!-- == LOGIN HEADER ================================== -->
+    <!-- ================================================== -->
     <div class="header bg-purple py-7 py-lg-8 pt-lg-9">
       <div class="container">
         <div class="header-body text-center mb-5">
@@ -26,7 +28,10 @@
         </svg>
       </div>
     </div>
-    <!-- Page content -->
+
+    <!-- ================================================== -->
+    <!-- == LOGIN FORM ==================================== -->
+    <!-- ================================================== -->
     <div class="container mt--8 pb-5">
       <div class="row justify-content-center">
         <div class="col-lg-5 col-md-7">
@@ -37,7 +42,7 @@
             <div class="card-body px-lg-5 py-lg-5">
               <form
                 role="form"
-                @submit.prevent="handleSubmit">
+                @submit.prevent="handleLoginSubmit()">
                 <base-input
                   v-validate="'required|email|email_valid_school|min:12|max:64'"
                   v-model="loginForm.email"
@@ -104,19 +109,137 @@
         </div>
       </div>
     </div>
+
+    <!-- ================================================== -->
+    <!-- == ACCOUNT MIGRATION MODAL ======================= -->
+    <!-- ================================================== -->
+    <form
+      v-if="openMigrationModal"
+      class="needs-validation"
+      @submit.prevent="handleMigrationSubmit()">
+      <modal
+        :show="openMigrationModal"
+        @close="closeMigrationModal()">
+        <template slot="header">
+          <h5 class="modal-title">Mise à jour du profil</h5>
+        </template>
+
+        <base-alert
+          type="secondary"
+          class=" mb-5 text-center">
+          <strong>Attention!</strong> Ces informations ne pourront plus êtres modifiées ! En cas de problèmes, contactez un admin.
+        </base-alert>
+
+        <div class="row">
+          <div class="col-md-6">
+            <base-input
+              :error="getError('ville')"
+              :valid="isValid('ville')"
+              class="mb-3"
+              prepend-icon="ni ni-hat-3"
+              label="Séléctionnez votre ville">
+              <select
+                v-validate="'required|valid_city'"
+                v-model="migrationForm.city"
+                name="ville"
+                class="form-control">
+                <option
+                  value=""
+                  hidden>Votre ville</option>
+                <option>Arras</option>
+                <option>Auxerre</option>
+                <option>Bordeaux</option>
+                <option>Brest</option>
+                <option>Grenoble</option>
+                <option>Lille</option>
+                <option>Lyon</option>
+                <option>Montpellier</option>
+                <option>Nantes</option>
+                <option>Rennes</option>
+                <option>Toulouse</option>
+                <option>Paris</option>
+                <option>Dakar</option>
+              </select>
+            </base-input>
+          </div>
+          <div class="col-md-6">
+            <GradeSelect
+              v-model="migrationForm.grade"
+              :school="migrationUserEmail ? guessSchoolFromEmail(migrationUserEmail) : ''"
+              :disabled="false"
+              :legacy="true"
+              label="Séléctionnez votre classe"/>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <GroupsSelect
+              v-model="migrationForm.group"
+              :grade="migrationForm.grade"
+              :disabled="false"
+              :legacy="true"
+              label="Séléctionnez votre groupe"/>
+          </div>
+          <div
+            v-if="migrationForm.grade === 'B1' || migrationForm.grade === 'B2'"
+            class="col-md-6">
+            <base-input
+              :error="getError('bts')"
+              :valid="isValid('bts')"
+              class="mb-3"
+              label="Option BTS"
+              prepend-icon="ni ni-book-bookmark">
+              <select
+                v-validate="'required|boolean'"
+                v-model="migrationForm.bts"
+                name="bts"
+                class="form-control">
+                <option :value="true">Oui</option>
+                <option :value="false">Non</option>
+              </select>
+            </base-input>
+          </div>
+        </div>
+
+        <template slot="footer">
+
+          <base-button
+            size="md"
+            type="primary"
+            native-type="submit">
+            Enregistrer
+          </base-button>
+        </template>
+      </modal>
+    </form>
   </div>
 </template>
+
 <script>
 import { mapState } from 'vuex'
 import ApiService from '../../../services/api.service'
 
+import GradeSelect from '@/components/Inputs/custom/GradeSelect'
+import GroupsSelect from '@/components/Inputs/custom/GroupsSelect'
+
 export default {
+  components: {
+    GradeSelect,
+    GroupsSelect
+  },
   data () {
     return {
       loginForm: {
         email: '',
         password: '',
         rememberMe: false
+      },
+      migrationForm: {
+        city: '',
+        grade: '',
+        group: '',
+        bts: false
       }
     }
   },
@@ -124,14 +247,39 @@ export default {
     ...mapState({
       loginError: state => state.account.status.loginError,
       loggingIn: state => state.account.status.isLoggingIn,
-      userId: state => state.account.status.userId
+      userId: state => state.account.status.userId,
+      openMigrationModal: state => state.layout.migrationModal.isOpen,
+      migrationToken: state => state.layout.migrationModal.token,
+      migrationUserEmail: state => state.layout.migrationModal.userEmail,
+      migrationUserCity: state => state.layout.migrationModal.userCity,
+      migrationUserGrade: state => state.layout.migrationModal.userGrade
     })
   },
+  watch: {
+    migrationUserCity: function (newVal) {
+      this.migrationForm.city = newVal
+    },
+    migrationUserGrade: function (newVal) {
+      this.migrationForm.grade = newVal
+    }
+  },
   methods: {
-    handleSubmit (e) {
+    handleLoginSubmit () {
       this.$validator.validate().then(valid => {
-        if (valid) this.$store.dispatch('account/login', this.loginForm)
+        // login form + redirect (if provided)
+        const data = { ...this.loginForm }
+        if (this.$route.query.redirect) data.redirect = this.$route.query.redirect
+
+        if (valid) this.$store.dispatch('account/login', data)
       })
+    },
+    handleMigrationSubmit () {
+      this.$validator.validate().then(valid => {
+        if (valid) this.$store.dispatch('account/migrate', { token: this.migrationToken, ...this.migrationForm })
+      })
+    },
+    closeMigrationModal () {
+      this.$store.commit('layout/CLOSE_MIGRATION_MODAL')
     },
     resendEmail () {
       if (!this.userId) return
@@ -145,6 +293,10 @@ export default {
           this.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.data.message || err} !` })
         })
     },
+    guessSchoolFromEmail (email) {
+      if (email.includes('@epsi.fr')) return 'EPSI'
+      if (email.includes('@wis.fr') || email.includes('@ecoles-wis.net')) return 'WIS'
+    },
     getError (name) {
       return this.errors.first(name)
     },
@@ -154,6 +306,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-</style>

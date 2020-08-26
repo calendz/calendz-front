@@ -195,9 +195,9 @@ export default {
     },
     logout () {
       swal.fire({
+        icon: 'info',
         title: 'Êtes vous sûr ?',
         text: 'Vous serez déconnecté du site !',
-        type: 'info',
         customClass: {
           confirmButton: 'btn btn-primary',
           cancelButton: 'btn btn-secondary'
@@ -210,8 +210,8 @@ export default {
         if (result.value) {
           this.$store.dispatch('account/logout', {})
           swal.fire({
+            icon: 'success',
             title: 'Vous avez été déconnecté',
-            type: 'success',
             customClass: {
               confirmButton: 'btn btn-primary'
             }
@@ -221,9 +221,9 @@ export default {
     },
     comingSoon () {
       swal.fire({
+        icon: 'info',
         title: 'Un peu de patience !',
         text: `Cette fonctionnalité n'est pas encore disponible, mais nous travaillons dur pour la terminer le plus rapidement possible.`,
-        type: 'info',
         customClass: {
           cancelButton: 'btn btn-primary'
         },

@@ -6,15 +6,15 @@
 
       <div class="col">
         <slot>
-          <h5 class="card-title text-uppercase text-muted mb-1">DÉCONNECTER LES UTILISATEURS</h5>
+          <h5 class="card-title text-uppercase text-muted mb-1">DÉMARRER MIGRATION</h5>
           <div class="row mt-2 mb--3">
             <div class="col-12 pr-0">
               <base-button
                 type="primary"
                 size="sm"
                 class="mb-2"
-                @click="disconnectAllUsers()">
-                Lancer déconnexion
+                @click="migrateAllUsers()">
+                Lancer migration
               </base-button>
             </div>
           </div>
@@ -33,9 +33,9 @@
     <p class="mt-3 mb-0 text-sm">
       <slot name="footer">
         <span class="text-danger">
-          <i class="fas fa-trash-alt mr-1"/>
-          Supprime
-        </span> tous les refresh-tokens
+          <i class="fas fa-exclamation-circle mr-1"/>
+          Migre
+        </span> tous les comptes utilisateurs
       </slot>
     </p>
   </card>
@@ -50,11 +50,11 @@ export default {
     Card
   },
   methods: {
-    disconnectAllUsers () {
+    migrateAllUsers () {
       swal.fire({
         icon: 'warning',
         title: 'Êtes vous sûr ?',
-        text: 'Tous les utilisateurs devront se reconnecter avec leur mot de passe.',
+        text: 'Tous les comptes seront désactivés et nécessiteront une mise-à-jour.',
         customClass: {
           confirmButton: 'btn btn-warning',
           cancelButton: 'btn btn-secondary'
@@ -65,11 +65,11 @@ export default {
         confirmButtonText: 'Oui !'
       }).then((result) => {
         if (result.value) {
-          this.$store.dispatch('sysconf/disconnectAllUsers')
+          this.$store.dispatch('sysconf/migrateAllUsers')
           swal.fire({
             icon: 'success',
-            title: 'Les utilisateurs ont bien déconnectés',
-            text: 'Vous allez désormais être déconnecté à votre tour.',
+            title: 'La migration a bien été lancée',
+            text: 'Vous allez désormais être déconnecté pour pouvoir effectuer la migration de votre compte.',
             customClass: {
               confirmButton: 'btn btn-primary'
             }

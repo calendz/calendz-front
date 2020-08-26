@@ -15,7 +15,7 @@
         class="form-control">
         <option
           value=""
-          hidden>Sélectionnez votre niveau</option>
+          hidden>Votre niveau</option>
         <option
           v-for="(option, index) in options"
           :key="index"
@@ -26,8 +26,6 @@
 </template>
 
 <script>
-import store from '@/store'
-
 export default {
   props: {
     value: {
@@ -77,7 +75,7 @@ export default {
           ]
         default:
           return [
-            { value: 'Sélectionnez votre niveau' }
+            { value: 'Votre niveau' }
           ]
       }
     }
@@ -86,9 +84,6 @@ export default {
     inputValue (newVal) {
       this.$emit('input', newVal)
     }
-  },
-  mounted () {
-    this.inputValue = store.getters['account/isLoggedIn'] ? store.state.account.user.grade : ''
   },
   methods: {
     getError (name) {
