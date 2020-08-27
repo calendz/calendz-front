@@ -31,6 +31,12 @@ const SysconfService = {
       .catch(err => Promise.reject(err.data))
   },
 
+  toggleEditGroup: (value) => {
+    return ApiService.patch(`/sysconf/settings/edit-group-enabled/${value}`)
+      .then(res => res)
+      .catch(err => Promise.reject(err.data))
+  },
+
   disconnectAllUsers: () => {
     return ApiService.delete(`/sysconf/refresh-tokens/all`)
       .then(res => res)

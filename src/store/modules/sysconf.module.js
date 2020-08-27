@@ -11,7 +11,8 @@ const sysconfModule = {
     stats: {},
     settings: {
       loginEnabled: true,
-      registerEnabled: true
+      registerEnabled: true,
+      editGroupEnabled: false
     }
   },
 
@@ -24,15 +25,16 @@ const sysconfModule = {
       state.stats = {}
       state.settings = {
         loginEnabled: true,
-        registerEnabled: true
+        registerEnabled: true,
+        editGroupEnabled: false
       }
     },
 
     FETCH_SETTINGS_REQUEST: (state) => {
       state.status = { isLoading: true }
     },
-    FETCH_SETTINGS_SUCCESS: (state, { loginEnabled, registerEnabled }) => {
-      state.settings = { loginEnabled, registerEnabled }
+    FETCH_SETTINGS_SUCCESS: (state, { loginEnabled, registerEnabled, editGroupEnabled }) => {
+      state.settings = { loginEnabled, registerEnabled, editGroupEnabled }
       state.status = {}
     },
     FETCH_SETTINGS_FAILURE: (state, reason) => {
@@ -72,6 +74,17 @@ const sysconfModule = {
       state.status = { toggleRegisterError: reason }
     },
 
+    TOGGLE_EDITGROUP_REQUEST: (state) => {
+      state.status = { isUpdatingEditGroup: true }
+    },
+    TOGGLE_EDITGROUP_SUCCESS: (state, value) => {
+      state.status = { isUpdatingEditGroup: false }
+      state.settings.editGroupEnabled = value
+    },
+    TOGGLE_EDITGROUP_FAILURE: (state, reason) => {
+      state.status = { toggleEditGroupError: reason }
+    },
+
     DISCONNECT_USERS_REQUEST: (state) => {
       state.status = { isDisconnecting: true }
     },
@@ -104,7 +117,8 @@ const sysconfModule = {
           res => {
             const loginEnabled = res.data.loginEnabled || false
             const registerEnabled = res.data.registerEnabled || false
-            commit('FETCH_SETTINGS_SUCCESS', { loginEnabled, registerEnabled })
+            const editGroupEnabled = res.data.editGroupEnabled || false
+            commit('FETCH_SETTINGS_SUCCESS', { loginEnabled, registerEnabled, editGroupEnabled })
           },
           err => {
             commit('FETCH_SETTINGS_FAILURE', err.message)
@@ -158,6 +172,25 @@ const sysconfModule = {
           },
           err => {
             commit('TOGGLE_REGISTER_FAILURE', err.message)
+            Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.message || 'Une erreur est survenue...'}` })
+          })
+    },
+    toggleEditGroup: ({ commit }, { value }) => {
+      commit('TOGGLE_EDITGROUP_REQUEST')
+      SysconfService.toggleEditGroup(value)
+        .then(
+          res => {
+            const message = value
+              ? 'Les utilisateurs peuvent désormais modifier leur groupe !'
+              : 'Les utilisateurs ne peuvent désormais plus modifier leur groupe !'
+            const type = value
+              ? 'success'
+              : 'warning'
+            commit('TOGGLE_EDITGROUP_SUCCESS', value)
+            Vue.prototype.$notify({ type, message })
+          },
+          err => {
+            commit('TOGGLE_EDITGROUP_FAILURE', err.message)
             Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.message || 'Une erreur est survenue...'}` })
           })
     },
