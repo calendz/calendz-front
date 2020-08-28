@@ -65,9 +65,6 @@ export default {
       settings: 'sysconf/getSettings'
     })
   },
-  mounted () {
-    console.log(this.settings)
-  },
   methods: {
     toggleEditGroup (element) {
       // disable the switch and re-enable it after 5 seconds

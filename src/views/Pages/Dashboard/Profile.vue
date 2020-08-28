@@ -127,15 +127,22 @@
               </div>
               <div class="col-md-6">
                 <base-input
-                  :value="user.city"
-                  label="Ville"
-                  placeholder="Votre ville"
+                  :value="user.group"
+                  label="Groupe"
+                  placeholder="Votre groupe"
                   disabled/>
               </div>
             </div>
 
             <div class="row">
-              <div class="col-md-12">
+              <div class="col-md-6">
+                <base-input
+                  :value="user.city"
+                  label="Ville"
+                  placeholder="Votre ville"
+                  disabled/>
+              </div>
+              <div class="col-md-6">
                 <base-input
                   :value="user.email"
                   class=" mb-3"
@@ -160,29 +167,31 @@
 
               <form
                 class="needs-validation"
-                data-vv-scope="bts-form"
-                @submit.prevent="handleProfileSubmit('bts-form')">
+                data-vv-scope="updateProfileForm"
+                @submit.prevent="handleProfileSubmit('updateProfileForm')">
                 <div class="row">
                   <div class="col-md-12 mx-auto">
                     <BtsSelect
                       v-model="bts"
                       :disabled="user.grade !== 'B1' && user.grade !== 'B2'"
-                      vee-scope="bts-form"/>
+                      vee-scope="updateProfileForm"/>
                   </div>
                 </div>
 
                 <div class="row">
                   <div class="col-md-12 mx-auto">
                     <GroupsSelect
+                      :disabled="!settings.editGroupEnabled"
+                      :grade="user.grade"
                       v-model="group"
-                      label="Groupe"
-                      vee-scope="bts-form"/>
+                      label="Changer groupe"
+                      vee-scope="updateProfileForm"/>
                   </div>
                 </div>
 
                 <div class="row">
                   <base-button
-                    :disabled="changing || btsFormDisabled || (user.grade !== 'B1' && user.grade !== 'B2')"
+                    :disabled="changing || profileFormDisabled || (user.grade !== 'B1' && user.grade !== 'B2' && !settings.editGroupEnabled)"
                     type="primary"
                     class="mx-auto"
                     size="md"
@@ -297,9 +306,9 @@
 </template>
 <script>
 import swal from 'sweetalert2'
-import { mapState } from 'vuex'
-import { Modal } from '@/components'
+import { mapState, mapGetters } from 'vuex'
 import { Select, Option } from 'element-ui'
+import { Modal } from '@/components'
 import DropzoneFileUpload from '@/components/Inputs/DropzoneFileUpload'
 import BtsSelect from '@/components/Inputs/custom/BtsSelect'
 import GroupsSelect from '@/components/Inputs/custom/GroupsSelect'
@@ -323,7 +332,8 @@ export default {
       },
       group: '',
       bts: '',
-      btsFormDisabled: false
+      profileFormDisabled: false,
+      enableGroupModification: false
     }
   },
   computed: {
@@ -331,7 +341,13 @@ export default {
       user: state => state.account.user,
       changePasswordErrors: state => state.account.status.changePasswordError,
       changing: state => state.account.status.isChanging
+    }),
+    ...mapGetters({
+      settings: 'sysconf/getSettings'
     })
+  },
+  mounted () {
+    this.$store.dispatch('sysconf/fetchSettings')
   },
   methods: {
     handlePasswordSubmit (scope) {
@@ -361,10 +377,10 @@ export default {
     handleProfileSubmit (scope) {
       this.$validator.validateAll(scope).then(valid => {
         if (!valid) return
-        this.$store.dispatch('account/changeBts', { bts: this.bts }).then(() => {
-          this.btsFormDisabled = true
+        this.$store.dispatch('account/updateProfile', { bts: this.bts, group: this.group }).then(() => {
+          this.profileFormDisabled = true
           setTimeout(() => {
-            this.btsFormDisabled = false
+            this.profileFormDisabled = false
           }, 5000)
         })
       })
