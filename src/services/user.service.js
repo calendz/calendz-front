@@ -40,9 +40,9 @@ const UserService = {
       .catch(err => Promise.reject(err))
   },
 
-  // change user's bts status
-  changeBts: (bts) => {
-    return ApiService.patch(`/user/bts/${bts}`)
+  // user self updates its profile
+  updateProfile: (data) => {
+    return ApiService.patch(`/user/profile`, data)
       .then(res => res.data)
       .catch(err => Promise.reject(err))
   },
