@@ -378,6 +378,7 @@ export default {
       this.$validator.validateAll(scope).then(valid => {
         if (!valid) return
         this.$store.dispatch('account/updateProfile', { bts: this.bts, group: this.group }).then(() => {
+          this.$store.dispatch('account/fetch')
           this.profileFormDisabled = true
           setTimeout(() => {
             this.profileFormDisabled = false
