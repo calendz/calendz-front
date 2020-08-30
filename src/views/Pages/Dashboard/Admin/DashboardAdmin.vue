@@ -23,21 +23,24 @@
     <!-- ======================================= -->
     <div class="container-fluid mt--6">
       <div class="row">
-        <div class="col-xl-3 col-md-5">
+        <div class="col-xl-3 col-md-6">
           <toggle-register/>
         </div>
-        <div class="col-xl-3 col-md-5">
+        <div class="col-xl-3 col-md-6">
           <toggle-login/>
         </div>
-        <div class="col-xl-3 col-md-5">
+        <div class="col-xl-3 col-md-6">
           <disconnect-users/>
         </div>
-        <div class="col-xl-3 col-md-5">
+        <div class="col-xl-3 col-md-6">
           <migrate-users/>
         </div>
 
-        <div class="col-lg-5">
+        <div class="col-lg-6">
           <create-notifications/>
+        </div>
+        <div class="col-xl-3 col-md-6">
+          <toggle-edit-group/>
         </div>
       </div>
     </div>
@@ -49,6 +52,7 @@ import ToggleRegister from './Widgets/ToggleRegister'
 import DisconnectUsers from './Widgets/DisconnectUsers'
 import MigrateUsers from './Widgets/MigrateUsers'
 import CreateNotifications from './Widgets/CreateNotifications'
+import ToggleEditGroup from './Widgets/ToggleEditGroup'
 
 export default {
   components: {
@@ -56,7 +60,8 @@ export default {
     ToggleRegister,
     DisconnectUsers,
     MigrateUsers,
-    CreateNotifications
+    CreateNotifications,
+    ToggleEditGroup
   },
   mounted () {
     this.$store.dispatch('sysconf/fetchSettings')

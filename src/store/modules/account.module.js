@@ -80,15 +80,16 @@ const accountModule = {
       state.status = { isMigrating: false, migrationError: reason }
     },
 
-    CHANGE_BTS_REQUEST: (state) => {
-      state.status = { isChanging: true }
+    UPDATE_PROFILE_REQUEST: (state) => {
+      state.status = { isUpdating: true }
     },
-    CHANGE_BTS_SUCCESS: (state, bts) => {
+    UPDATE_PROFILE_SUCCESS: (state, data) => {
       state.status = {}
-      state.user.bts = bts
+      state.user.bts = data.bts
+      state.user.group = data.group
     },
-    CHANGE_BTS_FAILURE: (state, reason) => {
-      state.status = { changeBtsError: reason }
+    UPDATE_PROFILE_FAILURE: (state, reason) => {
+      state.status = { updateProfileError: reason }
     },
 
     CHANGE_PASSWORD_REQUEST: (state) => {
@@ -335,19 +336,20 @@ const accountModule = {
       router.push('/login')
     },
 
-    changeBts: ({ commit }, { bts }) => {
-      commit('CHANGE_BTS_REQUEST')
-      UserService.changeBts(bts)
+    updateProfile: ({ commit }, { bts, group }) => {
+      commit('UPDATE_PROFILE_REQUEST')
+      UserService.updateProfile({ bts, group })
         .then(
           res => {
-            commit('CHANGE_BTS_SUCCESS', bts)
+            commit('UPDATE_PROFILE_SUCCESS', { bts, group })
             const user = JSON.parse(localStorage.user)
             user.bts = bts
+            user.group = group
             localStorage.user = JSON.stringify(user)
             Vue.prototype.$notify({ type: 'success', message: `Modification effectuée avec succès !` })
           },
           err => {
-            commit('CHANGE_BTS_FAILURE', err.data.message)
+            commit('UPDATE_PROFILE_FAILURE', err.data.message)
             Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.data.message || 'Erreur inconnue...'}` })
           })
     },

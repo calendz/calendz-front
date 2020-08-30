@@ -23,13 +23,16 @@ Le front de calendz est développé avec les frameworks et outils suivants* :
 
 | Librairie        | Version | Description                                                                                                       |
 | ---------------- | ------- | ----------------------------------------------------------------------------------------------------------------- |
-| [Vue.js]         | 2.6.10  | Vue.js is a progressive, incrementally-adoptable JavaScript framework for building UI on the web.                 |
-| [vue-cli]        | 3.1.3   | Standard Tooling for Vue.js Development.                                                                          |
-| [vue-router]     | 3.0.6   | The official router for Vue.js                                                                                    |
-| [vuex]           | 3.1.1   | Centralized State Management for Vue.js.                                                                          |
-| [vee-validate]   | 2.2.11  | Template Based Validation Framework for Vue.js                                                                    |
-| [Babel]          | 7.4.5   | Babel is a compiler for writing next generation JavaScript.                                                       |
-| [Node-sass]      | 4.12.0  | Node.js bindings to libsass.                                                                                      |
+| [Vue.js]         | 2.6.12  | Vue.js is a progressive, incrementally-adoptable JavaScript framework for building UI on the web.                 |
+| [vue-cli]        | 3.12.1  | Standard Tooling for Vue.js Development.                                                                          |
+| [vue-router]     | 3.4.3   | The official router for Vue.js                                                                                    |
+| [vuex]           | 3.5.1   | Centralized State Management for Vue.js.                                                                          |
+| [vee-validate]   | 2.2.15  | Template Based Validation Framework for Vue.js                                                                    |
+| [Axios]          | 0.20.0  | Promise based HTTP client for the browser and node.js                                                             |
+| [Fullcalendar]   | 4.4.2   | Full-sized drag & drop event calendar                                                                             |
+| [SweetAlert2]    | 9.17.1  | A beautiful, responsive, highly customizable and accessible (WAI-ARIA) replacement for JavaScript's popup boxes.  |
+| [Babel]          | 7.9.6   | Babel is a compiler for writing next generation JavaScript.                                                       |
+| [Node-sass]      | 4.14.1  | Node.js bindings to libsass.                                                                                      |
 | [Bootstrap]      | 4.3.1   | The most popular HTML, CSS, and JavaScript framework for developing responsive, mobile first projects on the web. |
 
 **(Liste non exhaustive, uniquement les librairies principales sont présentées)*
@@ -38,7 +41,7 @@ Le front de calendz est développé avec les frameworks et outils suivants* :
 
 ### Pré-requis
 
-* Installer Node 10.15.3
+* Installer Node 12.18.3
 * Créer un fichier `.env` à la source de ce repository contenant les valeurs suivantes (modifiables selon vos besoins)
 
       NODE_ENV=development
@@ -57,6 +60,9 @@ Le front de calendz est développé avec les frameworks et outils suivants* :
 [vue-router]: https://github.com/vuejs/vue-router
 [vuex]: https://github.com/vuejs/vuex
 [vee-validate]: https://github.com/baianat/vee-validate
+[Axios]: https://github.com/axios/axios
+[Fullcalendar]: https://github.com/fullcalendar/fullcalendar
+[SweetAlert2]: https://github.com/sweetalert2/sweetalert2
 [Babel]: https://github.com/babel/babel
 [Node-sass]: https://github.com/sass/node-sass
 [Bootstrap]: https://github.com/twbs/bootstrap
