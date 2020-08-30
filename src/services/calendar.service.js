@@ -19,7 +19,11 @@ const CalendarService = {
 
     // TODO: recreate date object in order to make sure it has the right format
     // /!\ date has to be of format: MM-DD-YY
-    return ApiCalendarService.get(`/week/${date}?firstname=${firstname}&lastname=${lastname}&ignoreCache=${force}`)
+    const url = force
+      ? `/week/${date}?firstname=${firstname}&lastname=${lastname}&ignoreCache=true`
+      : `/week/${date}?firstname=${firstname}&lastname=${lastname}`
+
+    return ApiCalendarService.get(url)
       .then(res => res.data)
       .catch(err => Promise.reject(err.data))
   }
