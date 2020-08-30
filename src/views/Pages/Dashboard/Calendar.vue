@@ -131,7 +131,7 @@
               <full-calendar
                 id="calendar"
                 ref="fullCalendar"
-                :events="isLoading ? [] : fullcalendarEvents"
+                :events="isLoading ? placeholderEvents : fullcalendarEvents"
                 :plugins="calendarPlugins"
                 :editable="false"
                 :theme="false"
@@ -338,6 +338,87 @@ export default {
   mixins: [dateUtilMixin, stringUtilMixin],
   data () {
     return {
+      placeholderEvents: [{
+        title: '',
+        daysOfWeek: [ '1' ],
+        startTime: '14:00:00',
+        endTime: '18:00:00',
+        className: 'loading-event',
+        professor: '',
+        room: ''
+      }, {
+        title: '',
+        daysOfWeek: [ '1' ],
+        startTime: '09:00:00',
+        endTime: '13:00:00',
+        className: 'loading-event',
+        professor: '',
+        room: ''
+      }, {
+        title: '',
+        daysOfWeek: [ '2' ],
+        startTime: '08:00:00',
+        endTime: '12:00:00',
+        className: 'loading-event',
+        professor: '',
+        room: ''
+      }, {
+        title: '',
+        daysOfWeek: [ '2' ],
+        startTime: '13:00:00',
+        endTime: '17:00:00',
+        className: 'loading-event',
+        professor: '',
+        room: ''
+      }, {
+        title: '',
+        daysOfWeek: [ '3' ],
+        startTime: '14:00:00',
+        endTime: '18:00:00',
+        className: 'loading-event',
+        professor: '',
+        room: ''
+      }, {
+        title: '',
+        daysOfWeek: [ '3' ],
+        startTime: '09:00:00',
+        endTime: '13:00:00',
+        className: 'loading-event',
+        professor: '',
+        room: ''
+      }, {
+        title: '',
+        daysOfWeek: [ '4' ],
+        startTime: '08:00:00',
+        endTime: '12:00:00',
+        className: 'loading-event',
+        professor: '',
+        room: ''
+      }, {
+        title: '',
+        daysOfWeek: [ '4' ],
+        startTime: '13:00:00',
+        endTime: '17:00:00',
+        className: 'loading-event',
+        professor: '',
+        room: ''
+      }, {
+        title: '',
+        daysOfWeek: [ '5' ],
+        startTime: '14:00:00',
+        endTime: '18:00:00',
+        className: 'loading-event',
+        professor: '',
+        room: ''
+      }, {
+        title: '',
+        daysOfWeek: [ '5' ],
+        startTime: '09:00:00',
+        endTime: '13:00:00',
+        className: 'loading-event',
+        professor: '',
+        room: ''
+      }],
       taskModal: {},
       courseModal: {},
       showTaskModal: false,
@@ -958,5 +1039,22 @@ export default {
     left: -8px;
     top: 4px;
     transform: rotate(45deg);
+  }
+
+  .loading-event {
+    background-color: #dee2e6;
+
+    animation-name: pulse;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+  }
+  .loading-event h5 {
+    display: none !important
+  }
+
+  @keyframes pulse {
+    0% { background-color: #dee2e6; }
+    50% { background-color: #eef2f7; }
+    100% { background-color: #dee2e6; }
   }
 </style>
