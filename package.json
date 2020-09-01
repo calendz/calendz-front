@@ -19,7 +19,7 @@
     "axios": "^0.20.0",
     "bootstrap": "4.3.1",
     "chart.js": "^2.9.3",
-    "date-fns": "^2.16.0",
+    "date-fns": "^2.16.1",
     "dropzone": "^5.7.2",
     "element-ui": "2.13.2",
     "es6-promise": "^4.1.1",
