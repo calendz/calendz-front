@@ -21,14 +21,22 @@
     <!-- ======================================= -->
     <!-- == Main container ===================== -->
     <!-- ======================================= -->
-    <!-- <div class="container-fluid mt--6 card-wrapper">
-      <div class="card mb-4">
-        <div class="container-fluid mt-4">
-          <div class="row">
-            <div/>
-          </div>
+    <div class="container-fluid mt--6">
+      <div class="row">
+        <div class="col-xl-3 col-md-6">
+          <total-number/>
         </div>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
+
+<script>
+import TotalNumber from './Grades/TotalNumber.vue'
+
+export default {
+  components: {
+    TotalNumber
+  }
+}
+</script>
