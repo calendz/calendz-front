@@ -18,10 +18,10 @@
             </div>
             <div v-show="!isLoading">
               <span class="h2 font-weight-bold mt--1 mr-2 float-left">
-                {{ completedCount.length }} notes
+                {{ completedGrades.length }} notes
               </span>
               <span class="text-muted">
-                (et {{ pendingCount.length }} en attente)
+                (et {{ pendingGrades.length }} en attente)
               </span>
             </div>
           </div>
@@ -56,8 +56,11 @@
 
         <!-- not loading -->
         <span v-show="!isLoading">
-          <span>
-            Des notes sont en attentes d'êtres complétées
+          <span v-if="pendingGrades.length > 0">
+            Des notes sont en attentes d'êtres complétées.
+          </span>
+          <span v-else>
+            Aucune action à effectuer, vous êtes à jour.
           </span>
         </span>
       </slot>
@@ -74,8 +77,8 @@ export default {
   computed: {
     ...mapGetters({
       isLoading: 'grades/isLoading',
-      completedCount: 'grades/completedCount',
-      pendingCount: 'grades/pendingCount'
+      completedGrades: 'grades/completed',
+      pendingGrades: 'grades/pending'
     })
   }
 }

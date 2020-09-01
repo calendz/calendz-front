@@ -43,10 +43,10 @@ const gradesModule = {
     isLoading: state => {
       return !!state.status.isRetrieving
     },
-    completedCount: state => {
+    completed: state => {
       return state.grades.filter(grade => !!grade.value)
     },
-    pendingCount: state => {
+    pending: state => {
       return state.grades.filter(grade => !grade.value)
     }
   }
