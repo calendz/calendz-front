@@ -44,6 +44,12 @@
                   @click="active = 2">
                   Emails
                 </li>
+                <li
+                  :class="active === 3 ? 'bg-primary text-white' : 'bg-white text-primary'"
+                  class="list-group-item d-flex justify-content-between align-items-center hover-click"
+                  @click="active = 3">
+                  Export
+                </li>
               </ul>
               <base-button
                 size="md"
@@ -71,6 +77,9 @@
                       <h3
                         v-show="active === 2"
                         class="m-0">Définissez vos préférences en matière de communication.</h3>
+                      <h3
+                        v-show="active === 3"
+                        class="m-0">Exportez votre calendrier.</h3>
                     </div>
                   </div>
                 </div>
@@ -274,6 +283,22 @@
                   </div>
 
                 </div>
+
+                <!-- ============================== -->
+                <!-- == Export calendrier ========= -->
+                <!-- ============================== -->
+
+                <div
+                  v-show="active === 3"
+                  class="container mt--1 mb-3">
+                  <div class="row mt-3">
+                    <div class="col-lg-12 col-md-12 my-12">
+                      <base-input
+                        :disabled="true"
+                        :value="calendarUrl" />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -316,7 +341,13 @@ export default {
   computed: {
     ...mapState({
       user: state => state.account.user
-    })
+    }),
+    calendarUrl () {
+      const firstname = this.user.email.split('@')[0].split('.')[0]
+      const lastname = this.user.email.split('@')[0].split('.')[1]
+
+      return `${process.env.VUE_APP_API_CALENDAR_URL}/month?firstname=${firstname}&lastname=${lastname}`
+    }
   },
   mounted () {
     this.colorInput = this.$store.getters['account/user'] ? '#' + this.$store.getters['account/user'].settings.calendarColor : '#172b4d'
