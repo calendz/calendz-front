@@ -24,6 +24,9 @@
     <div class="container-fluid mt--6">
       <div class="row">
         <div class="col-xl-3 col-md-6">
+          <create-grade/>
+        </div>
+        <div class="col-xl-3 col-md-6">
           <total-number/>
         </div>
       </div>
@@ -32,10 +35,12 @@
 </template>
 
 <script>
+import CreateGrade from './Grades/CreateGrade.vue'
 import TotalNumber from './Grades/TotalNumber.vue'
 
 export default {
   components: {
+    CreateGrade,
     TotalNumber
   }
 }
