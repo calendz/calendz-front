@@ -346,7 +346,7 @@ export default {
       const firstname = this.user.email.split('@')[0].split('.')[0]
       const lastname = this.user.email.split('@')[0].split('.')[1]
 
-      return `${process.env.VUE_APP_API_CALENDAR_URL}/month?firstname=${firstname}&lastname=${lastname}`
+      return `${process.env.VUE_APP_API_CALENDAR_URL}/month?firstname=${firstname}&lastname=${lastname}&format=icalendar`
     }
   },
   mounted () {
