@@ -60,7 +60,7 @@
         <div class="row">
           <div class="col-md-6">
             <base-input
-              v-validate="'required|min_value:0|max_value:20'"
+              v-validate="'min_value:0|max_value:20'"
               v-model="gradeCreationForm.value"
               :error="getError('note')"
               :valid="isValid('note')"
@@ -68,13 +68,13 @@
               min="0"
               max="20"
               name="note"
-              label="Note"
-              placeholder="Note"/>
+              label="Note (facultatif)"
+              placeholder="Votre note (sur 20)"/>
           </div>
 
           <div class="col-md-6">
             <base-input
-              v-validate="'required|min_value:0|max_value:10'"
+              v-validate="'min_value:0|max_value:10'"
               v-model="gradeCreationForm.coefficient"
               :error="getError('coefficient')"
               :valid="isValid('coefficient')"
@@ -82,8 +82,8 @@
               min="0"
               max="10"
               name="coefficient"
-              label="Coefficient"
-              placeholder="Coefficient "/>
+              label="Coefficient (facultatif)"
+              placeholder="Coefficient (1 par défaut)"/>
           </div>
         </div>
 
@@ -124,14 +124,14 @@
               :error="getError('description')"
               :valid="isValid('description')"
               class="w-100"
-              label="Description">
+              label="Description (facultatif)">
               <textarea
                 v-validate="'max:250'"
                 v-model="gradeCreationForm.description"
                 name="description"
                 class="form-control"
-                rows="8"
-                placeholder="Description"/>
+                rows="4"
+                placeholder="Décrivez à quoi correspond cette note..."/>
             </base-input>
           </div>
         </div>
@@ -168,7 +168,6 @@ export default {
     return {
       showGradeCreationModal: false,
       gradeCreationForm: {
-        coefficient: 1,
         date: new Date()
       },
       flatPickerConfig: {
@@ -183,7 +182,10 @@ export default {
       // vérification validation des champs
       this.$validator.validateAll().then(valid => {
         if (!valid) return
-        console.log('wip')
+        this.$store.dispatch('grades/create', this.gradeCreationForm).then(response => {
+          this.gradeCreationForm = { date: new Date() }
+          this.showGradeCreationModal = false
+        })
       })
     },
     getError (name) {

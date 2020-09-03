@@ -1,3 +1,6 @@
+import Vue from 'vue'
+import GradesService from '../../services/grades.service'
+
 const gradesModule = {
   namespaced: true,
   // ==================================
@@ -26,6 +29,17 @@ const gradesModule = {
     },
     FETCH_ALL_FAILURE: (state, reason) => {
       state.status = { error: reason }
+    },
+
+    GRADE_CREATE_REQUEST: (state) => {
+      state.status = { isCreating: true }
+    },
+    GRADE_CREATE_SUCCESS: (state, grade) => {
+      state.status = {}
+      state.grades.push(grade)
+    },
+    GRADE_CREATE_FAILURE: (state, reason) => {
+      state.status = { error: reason }
     }
   },
 
@@ -33,7 +47,21 @@ const gradesModule = {
   // == Actions
   // ==================================
   actions: {
+    create: ({ commit }, { value, coefficient, subject, date, description }) => {
+      commit('GRADE_CREATE_REQUEST')
 
+      GradesService.create(value, coefficient, subject, date, description)
+        .then(
+          res => {
+            commit('GRADE_CREATE_SUCCESS', res.grade)
+
+            Vue.prototype.$notify({ type: 'success', message: `Note ajoutée avec succès !` })
+          },
+          err => {
+            commit('GRADE_CREATE_FAILURE', err.data.message)
+            Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.data.message || 'Une erreur est survenue...'}` })
+          })
+    }
   },
 
   // ==================================
