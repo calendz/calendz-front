@@ -16,11 +16,8 @@
 
             <div style="height: 36px !important">
               <span class="h2 font-weight-bold mt--1 mr-2 float-left text-white">
-                Cliquez pour ajouter une note
+                Ajouter une note
               </span>
-              <!-- <span class="text-muted">
-                (lorem ipsum)
-              </span> -->
             </div>
           </slot>
         </div>
@@ -28,7 +25,7 @@
         <div class="col-auto">
           <slot name="icon">
             <div class="icon icon-shape bg-gradient-primary text-white rounded-circle shadow">
-              <i class="fas fa-graduation-cap"/>
+              <i class="fas fa-plus-circle"/>
             </div>
           </slot>
         </div>
@@ -40,7 +37,8 @@
       <p class="mt-1 mb-0 text-sm">
         <slot name="footer">
           <span class="text-white">
-            Texte lorem ipsum du footer.
+            <i class="fas fa-external-link-alt mr-1"/>
+            Cliquez pour ajouter une note
           </span>
         </slot>
       </p>
@@ -56,6 +54,14 @@
         <template slot="header">
           <h5 class="modal-title">Nouvelle note</h5>
         </template>
+
+        <div class="row">
+          <base-alert type="secondary">
+            <i class="fas fa-lightbulb mr-2"/>
+            <strong>Astuce : </strong>
+            Lorsque vous venez de passer une évaluation, vous pouvez pré-créer la note et la remplir une fois que vous l'aurez.
+          </base-alert>
+        </div>
 
         <div class="row">
           <div class="col-md-6">
