@@ -224,6 +224,7 @@
             Fermer
           </base-button>
           <base-button
+            v-show="editGrade"
             size="md"
             type="primary"
             @click="handleEditFormSubmit()">
