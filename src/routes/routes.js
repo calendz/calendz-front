@@ -25,6 +25,7 @@ const PasswordResetChangePassword = () => import(/* webpackChunkName: "pages" */
 const Dashboard = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Dashboard.vue')
 const Calendar = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Calendar.vue')
 const Tasks = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Tasks.vue')
+const Grades = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Grades.vue')
 const Profile = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Profile.vue')
 const Settings = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Settings.vue')
 
@@ -73,6 +74,14 @@ const dashboardPages = {
       component: Tasks,
       meta: {
         title: 'Devoirs & tâches - Calendz'
+      }
+    },
+    {
+      path: 'grades',
+      name: 'Gestion des notes',
+      component: Grades,
+      meta: {
+        title: 'Gestion des notes - Calendz'
       }
     },
     {

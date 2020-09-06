@@ -33,6 +33,14 @@
               path: '/tasks'
           }"/>
 
+          <!-- grades -->
+          <sidebar-item
+            :link="{
+              name: 'Gestion des notes',
+              icon: 'fas fa-graduation-cap text-default',
+              path: '/grades'
+          }"/>
+
           <!-- settings -->
           <sidebar-item
             :link="{
