@@ -3,7 +3,7 @@
     <card
       :show-footer-line="true"
       class="card-stats bg-gradient-default"
-      @click.native="showGradeCreationModal = true">
+      @click.native="openModal()">
       <!-- ================================================ -->
       <!-- == Body ======================================== -->
       <!-- ================================================ -->
@@ -50,7 +50,9 @@
     <form
       class="needs-validation"
       @submit.prevent>
-      <modal :show.sync="showGradeCreationModal">
+      <modal
+        :show="showModal"
+        @close="closeModal()">
         <template slot="header">
           <h5 class="modal-title">Nouvelle note</h5>
         </template>
@@ -146,7 +148,7 @@
           <base-button
             size="md"
             type="secondary"
-            @click="showGradeCreationModal = false">
+            @click="closeModal()">
             Fermer
           </base-button>
           <base-button
@@ -162,6 +164,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import FlatPicker from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 import { French } from 'flatpickr/dist/l10n/fr.js'
@@ -172,7 +175,6 @@ export default {
   },
   data () {
     return {
-      showGradeCreationModal: false,
       gradeCreationForm: {
         date: new Date()
       },
@@ -183,14 +185,31 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState({
+      showModal: state => state.layout.gradeCreationModal.isOpen,
+      prefilledSubject: state => state.layout.gradeCreationModal.subject
+    })
+  },
+  watch: {
+    prefilledSubject: function (newVal) {
+      this.gradeCreationForm.subject = newVal
+    }
+  },
   methods: {
+    openModal () {
+      this.$store.commit('layout/OPEN_CREATEGRADE_MODAL')
+    },
+    closeModal () {
+      this.$store.commit('layout/CLOSE_CREATEGRADE_MODAL')
+    },
     handleGradeCreateSubmit () {
       // vérification validation des champs
       this.$validator.validateAll().then(valid => {
         if (!valid) return
         this.$store.dispatch('grades/create', this.gradeCreationForm).then(response => {
           this.gradeCreationForm = { date: new Date() }
-          this.showGradeCreationModal = false
+          this.closeModal()
         })
       })
     },
