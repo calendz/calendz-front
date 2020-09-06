@@ -40,6 +40,21 @@ const gradesModule = {
     },
     GRADE_CREATE_FAILURE: (state, reason) => {
       state.status = { error: reason }
+    },
+
+    GRADE_UPDATE_REQUEST: (state) => {
+      state.status = { isUpdating: true }
+    },
+    GRADE_UPDATE_SUCCESS: (state, { id, grade }) => {
+      state.status = {}
+      const index = state.grades.findIndex(grade => grade._id === id)
+      state.grades[index].value = grade.value
+      state.grades[index].coefficient = grade.coefficient
+      state.grades[index].date = grade.date
+      state.grades[index].description = grade.description
+    },
+    GRADE_UPDATE_FAILURE: (state, reason) => {
+      state.status = { error: reason }
     }
   },
 
@@ -54,11 +69,25 @@ const gradesModule = {
         .then(
           res => {
             commit('GRADE_CREATE_SUCCESS', res.grade)
-
             Vue.prototype.$notify({ type: 'success', message: `Note ajoutée avec succès !` })
           },
           err => {
             commit('GRADE_CREATE_FAILURE', err.data.message)
+            Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.data.message || 'Une erreur est survenue...'}` })
+          })
+    },
+
+    update: ({ commit }, { _id, value, coefficient, date, description }) => {
+      commit('GRADE_UPDATE_REQUEST')
+
+      GradesService.update(_id, value, coefficient, date, description)
+        .then(
+          res => {
+            commit('GRADE_UPDATE_SUCCESS', { id: _id, grade: res.grade })
+            Vue.prototype.$notify({ type: 'success', message: `Note mise-à-jour avec succès !` })
+          },
+          err => {
+            commit('GRADE_UPDATE_FAILURE', err.data.message)
             Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.data.message || 'Une erreur est survenue...'}` })
           })
     }

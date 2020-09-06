@@ -1,5 +1,8 @@
 <template>
   <div class="card bg-white shadow">
+    <!-- ==================================================== -->
+    <!-- == HEADER ========================================== -->
+    <!-- ==================================================== -->
     <div class="card-header border-0">
       <div class="row align-items-center">
         <div class="col">
@@ -10,6 +13,10 @@
         </div>
       </div>
     </div>
+
+    <!-- ==================================================== -->
+    <!-- == MAIN TABLE ====================================== -->
+    <!-- ==================================================== -->
     <div>
       <el-table
         id="gradesTable"
@@ -20,15 +27,13 @@
 
         <!-- icon -->
         <el-table-column
-          width="100px"
-          min-width="100px"
+          width="90px"
+          min-width="90px"
           class="text-center">
-          <!-- <template v-slot="{row}"> -->
-          <template>
+          <template v-slot="{row}">
             <div class="d-flex justify-content-center">
-              <!-- TODO: colors depending of the subject's average -->
               <i
-                :class="`fas fa-graduation-cap bg-success`"
+                :class="`fas fa-graduation-cap bg-${getColor(average(row))}`"
                 class="avatar avatar-sm rounded-circle"/>
             </div>
           </template>
@@ -51,7 +56,7 @@
         <!-- notes + coeffs -->
         <el-table-column
           label="Note"
-          prop="row">
+          min-width="180px">
           <template v-slot="{row}">
             <div class="d-flex">
               <div class="col-auto pl-1 pr-0">
@@ -64,8 +69,8 @@
         <!-- moyenne -->
         <el-table-column
           label="Moyenne"
-          min-width="120px"
-          width="120px">
+          min-width="108px"
+          width="108px">
           <template v-slot="{row}">
             <div class="d-flex">
               <div class="col-auto pl-1 pr-0">
@@ -104,6 +109,129 @@
         </el-table-column>
       </el-table>
     </div>
+
+    <!-- ==================================================== -->
+    <!-- == EDIT MODAL ====================================== -->
+    <!-- ==================================================== -->
+    <form
+      class="needs-validation"
+      @submit.prevent>
+      <modal
+        :show.sync="showEditModal"
+        @close="closeEditModal()">
+        <template slot="header">
+          <h5 class="modal-title">{{ selectedSubject }}  : cliquez sur la note à modifier</h5>
+        </template>
+
+        <div
+          v-if="!editGrade"
+          class="row">
+          <div
+            v-for="(grade, index) in subjectGrades(selectedSubject)"
+            :key="index"
+            class="mx-auto text-center">
+            <el-tooltip
+              :content="dateToFullString(timestampToDate(grade.date))"
+              placement="top">
+              <div
+                class="col-auto mx-auto my-2 cursor-pointer"
+                @click="assignEditGrade(grade, false)">
+                <i
+                  :class="`fas fa-graduation-cap bg-${getColor(grade.value)}`"
+                  class="avatar avatar-sm rounded-circle mb-2"/><br>
+                <span>
+                  {{ grade.value }}/20 <sub>{{ grade.coefficient }}</sub>
+                </span>
+              </div>
+            </el-tooltip>
+          </div>
+        </div>
+
+        <div v-else>
+          <div class="row">
+            <div class="col-md-6">
+              <base-input
+                v-validate="'min_value:0|max_value:20'"
+                v-model="editGrade.value"
+                :error="getError('note')"
+                :valid="isValid('note')"
+                type="number"
+                min="0"
+                max="20"
+                name="note"
+                label="Note (facultatif)"
+                placeholder="Votre note (sur 20)"/>
+            </div>
+
+            <div class="col-md-6">
+              <base-input
+                v-validate="'min_value:0|max_value:10'"
+                v-model="editGrade.coefficient"
+                :error="getError('coefficient')"
+                :valid="isValid('coefficient')"
+                type="number"
+                min="0"
+                max="10"
+                name="coefficient"
+                label="Coefficient (facultatif)"
+                placeholder="Coefficient (1 par défaut)"/>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <base-input
+                :error="getError('date')"
+                :valid="isValid('date')"
+                autocomplete="off"
+                label="Date">
+                <flat-picker
+                  slot-scope="{focus, blur}"
+                  v-model="editGrade.date"
+                  :config="flatPickerConfig"
+                  name="date"
+                  class="form-control datepicker"
+                  @on-open="focus"
+                  @on-close="blur"/>
+              </base-input>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <base-input
+                :error="getError('description')"
+                :valid="isValid('description')"
+                class="w-100"
+                label="Description (facultatif)">
+                <textarea
+                  v-validate="'max:250'"
+                  v-model="editGrade.description"
+                  name="description"
+                  class="form-control"
+                  rows="4"
+                  placeholder="Décrivez à quoi correspond cette note..."/>
+              </base-input>
+            </div>
+          </div>
+        </div>
+
+        <template slot="footer">
+          <base-button
+            size="md"
+            type="secondary"
+            @click="closeEditModal()">
+            Fermer
+          </base-button>
+          <base-button
+            size="md"
+            type="primary"
+            @click="handleEditFormSubmit()">
+            Enregistrer
+          </base-button>
+        </template>
+      </modal>
+    </form>
   </div>
 </template>
 
@@ -111,17 +239,34 @@
 import { mapState } from 'vuex'
 import { BasePagination } from '@/components'
 import { Table, TableColumn, Option } from 'element-ui'
-import clientPaginationMixin from '@/mixins/clientPaginationMixin'
 import dateUtilMixin from '@/mixins/dateUtilMixin'
+import FlatPicker from 'vue-flatpickr-component'
+import 'flatpickr/dist/flatpickr.css'
+import { French } from 'flatpickr/dist/l10n/fr.js'
+import { FadeTransition } from 'vue2-transitions'
 
 export default {
   components: {
     BasePagination,
     [Option.name]: Option,
     [Table.name]: Table,
-    [TableColumn.name]: TableColumn
+    [TableColumn.name]: TableColumn,
+    FadeTransition,
+    FlatPicker
   },
-  mixins: [clientPaginationMixin, dateUtilMixin],
+  mixins: [dateUtilMixin],
+  data () {
+    return {
+      showEditModal: false,
+      selectedSubject: '',
+      editGrade: null,
+      flatPickerConfig: {
+        allowInput: true,
+        locale: French,
+        dateFormat: 'd-m-Y'
+      }
+    }
+  },
   computed: {
     ...mapState({
       grades: state => state.grades.grades
@@ -168,8 +313,50 @@ export default {
       this.$store.commit('layout/OPEN_CREATEGRADE_MODAL', { subject })
     },
     detailGrade (subject) {
-      // TODO: create detail grade modal
-      alert('detail grade')
+      this.selectedSubject = subject
+      this.$validator.resume()
+
+      const grades = this.subjectGrades(subject)
+      if (grades.length === 1) {
+        this.assignEditGrade(grades[0], true)
+      }
+
+      this.showEditModal = true
+    },
+    assignEditGrade (grade, ts) {
+      this.editGrade = Object.assign({}, grade)
+      if (ts) this.editGrade.date = this.dateToDayMonthYear(grade.date)
+      else this.editGrade.date = this.timestampToDate(grade.date)
+    },
+    subjectGrades (subject) {
+      const grades = this.grades
+      const result = grades.filter(grade => grade.subject === subject)
+      return result
+    },
+    getColor (grade) {
+      if (grade <= 8) return 'danger'
+      if (grade <= 13) return 'warning'
+      return 'success'
+    },
+    closeEditModal () {
+      this.$validator.pause()
+      this.editGrade = null
+      this.showEditModal = false
+    },
+    handleEditFormSubmit () {
+      // vérification validation des champs
+      this.$validator.validateAll().then(valid => {
+        if (!valid) return
+        this.$store.dispatch('grades/update', this.editGrade).then(response => {
+          this.closeEditModal()
+        })
+      })
+    },
+    getError (name) {
+      return this.errors.first(name)
+    },
+    isValid (name) {
+      return this.validated && !this.errors.has(name)
     }
   }
 }
