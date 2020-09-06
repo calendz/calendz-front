@@ -30,6 +30,12 @@
           <total-number/>
         </div>
       </div>
+
+      <div class="row">
+        <div class="col-12">
+          <grades-table/>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -37,11 +43,13 @@
 <script>
 import CreateGrade from './Grades/CreateGrade.vue'
 import TotalNumber from './Grades/TotalNumber.vue'
+import GradesTable from './Grades/GradesTable.vue'
 
 export default {
   components: {
     CreateGrade,
-    TotalNumber
+    TotalNumber,
+    GradesTable
   }
 }
 </script>
