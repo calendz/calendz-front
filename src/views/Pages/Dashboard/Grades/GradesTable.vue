@@ -83,8 +83,8 @@
         <!-- actions -->
         <el-table-column
           label="Actions"
-          min-width="140px"
-          width="140px"
+          min-width="180px"
+          width="180px"
           align="right">
           <template v-slot="{row}">
             <div class="d-flex">
@@ -103,6 +103,14 @@
                 icon
                 @click="detailGrade(row)">
                 <i class="text-white ni ni-ruler-pencil"/>
+              </base-button>
+              <base-button
+                class="remove btn-link"
+                type="danger"
+                size="sm"
+                icon
+                @click="openDeleteModal(row)">
+                <i class="text-white fas fa-trash"/>
               </base-button>
             </div>
           </template>
@@ -233,10 +241,53 @@
         </template>
       </modal>
     </form>
+
+    <!-- ==================================================== -->
+    <!-- == DELETE MODAL ==================================== -->
+    <!-- ==================================================== -->
+    <modal
+      :show.sync="showDeleteModal"
+      @close="closeDeleteModal()">
+      <template slot="header">
+        <h5 class="modal-title">{{ selectedSubject }} : cliquez sur la note à supprimer</h5>
+      </template>
+
+      <div class="row">
+        <div
+          v-for="(grade, index) in subjectGrades(selectedSubject)"
+          :key="index"
+          class="mx-auto text-center">
+          <el-tooltip
+            :content="dateToFullString(timestampToDate(grade.date))"
+            placement="top">
+            <div
+              class="col-auto mx-auto my-2 cursor-pointer"
+              @click="deleteGrade(grade._id)">
+              <i
+                :class="`fas fa-graduation-cap bg-${getColor(grade.value)}`"
+                class="avatar avatar-sm rounded-circle mb-2"/><br>
+              <span>
+                {{ grade.value }}/20 <sub>{{ grade.coefficient }}</sub>
+              </span>
+            </div>
+          </el-tooltip>
+        </div>
+      </div>
+
+      <template slot="footer">
+        <base-button
+          size="md"
+          type="secondary"
+          @click="closeDeleteModal()">
+          Fermer
+        </base-button>
+      </template>
+    </modal>
   </div>
 </template>
 
 <script>
+import swal from 'sweetalert2'
 import { mapState } from 'vuex'
 import { BasePagination } from '@/components'
 import { Table, TableColumn, Option } from 'element-ui'
@@ -259,6 +310,7 @@ export default {
   data () {
     return {
       showEditModal: false,
+      showDeleteModal: false,
       selectedSubject: '',
       editGrade: null,
       flatPickerConfig: {
@@ -343,6 +395,39 @@ export default {
       this.$validator.pause()
       this.editGrade = null
       this.showEditModal = false
+    },
+    openDeleteModal (subject) {
+      const grades = this.subjectGrades(subject)
+      if (grades.length === 1) {
+        this.deleteGrade(grades[0]._id)
+      } else {
+        this.selectedSubject = subject
+        this.showDeleteModal = true
+      }
+    },
+    closeDeleteModal () {
+      this.showDeleteModal = false
+      this.selectedSubject = null
+    },
+    deleteGrade (gradeId) {
+      swal.fire({
+        icon: 'warning',
+        title: `Êtes-vous sûr de vouloir supprimer cette note ?`,
+        text: 'La suppression est définitive, et la mise-à-jour de vos moyennes se fera automatiquement.',
+        customClass: {
+          confirmButton: 'btn btn-warning mt-2',
+          cancelButton: 'btn btn-secondary mt-2'
+        },
+        buttonsStyling: false,
+        showCancelButton: true,
+        cancelButtonText: 'Annuler',
+        confirmButtonText: 'Confimer'
+      }).then((result) => {
+        if (!result.value) return
+        this.$store.dispatch('grades/delete', { gradeId }).then(() => {
+          this.closeDeleteModal()
+        })
+      })
     },
     handleEditFormSubmit () {
       // vérification validation des champs

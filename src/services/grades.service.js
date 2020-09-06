@@ -17,6 +17,13 @@ const GradesService = {
     return ApiService.patch(`/grades/${_id}`, { value, coefficient, date: date.toString(), description })
       .then(res => res.data)
       .catch(err => Promise.reject(err))
+  },
+
+  // delete a grade
+  delete: (gradeId) => {
+    return ApiService.delete(`/grades/${gradeId}`)
+      .then(res => res.data)
+      .catch(err => Promise.reject(err))
   }
 }
 

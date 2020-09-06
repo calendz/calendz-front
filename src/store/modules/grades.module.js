@@ -55,6 +55,17 @@ const gradesModule = {
     },
     GRADE_UPDATE_FAILURE: (state, reason) => {
       state.status = { error: reason }
+    },
+
+    GRADE_DELETE_REQUEST: (state) => {
+      state.status = { isDeleting: true }
+    },
+    GRADE_DELETE_SUCCESS: (state, gradeId) => {
+      state.grades = state.grades.filter(grade => grade._id !== gradeId)
+      state.status = {}
+    },
+    GRADE_DELETE_FAILURE: (state, reason) => {
+      state.status = { error: reason }
     }
   },
 
@@ -88,6 +99,20 @@ const gradesModule = {
           },
           err => {
             commit('GRADE_UPDATE_FAILURE', err.data.message)
+            Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.data.message || 'Une erreur est survenue...'}` })
+          })
+    },
+
+    delete: ({ commit }, { gradeId }) => {
+      commit('GRADE_DELETE_REQUEST')
+      GradesService.delete(gradeId)
+        .then(
+          res => {
+            commit('GRADE_DELETE_SUCCESS', gradeId)
+            Vue.prototype.$notify({ type: 'success', message: `La note a bien été supprimée !` })
+          },
+          err => {
+            commit('GRADE_DELETE_FAILURE', err.data.message)
             Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.data.message || 'Une erreur est survenue...'}` })
           })
     }
