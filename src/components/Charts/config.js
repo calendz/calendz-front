@@ -1,4 +1,5 @@
 import { parseOptions } from '@/components/Charts/optionHelpers'
+import Chart from 'chart.js'
 
 export const Charts = {
   mode: 'light', // (themeMode) ? themeMode : 'light';
@@ -32,7 +33,7 @@ export const Charts = {
   }
 }
 
-function chartOptions (Chart) {
+function chartOptions () {
   let { colors, mode, fonts } = Charts
   // Options
   let options = {
@@ -82,7 +83,15 @@ function chartOptions (Chart) {
           intersect: false
         }
       },
+      pie: {
+        tooltips: {
+          mode: 'point'
+        }
+      },
       doughnut: {
+        tooltips: {
+          mode: 'point'
+        },
         cutoutPercentage: 83,
         legendCallback: function (chart) {
           let data = chart.data
@@ -108,12 +117,11 @@ function chartOptions (Chart) {
     gridLines: {
       borderDash: [2],
       borderDashOffset: [2],
-      color: (mode === 'dark') ? colors.gray[900] : colors.gray[300],
+      color: (mode === 'dark') ? colors.gray[900] : colors.gray[200],
       drawBorder: false,
-      drawTicks: false,
-      lineWidth: 0,
-      zeroLineWidth: 0,
-      zeroLineColor: (mode === 'dark') ? colors.gray[900] : colors.gray[300],
+      drawTicks: true,
+      zeroLineWidth: 1,
+      zeroLineColor: (mode === 'dark') ? colors.gray[900] : colors.gray[200],
       zeroLineBorderDash: [2],
       zeroLineBorderDashOffset: [2]
     },
@@ -133,18 +141,27 @@ function chartOptions (Chart) {
     gridLines: {
       drawBorder: false,
       drawOnChartArea: false,
-      drawTicks: false
+      drawTicks: false,
+      lineWidth: 1,
+      zeroLineWidth: 1
     },
     ticks: {
       padding: 20
-    }
+    },
+    maxBarThickness: 10
   })
 
   return options
 };
 
-export function initGlobalOptions (Chart) {
-  parseOptions(Chart, chartOptions(Chart))
+let initialized = false
+
+export function initGlobalOptions () {
+  if (initialized) {
+    return
+  }
+  parseOptions(Chart, chartOptions())
+  initialized = true
 }
 
 export const basicOptions = {
