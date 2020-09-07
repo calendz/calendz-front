@@ -30,6 +30,9 @@
           <grades-average/>
         </div>
         <div class="col-xl-3 col-md-6">
+          <grades-catchup/>
+        </div>
+        <div class="col-xl-3 col-md-6">
           <total-number/>
         </div>
       </div>
@@ -47,6 +50,7 @@
 import CreateGrade from './Grades/CreateGrade.vue'
 import GradesAverage from './Grades/GradesAverage.vue'
 import TotalNumber from './Grades/TotalNumber.vue'
+import GradesCatchup from './Grades/GradesCatchup.vue'
 import GradesTable from './Grades/GradesTable.vue'
 
 export default {
@@ -54,6 +58,7 @@ export default {
     CreateGrade,
     GradesAverage,
     TotalNumber,
+    GradesCatchup,
     GradesTable
   }
 }

@@ -9,7 +9,7 @@
       <div class="col pr-0">
         <slot>
           <h5 class="card-title text-muted mb-1">
-            NOMBRE DE NOTES
+            RATTRAPAGES
           </h5>
 
           <div style="height: 36px !important">
@@ -18,10 +18,10 @@
             </div>
             <div v-show="!isLoading">
               <span class="h2 font-weight-bold mt--1 mr-2 float-left">
-                {{ completedGrades.length }} notes
+                {{ count() }}
               </span>
               <span class="text-muted">
-                (et {{ pendingGrades.length }} en attente)
+                modules à rattraper
               </span>
             </div>
           </div>
@@ -30,7 +30,7 @@
 
       <div class="col-auto">
         <slot name="icon">
-          <div class="icon icon-shape bg-gradient-default text-white rounded-circle shadow">
+          <div :class="`icon icon-shape bg-info text-white rounded-circle shadow`">
             <i class="fas fa-graduation-cap"/>
           </div>
         </slot>
@@ -56,11 +56,8 @@
 
         <!-- not loading -->
         <span v-show="!isLoading">
-          <span v-if="pendingGrades.length > 0">
-            Des notes sont en attentes d'êtres complétées.
-          </span>
-          <span v-else>
-            Aucune action à effectuer, vous êtes à jour.
+          <span>
+            Estimation moyennes inférieur à 10/20.
           </span>
         </span>
       </slot>
@@ -70,16 +67,47 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import dateUtilMixin from '@/mixins/dateUtilMixin'
 
 export default {
-  mixins: [dateUtilMixin],
   computed: {
     ...mapGetters({
       isLoading: 'grades/isLoading',
-      completedGrades: 'grades/completed',
-      pendingGrades: 'grades/pending'
+      completedGrades: 'grades/completed'
     })
+  },
+  methods: {
+    count () {
+      const subjects = []
+      const averages = []
+
+      // on récupère la liste des matières
+      const grades = this.completedGrades
+      grades.forEach(grade => {
+        if (subjects.includes(grade.subject)) return
+        subjects.push(grade.subject)
+      })
+
+      // on calcule la moyenne de chaques matières
+      subjects.forEach(subject => {
+        averages.push(this.average(subject))
+      })
+
+      // on retourne le nombre de matières dont la moyenne < 10
+      return averages.filter(average => average < 10).length
+    },
+    average (subject) {
+      let total = 0
+      let count = 0
+      const grades = this.completedGrades
+      const temp = grades.filter(grade => grade.subject === subject)
+
+      temp.forEach(grade => {
+        count += (1 * grade.coefficient)
+        total += (grade.value * grade.coefficient)
+      })
+
+      return (total / count).toFixed(2)
+    }
   }
 }
 </script>
