@@ -108,6 +108,10 @@ export default {
       autoClose: this.autoClose
     }
   },
+  mounted () {
+    this.$sidebar.isMinimized = this.$sidebar.breakpoint < window.innerWidth
+    this.minimizeSidebar()
+  },
   beforeDestroy () {
     if (this.$sidebar.showSidebar) {
       this.$sidebar.showSidebar = false
@@ -128,14 +132,13 @@ export default {
 
 <style scoped>
   ::-webkit-scrollbar-track {
-    /* border-radius: 14px; */
     background-color: #F5F5F5;
     box-shadow: inset 0 0 6px rgba(0,0,0,0.2);
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.2);
   }
 
   ::-webkit-scrollbar {
-    width: 5px;
+    width: 4px;
     background-color: #F5F5F5;
   }
 
