@@ -143,7 +143,7 @@
               placement="top">
               <div
                 class="col-auto mx-auto my-2 cursor-pointer"
-                @click="assignEditGrade(grade, false)">
+                @click="assignEditGrade(grade)">
                 <i
                   :class="`fas fa-graduation-cap bg-${getColor(grade.value)}`"
                   class="avatar avatar-sm rounded-circle mb-2"/><br>
@@ -371,15 +371,14 @@ export default {
 
       const grades = this.subjectGrades(subject)
       if (grades.length === 1) {
-        this.assignEditGrade(grades[0], true)
+        this.assignEditGrade(grades[0])
       }
 
       this.showEditModal = true
     },
-    assignEditGrade (grade, ts) {
+    assignEditGrade (grade) {
       this.editGrade = Object.assign({}, grade)
-      if (ts) this.editGrade.date = this.dateToDayMonthYear(grade.date)
-      else this.editGrade.date = this.timestampToDate(grade.date)
+      this.editGrade.date = this.timestampToDate(grade.date)
     },
     subjectGrades (subject) {
       const grades = this.grades
