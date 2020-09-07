@@ -148,7 +148,7 @@
                   :class="`fas fa-graduation-cap bg-${getColor(grade.value)}`"
                   class="avatar avatar-sm rounded-circle mb-2"/><br>
                 <span>
-                  {{ grade.value }}/20 <sub>{{ grade.coefficient }}</sub>
+                  {{ grade.value || '?' }}/20 <sub>{{ grade.coefficient }}</sub>
                 </span>
               </div>
             </el-tooltip>
@@ -267,7 +267,7 @@
                 :class="`fas fa-graduation-cap bg-${getColor(grade.value)}`"
                 class="avatar avatar-sm rounded-circle mb-2"/><br>
               <span>
-                {{ grade.value }}/20 <sub>{{ grade.coefficient }}</sub>
+                {{ grade.value || '?' }}/20 <sub>{{ grade.coefficient }}</sub>
               </span>
             </div>
           </el-tooltip>
@@ -344,7 +344,7 @@ export default {
 
       const temp = grades.filter(grade => grade.subject === subject)
       temp.forEach(grade => {
-        result += `${grade.value}/20 <sub>${grade.coefficient}</sub> — `
+        result += `${grade.value || '?'}/20 <sub>${grade.coefficient}</sub> — `
       })
 
       return result.slice(0, -2)
@@ -356,11 +356,13 @@ export default {
       const temp = grades.filter(grade => grade.subject === subject)
 
       temp.forEach(grade => {
+        if (!grade.value) return
         count += (1 * grade.coefficient)
         total += (grade.value * grade.coefficient)
       })
 
-      return (total / count).toFixed(2)
+      const average = (total / count).toFixed(2)
+      return isNaN(average) ? '?' : average
     },
     addGrade (subject) {
       this.$store.commit('layout/OPEN_CREATEGRADE_MODAL', { subject })
@@ -378,7 +380,9 @@ export default {
     },
     assignEditGrade (grade) {
       this.editGrade = Object.assign({}, grade)
-      this.editGrade.date = this.timestampToDate(grade.date)
+      if (!grade.date.includes('-')) {
+        this.editGrade.date = this.timestampToDate(grade.date)
+      }
     },
     subjectGrades (subject) {
       const grades = this.grades
