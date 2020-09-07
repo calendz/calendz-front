@@ -226,7 +226,7 @@
           @click="toggleProfileDropdown">
           <div class="media align-items-center">
             <img
-              :src="user.avatarUrl || 'img/theme/default-pp.png'"
+              :src="user && user.avatarUrl ? user.avatarUrl : 'img/theme/default-pp.png'"
               alt="Image placeholder"
               class="avatar avatar-sm rounded-circle">
             <div class="media-body ml-2 d-none d-lg-block">
