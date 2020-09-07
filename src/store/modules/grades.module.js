@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import GradesService from '../../services/grades.service'
+import DateUtil from '../../mixins/dateUtilMixin'
 
 const gradesModule = {
   namespaced: true,
@@ -75,6 +76,7 @@ const gradesModule = {
   actions: {
     create: ({ commit }, { value, coefficient, subject, date, description }) => {
       commit('GRADE_CREATE_REQUEST')
+      date = DateUtil.methods.dateToDayMonthYear(date)
 
       GradesService.create(value, coefficient, subject, date, description)
         .then(
@@ -90,6 +92,7 @@ const gradesModule = {
 
     update: ({ commit }, { _id, value, coefficient, date, description }) => {
       commit('GRADE_UPDATE_REQUEST')
+      date = DateUtil.methods.dateToDayMonthYear(date)
 
       GradesService.update(_id, value, coefficient, date, description)
         .then(
