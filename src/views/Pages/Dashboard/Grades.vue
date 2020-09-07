@@ -27,6 +27,9 @@
           <create-grade/>
         </div>
         <div class="col-xl-3 col-md-6">
+          <grades-average/>
+        </div>
+        <div class="col-xl-3 col-md-6">
           <total-number/>
         </div>
       </div>
@@ -42,12 +45,14 @@
 
 <script>
 import CreateGrade from './Grades/CreateGrade.vue'
+import GradesAverage from './Grades/GradesAverage.vue'
 import TotalNumber from './Grades/TotalNumber.vue'
 import GradesTable from './Grades/GradesTable.vue'
 
 export default {
   components: {
     CreateGrade,
+    GradesAverage,
     TotalNumber,
     GradesTable
   }
