@@ -978,12 +978,6 @@ export default {
     cursor: pointer;
   }
 
-  .bg-other-agenda {
-    .fc-time-grid-event, .fc-event, .fc-start, .fc-end {
-      background-color: #6E7A90 !important;
-    }
-  }
-
   .is-done-checkbox:hover {
     color: white !important;
   }
@@ -1039,6 +1033,12 @@ export default {
     left: -8px;
     top: 4px;
     transform: rotate(45deg);
+  }
+
+  .bg-other-agenda {
+    .fc-time-grid-event:not(.loading-event), .fc-event:not(.loading-event), .fc-start:not(.loading-event), .fc-end:not(.loading-event), .custom-event:not(.loading-event) {
+      background-color: #6E7A90 !important;
+    }
   }
 
   .loading-event {
