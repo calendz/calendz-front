@@ -16,453 +16,62 @@
           </nav>
         </div>
       </div>
-
-      <div class="row">
-        <!-- total users  -->
-        <div class="col-xl-3 col-md-6">
-          <card class="card-stats">
-            <div class="row">
-              <div class="col">
-                <slot>
-                  <h5 class="card-title text-uppercase text-muted mb-1">UTILISATEURS</h5>
-                  <div class="row mt-2 mb--3">
-                    <div class="col-12 pr-0">
-                      <div v-if="!stats.users">
-                        <placeholder class="w-75"/>
-                      </div>
-
-                      <div v-if="stats.users">
-                        <span class="h2 font-weight-bold mt--1 mr-2 float-left">
-                          {{ stats.users.total }}
-                        </span>
-                        <span class="text-muted">
-                          {{ `(au total)` }}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </slot>
-              </div>
-
-              <div class="col-auto">
-                <slot name="icon">
-                  <div class="icon icon-shape bg-gradient-success text-white rounded-circle shadow">
-                    <i class="fas fa-users"/>
-                  </div>
-                </slot>
-              </div>
-            </div>
-
-            <p class="mt-3 mb-0 text-sm">
-              <slot name="footer">
-                <i class="fas fa-external-link-alt mr-2"/>
-                <router-link to="/user-management">
-                  <span class="nav-link p-0 d-inline text-nowrap">accéder liste utilisateurs</span>
-                </router-link>
-              </slot>
-            </p>
-          </card>
-        </div>
-
-        <!-- inactive users -->
-        <div class="col-xl-3 col-md-6">
-          <card class="card-stats">
-            <div class="row">
-              <div class="col">
-                <slot>
-                  <h5 class="card-title text-uppercase text-muted mb-1">UTILISATEURS INACTIFS</h5>
-                  <div class="row mt-2 mb--3">
-                    <div class="col-12 pr-0">
-                      <div v-if="!stats.users">
-                        <placeholder class="w-75"/>
-                      </div>
-
-                      <div v-if="stats.users">
-                        <span class="h2 font-weight-bold mt--1 mr-2 float-left">
-                          {{ `${stats.users.inactive}/${stats.users.total}` }}
-                        </span>
-                        <span class="text-muted">
-                          {{ `(${Math.ceil(stats.users.inactive/stats.users.total*100)}%)` }}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </slot>
-              </div>
-
-              <div class="col-auto">
-                <slot name="icon">
-                  <div class="icon icon-shape bg-gradient-warning text-white rounded-circle shadow">
-                    <i class="fas fa-users"/>
-                  </div>
-                </slot>
-              </div>
-            </div>
-
-            <p class="mt-3 mb-0 text-sm">
-              <slot name="footer">
-                <i class="fas fa-external-link-alt mr-2"/>
-                <router-link to="/user-management">
-                  <span class="nav-link p-0 d-inline text-nowrap">accéder liste utilisateurs</span>
-                </router-link>
-              </slot>
-            </p>
-          </card>
-        </div>
-
-        <!-- migrated accounts -->
-        <div class="col-xl-3 col-md-6">
-          <card class="card-stats">
-            <div class="row">
-              <div class="col">
-                <slot>
-                  <h5 class="card-title text-uppercase text-muted mb-1">COMPTES MIGRÉS</h5>
-                  <div class="row mt-2 mb--3">
-                    <div class="col-12 pr-0">
-                      <div v-if="!stats.users">
-                        <placeholder class="w-75"/>
-                      </div>
-
-                      <div v-if="stats.users">
-                        <span class="h2 font-weight-bold mt--1 mr-2 float-left">
-                          {{ `${stats.users.migrated}/${stats.users.total - stats.users.neverMigrated}` }}
-                        </span>
-                        <span class="text-muted">
-                          {{ `(${Math.ceil(stats.users.migrated/(stats.users.total - stats.users.neverMigrated) * 100)}%)` }}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </slot>
-              </div>
-
-              <div class="col-auto">
-                <slot name="icon">
-                  <div class="icon icon-shape bg-gradient-danger text-white rounded-circle shadow">
-                    <i class="fas fa-users"/>
-                  </div>
-                </slot>
-              </div>
-            </div>
-
-            <p class="mt-3 mb-0 text-sm">
-              <slot name="footer">
-                <i class="fas fa-external-link-alt mr-2"/>
-                <router-link to="/user-management">
-                  <span class="nav-link p-0 d-inline text-nowrap">accéder liste utilisateurs</span>
-                </router-link>
-              </slot>
-            </p>
-          </card>
-        </div>
-
-        <!-- TODO: ajouter info, comptes qui ne seront jamais migrés car WIS 5 ou i2 -->
-        <div class="col-xl-3 col-md-6">
-          <card class="card-stats">
-            <div class="row">
-              <div class="col">
-                <slot>
-                  <h5 class="card-title text-uppercase text-muted mb-1">ANCIENS COMPTES</h5>
-                  <div class="row mt-2 mb--3">
-                    <div class="col-12 pr-0">
-                      <div v-if="!stats.users">
-                        <placeholder class="w-75"/>
-                      </div>
-
-                      <div v-if="stats.users">
-                        <span class="h2 font-weight-bold mt--1 mr-2 float-left">
-                          {{ `${stats.users.neverMigrated}/${stats.users.total}` }}
-                        </span>
-                        <span class="text-muted">
-                          {{ `(${Math.ceil(stats.users.neverMigrated/stats.users.total*100)}%)` }}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </slot>
-              </div>
-
-              <div class="col-auto">
-                <slot name="icon">
-                  <div class="icon icon-shape bg-gradient-danger text-white rounded-circle shadow">
-                    <i class="fas fa-users"/>
-                  </div>
-                </slot>
-              </div>
-            </div>
-
-            <p class="mt-3 mb-0 text-sm">
-              <slot name="footer">
-                <i class="fas fa-external-link-alt mr-2"/>
-                <router-link to="/user-management">
-                  <span class="nav-link p-0 d-inline text-nowrap">accéder liste utilisateurs</span>
-                </router-link>
-              </slot>
-            </p>
-          </card>
-        </div>
-
-        <!-- active users -->
-        <div class="col-xl-3 col-md-6">
-          <card class="card-stats">
-            <div class="row">
-              <div class="col">
-                <slot>
-                  <h5 class="card-title text-uppercase text-muted mb-1">ACTIVITÉ UTILISATEURS</h5>
-                  <div class="row mt-2 mb--3">
-                    <div class="col-12 pr-0">
-                      <div v-if="!stats.users">
-                        <placeholder class="w-75"/>
-                      </div>
-
-                      <div v-if="stats.users">
-                        <span class="h2 font-weight-bold mt--1 mr-2 float-left">
-                          {{ `${activeUsers === 1 ? `${stats.users.activeAccount.lastDay}` : activeUsers === 3 ? `${stats.users.activeAccount.lastThreeDays}` : `${stats.users.activeAccount.lastWeek}`}/${stats.users.total - stats.users.neverMigrated - stats.users.inactive}` }}
-                        </span>
-                        <span class="text-muted">
-                          {{ `(${Math.ceil(`${activeUsers === 1 ? `${stats.users.activeAccount.lastDay}` : activeUsers === 3 ? `${stats.users.activeAccount.lastThreeDays}` : `${stats.users.activeAccount.lastWeek}`}`/(stats.users.total - stats.users.neverMigrated - stats.users.inactive)*100)}%)` }}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </slot>
-              </div>
-
-              <div class="col-auto">
-                <slot name="icon">
-                  <div class="icon icon-shape bg-primary text-white rounded-circle shadow">
-                    <i class="fas fa-users"/>
-                  </div>
-                </slot>
-              </div>
-            </div>
-
-            <p class="mt-3 mb-0 text-sm">
-              <slot name="footer">
-                <base-button
-                  :class="activeUsers != 1 ? 'btn-outline-primary mt-1' :'mt-1'"
-                  size="sm"
-                  type="primary"
-                  @click="activeUsers = 1">Aujourd'hui</base-button>
-                <base-button
-                  :class="activeUsers != 3 ? 'btn-outline-primary mt-1' :'mt-1'"
-                  size="sm"
-                  type="primary"
-                  @click="activeUsers = 3">3 Jours</base-button>
-                <base-button
-                  :class="activeUsers != 7 ? 'btn-outline-primary mt-1' :'mt-1'"
-                  size="sm"
-                  type="primary"
-                  @click="activeUsers = 7">7 Jours</base-button>
-              </slot>
-            </p>
-          </card>
-        </div>
-
-        <!-- new users -->
-        <div class="col-xl-3 col-md-6">
-          <card class="card-stats">
-            <div class="row">
-              <div class="col">
-                <slot>
-                  <h5 class="card-title text-uppercase text-muted mb-1">NOUVEAUX UTILISATEURS</h5>
-                  <div class="row mt-2 mb--3">
-                    <div class="col-12 pr-0">
-                      <div v-if="!stats.users">
-                        <placeholder class="w-75"/>
-                      </div>
-
-                      <div v-if="stats.users">
-                        <span
-                          :class="isPositive() ? 'text-success' : ''"
-                          class="h2 font-weight-bold mt--1 mr-2 float-left">
-                          <i
-                            v-if="isPositive()"
-                            class="fa fa-arrow-up"/>
-                          {{ newUsers === 1 ? `${stats.users.creationAccount.lastDay}` : newUsers === 3 ? `${stats.users.creationAccount.lastThreeDays}` : `${stats.users.creationAccount.lastWeek}` }}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </slot>
-              </div>
-
-              <div class="col-auto">
-                <slot name="icon">
-                  <div class="icon icon-shape bg-gradient-green text-white rounded-circle shadow">
-                    <i class="fas fa-users"/>
-                  </div>
-                </slot>
-              </div>
-            </div>
-
-            <p class="mt-3 mb-0 text-sm">
-              <slot name="footer">
-                <base-button
-                  :class="newUsers != 1 ? 'btn-outline-primary mt-1' :'mt-1'"
-                  size="sm"
-                  type="primary"
-                  @click="newUsers = 1">Aujourd'hui</base-button>
-                <base-button
-                  :class="newUsers != 3 ? 'btn-outline-primary mt-1' :'mt-1'"
-                  size="sm"
-                  type="primary"
-                  @click="newUsers = 3">3 Jours</base-button>
-                <base-button
-                  :class="newUsers != 7 ? 'btn-outline-primary mt-1' :'mt-1'"
-                  size="sm"
-                  type="primary"
-                  @click="newUsers = 7">7 Jours</base-button>
-              </slot>
-            </p>
-          </card>
-        </div>
-
-        <!-- epsi / wis -->
-        <div class="col-xl-3 col-md-6">
-          <card class="card-stats">
-            <div class="row">
-              <div class="col">
-                <slot>
-                  <h5 class="card-title text-uppercase text-muted mb-1">RÉPARTITION ÉCOLES</h5>
-                  <div class="row mt-2 mb--3">
-                    <div class="col-12 pr-0">
-                      <div v-if="!stats.users">
-                        <placeholder class="w-75"/>
-                      </div>
-
-                      <div v-if="stats.users">
-                        <span class="h3 font-weight-bold mt--1 mr-2 float-left">
-                          {{ `EPSI : ${stats.users.epsi} / WIS : ${stats.users.wis}` }}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </slot>
-              </div>
-
-              <div class="col-auto">
-                <slot name="icon">
-                  <div class="icon icon-shape bg-gradient-danger text-white rounded-circle shadow">
-                    <i class="fas fa-users"/>
-                  </div>
-                </slot>
-              </div>
-            </div>
-
-            <p class="mt-3 mb-0 text-sm">
-              <slot name="footer">
-                <i class="fas fa-external-link-alt mr-2"/>
-                <router-link to="/user-management">
-                  <span class="nav-link p-0 d-inline text-nowrap">accéder liste utilisateurs</span>
-                </router-link>
-              </slot>
-            </p>
-          </card>
-        </div>
-
-        <!-- users doing bts -->
-        <div class="col-xl-3 col-md-6">
-          <card class="card-stats">
-            <div class="row">
-              <div class="col">
-                <slot>
-                  <h5 class="card-title text-uppercase text-muted mb-1">INSCRITS EN BTS</h5>
-                  <div class="row mt-2 mb--3">
-                    <div class="col-12 pr-0">
-                      <div v-if="!stats.users">
-                        <placeholder class="w-75"/>
-                      </div>
-
-                      <div v-if="stats.users">
-                        <span class="h2 font-weight-bold mt--1 mr-2 float-left">
-                          {{ `${stats.users.bts}/${stats.users.total}` }}
-                        </span>
-                        <span class="text-muted">
-                          {{ `(${Math.ceil(stats.users.bts/stats.users.total*100)}%)` }}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </slot>
-              </div>
-
-              <div class="col-auto">
-                <slot name="icon">
-                  <div class="icon icon-shape bg-gradient-purple text-white rounded-circle shadow">
-                    <i class="fas fa-users"/>
-                  </div>
-                </slot>
-              </div>
-            </div>
-
-            <p class="mt-3 mb-0 text-sm">
-              <slot name="footer">
-                <i class="fas fa-external-link-alt mr-2"/>
-                <router-link to="/user-management">
-                  <span class="nav-link p-0 d-inline text-nowrap">accéder liste utilisateurs</span>
-                </router-link>
-              </slot>
-            </p>
-          </card>
-        </div>
-
-        <!-- users that are accepting mails -->
-        <div class="col-xl-3 col-md-6">
-          <card class="card-stats">
-            <div class="row">
-              <div class="col">
-                <slot>
-                  <h5 class="card-title text-uppercase text-muted mb-1">MAILING LIST</h5>
-                  <div class="row mt-2 mb--3">
-                    <div class="col-12 pr-0">
-                      <div v-if="!stats.users">
-                        <placeholder class="w-75"/>
-                      </div>
-
-                      <div v-if="stats.users">
-                        <span class="h2 font-weight-bold mt--1 mr-2 float-left">
-                          {{ `${stats.users.mailing}/${stats.users.total}` }}
-                        </span>
-                        <span class="text-muted">
-                          {{ `(${Math.ceil(stats.users.mailing/stats.users.total*100)}%)` }}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </slot>
-              </div>
-
-              <div class="col-auto">
-                <slot name="icon">
-                  <div class="icon icon-shape bg-gradient-info text-white rounded-circle shadow">
-                    <i class="fas fa-users"/>
-                  </div>
-                </slot>
-              </div>
-            </div>
-
-            <p class="mt-3 mb-0 text-sm">
-              <slot name="footer">
-                <i class="fas fa-external-link-alt mr-2"/>
-                <router-link to="/user-management">
-                  <span class="nav-link p-0 d-inline text-nowrap">accéder liste utilisateurs</span>
-                </router-link>
-              </slot>
-            </p>
-          </card>
-        </div>
-      </div>
     </base-header>
 
-    <!-- ======================================= -->
-    <!-- == LARGE CARDS ======================== -->
-    <!-- ======================================= -->
-    <div class="container-fluid mt--6 card-wrapper">
-      <div class="row">
+    <div class="container-fluid mt--6">
 
-        <!-- grades repartition -->
-        <div class="col-xl-4">
+      <div class="row">
+        <div class="col-xl-9">
+          <div class="row">
+            <div class="col-xl-4 col-md-6">
+              <!-- total users  -->
+              <total-users :users="stats.users"/>
+              <!-- active users -->
+              <active-users :users="stats.users"/>
+              <!-- epsi / wis repartition -->
+              <repartition-users :users="stats.users"/>
+            </div>
+
+            <div class="col-xl-4 col-md-6">
+              <!-- inactive users -->
+              <inactive-users :users="stats.users"/>
+              <!-- new users -->
+              <new-users :users="stats.users"/>
+              <!-- users doing bts -->
+              <bts-users :users="stats.users"/>
+            </div>
+
+            <div class="col-xl-4 col-md-12">
+              <!-- migrated users -->
+              <migrated-users :users="stats.users"/>
+              <!-- old accounts, will never be migrated (old i2) -->
+              <old-users :users="stats.users"/>
+              <!-- users that are accepting mails -->
+              <mail-users :users="stats.users"/>
+            </div>
+          </div>
+          <div >
+            <!-- campus + grade repartition -->
+            <card>
+              <template slot="header">
+                <h6 class="surtitle">UTILISATEURS</h6>
+                <h5 class="h3 mb-0">Répartion des campus (et des classes)</h5>
+              </template>
+              <div class="chart-area">
+                <bar-chart
+                  :height="350"
+                  :chart-data="barChartStacked.chartData"
+                  :extra-options="barChartStacked.extraOptions"
+                />
+              </div>
+            </card>
+          </div>
+        </div>
+
+        <div class="col-xl-3">
+          <!-- derniers utilisateurs inscrits -->
+          <last-registers :users="stats.users"/>
+          <!-- grades repartition -->
           <card>
             <template slot="header">
               <h6 class="surtitle">UTILISATEURS</h6>
@@ -477,29 +86,25 @@
             </div>
           </card>
         </div>
-
-        <!-- campus + grade repartition -->
-        <div class="col-xl-8">
-          <card>
-            <template slot="header">
-              <h6 class="surtitle">UTILISATEURS</h6>
-              <h5 class="h3 mb-0">Répartion des campus (et des classes)</h5>
-            </template>
-            <div class="chart-area">
-              <bar-chart
-                :height="350"
-                :chart-data="barChartStacked.chartData"
-                :extra-options="barChartStacked.extraOptions"
-              />
-            </div>
-          </card>
-        </div>
       </div>
     </div>
   </div>
 </template>
+
 <script>
 import { mapGetters } from 'vuex'
+
+import TotalUsers from './Widgets/Stats/TotalUsers'
+import InactiveUsers from './Widgets/Stats/InactiveUsers'
+import MigratedUsers from './Widgets/Stats/MigratedUsers'
+import OldUsers from './Widgets/Stats/OldUsers'
+import ActiveUsers from './Widgets/Stats/ActiveUsers'
+import NewUsers from './Widgets/Stats/NewUsers'
+import RepartitionUsers from './Widgets/Stats/RepartitionUsers'
+import BtsUsers from './Widgets/Stats/BtsUsers'
+import MailUsers from './Widgets/Stats/MailUsers'
+import LastRegisters from './Widgets/Stats/LastRegisters'
+
 import BarChart from '@/components/Charts/BarChart'
 import PieChart from '@/components/Charts/PieChart'
 import { Charts } from '@/components/Charts/config'
@@ -507,13 +112,17 @@ import { Charts } from '@/components/Charts/config'
 export default {
   components: {
     BarChart,
-    PieChart
-  },
-  data () {
-    return {
-      activeUsers: 1,
-      newUsers: 1
-    }
+    PieChart,
+    TotalUsers,
+    InactiveUsers,
+    MigratedUsers,
+    OldUsers,
+    ActiveUsers,
+    NewUsers,
+    RepartitionUsers,
+    BtsUsers,
+    MailUsers,
+    LastRegisters
   },
   computed: {
     ...mapGetters({
@@ -677,14 +286,6 @@ export default {
   },
   created () {
     this.$store.dispatch('sysconf/fetchStats')
-  },
-  methods: {
-    isPositive () {
-      if (this.newUsers === 1 && this.stats.users.creationAccount.lastDay > 0) return true
-      if (this.newUsers === 3 && this.stats.users.creationAccount.lastThreeDays > 0) return true
-      if (this.newUsers === 7 && this.stats.users.creationAccount.lastWeek > 0) return true
-      return false
-    }
   }
 }
 </script>
