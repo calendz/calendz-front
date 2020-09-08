@@ -1,7 +1,6 @@
 <template>
   <div
     v-touch:swipe.left="handleSwipeLeft"
-    id="sidebar"
     :data="backgroundColor"
     class="sidenav navbar navbar-vertical fixed-left navbar-expand-xs navbar-light bg-white"
     @mouseenter="$sidebar.onMouseEnter()"
@@ -131,13 +130,6 @@ export default {
 </script>
 
 <style scoped>
-  #sidebar {
-    overflow: hidden
-  }
-  #sidebar:hover {
-    overflow-y: scroll
-  }
-
   ::-webkit-scrollbar-track {
     background-color: #F5F5F5;
     box-shadow: inset 0 0 6px rgba(0,0,0,0.2);
