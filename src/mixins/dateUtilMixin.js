@@ -79,6 +79,14 @@ export default {
       return `${month}-${day}-${year}`
     },
 
+    dateToYearMonthDay (date) {
+      date = new Date(date)
+      const day = (`0${date.getDate()}`).slice(-2)
+      const month = (`0${date.getMonth() + 1}`).slice(-2)
+      const year = date.getFullYear().toString()
+      return `${year}-${month}-${day}`
+    },
+
     // eg: 'lundi 30 septembre'
     dateToFullString (date) {
       date = new Date(date)

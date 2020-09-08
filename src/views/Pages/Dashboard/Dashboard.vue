@@ -67,12 +67,14 @@
       <div class="row">
         <div class="col-lg-4">
           <today-courses/>
+          <latest-notifications/>
+
         </div>
         <div class="col-lg-4">
           <latest-homeworks/>
         </div>
         <div class="col-lg-4">
-          <latest-notifications/>
+          <calendar-custom/>
         </div>
       </div>
     </div>
@@ -84,6 +86,7 @@ import NextCourse from './Widgets/NextCourse'
 import NextHomework from './Widgets/NextHomework'
 import TodayCourses from './Widgets/TodayCourses'
 import LatestHomeworks from './Widgets/LatestHomeworks'
+import CalendarCustom from './Widgets/CalendarCustom'
 import LatestNotifications from './Widgets/LatestNotifications'
 
 export default {
@@ -93,6 +96,7 @@ export default {
     NextHomework,
     TodayCourses,
     LatestHomeworks,
+    CalendarCustom,
     LatestNotifications
   },
   beforeCreate () {
