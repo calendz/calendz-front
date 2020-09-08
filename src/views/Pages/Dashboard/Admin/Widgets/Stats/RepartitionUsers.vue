@@ -12,7 +12,7 @@
 
               <div v-if="users">
                 <span class="h3 font-weight-bold mt--1 mr-2 float-left">
-                  {{ `EPSI : ${users.epsi} / WIS : ${users.wis}` }}
+                  {{ `EPSI: ${users.epsi} / WIS: ${users.wis}` }}
                 </span>
               </div>
             </div>

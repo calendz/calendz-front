@@ -19,14 +19,6 @@
               :label="subject"
               :key="index"
               class="select-danger"/>
-              <!-- <el-option
-              :value="'ALL'"
-              label="Toutes"
-              class="select-danger"/>
-            <el-option
-              :value="'COMM'"
-              label="Communication"
-              class="select-danger"/> -->
           </el-select>
         </div>
       </div>
