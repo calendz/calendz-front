@@ -3,6 +3,7 @@
     v-touch:swipe.left="handleSwipeLeft"
     :data="backgroundColor"
     class="sidenav navbar navbar-vertical fixed-left navbar-expand-xs navbar-light bg-white"
+    style="overflow-x: hidden"
     @mouseenter="$sidebar.onMouseEnter()"
     @mouseleave="$sidebar.onMouseLeave()">
     <div
