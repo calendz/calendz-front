@@ -104,6 +104,13 @@ export default {
       return `${day} ${dayNumber} ${month}`
     },
 
+    dateToTinyString (date) {
+      date = new Date(date)
+      const dayNumber = ('0' + date.getDate()).slice(-2)
+      const month = this.monthNbToShortString(date.getMonth())
+      return `${dayNumber} ${month}`
+    },
+
     // eg: '07:12:42'
     dateToTimeString (date, separator = ':') {
       date = new Date(date)

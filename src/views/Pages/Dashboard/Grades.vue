@@ -42,6 +42,12 @@
           <grades-table/>
         </div>
       </div>
+
+      <div class="row">
+        <div class="col-xl-6">
+          <grades-line-chart/>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -52,6 +58,7 @@ import GradesAverage from './Grades/GradesAverage.vue'
 import TotalNumber from './Grades/TotalNumber.vue'
 import GradesCatchup from './Grades/GradesCatchup.vue'
 import GradesTable from './Grades/GradesTable.vue'
+import GradesLineChart from './Grades/GradesLineChart.vue'
 
 export default {
   components: {
@@ -59,7 +66,8 @@ export default {
     GradesAverage,
     TotalNumber,
     GradesCatchup,
-    GradesTable
+    GradesTable,
+    GradesLineChart
   },
   mounted () {
     if (this.$route.query.action === 'add') {
