@@ -76,7 +76,6 @@ const gradesModule = {
   actions: {
     create: ({ commit }, { value, coefficient, subject, date, description }) => {
       commit('GRADE_CREATE_REQUEST')
-      date = DateUtil.methods.dateToDayMonthYear(date)
 
       GradesService.create(value, coefficient, subject, date, description)
         .then(
@@ -92,7 +91,6 @@ const gradesModule = {
 
     update: ({ commit }, { _id, value, coefficient, date, description }) => {
       commit('GRADE_UPDATE_REQUEST')
-      date = DateUtil.methods.dateToDayMonthYear(date)
 
       GradesService.update(_id, value, coefficient, date, description)
         .then(
@@ -129,10 +127,37 @@ const gradesModule = {
       return !!state.status.isRetrieving
     },
     completed: state => {
-      return state.grades.filter(grade => !!grade.value)
+      const array = state.grades.filter(grade => !!grade.value)
+      array.sort((a, b) => (a.date < b.date) ? -1 : 1)
+      return array
     },
     pending: state => {
-      return state.grades.filter(grade => !grade.value)
+      const array = state.grades.filter(grade => !grade.value)
+      array.sort((a, b) => (a.date < b.date) ? -1 : 1)
+      return array
+    },
+    completedValues: (state, getters) => {
+      const values = []
+      getters.completed.forEach(grade => {
+        values.push(grade.value)
+      })
+      return values
+    },
+    completedDates: (state, getters) => {
+      const dates = []
+      getters.completed.forEach(grade => {
+        const date = DateUtil.methods.timestampToDate(grade.date)
+        dates.push(DateUtil.methods.dateToTinyString(date))
+      })
+      return dates
+    },
+    subjects: (state, getters) => {
+      const subjects = ['Toutes les matières']
+      getters.completed.forEach(grade => {
+        if (subjects.includes(grade.subject)) return
+        subjects.push(grade.subject)
+      })
+      return subjects
     }
   }
 }
