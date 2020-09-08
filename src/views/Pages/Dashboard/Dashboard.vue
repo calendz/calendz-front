@@ -15,14 +15,34 @@
             <route-bread-crumb/>
           </nav>
         </div>
-        <!-- <div class="col-lg-6 col-5 text-right">
+        <div class="col-lg-6 col-5 text-right">
           <base-button
+            class="my-1 mr-0"
             size="sm"
-            type="neutral">New</base-button>
+            type="default"
+            @click="addGrade()">
+            <span class="d-none d-sm-block">
+              Ajouter une note
+            </span>
+            <span class="d-block d-sm-none">
+              <i class="fas fa-plus-square mr-1"/>
+              Note
+            </span>
+          </base-button>
           <base-button
+            class="my-1 ml-2"
             size="sm"
-            type="neutral">Filters</base-button>
-        </div> -->
+            type="default"
+            @click="addTask()">
+            <span class="d-none d-sm-block">
+              Ajouter une tâche
+            </span>
+            <span class="d-block d-sm-none">
+              <i class="fas fa-plus-square mr-1"/>
+              Tâche
+            </span>
+          </base-button>
+        </div>
       </div>
 
       <!-- Card stats -->
@@ -101,6 +121,14 @@ export default {
   },
   beforeCreate () {
     localStorage.removeItem('calendz.calendar.searchInput')
+  },
+  methods: {
+    addGrade () {
+      this.$router.push('/grades?action=add')
+    },
+    addTask () {
+      this.$router.push(`/tasks?date=`) // default is Date.now()
+    }
   }
 }
 </script>

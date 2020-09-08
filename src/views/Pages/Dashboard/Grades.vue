@@ -60,6 +60,11 @@ export default {
     TotalNumber,
     GradesCatchup,
     GradesTable
+  },
+  mounted () {
+    if (this.$route.query.action === 'add') {
+      this.$store.commit('layout/OPEN_CREATEGRADE_MODAL', { })
+    }
   }
 }
 </script>
