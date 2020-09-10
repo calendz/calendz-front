@@ -148,7 +148,7 @@
                   :class="`fas fa-graduation-cap bg-${getColor(grade.value)}`"
                   class="avatar avatar-sm rounded-circle mb-2"/><br>
                 <span>
-                  {{ grade.value || '?' }}/20 <sub>{{ grade.coefficient }}</sub>
+                  {{ (grade.value || grade.value === 0) ? grade.value : '?' }}/20 <sub>{{ grade.coefficient }}</sub>
                 </span>
               </div>
             </el-tooltip>
@@ -267,7 +267,7 @@
                 :class="`fas fa-graduation-cap bg-${getColor(grade.value)}`"
                 class="avatar avatar-sm rounded-circle mb-2"/><br>
               <span>
-                {{ grade.value || '?' }}/20 <sub>{{ grade.coefficient }}</sub>
+                {{ (grade.value || grade.value === 0) ? grade.value : '?' }}/20 <sub>{{ grade.coefficient }}</sub>
               </span>
             </div>
           </el-tooltip>
@@ -288,7 +288,7 @@
 
 <script>
 import swal from 'sweetalert2'
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 import { BasePagination } from '@/components'
 import { Table, TableColumn, Option } from 'element-ui'
 import dateUtilMixin from '@/mixins/dateUtilMixin'
@@ -321,8 +321,8 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      grades: state => state.grades.grades
+    ...mapGetters({
+      grades: 'grades/all'
     }),
     tableData () {
       const result = []
@@ -344,7 +344,7 @@ export default {
 
       const temp = grades.filter(grade => grade.subject === subject)
       temp.forEach(grade => {
-        result += `${grade.value || '?'}/20 <sub>${grade.coefficient}</sub> — `
+        result += `${(grade.value || grade.value === 0) ? grade.value : '?'}/20 <sub>${grade.coefficient}</sub> — `
       })
 
       return result.slice(0, -2)
@@ -381,12 +381,14 @@ export default {
     assignEditGrade (grade) {
       this.editGrade = Object.assign({}, grade)
       if (!grade.date.includes('-')) {
-        this.editGrade.date = this.timestampToDate(grade.date)
+        this.editGrade.date = this.dateToDayMonthYear(this.timestampToDate(grade.date))
       }
+      console.log('date:', this.editGrade.date)
     },
     subjectGrades (subject) {
       const grades = this.grades
       const result = grades.filter(grade => grade.subject === subject)
+      result.sort((a, b) => (a.date < b.date) ? -1 : 1)
       return result
     },
     getColor (grade) {

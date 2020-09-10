@@ -168,16 +168,16 @@ import { mapState } from 'vuex'
 import FlatPicker from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 import { French } from 'flatpickr/dist/l10n/fr.js'
+import dateUtilMixin from '@/mixins/dateUtilMixin'
 
 export default {
   components: {
     FlatPicker
   },
+  mixins: [dateUtilMixin],
   data () {
     return {
-      gradeCreationForm: {
-        date: new Date()
-      },
+      gradeCreationForm: {},
       flatPickerConfig: {
         allowInput: true,
         locale: French,
@@ -196,6 +196,9 @@ export default {
       this.gradeCreationForm.subject = newVal
     }
   },
+  mounted () {
+    this.gradeCreationForm.date = this.dateToDayMonthYear(new Date())
+  },
   methods: {
     openModal () {
       this.$store.commit('layout/OPEN_CREATEGRADE_MODAL')
@@ -208,7 +211,9 @@ export default {
       this.$validator.validateAll().then(valid => {
         if (!valid) return
         this.$store.dispatch('grades/create', this.gradeCreationForm).then(response => {
-          this.gradeCreationForm = { date: new Date() }
+          this.gradeCreationForm = {
+            date: this.dateToDayMonthYear(new Date())
+          }
           this.closeModal()
         })
       })
