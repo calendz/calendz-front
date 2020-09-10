@@ -24,6 +24,13 @@ const GradesService = {
     return ApiService.delete(`/grades/${gradeId}`)
       .then(res => res.data)
       .catch(err => Promise.reject(err))
+  },
+
+  // fill a grade
+  fill: (gradeId, value) => {
+    return ApiService.patch(`/grades/${gradeId}/fill`, { value })
+      .then(res => res.data)
+      .catch(err => Promise.reject(err))
   }
 }
 

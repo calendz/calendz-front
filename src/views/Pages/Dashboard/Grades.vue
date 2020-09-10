@@ -47,6 +47,9 @@
         <div class="col-xl-6">
           <grades-line-chart/>
         </div>
+        <div class="col-xl-6">
+          <fill-grade/>
+        </div>
       </div>
     </div>
   </div>
@@ -59,6 +62,7 @@ import TotalNumber from './Grades/TotalNumber.vue'
 import GradesCatchup from './Grades/GradesCatchup.vue'
 import GradesTable from './Grades/GradesTable.vue'
 import GradesLineChart from './Grades/GradesLineChart.vue'
+import FillGrade from './Grades/FillGrade.vue'
 
 export default {
   components: {
@@ -67,7 +71,8 @@ export default {
     TotalNumber,
     GradesCatchup,
     GradesTable,
-    GradesLineChart
+    GradesLineChart,
+    FillGrade
   },
   mounted () {
     if (this.$route.query.action === 'add') {

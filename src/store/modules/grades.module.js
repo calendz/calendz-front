@@ -49,10 +49,7 @@ const gradesModule = {
     GRADE_UPDATE_SUCCESS: (state, { id, grade }) => {
       state.status = {}
       const index = state.grades.findIndex(grade => grade._id === id)
-      state.grades[index].value = grade.value
-      state.grades[index].coefficient = grade.coefficient
-      state.grades[index].date = grade.date
-      state.grades[index].description = grade.description
+      Vue.set(state.grades, index, grade)
     },
     GRADE_UPDATE_FAILURE: (state, reason) => {
       state.status = { error: reason }
@@ -66,6 +63,18 @@ const gradesModule = {
       state.status = {}
     },
     GRADE_DELETE_FAILURE: (state, reason) => {
+      state.status = { error: reason }
+    },
+
+    GRADE_FILL_REQUEST: (state) => {
+      state.status = { isFilling: true }
+    },
+    GRADE_FILL_SUCCESS: (state, { id, grade }) => {
+      state.status = {}
+      const index = state.grades.findIndex(grade => grade._id === id)
+      Vue.set(state.grades, index, grade)
+    },
+    GRADE_FILL_FAILURE: (state, reason) => {
       state.status = { error: reason }
     }
   },
@@ -116,6 +125,21 @@ const gradesModule = {
             commit('GRADE_DELETE_FAILURE', err.data.message)
             Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.data.message || 'Une erreur est survenue...'}` })
           })
+    },
+
+    fill: ({ commit }, { _id, value }) => {
+      commit('GRADE_FILL_REQUEST')
+
+      GradesService.fill(_id, value)
+        .then(
+          res => {
+            commit('GRADE_FILL_SUCCESS', { id: _id, grade: res.grade })
+            Vue.prototype.$notify({ type: 'success', message: `Note mise-à-jour avec succès !` })
+          },
+          err => {
+            commit('GRADE_FILL_FAILURE', err.data.message)
+            Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.data.message || 'Une erreur est survenue...'}` })
+          })
     }
   },
 
@@ -126,13 +150,18 @@ const gradesModule = {
     isLoading: state => {
       return !!state.status.isRetrieving
     },
+    all: state => {
+      const array = [...state.grades]
+      array.sort((a, b) => (a.date < b.date) ? -1 : 1)
+      return array
+    },
     completed: state => {
       const array = state.grades.filter(grade => !!grade.value)
       array.sort((a, b) => (a.date < b.date) ? -1 : 1)
       return array
     },
     pending: state => {
-      const array = state.grades.filter(grade => !grade.value)
+      const array = state.grades.filter(grade => (!grade.value && grade.value !== 0))
       array.sort((a, b) => (a.date < b.date) ? -1 : 1)
       return array
     },
