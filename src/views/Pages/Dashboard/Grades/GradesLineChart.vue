@@ -54,7 +54,7 @@ export default {
   computed: {
     ...mapGetters({
       isLoading: 'grades/isLoading',
-      subjects: 'grades/subjects',
+      subjects: 'grades/subjectsWithAll',
       grades: 'grades/completed',
       gradesValues: 'grades/completedValues',
       gradesDates: 'grades/completedDates'

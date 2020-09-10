@@ -181,6 +181,14 @@ const gradesModule = {
       return dates
     },
     subjects: (state, getters) => {
+      const subjects = []
+      getters.completed.forEach(grade => {
+        if (subjects.includes(grade.subject)) return
+        subjects.push(grade.subject)
+      })
+      return subjects
+    },
+    subjectsWithAll: (state, getters) => {
       const subjects = ['Toutes les matières']
       getters.completed.forEach(grade => {
         if (subjects.includes(grade.subject)) return

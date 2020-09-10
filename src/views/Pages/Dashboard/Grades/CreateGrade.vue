@@ -96,16 +96,26 @@
         </div>
 
         <div class="row">
-          <!-- TODO: select like with new options -->
           <div class="col-md-6">
             <base-input
-              v-validate="'required|min:1|max:50'"
-              v-model="gradeCreationForm.subject"
               :error="getError('matière')"
               :valid="isValid('matière')"
-              name="matière"
-              label="Matière"
-              placeholder="Matière"/>
+              label="Matière">
+              <el-select
+                v-validate="'required|min:1|max:50'"
+                v-model="gradeCreationForm.subject"
+                filterable
+                allow-create
+                default-first-option
+                name="matière"
+                placeholder="Nom de la matière">
+                <el-option
+                  v-for="(subject, index) in subjects"
+                  :key="index"
+                  :label="subject"
+                  :value="subject"/>
+              </el-select>
+            </base-input>
           </div>
 
           <div class="col-md-6">
@@ -164,15 +174,18 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import FlatPicker from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 import { French } from 'flatpickr/dist/l10n/fr.js'
 import dateUtilMixin from '@/mixins/dateUtilMixin'
+import { Select, Option } from 'element-ui'
 
 export default {
   components: {
-    FlatPicker
+    FlatPicker,
+    [Select.name]: Select,
+    [Option.name]: Option
   },
   mixins: [dateUtilMixin],
   data () {
@@ -189,6 +202,9 @@ export default {
     ...mapState({
       showModal: state => state.layout.gradeCreationModal.isOpen,
       prefilledSubject: state => state.layout.gradeCreationModal.subject
+    }),
+    ...mapGetters({
+      subjects: 'grades/subjects'
     })
   },
   watch: {
