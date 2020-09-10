@@ -113,7 +113,6 @@ export default {
   },
   methods: {
     toggle () {
-      console.log('toggle', this.expand)
       this.expand = !this.expand
     }
   }

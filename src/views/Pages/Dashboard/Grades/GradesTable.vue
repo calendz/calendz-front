@@ -383,7 +383,6 @@ export default {
       if (!grade.date.includes('-')) {
         this.editGrade.date = this.dateToDayMonthYear(this.timestampToDate(grade.date))
       }
-      console.log('date:', this.editGrade.date)
     },
     subjectGrades (subject) {
       const grades = this.grades
