@@ -39,6 +39,10 @@
         <div class="col-lg-6">
           <create-notifications/>
         </div>
+        <div class="col-lg-6">
+          <create-email/>
+        </div>
+
         <div class="col-xl-3 col-md-6">
           <toggle-edit-group/>
         </div>
@@ -52,6 +56,7 @@ import ToggleRegister from './Widgets/ToggleRegister'
 import DisconnectUsers from './Widgets/DisconnectUsers'
 import MigrateUsers from './Widgets/MigrateUsers'
 import CreateNotifications from './Widgets/CreateNotifications'
+import CreateEmail from './Widgets/CreateEmail'
 import ToggleEditGroup from './Widgets/ToggleEditGroup'
 
 export default {
@@ -61,6 +66,7 @@ export default {
     DisconnectUsers,
     MigrateUsers,
     CreateNotifications,
+    CreateEmail,
     ToggleEditGroup
   },
   mounted () {
