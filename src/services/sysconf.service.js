@@ -47,6 +47,12 @@ const SysconfService = {
     return ApiService.patch(`/sysconf/migrate/all`)
       .then(res => res)
       .catch(err => Promise.reject(err.data))
+  },
+
+  sendMail: (subject, title, content, ctaLabel, ctaUrl) => {
+    return ApiService.post('/sysconf/mail', { subject, title, content, ctaLabel, ctaUrl })
+      .then(res => res)
+      .catch(err => Promise.reject(err.data))
   }
 }
 

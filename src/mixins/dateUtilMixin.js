@@ -79,6 +79,14 @@ export default {
       return `${month}-${day}-${year}`
     },
 
+    dateToYearMonthDay (date) {
+      date = new Date(date)
+      const day = (`0${date.getDate()}`).slice(-2)
+      const month = (`0${date.getMonth() + 1}`).slice(-2)
+      const year = date.getFullYear().toString()
+      return `${year}-${month}-${day}`
+    },
+
     // eg: 'lundi 30 septembre'
     dateToFullString (date) {
       date = new Date(date)
@@ -94,6 +102,13 @@ export default {
       const dayNumber = ('0' + date.getDate()).slice(-2)
       const month = this.monthNbToShortString(date.getMonth())
       return `${day} ${dayNumber} ${month}`
+    },
+
+    dateToTinyString (date) {
+      date = new Date(date)
+      const dayNumber = ('0' + date.getDate()).slice(-2)
+      const month = this.monthNbToShortString(date.getMonth())
+      return `${dayNumber} ${month}`
     },
 
     // eg: '07:12:42'

@@ -54,7 +54,7 @@ export default {
       swal.fire({
         icon: 'warning',
         title: 'Êtes vous sûr ?',
-        text: 'Tous les comptes seront désactivés et nécessiteront une mise-à-jour.',
+        text: 'Tous les comptes seront désactivés et nécessiteront une mise-à-jour, et toutes les tâches seront supprimées.',
         customClass: {
           confirmButton: 'btn btn-warning',
           cancelButton: 'btn btn-secondary'

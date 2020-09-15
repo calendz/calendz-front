@@ -315,6 +315,7 @@ const accountModule = {
             localStorage.user = JSON.stringify(res.user)
             commit('notifications/NOTIF_SUCCESS', res.notifications, { root: true })
             commit('tasks/FETCH_ALL_SUCCESS', res.tasks, { root: true })
+            commit('grades/FETCH_ALL_SUCCESS', res.grades, { root: true })
           },
           err => {
             commit('FETCH_FAILURE', err.data.message)

@@ -15,14 +15,34 @@
             <route-bread-crumb/>
           </nav>
         </div>
-        <!-- <div class="col-lg-6 col-5 text-right">
+        <div class="col-lg-6 col-5 text-right">
           <base-button
+            class="my-1 mr-0"
             size="sm"
-            type="neutral">New</base-button>
+            type="default"
+            @click="addGrade()">
+            <span class="d-none d-sm-block">
+              Ajouter une note
+            </span>
+            <span class="d-block d-sm-none">
+              <i class="fas fa-plus-square mr-1"/>
+              Note
+            </span>
+          </base-button>
           <base-button
+            class="my-1 ml-2"
             size="sm"
-            type="neutral">Filters</base-button>
-        </div> -->
+            type="default"
+            @click="addTask()">
+            <span class="d-none d-sm-block">
+              Ajouter une tâche
+            </span>
+            <span class="d-block d-sm-none">
+              <i class="fas fa-plus-square mr-1"/>
+              Tâche
+            </span>
+          </base-button>
+        </div>
       </div>
 
       <!-- Card stats -->
@@ -67,12 +87,14 @@
       <div class="row">
         <div class="col-lg-4">
           <today-courses/>
+          <latest-notifications/>
+
         </div>
         <div class="col-lg-4">
           <latest-homeworks/>
         </div>
         <div class="col-lg-4">
-          <latest-notifications/>
+          <calendar-custom/>
         </div>
       </div>
     </div>
@@ -84,6 +106,7 @@ import NextCourse from './Widgets/NextCourse'
 import NextHomework from './Widgets/NextHomework'
 import TodayCourses from './Widgets/TodayCourses'
 import LatestHomeworks from './Widgets/LatestHomeworks'
+import CalendarCustom from './Widgets/CalendarCustom'
 import LatestNotifications from './Widgets/LatestNotifications'
 
 export default {
@@ -93,10 +116,19 @@ export default {
     NextHomework,
     TodayCourses,
     LatestHomeworks,
+    CalendarCustom,
     LatestNotifications
   },
   beforeCreate () {
     localStorage.removeItem('calendz.calendar.searchInput')
+  },
+  methods: {
+    addGrade () {
+      this.$router.push('/grades?action=add')
+    },
+    addTask () {
+      this.$router.push(`/tasks?date=`) // default is Date.now()
+    }
   }
 }
 </script>

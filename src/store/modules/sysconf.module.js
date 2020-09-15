@@ -103,6 +103,16 @@ const sysconfModule = {
     },
     MIGRATE_USERS_FAILURE: (state, reason) => {
       state.status = { migrateUsersError: reason }
+    },
+
+    SENDMAIL_REQUEST: (state) => {
+      state.status = { isSendingMail: true }
+    },
+    SENDMAIL_SUCCESS: (state) => {
+      state.status = { isSendingMail: false }
+    },
+    SENDMAIL_FAILURE: (state, reason) => {
+      state.status = { sendMailError: reason }
     }
   },
 
@@ -217,6 +227,19 @@ const sysconfModule = {
           },
           err => {
             commit('MIGRATE_USERS_FAILURE', err.message)
+            Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.message || 'Une erreur est survenue...'}` })
+          })
+    },
+    sendMail: ({ commit }, { subject, title, content, ctaLabel, ctaUrl }) => {
+      commit('SENDMAIL_REQUEST')
+      SysconfService.sendMail(subject, title, content, ctaLabel, ctaUrl)
+        .then(
+          res => {
+            commit('SENDMAIL_SUCCESS')
+            Vue.prototype.$notify({ type: 'success', message: `Emails envoyés avec succès.` })
+          },
+          err => {
+            commit('SENDMAIL_ERROR', err.message)
             Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.message || 'Une erreur est survenue...'}` })
           })
     }
