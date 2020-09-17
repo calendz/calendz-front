@@ -5,44 +5,57 @@
     <!-- ==================================================================== -->
     <help-section
       :open="opened === 1"
-      title="📱 Installer Calendz sur iOS/Android"
+      title="📑 Comprendre la gestion des notes"
       @click.native="open(1)"
     >
-      <Others1 />
+      <Grades1 />
     </help-section>
 
     <!-- ==================================================================== -->
     <!-- ==================================================================== -->
     <help-section
       :open="opened === 2"
-      title="📆 Exporter l'emploi du temps (Google Calendar)"
+      title="🆕 Ajouter une note"
       @click.native="open(2)"
     >
-      <Others2 />
+      <Grades2 />
     </help-section>
 
     <!-- ==================================================================== -->
     <!-- ==================================================================== -->
     <help-section
       :open="opened === 3"
-      title="⚙️ Les paramètres"
+      title="🖊️ Gérer ses notes (modification, suppression etc.)"
       @click.native="open(3)"
     >
-      <Others3 />
+      <Grades3 />
     </help-section>
+
+    <!-- ==================================================================== -->
+    <!-- ==================================================================== -->
+    <help-section
+      :open="opened === 4"
+      title="⚙️ Autres"
+      @click.native="open(4)"
+    >
+      <Grades4 />
+    </help-section>
+
   </div>
 </template>
 
 <script>
-import Others1 from '@/components/Help/Others/1-PWA.vue'
-import Others2 from '@/components/Help/Others/2-Export.vue'
-import Others3 from '@/components/Help/Others/3-Settings.vue'
+import Grades1 from '@/components/Help/Grades/1-Main.vue'
+import Grades2 from '@/components/Help/Grades/2-Add.vue'
+import Grades3 from '@/components/Help/Grades/3-Manage.vue'
+import Grades4 from '@/components/Help/Grades/4-Others.vue'
 
 export default {
   components: {
-    Others1,
-    Others2,
-    Others3
+    Grades1,
+    Grades2,
+    Grades3,
+    Grades4
   },
   data () {
     return {

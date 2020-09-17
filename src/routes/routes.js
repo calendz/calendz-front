@@ -27,10 +27,7 @@ const Calendar = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dash
 const Tasks = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Tasks.vue')
 const Profile = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Profile.vue')
 const Settings = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Settings.vue')
-const HelpCalendar = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Help/HelpCalendar.vue')
-const HelpTasks = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Help/HelpTasks.vue')
-const HelpMarks = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Help/HelpMarks.vue')
-const HelpOthers = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Help/HelpOthers.vue')
+const Help = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Help/Help.vue')
 
 const DashboardAdmin = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Admin/DashboardAdmin.vue')
 const UserStatistics = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Admin/UserStatistics.vue')
@@ -96,35 +93,13 @@ const dashboardPages = {
       }
     },
     {
-      path: '/help/calendar',
-      name: 'Aide (emploi du temps)',
-      component: HelpCalendar,
+      path: '/help',
+      name: 'Aide',
+      component: Help,
       meta: {
-        title: 'Aide - Calendz'
-      }
-    },
-    {
-      path: '/help/tasks',
-      name: 'Aide (devoirs et tâches)',
-      component: HelpTasks,
-      meta: {
-        title: 'Aide - Calendz'
-      }
-    },
-    {
-      path: '/help/marks',
-      name: 'Aide (gestion des notes)',
-      component: HelpMarks,
-      meta: {
-        title: 'Aide - Calendz'
-      }
-    },
-    {
-      path: '/help/others',
-      name: 'Aide (divers)',
-      component: HelpOthers,
-      meta: {
-        title: 'Aide - Calendz'
+        title: 'Aide - Calendz',
+        navbarClasses: 'bg-secondary',
+        searchClasses: 'navbar-search-dark'
       }
     },
     // =================================

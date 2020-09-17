@@ -7,7 +7,6 @@
       <!-- left -->
       <div class="col-11">
         <h2>{{ title }}</h2>
-        <p class="text-gray mb-0">{{ subTitle }}</p>
       </div>
 
       <!-- right -->

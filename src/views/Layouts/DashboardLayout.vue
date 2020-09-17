@@ -59,13 +59,9 @@
             :link="{
               name: 'Aide (informations)',
               icon: 'fas fa-info-circle text-default',
-              path: '/help/calendar'
-          }">
-            <sidebar-item :link="{ name: 'Emploi du temps', path: '/help/calendar' }"/>
-            <sidebar-item :link="{ name: 'Devoirs et tâches', path: '/help/tasks' }"/>
-            <sidebar-item :link="{ name: 'Gestion des notes', path: '/help/marks' }"/>
-            <sidebar-item :link="{ name: 'Autres', path: '/help/others' }"/>
-          </sidebar-item>
+              path: '/help'
+            }"
+          />
         </ul>
       </template>
 
@@ -159,6 +155,7 @@
     </div>
   </div>
 </template>
+
 <script>
 /* eslint-disable no-new */
 import PerfectScrollbar from 'perfect-scrollbar'
@@ -258,6 +255,7 @@ export default {
   }
 }
 </script>
+
 <style lang="scss">
   .hover-pointer{
     cursor: pointer !important;
