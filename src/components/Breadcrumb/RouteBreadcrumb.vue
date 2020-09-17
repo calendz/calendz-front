@@ -1,5 +1,5 @@
 <template>
-  <bread-crumb list-classes="breadcrumb-links breadcrumb-dark">
+  <bread-crumb :list-classes="{ 'breadcrumb-links': true, 'breadcrumb-dark': !light }">
     <BreadCrumbItem>
       <li class="breadcrumb-item">
         <router-link to="/dashboard">
@@ -34,6 +34,12 @@ export default {
     BreadCrumb,
     BreadCrumbItem
   },
+  props: {
+    light: {
+      type: Boolean,
+      default: false
+    }
+  },
   methods: {
     getBreadName (route) {
       return route.name
@@ -46,5 +52,3 @@ export default {
   }
 }
 </script>
-
-<style scoped></style>
