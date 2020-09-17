@@ -87,11 +87,10 @@
       <div class="row">
         <div class="col-lg-4">
           <today-courses/>
-          <latest-notifications/>
-
+          <latest-homeworks/>
         </div>
         <div class="col-lg-4">
-          <latest-homeworks/>
+          <latest-notifications/>
         </div>
         <div class="col-lg-4">
           <calendar-custom/>
