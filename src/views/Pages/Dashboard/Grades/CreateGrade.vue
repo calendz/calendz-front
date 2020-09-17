@@ -2,7 +2,7 @@
   <div>
     <card
       :show-footer-line="true"
-      class="card-stats bg-gradient-default"
+      class="card-stats bg-gradient-default cursor-pointer"
       @click.native="openModal()">
       <!-- ================================================ -->
       <!-- == Body ======================================== -->
