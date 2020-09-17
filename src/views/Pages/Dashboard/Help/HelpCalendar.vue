@@ -36,7 +36,7 @@
     <!-- ==================================================================== -->
     <help-section
       :open="opened === 4"
-      title="🤔 Astuces et racourcis"
+      title="🤔 Astuces et raccourcis"
       class="mb-5"
       @click.native="open(4)"
     >
