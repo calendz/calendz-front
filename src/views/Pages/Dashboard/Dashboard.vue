@@ -85,14 +85,15 @@
     <!-- ======================================= -->
     <div class="container-fluid mt--6">
       <div class="row">
-        <div class="col-lg-4">
+        <div class="col-xl-4 col-md-6">
           <today-courses/>
           <latest-homeworks/>
         </div>
-        <div class="col-lg-4">
+        <div class="col-xl-4 col-md-6">
+          <grades-average/>
           <latest-notifications/>
         </div>
-        <div class="col-lg-4">
+        <div class="col-xl-4 col-md-6">
           <calendar-custom/>
         </div>
       </div>
@@ -107,6 +108,7 @@ import TodayCourses from './Widgets/TodayCourses'
 import LatestHomeworks from './Widgets/LatestHomeworks'
 import CalendarCustom from './Widgets/CalendarCustom'
 import LatestNotifications from './Widgets/LatestNotifications'
+import GradesAverage from './Widgets/GradesAverage'
 
 export default {
   components: {
@@ -116,7 +118,8 @@ export default {
     TodayCourses,
     LatestHomeworks,
     CalendarCustom,
-    LatestNotifications
+    LatestNotifications,
+    GradesAverage
   },
   beforeCreate () {
     localStorage.removeItem('calendz.calendar.searchInput')
