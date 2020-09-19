@@ -40,7 +40,7 @@ const calendarModule = {
 
     UPDATE: (state, { weekCourses, weekNumber }) => {
       const before = [...state.courses]
-      state.courses = before.filter(course => course.weekNumber === weekNumber)
+      state.courses = before.filter(course => course.weekNumber !== weekNumber)
       weekCourses.forEach(course => state.courses.push(course))
       state.status = {}
     },
