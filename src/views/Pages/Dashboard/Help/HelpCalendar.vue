@@ -5,7 +5,7 @@
     <help-section
       :open="opened === 1"
       title="📆 Fonctionnement de l'emploi du temps"
-      @click.native="open(1)"
+      @select="open(1)"
     >
       <Calendar1 />
     </help-section>
@@ -15,7 +15,7 @@
     <help-section
       :open="opened === 2"
       title="📑 Gérer ses devoirs depuis l'emploi du temps"
-      @click.native="open(2)"
+      @select="open(2)"
     >
       <Calendar2 />
     </help-section>
@@ -27,7 +27,7 @@
     <help-section
       :open="opened === 3"
       title="👤 Voir l'emploi du temps d'un autre utilisateur"
-      @click.native="open(3)"
+      @select="open(3)"
     >
       <Calendar3 />
     </help-section>
@@ -38,7 +38,7 @@
       :open="opened === 4"
       title="🤔 Astuces et raccourcis"
       class="mb-5"
-      @click.native="open(4)"
+      @select="open(4)"
     >
       <Calendar4 />
     </help-section>

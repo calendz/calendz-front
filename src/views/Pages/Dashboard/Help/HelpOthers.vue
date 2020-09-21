@@ -6,7 +6,7 @@
     <help-section
       :open="opened === 1"
       title="📱 Installer Calendz sur iOS/Android"
-      @click.native="open(1)"
+      @select="open(1)"
     >
       <Others1 />
     </help-section>
@@ -16,7 +16,7 @@
     <help-section
       :open="opened === 2"
       title="📆 Exporter l'emploi du temps (Google Calendar)"
-      @click.native="open(2)"
+      @select="open(2)"
     >
       <Others2 />
     </help-section>
@@ -26,7 +26,7 @@
     <help-section
       :open="opened === 3"
       title="⚙️ Les paramètres"
-      @click.native="open(3)"
+      @select="open(3)"
     >
       <Others3 />
     </help-section>

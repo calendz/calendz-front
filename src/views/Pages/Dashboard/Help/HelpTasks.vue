@@ -6,7 +6,7 @@
     <help-section
       :open="opened === 1"
       title="📑 Comprendre la gestion des tâches et des devoirs"
-      @click.native="open(1)"
+      @select="open(1)"
     >
       <Tasks1 />
     </help-section>
@@ -16,7 +16,7 @@
     <help-section
       :open="opened === 2"
       title="🆕 Ajouter une tâche/devoir"
-      @click.native="open(2)"
+      @select="open(2)"
     >
       <Tasks2 />
     </help-section>
@@ -26,7 +26,7 @@
     <help-section
       :open="opened === 3"
       title="🖊️ Gérer ses devoirs (modification, suppression etc.)"
-      @click.native="open(3)"
+      @select="open(3)"
     >
       <Tasks3 />
     </help-section>
@@ -36,7 +36,7 @@
     <help-section
       :open="opened === 4"
       title="⚙️ Autres"
-      @click.native="open(4)"
+      @select="open(4)"
     >
       <Tasks4 />
     </help-section>

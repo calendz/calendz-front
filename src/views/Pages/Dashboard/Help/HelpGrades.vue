@@ -6,7 +6,7 @@
     <help-section
       :open="opened === 1"
       title="📑 Comprendre la gestion des notes"
-      @click.native="open(1)"
+      @select="open(1)"
     >
       <Grades1 />
     </help-section>
@@ -16,7 +16,7 @@
     <help-section
       :open="opened === 2"
       title="🆕 Ajouter une note"
-      @click.native="open(2)"
+      @select="open(2)"
     >
       <Grades2 />
     </help-section>
@@ -26,7 +26,7 @@
     <help-section
       :open="opened === 3"
       title="🖊️ Gérer ses notes (modification, suppression etc.)"
-      @click.native="open(3)"
+      @select="open(3)"
     >
       <Grades3 />
     </help-section>
@@ -36,7 +36,7 @@
     <help-section
       :open="opened === 4"
       title="⚙️ Autres"
-      @click.native="open(4)"
+      @select="open(4)"
     >
       <Grades4 />
     </help-section>

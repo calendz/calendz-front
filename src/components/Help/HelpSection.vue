@@ -3,7 +3,9 @@
     <!-- ====================================== -->
     <!-- == Section header ==================== -->
     <!-- ====================================== -->
-    <div class="row cursor-pointer">
+    <div
+      class="row cursor-pointer"
+      @click="$emit('select')">
       <!-- left -->
       <div class="col-11">
         <h2>{{ title }}</h2>
