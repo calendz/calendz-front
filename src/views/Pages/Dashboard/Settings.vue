@@ -79,7 +79,7 @@
                         class="m-0">Définissez vos préférences en matière de communication.</h3>
                       <h3
                         v-show="active === 3"
-                        class="m-0">Exportez votre calendrier.</h3>
+                        class="m-0">Exportez votre emploi du temps vers un service tiers.</h3>
                     </div>
                   </div>
                 </div>
@@ -89,7 +89,7 @@
                 <!-- ============================== -->
                 <div
                   v-show="active === 1"
-                  class="container mt--1 mb-3">
+                  class="mx-5 mt--1 mb-3">
 
                   <div class="row mt-3">
                     <div class="col-lg-1 col-md-2 my-2 d-flex justify-content-center">
@@ -178,7 +178,7 @@
                 <!-- ============================== -->
                 <div
                   v-show="active === 2"
-                  class="container mt--1 mb-3">
+                  class="mx-5 mt--1 mb-3">
 
                   <!-- Emails d'informations -->
                   <div class="row mt-3">
@@ -290,12 +290,31 @@
 
                 <div
                   v-show="active === 3"
-                  class="container mt--1 mb-3">
+                  class="mx-5 mt--1 mb-3">
+                  <!-- Emploi du temps -->
                   <div class="row mt-3">
-                    <div class="col-lg-12 col-md-12 my-12">
-                      <base-input
-                        :disabled="true"
-                        :value="calendarUrl" />
+                    <div class="col-lg-1 col-md-2 my-2 d-flex justify-content-center">
+                      <i class="fas fa-calendar my-auto"/>
+                    </div>
+
+                    <div class="col-lg-9 col-md-8 my-2">
+                      <p class="text-justify my-auto">
+                        Récupérez une URL permettant d'ajouter vos cours dans des services tiers tels que Google Calendar.
+                      </p>
+                      <base-alert
+                        type="warning"
+                        class="mt-2">
+                        <strong>Attention : </strong>Cette fonctionnalité est encore en test, et risque de ne pas correctement fonctionner !
+                      </base-alert>
+                    </div>
+
+                    <div class="col-m-2 my-2 d-flex justify-content-center my-auto mx-auto">
+                      <base-button
+                        type="outline-primary"
+                        size="sm"
+                        @click="copyCalendarUrl()">
+                        Copier l'URL
+                      </base-button>
                     </div>
                   </div>
                 </div>
@@ -394,6 +413,13 @@ export default {
         confirmButtonText: 'Confimer'
       }).then((result) => {
         if (result.value) this.$store.dispatch('account/deleteSelf')
+      })
+    },
+    copyCalendarUrl () {
+      navigator.clipboard.writeText(this.calendarUrl).then(() => {
+        this.$notify({ type: 'success', message: "L'URL a bien été copiée dans votre presse papier." })
+      }, () => {
+        this.$notify({ type: 'danger', message: 'Une erreur est survenue...' })
       })
     }
   }
