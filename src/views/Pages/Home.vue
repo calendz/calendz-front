@@ -167,7 +167,7 @@
                   placement="bottom">
                   <img
                     class="mx-2"
-                    src="https://media-exp1.licdn.com/dms/image/C5603AQH0OnvASlMryQ/profile-displayphoto-shrink_400_400/0?e=1597881600&v=beta&t=eqk5IfYNJV9ggEQ5pVQIHWUQnnj6c5NVGmrCAe919Co"
+                    src="https://media-exp1.licdn.com/dms/image/C4D03AQFiQff42OzX-Q/profile-displayphoto-shrink_200_200/0?e=1605139200&v=beta&t=2iFtMMxHtgBfcSjZnJbRSapOQFqpm0wM6GJBfxbp9ks"
                     alt="Alexandre Tuet">
                 </el-tooltip>
 
