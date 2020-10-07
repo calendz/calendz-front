@@ -108,7 +108,8 @@ const dashboardPages = {
       meta: {
         title: 'Aide - Calendz',
         navbarClasses: 'bg-secondary',
-        searchClasses: 'navbar-search-dark'
+        searchClasses: 'navbar-search-dark',
+        sidenavClasses: 'sidenav-toggler'
       }
     },
     // =================================
