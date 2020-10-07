@@ -17,11 +17,6 @@
                     class="btn btn-neutral mb-2">
                     <span class="nav-link-inner--text">Accéder au site</span>
                   </router-link>
-                  <router-link
-                    to="/about"
-                    class="btn btn-default mb-2">
-                    <span class="nav-link-inner--text">En savoir plus...</span>
-                  </router-link>
                 </div>
               </div>
             </div>
