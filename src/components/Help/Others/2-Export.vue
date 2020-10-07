@@ -1,5 +1,7 @@
 <template>
   <div>
-    <p>Hello World!</p>
+    <p>
+      Cette fonctionnalité n'est pas encore disponible...
+    </p>
   </div>
 </template>
