@@ -88,30 +88,44 @@
           align="right">
           <template v-slot="{row}">
             <div class="d-flex">
-              <base-button
-                class="add"
-                type="primary"
-                size="sm"
-                icon
-                @click="addGrade(row)">
-                <i class="text-white fas fa-plus"/>
-              </base-button>
-              <base-button
-                class="edit"
-                type="info"
-                size="sm"
-                icon
-                @click="detailGrade(row)">
-                <i class="text-white ni ni-ruler-pencil"/>
-              </base-button>
-              <base-button
-                class="remove btn-link"
-                type="danger"
-                size="sm"
-                icon
-                @click="openDeleteModal(row)">
-                <i class="text-white fas fa-trash"/>
-              </base-button>
+              <el-tooltip
+                content="Ajouter"
+                placement="top">
+                <base-button
+                  class="add"
+                  type="primary"
+                  size="sm"
+                  icon
+                  @click="addGrade(row)">
+                  <i class="text-white fas fa-plus"/>
+                </base-button>
+              </el-tooltip>
+
+              <el-tooltip
+                content="Choisir une note à modifier"
+                placement="top">
+                <base-button
+                  class="edit"
+                  type="info"
+                  size="sm"
+                  icon
+                  @click="detailGrade(row)">
+                  <i class="text-white ni ni-ruler-pencil"/>
+                </base-button>
+              </el-tooltip>
+
+              <el-tooltip
+                content="Choisir une note à supprimer"
+                placement="top">
+                <base-button
+                  class="remove btn-link"
+                  type="danger"
+                  size="sm"
+                  icon
+                  @click="openDeleteModal(row)">
+                  <i class="text-white fas fa-trash"/>
+                </base-button>
+              </el-tooltip>
             </div>
           </template>
         </el-table-column>
