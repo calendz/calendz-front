@@ -7,7 +7,7 @@
     </p>
 
     <base-alert type="primary">
-      <strong>Info</strong> par défaut, lorsque vous ajoutez un devoir, il est ajouté pour tous les étudiants de votre classe/groupe.
+      <strong>Information :</strong> par défaut, lorsque vous ajoutez un devoir, il est ajouté pour tous les étudiants de votre classe/groupe.
     </base-alert>
 
     <img
