@@ -59,7 +59,7 @@
       <!-- Selected category -->
       <div class="flex-row text-center pb-5">
         <h1>{{ selectedLabel }}</h1>
-        <span class="text-muted">Trucs et astuces concernant votre emploi du temps.</span>
+        <span class="text-muted">{{ selectedDescription }}</span>
 
         <div class="bg-pattern-dots"/>
       </div>
@@ -115,6 +115,14 @@ export default {
         case 'tasks': return 'Devoirs et tâches'
         case 'grades': return 'Gestion des notes'
         case 'others': return 'Autres (divers)'
+      }
+    },
+    selectedDescription () {
+      switch (this.selected) {
+        case 'calendar': return 'Trucs et astuces concernant votre emploi du temps.'
+        case 'tasks': return 'Gérez vos devoirs avec votre classe.'
+        case 'grades': return 'Gardez une trace des notes obtenues durant votre année.'
+        case 'others': return 'Autres astuces pour utilisateurs avancés.'
       }
     }
   }
