@@ -72,8 +72,8 @@
               </template>
             </stats-card>
           </a>
-
         </div>
+
         <div class="col-xl-3 col-md-6">
           <clock/>
         </div>
@@ -93,7 +93,8 @@
           <grades-average/>
           <latest-notifications/>
         </div>
-        <div class="col-xl-4 col-md-6">
+        <div class="col-xl-4 col-md-6 order-first order-xl-last">
+          <teams-links/>
           <calendar-custom/>
         </div>
       </div>
@@ -109,6 +110,7 @@ import LatestHomeworks from './Widgets/LatestHomeworks'
 import CalendarCustom from './Widgets/CalendarCustom'
 import LatestNotifications from './Widgets/LatestNotifications'
 import GradesAverage from './Widgets/GradesAverage'
+import TeamsLinks from './Widgets/TeamsLinks'
 
 export default {
   components: {
@@ -119,7 +121,8 @@ export default {
     LatestHomeworks,
     CalendarCustom,
     LatestNotifications,
-    GradesAverage
+    GradesAverage,
+    TeamsLinks
   },
   beforeCreate () {
     localStorage.removeItem('calendz.calendar.searchInput')

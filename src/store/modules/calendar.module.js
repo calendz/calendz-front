@@ -10,6 +10,7 @@ const calendarModule = {
   state: {
     courses: [],
     fetchedWeeks: [],
+    teamsLinks: [],
     status: {}
   },
 
@@ -20,6 +21,7 @@ const calendarModule = {
     RESET: (state) => {
       state.courses = []
       state.fetchedWeeks = []
+      state.teamsLinks = []
       state.status = {}
     },
 
@@ -48,6 +50,17 @@ const calendarModule = {
     RESET_FETCHED_WEEKS: (state) => {
       state.fetchedWeeks = []
       state.courses = []
+    },
+
+    FETCH_TEAMS_REQUEST: (state) => {
+      state.status = { isFetchingTeams: true }
+    },
+    FETCH_TEAMS_SUCCESS: (state, data) => {
+      state.status = {}
+      state.teamsLinks = data
+    },
+    FETCH_TEAMS_FAILURE: (state, reason) => {
+      state.status = { error: reason }
     }
   },
 
@@ -126,6 +139,35 @@ const calendarModule = {
     },
     resetFetchedWeeks: ({ commit }) => {
       commit('RESET_FETCHED_WEEKS')
+    },
+    fetchTeams: ({ commit, rootState }) => {
+      commit('FETCH_TEAMS_REQUEST')
+
+      const notificationTimestamp = new Date()
+      notificationTimestamp.setMilliseconds(notificationTimestamp.getMilliseconds() + Vue.prototype.$notifications.state.length)
+
+      Vue.prototype.$notify({
+        type: 'default',
+        verticalAlign: 'bottom',
+        icon: 'fas fa-circle-notch fa-spin',
+        message: 'Récupération des liens Teams...',
+        timeout: 15000,
+        timestamp: notificationTimestamp
+      })
+
+      const user = rootState.account.user.email
+      CalendarService.fetchTeamsLinks(user)
+        .then(
+          res => {
+            commit('FETCH_TEAMS_SUCCESS', res)
+            Vue.prototype.$notifications.removeNotification(notificationTimestamp)
+          },
+          err => {
+            commit('FETCH_TEAMS_FAILURE', { reason: err.message })
+            Vue.prototype.$notifications.removeNotification(notificationTimestamp)
+            Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.message || `Erreur lors de la récupération des liens Teams...`}` })
+          }
+        )
     }
   },
   // ==================================

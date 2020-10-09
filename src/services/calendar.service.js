@@ -35,6 +35,19 @@ const CalendarService = {
     return ApiCalendarService.get(url)
       .then(res => res.data)
       .catch(err => Promise.reject(err.data))
+  },
+
+  fetchTeamsLinks: (email) => {
+    // const firstname = email.split('@')[0].split('.')[0]
+    // const lastname = email.split('@')[0].split('.')[1]
+    const firstname = 'daniel'
+    const lastname = 'gavriline'
+
+    const url = `/teams?firstname=${firstname}&lastname=${lastname}`
+
+    return ApiCalendarService.get(url)
+      .then(res => res.data)
+      .catch(err => Promise.reject(err.data))
   }
 }
 
