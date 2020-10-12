@@ -38,10 +38,8 @@ const CalendarService = {
   },
 
   fetchTeamsLinks: (email) => {
-    // const firstname = email.split('@')[0].split('.')[0]
-    // const lastname = email.split('@')[0].split('.')[1]
-    const firstname = 'daniel'
-    const lastname = 'gavriline'
+    const firstname = email.split('@')[0].split('.')[0]
+    const lastname = email.split('@')[0].split('.')[1]
 
     const url = `/teams?firstname=${firstname}&lastname=${lastname}`
 
