@@ -55,6 +55,12 @@
         <h5 class="modal-title">Microsoft Teams</h5>
       </template>
 
+      <base-alert
+        type="primary"
+        class="mb-5">
+        <b>Info : </b>les liens sont disponibles 15 minutes avant le début d'un cours, et disparaissent 15 minutes après sa fin.
+      </base-alert>
+
       <!-- loading -->
       <span v-if="loading">
         <div class="row">
@@ -87,7 +93,7 @@
       </span>
 
       <!-- links -->
-      <span v-if="!loading">
+      <span v-if="!loading && teamsLinks.length > 0">
         <div
           v-for="(val, index) in teamsLinks"
           :key="index">
@@ -139,6 +145,13 @@
               </div>
             </div>
           </div>
+        </div>
+      </span>
+
+      <!-- no link available -->
+      <span v-if="!loading && teamsLinks.length === 0">
+        <div class="text-center">
+          <i>Aucun lien disponible.</i>
         </div>
       </span>
 
