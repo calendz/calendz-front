@@ -96,7 +96,8 @@
       <span v-if="!loading && teamsLinks.length > 0">
         <div
           v-for="(val, index) in teamsLinks"
-          :key="index">
+          :key="index"
+          class="my-3">
           <div class="row">
             <div class="col-6">
               <h3>Intitulé :</h3>
@@ -145,6 +146,7 @@
               </div>
             </div>
           </div>
+          <hr>
         </div>
       </span>
 
