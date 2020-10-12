@@ -28,6 +28,7 @@ const Tasks = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboa
 const Grades = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Grades.vue')
 const Profile = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Profile.vue')
 const Settings = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Settings.vue')
+const Help = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Help/Help.vue')
 
 const DashboardAdmin = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Admin/DashboardAdmin.vue')
 const UserStatistics = () => import(/* webpackChunkName: "page" */ '@/views/Pages/Dashboard/Admin/UserStatistics.vue')
@@ -98,6 +99,17 @@ const dashboardPages = {
       component: Settings,
       meta: {
         title: 'Paramètres - Calendz'
+      }
+    },
+    {
+      path: '/help',
+      name: 'Aide',
+      component: Help,
+      meta: {
+        title: 'Aide - Calendz',
+        navbarClasses: 'bg-secondary',
+        searchClasses: 'navbar-search-dark',
+        sidenavClasses: 'sidenav-toggler'
       }
     },
     // =================================

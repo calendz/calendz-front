@@ -26,6 +26,9 @@ import TaskCore from '@/components/Tasks/TaskCore'
 import { Input, Tooltip, Popover } from 'element-ui'
 import { ValidationProvider } from 'vee-validate'
 
+// Help
+import HelpSection from '@/components/Help/HelpSection'
+
 const GlobalComponents = {
   install (Vue) {
     Vue.component(Badge.name, Badge)
@@ -53,6 +56,8 @@ const GlobalComponents = {
 
     Vue.component(TaskType.name, TaskType)
     Vue.component(TaskCore.name, TaskCore)
+
+    Vue.component(HelpSection.name, HelpSection)
 
     Vue.use(Tooltip)
     Vue.use(Popover)

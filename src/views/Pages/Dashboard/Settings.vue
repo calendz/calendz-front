@@ -44,6 +44,12 @@
                   @click="active = 2">
                   Emails
                 </li>
+                <li
+                  :class="active === 3 ? 'bg-primary text-white' : 'bg-white text-primary'"
+                  class="list-group-item d-flex justify-content-between align-items-center hover-click"
+                  @click="active = 3">
+                  Export
+                </li>
               </ul>
               <base-button
                 size="md"
@@ -71,6 +77,9 @@
                       <h3
                         v-show="active === 2"
                         class="m-0">Définissez vos préférences en matière de communication.</h3>
+                      <h3
+                        v-show="active === 3"
+                        class="m-0">Exportez votre emploi du temps vers un service tiers.</h3>
                     </div>
                   </div>
                 </div>
@@ -80,7 +89,7 @@
                 <!-- ============================== -->
                 <div
                   v-show="active === 1"
-                  class="container mt--1 mb-3">
+                  class="mx-5 mt--1 mb-3">
 
                   <div class="row mt-3">
                     <div class="col-lg-1 col-md-2 my-2 d-flex justify-content-center">
@@ -169,7 +178,7 @@
                 <!-- ============================== -->
                 <div
                   v-show="active === 2"
-                  class="container mt--1 mb-3">
+                  class="mx-5 mt--1 mb-3">
 
                   <!-- Emails d'informations -->
                   <div class="row mt-3">
@@ -274,6 +283,41 @@
                   </div>
 
                 </div>
+
+                <!-- ============================== -->
+                <!-- == Export calendrier ========= -->
+                <!-- ============================== -->
+
+                <div
+                  v-show="active === 3"
+                  class="mx-5 mt--1 mb-3">
+                  <!-- Emploi du temps -->
+                  <div class="row mt-3">
+                    <div class="col-lg-1 col-md-2 my-2 d-flex justify-content-center">
+                      <i class="fas fa-calendar my-auto"/>
+                    </div>
+
+                    <div class="col-lg-9 col-md-8 my-2">
+                      <p class="text-justify my-auto">
+                        Récupérez une URL permettant d'ajouter vos cours dans des services tiers tels que Google Calendar.
+                      </p>
+                      <base-alert
+                        type="warning"
+                        class="mt-2">
+                        <strong>Attention : </strong>Cette fonctionnalité est encore en test, et risque de ne pas correctement fonctionner !
+                      </base-alert>
+                    </div>
+
+                    <div class="col-m-2 my-2 d-flex justify-content-center my-auto mx-auto">
+                      <base-button
+                        type="outline-primary"
+                        size="sm"
+                        @click="copyCalendarUrl()">
+                        Copier l'URL
+                      </base-button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -316,7 +360,13 @@ export default {
   computed: {
     ...mapState({
       user: state => state.account.user
-    })
+    }),
+    calendarUrl () {
+      const firstname = this.user.email.split('@')[0].split('.')[0]
+      const lastname = this.user.email.split('@')[0].split('.')[1]
+
+      return `${process.env.VUE_APP_API_CALENDAR_URL}/month?firstname=${firstname}&lastname=${lastname}&format=icalendar`
+    }
   },
   mounted () {
     this.colorInput = this.$store.getters['account/user'] ? '#' + this.$store.getters['account/user'].settings.calendarColor : '#172b4d'
@@ -363,6 +413,13 @@ export default {
         confirmButtonText: 'Confimer'
       }).then((result) => {
         if (result.value) this.$store.dispatch('account/deleteSelf')
+      })
+    },
+    copyCalendarUrl () {
+      navigator.clipboard.writeText(this.calendarUrl).then(() => {
+        this.$notify({ type: 'success', message: "L'URL a bien été copiée dans votre presse papier." })
+      }, () => {
+        this.$notify({ type: 'danger', message: 'Une erreur est survenue...' })
       })
     }
   }

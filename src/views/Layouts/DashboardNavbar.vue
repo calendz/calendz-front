@@ -45,7 +45,8 @@
       <!-- Sidenav toggler -->
       <li class="nav-item d-xl-none">
         <div
-          class="pr-3 sidenav-toggler sidenav-toggler-dark"
+          :class="$route.meta.sidenavClasses ? $route.meta.sidenavClasses : 'sidenav-toggler-dark'"
+          class="pr-3"
           @click="toggleSidebar">
           <div class="sidenav-toggler-inner">
             <i class="sidenav-toggler-line"/>

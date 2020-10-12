@@ -805,7 +805,10 @@ export default {
       if (e.keyCode === 37 && !this.showSearchInput) this.prev()
     },
     reload () {
-      const date = this.dateToMonthDayYear(this.activeDate)
+      let date = this.activeDate
+      if (date.getDay() === 6) date.setDate(date.getDate() + 2)
+      if (date.getDay() === 0) date.setDate(date.getDate() + 1)
+      date = this.dateToMonthDayYear(date)
       this.$store.dispatch('calendar/resetFetchedWeeks')
       this.$store.dispatch('calendar/fetchDate', { date: date, force: true })
     },

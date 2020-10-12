@@ -10,6 +10,7 @@ const calendarModule = {
   state: {
     courses: [],
     fetchedWeeks: [],
+    teamsLinks: [],
     status: {}
   },
 
@@ -20,6 +21,7 @@ const calendarModule = {
     RESET: (state) => {
       state.courses = []
       state.fetchedWeeks = []
+      state.teamsLinks = []
       state.status = {}
     },
 
@@ -38,9 +40,27 @@ const calendarModule = {
       })
     },
 
+    UPDATE: (state, { weekCourses, weekNumber }) => {
+      const before = [...state.courses]
+      state.courses = before.filter(course => course.weekNumber !== weekNumber)
+      weekCourses.forEach(course => state.courses.push(course))
+      state.status = {}
+    },
+
     RESET_FETCHED_WEEKS: (state) => {
       state.fetchedWeeks = []
       state.courses = []
+    },
+
+    FETCH_TEAMS_REQUEST: (state) => {
+      state.status = { isFetchingTeams: true }
+    },
+    FETCH_TEAMS_SUCCESS: (state, data) => {
+      state.status = {}
+      state.teamsLinks = data
+    },
+    FETCH_TEAMS_FAILURE: (state, reason) => {
+      state.status = { error: reason }
     }
   },
 
@@ -57,9 +77,7 @@ const calendarModule = {
         if (process.env.NODE_ENV === 'development') console.log(`Year ${currentWeek.year}, week ${currentWeek.number}: FETCHING`)
 
         const notificationTimestamp = new Date()
-        notificationTimestamp.setMilliseconds(
-          notificationTimestamp.getMilliseconds() + Vue.prototype.$notifications.state.length
-        )
+        notificationTimestamp.setMilliseconds(notificationTimestamp.getMilliseconds() + Vue.prototype.$notifications.state.length)
 
         Vue.prototype.$notify({
           type: 'default',
@@ -75,12 +93,39 @@ const calendarModule = {
         CalendarService.getWeek(userToFetch, date, force)
           .then(
             res => {
-              const weekCourses = reformatWeek(res.week)
+              const weekCourses = reformatWeek(res.week, res.weekNumber)
               commit('FETCH_SUCCESS', { weekCourses })
               Vue.prototype.$notifications.removeNotification(notificationTimestamp)
-              // if week is empty
-              if (!res.week || Object.keys(res.week).length === 0) {
-                Vue.prototype.$notify({ type: 'warning', message: `Aucun cours trouvé pour la semaine numéro ${currentWeek.number}, réssayez pour vérifier que ce ne soit pas un bug...`, verticalAlign: 'bottom', timeout: 5000 })
+
+              // if not scrapped today, background actualization
+              if (!res.scrappedToday) {
+                const notificationTimestamp2 = new Date()
+                notificationTimestamp2.setMilliseconds(notificationTimestamp2.getMilliseconds() + Vue.prototype.$notifications.state.length)
+
+                Vue.prototype.$notify({
+                  type: 'default',
+                  verticalAlign: 'bottom',
+                  icon: 'fas fa-circle-notch fa-spin',
+                  message: 'Mise à jour de l\'emploi du temps en cours...',
+                  timeout: 15000,
+                  timestamp: notificationTimestamp2
+                })
+
+                CalendarService.updateWeek(userToFetch, date)
+                  .then(
+                    res2 => {
+                      Vue.prototype.$notifications.removeNotification(notificationTimestamp2)
+                      if (res2.update) {
+                        const weekCourses = reformatWeek(res2.week, res2.weekNumber)
+                        commit('UPDATE', { weekCourses, weekNumber: res2.weekNumber })
+                        Vue.prototype.$notify({ type: 'success', message: "Votre emploi du temps vient d'être mis-à-jour !", verticalAlign: 'bottom' })
+                      }
+                    },
+                    err2 => {
+                      commit('FETCH_FAILURE', { currentWeek, reason: err2.message })
+                      Vue.prototype.$notifications.removeNotification(notificationTimestamp)
+                      Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err2.message || `Erreur lors du chargement de l'emploi du temps...`}` })
+                    })
               }
             },
             err => {
@@ -94,6 +139,35 @@ const calendarModule = {
     },
     resetFetchedWeeks: ({ commit }) => {
       commit('RESET_FETCHED_WEEKS')
+    },
+    fetchTeams: ({ commit, rootState }) => {
+      commit('FETCH_TEAMS_REQUEST')
+
+      const notificationTimestamp = new Date()
+      notificationTimestamp.setMilliseconds(notificationTimestamp.getMilliseconds() + Vue.prototype.$notifications.state.length)
+
+      Vue.prototype.$notify({
+        type: 'default',
+        verticalAlign: 'bottom',
+        icon: 'fas fa-circle-notch fa-spin',
+        message: 'Récupération des liens Teams...',
+        timeout: 15000,
+        timestamp: notificationTimestamp
+      })
+
+      const user = rootState.account.user.email
+      CalendarService.fetchTeamsLinks(user)
+        .then(
+          res => {
+            commit('FETCH_TEAMS_SUCCESS', res)
+            Vue.prototype.$notifications.removeNotification(notificationTimestamp)
+          },
+          err => {
+            commit('FETCH_TEAMS_FAILURE', { reason: err.message })
+            Vue.prototype.$notifications.removeNotification(notificationTimestamp)
+            Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.message || `Erreur lors de la récupération des liens Teams...`}` })
+          }
+        )
     }
   },
   // ==================================
@@ -150,11 +224,11 @@ const calendarModule = {
   }
 }
 
-const reformatWeek = (week) => {
+const reformatWeek = (week, weekNumber) => {
   const customCourses = []
 
   // for each day of the week
-  for (let [, courses] of Object.entries(week)) {
+  for (let [, courses] of Object.entries(week || [])) {
     // for each course of the day
     courses.forEach((course) => {
       customCourses.push({
@@ -164,7 +238,8 @@ const reformatWeek = (week) => {
         className: 'custom-event',
         professor: course.professor,
         room: course.room.split('-')[0].split('(')[0],
-        bts: course.bts
+        bts: course.bts,
+        weekNumber
       })
     })
   }

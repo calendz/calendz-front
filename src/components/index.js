@@ -22,15 +22,10 @@ import NavbarToggleButton from './Navbar/NavbarToggleButton'
 import Breadcrumb from './Breadcrumb/Breadcrumb.vue'
 import BreadcrumbItem from './Breadcrumb/BreadcrumbItem.vue'
 import RouteBreadCrumb from './Breadcrumb/RouteBreadcrumb.vue'
-import TimeLine from './Timeline/TimeLine.vue'
-import TimeLineItem from './Timeline/TimeLineItem.vue'
-import TabPane from './Tabs/Tab.vue'
-import Tabs from './Tabs/Tabs.vue'
 import Collapse from './Collapse/Collapse.vue'
 import CollapseItem from './Collapse/CollapseItem.vue'
 import Modal from './Modal.vue'
 import BaseSlider from './BaseSlider.vue'
-import LoadingPanel from './LoadingPanel.vue'
 
 import BasePagination from './BasePagination.vue'
 
@@ -58,14 +53,9 @@ export {
   Breadcrumb,
   BreadcrumbItem,
   RouteBreadCrumb,
-  TimeLine,
-  TimeLineItem,
-  TabPane,
-  Tabs,
   Modal,
   BaseSlider,
   BaseButton,
   Collapse,
-  CollapseItem,
-  LoadingPanel
+  CollapseItem
 }

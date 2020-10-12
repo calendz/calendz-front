@@ -17,11 +17,31 @@ const CalendarService = {
     const firstname = email.split('@')[0].split('.')[0]
     const lastname = email.split('@')[0].split('.')[1]
 
-    // TODO: recreate date object in order to make sure it has the right format
-    // /!\ date has to be of format: MM-DD-YY
     const url = force
       ? `/week/${date}?firstname=${firstname}&lastname=${lastname}&ignoreCache=true`
       : `/week/${date}?firstname=${firstname}&lastname=${lastname}`
+
+    return ApiCalendarService.get(url)
+      .then(res => res.data)
+      .catch(err => Promise.reject(err.data))
+  },
+
+  updateWeek: (email, date) => {
+    const firstname = email.split('@')[0].split('.')[0]
+    const lastname = email.split('@')[0].split('.')[1]
+
+    const url = `/week/${date}/update?firstname=${firstname}&lastname=${lastname}`
+
+    return ApiCalendarService.get(url)
+      .then(res => res.data)
+      .catch(err => Promise.reject(err.data))
+  },
+
+  fetchTeamsLinks: (email) => {
+    const firstname = email.split('@')[0].split('.')[0]
+    const lastname = email.split('@')[0].split('.')[1]
+
+    const url = `/teams?firstname=${firstname}&lastname=${lastname}`
 
     return ApiCalendarService.get(url)
       .then(res => res.data)

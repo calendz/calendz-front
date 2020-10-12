@@ -15,7 +15,8 @@
               name: 'Dashboard',
               icon: 'ni ni-shop text-red',
               path: '/dashboard'
-          }"/>
+            }"
+          />
 
           <!-- calendar -->
           <sidebar-item
@@ -23,7 +24,8 @@
               name: 'Emploi du temps',
               icon: 'ni ni-calendar-grid-58 text-info',
               path: '/calendar'
-          }"/>
+            }"
+          />
 
           <!-- homeworks -->
           <sidebar-item
@@ -31,7 +33,8 @@
               name: 'Devoirs et tâches',
               icon: 'fas fa-book text-primary',
               path: '/tasks'
-          }"/>
+            }"
+          />
 
           <!-- grades -->
           <sidebar-item
@@ -41,13 +44,14 @@
               path: '/grades'
           }"/>
 
-          <!-- settings -->
+          <!-- profile -->
           <sidebar-item
             :link="{
               name: 'Mon profil',
               icon: 'fas fa-user-edit text-success',
               path: '/profile'
-          }"/>
+            }"
+          />
 
           <!-- settings -->
           <sidebar-item
@@ -55,7 +59,17 @@
               name: 'Paramètres',
               icon: 'fas fa-cogs text-grey',
               path: '/settings'
-          }"/>
+            }"
+          />
+
+          <!-- help -->
+          <sidebar-item
+            :link="{
+              name: 'Aide (informations)',
+              icon: 'fas fa-info-circle text-default',
+              path: '/help'
+            }"
+          />
         </ul>
       </template>
 
@@ -149,6 +163,7 @@
     </div>
   </div>
 </template>
+
 <script>
 /* eslint-disable no-new */
 import PerfectScrollbar from 'perfect-scrollbar'
@@ -248,6 +263,7 @@ export default {
   }
 }
 </script>
+
 <style lang="scss">
   .hover-pointer{
     cursor: pointer !important;
