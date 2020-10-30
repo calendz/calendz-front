@@ -21,7 +21,7 @@
     "chart.js": "^2.9.3",
     "date-fns": "^2.16.1",
     "dropzone": "^5.7.2",
-    "element-ui": "2.13.2",
+    "element-ui": "2.14.0",
     "es6-promise": "^4.1.1",
     "flatpickr": "^4.6.6",
     "fuse.js": "^3.6.1",
