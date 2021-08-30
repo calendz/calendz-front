@@ -113,6 +113,26 @@ const sysconfModule = {
     },
     SENDMAIL_FAILURE: (state, reason) => {
       state.status = { sendMailError: reason }
+    },
+
+    DELETE_ALLGRADES_REQUEST: (state) => {
+      state.status = { isDeletingAllGrades: true }
+    },
+    DELETE_ALLGRADES_SUCCESS: (state) => {
+      state.status = { isDeletingAllGrades: false }
+    },
+    DELETE_ALLGRADES_FAILURE: (state, reason) => {
+      state.status = { deleteAllGradeError: reason }
+    },
+
+    DELETE_ALLTASKS_REQUEST: (state) => {
+      state.status = { isDeletingAllTasks: true }
+    },
+    DELETE_ALLTASKS_SUCCESS: (state) => {
+      state.status = { isDeletingAllTasks: false }
+    },
+    DELETE_ALLTASKS_FAILURE: (state, reason) => {
+      state.status = { deleteAllTasksError: reason }
     }
   },
 
@@ -242,6 +262,34 @@ const sysconfModule = {
             commit('SENDMAIL_ERROR', err.message)
             Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.message || 'Une erreur est survenue...'}` })
           })
+    },
+    deleteAllGrades: ({ commit }) => {
+      commit('DELETE_ALLGRADES_REQUEST')
+      SysconfService.deleteAllGrades()
+      .then(
+        res => {
+          commit('grades/RESET', {}, { root: true })
+          commit('DELETE_ALLGRADES_SUCCESS')
+          Vue.prototype.$notify({ type: 'success', message: `Notes supprimées avec succès.` })
+        },
+        err => {
+          commit('DELETE_ALLGRADES_ERROR', err.message)
+          Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.message || 'Une erreur est survenue...'}` })
+        })
+    },
+    deleteAllTasks: ({ commit }) => {
+      commit('DELETE_ALLTASKS_REQUEST')
+      SysconfService.deleteAllTasks()
+      .then(
+        res => {
+          commit('tasks/RESET', {}, { root: true })
+          commit('DELETE_ALLTASKS_SUCCESS')
+          Vue.prototype.$notify({ type: 'success', message: `Devoirs/tâches supprimés avec succès.` })
+        },
+        err => {
+          commit('DELETE_ALLTASKS_ERROR', err.message)
+          Vue.prototype.$notify({ type: 'danger', message: `<b>Erreur !</b> ${err.message || 'Une erreur est survenue...'}` })
+        })
     }
   },
   // ==================================
