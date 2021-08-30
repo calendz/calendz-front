@@ -53,6 +53,18 @@ const SysconfService = {
     return ApiService.post('/sysconf/mail', { subject, title, content, ctaLabel, ctaUrl })
       .then(res => res)
       .catch(err => Promise.reject(err.data))
+  },
+
+  deleteAllGrades: () => {
+    return ApiService.delete('/sysconf/grades/all')
+      .then(res => res)
+      .catch(err => Promise.reject(err.data))
+  },
+
+  deleteAllTasks: () => {
+    return ApiService.delete('/sysconf/tasks/all')
+      .then(res => res)
+      .catch(err => Promise.reject(err.data))
   }
 }
 
