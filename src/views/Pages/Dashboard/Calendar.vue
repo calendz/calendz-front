@@ -618,9 +618,10 @@ export default {
               <div>
                 <h5 class="h5-5 pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
                 ${element.event.extendedProps.bts ? '<div class="ribbon ribbon-top-right"><span>BTS</span></div>' : ''}
+                ${element.event.extendedProps.remote ? '<div class="ribbon ribbon-bottom-right"><span>TEAMS</span></div>' : ''}
                 <h3 class="px-2 text-white text-center" style="max-width: 90%; width: 90%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">${element.event.title}</h3>
                 <h5 class="h5-5 pl-2 mb-1 text-white col-7" style="position: absolute; bottom: 0; left: 0">${this.capitalizeFirstLetterEachWords(element.event.extendedProps.professor)}<h5>
-                <h5 class="h5-5 pr-2 mb-1 text-white col-3 text-right" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h5>
+                ${element.event.extendedProps.remote ? '' : `<h5 class="h5-5 pr-2 mb-1 text-white col-3 text-right" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h5>`}
               </div>`
           }
           break
@@ -633,6 +634,7 @@ export default {
               <div>
                 <h5 class="h5-5 pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
                 ${element.event.extendedProps.bts ? '<div class="ribbon ribbon-top-right"><span>BTS</span></div>' : ''}
+                ${element.event.extendedProps.remote ? '<div class="ribbon ribbon-bottom-right"><span>TEAMS</span></div>' : ''}
                 <h2 class="text-white text-center w-100" style="position: absolute; top: 50%; transform: translateY(-50%);">${element.event.title}</h2>
                 <h5 class="h5-5 pl-2 mb-1 text-white" style="position: absolute; bottom: 0; left: 0">${this.capitalizeFirstLetterEachWords(element.event.extendedProps.professor)}<h5>
                 <h5 class="h5-5 pr-2 mb-1 text-white" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h5>
@@ -642,6 +644,7 @@ export default {
               <div>
                 <h5 class="h5-5 pl-2 mt-1 text-white">${this.timeToHour(element.event.start)} - ${this.timeToHour(element.event.end)}</h5>
                 ${element.event.extendedProps.bts ? '<div class="ribbon ribbon-top-right"><span>BTS</span></div>' : ''}
+                ${element.event.extendedProps.remote ? '<div class="ribbon ribbon-bottom-right"><span>TEAMS</span></div>' : ''}
                 <h3 class="px-2 text-white text-center" style="max-width: 90%; width: 90%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">${element.event.title}</h3>
                 <h5 class="h5-5 pl-2 mb-1 text-white col-7" style="position: absolute; bottom: 0; left: 0">${this.capitalizeFirstLetterEachWords(element.event.extendedProps.professor)}<h5>
                 <h5 class="h5-5 pr-2 mb-1 text-white col-3 text-right" style="position: absolute; bottom: 0; right: 0">${element.event.extendedProps.room}<h5>
@@ -1003,7 +1006,7 @@ export default {
   .ribbon span {
     position: absolute;
     display: block;
-    width: 100px;
+    width: 130px;
     padding: 6px 0;
     background-color: #3498db;
     box-shadow: 0 5px 10px rgba(0,0,0,.1);
@@ -1033,9 +1036,33 @@ export default {
     right: 0;
   }
   .ribbon-top-right span {
-    left: -8px;
-    top: 4px;
+    left: -24px;
+    top: 6px;
     transform: rotate(45deg);
+  }
+
+  /* bottom right*/
+  .ribbon-bottom-right {
+    bottom: 0px;
+    right: 0px;
+  }
+  .ribbon-bottom-right::before,
+  .ribbon-bottom-right::after {
+    border-bottom-color: transparent;
+    border-right-color: transparent;
+  }
+  .ribbon-bottom-right::before {
+    top: 0;
+    left: 0;
+  }
+  .ribbon-bottom-right::after {
+    bottom: 0;
+    right: 0;
+  }
+  .ribbon-bottom-right span {
+    left: -24px;
+    top: 28px;
+    transform: rotate(-45deg);
   }
 
   .bg-other-agenda {
