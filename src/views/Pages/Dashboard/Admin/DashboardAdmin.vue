@@ -39,7 +39,7 @@
         <div class="col-lg-6">
           <create-notifications/>
         </div>
-        
+
         <div class="col-lg-6">
           <div class="row">
             <div class="col-xl-6 col-md-12">
