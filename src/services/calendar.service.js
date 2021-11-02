@@ -8,7 +8,7 @@ const CalendarService = {
     const firstname = email.split('@')[0].split('.')[0]
     const lastname = email.split('@')[0].split('.')[1]
 
-    return ApiCalendarService.get(`/week?firstname=${firstname}&lastname=${lastname}`)
+    return ApiCalendarService.get(`/week?firstname=${firstname}&lastname=${lastname}&ignoreCache=true`)
       .then(res => res.data)
       .catch(err => Promise.reject(err.data))
   },
@@ -19,7 +19,7 @@ const CalendarService = {
 
     const url = force
       ? `/week/${date}?firstname=${firstname}&lastname=${lastname}&ignoreCache=true`
-      : `/week/${date}?firstname=${firstname}&lastname=${lastname}`
+      : `/week/${date}?firstname=${firstname}&lastname=${lastname}&ignoreCache=true`
 
     return ApiCalendarService.get(url)
       .then(res => res.data)

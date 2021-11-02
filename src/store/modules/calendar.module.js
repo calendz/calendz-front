@@ -240,6 +240,7 @@ const reformatWeek = (week, weekNumber) => {
         room: course.room.split('-')[0].split('(')[0],
         bts: course.bts,
         remote: course.remote,
+        link: course.link,
         weekNumber
       })
     })
