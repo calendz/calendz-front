@@ -193,6 +193,40 @@
         </div>
       </div>
 
+      <div
+        v-if="courseModal.remote"
+        class="row">
+        <hr class="mt-3 mb-4">
+
+        <div class="col-12">
+          <h3>Microsoft teams :</h3>
+
+          <a
+            v-if="courseModal.link"
+            :href="courseModal.link"
+            target="_blank"
+            rel="noopener noreferrer">
+            <base-button
+              type="primary"
+              size="sm">
+              <div
+                class="bg-white rounded-circle shadow"
+                style="padding: 4px; margin-right: 6px">
+                <img
+                  style="height: 14px; width: 18px"
+                  src="/img/icons/teams.svg"
+                  alt="Teams">
+              </div>
+              Rejoindre le cours
+            </base-button>
+          </a>
+
+          <p v-else-if="!courseModal.link">
+            Le lien du cours n'est pas disponible.
+          </p>
+        </div>
+      </div>
+
       <!-- show tasks (if there are) -->
       <div v-if="courseModal.tasks && courseModal.tasks.length">
         <hr class="mt-3 mb-4">
@@ -689,6 +723,8 @@ export default {
       this.courseModal.end = this.timeToHour(clicked.event.end)
       this.courseModal.professor = this.capitalizeFirstLetterEachWords(clicked.event.extendedProps.professor)
       this.courseModal.room = clicked.event.extendedProps.room
+      this.courseModal.remote = clicked.event.extendedProps.remote
+      this.courseModal.link = clicked.event.extendedProps.link
       this.courseModal.tasks = this.allTasks.filter(task => {
         const sameDay = this.isSameDay(this.timestampToDate(task.date), clicked.event.start)
         const sameSubject = task.subject ? clicked.event.title.toLowerCase().includes(task.subject.toLowerCase()) : false
