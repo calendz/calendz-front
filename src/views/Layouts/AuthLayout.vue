@@ -113,16 +113,26 @@
         <div class="row align-items-center justify-content-xl-between">
           <div class="col-xl-6">
             <div class="copyright text-center text-xl-left text-muted">
-              © {{ year }} <a
-                href="https://arthurdufour.com/"
-                rel="noreferrer noopener"
-                class="font-weight-bold ml-1"
-                target="_blank">Arthur Dufour</a> &
+              © {{ year }} Créateurs : <a
+              href="https://arthurdufour.com/"
+              rel="noreferrer noopener"
+              class="font-weight-bold ml-1"
+              target="_blank">Arthur Dufour</a> &
               <a
                 href="https://alexandretuet.com/"
                 rel="noreferrer noopener"
                 class="font-weight-bold ml-1"
                 target="_blank">Alexandre Tuet</a>
+              <br> Développeurs actuels :
+              <a
+                rel="noreferrer noopener"
+                class="font-weight-bold ml-1"
+                target="_blank">Maxime Lemaire</a> &
+              <a
+                href="https://doryanchaigneau.fr/"
+                rel="noreferrer noopener"
+                class="font-weight-bold ml-1"
+                target="_blank">Doryan Chaigneau</a>
             </div>
           </div>
           <div class="col-xl-6">
@@ -241,32 +251,32 @@ export default {
 }
 </script>
 <style lang="scss">
-  $scaleSize: 0.8;
-  @keyframes zoomIn8 {
-    from {
-      opacity: 0;
-      transform: scale3d($scaleSize, $scaleSize, $scaleSize);
-    }
-    100% {
-      opacity: 1;
-    }
+$scaleSize: 0.8;
+@keyframes zoomIn8 {
+  from {
+    opacity: 0;
+    transform: scale3d($scaleSize, $scaleSize, $scaleSize);
   }
+  100% {
+    opacity: 1;
+  }
+}
 
-  .main-content .zoomIn {
-    animation-name: zoomIn8;
-  }
+.main-content .zoomIn {
+  animation-name: zoomIn8;
+}
 
-  @keyframes zoomOut8 {
-    from {
-      opacity: 1;
-    }
-    to {
-      opacity: 0;
-      transform: scale3d($scaleSize, $scaleSize, $scaleSize);
-    }
+@keyframes zoomOut8 {
+  from {
+    opacity: 1;
   }
+  to {
+    opacity: 0;
+    transform: scale3d($scaleSize, $scaleSize, $scaleSize);
+  }
+}
 
-  .main-content .zoomOut {
-    animation-name: zoomOut8;
-  }
+.main-content .zoomOut {
+  animation-name: zoomOut8;
+}
 </style>

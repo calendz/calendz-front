@@ -104,8 +104,8 @@ export default {
         case 'WIS3':
         case 'WIS4':
         case 'WIS5':
-        case 'B1':
-        case 'B2':
+        case 'SN1':
+        case 'SN2':
           return [
             { value: 'G1' },
             { value: 'G2' },

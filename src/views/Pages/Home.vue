@@ -52,7 +52,7 @@
         <div class="col-md-6 col-11">
           <h2 class="display-3 text-white">Un emploi du temps amélioré ?</h2>
           <p class="lead text-white text-justify">
-            Calendz vous propose votre emploi du temps, actualisé en temps réel, avec une interface améliorée (principalement au niveau esthétique), ainsi que des possibilités de personnalisation. Vous pourrez également profiter d'autres fonctionnalités, visant à compléter Beecome.
+            Calendz vous propose votre emploi du temps, actualisé en temps réel, avec une interface améliorée (principalement au niveau esthétique), ainsi que des possibilités de personnalisation. Vous pourrez également profiter d'autres fonctionnalités, visant à compléter 360 Learning.
           </p>
         </div>
       </div>
