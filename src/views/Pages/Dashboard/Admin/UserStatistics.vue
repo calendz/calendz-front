@@ -1,151 +1,87 @@
 <template>
   <div>
     <!-- ======================================= -->
-    <!-- == "Base header" ====================== -->
+    <!-- == SMALL CARDS ======================== -->
     <!-- ======================================= -->
     <base-header
       type="primary"
-      className="pb-6">
-      <div className="row align-items-center py-4">
-        <div className="col-lg-6 col-7">
-          <h6 className="h2 text-white d-inline-block mb-0">Statistiques (tâches)</h6>
+      class="pb-6">
+      <div class="row align-items-center py-4">
+        <div class="col-lg-6 col-7">
+          <h6 class="h2 text-white d-inline-block mb-0">Statistiques (utilisateurs)</h6>
           <nav
             aria-label="breadcrumb"
-            className="d-none d-md-inline-block ml-md-4">
+            class="d-none d-md-inline-block ml-md-4">
             <route-bread-crumb/>
           </nav>
         </div>
       </div>
-
-      <div className="row">
-        <!-- total tasks  -->
-        <div className="col-xl-3 col-md-6">
-          <card class="card-stats">
-            <div className="row">
-              <div className="col">
-                <slot>
-                  <h5 className="card-title text-uppercase text-muted mb-1">TÂCHES</h5>
-                  <div className="row mt-2 mb--3">
-                    <div className="col-12 pr-0">
-                      <div v-if="!stats.tasks">
-                        <placeholder className="w-75"/>
-                      </div>
-
-                      <div v-if="stats.tasks">
-                        <span className="h2 font-weight-bold mt--1 mr-2 float-left">
-                          {{ stats.tasks.total }}
-                        </span>
-                        <span className="text-muted">
-                          {{ `(au total)` }}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </slot>
-              </div>
-
-              <div className="col-auto">
-                <slot name="icon">
-                  <div className="icon icon-shape bg-gradient-success text-white rounded-circle shadow">
-                    <i className="fas fa-users"/>
-                  </div>
-                </slot>
-              </div>
-            </div>
-
-            <p className="mt-3 mb-0 text-sm">
-              <slot name="footer">
-                <i className="fas fa-external-link-alt mr-2"/>
-                <router-link to="/user-management">
-                  <span className="nav-link p-0 d-inline text-nowrap">accéder liste utilisateurs</span>
-                </router-link>
-              </slot>
-            </p>
-          </card>
-        </div>
-
-        <!-- total future tasks  -->
-        <div className="col-xl-3 col-md-6">
-          <card class="card-stats">
-            <div className="row">
-              <div className="col">
-                <slot>
-                  <h5 className="card-title text-uppercase text-muted mb-1">TÂCHES À VENIR</h5>
-                  <div className="row mt-2 mb--3">
-                    <div className="col-12 pr-0">
-                      <div v-if="!stats.tasks">
-                        <placeholder className="w-75"/>
-                      </div>
-
-                      <div v-if="stats.tasks">
-                        <span className="h2 font-weight-bold mt--1 mr-2 float-left">
-                          {{ stats.tasks.upcoming }}
-                        </span>
-                        <span className="text-muted">
-                          {{ `(${Math.ceil(stats.tasks.upcoming / stats.tasks.total * 100)}%)` }}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </slot>
-              </div>
-
-              <div className="col-auto">
-                <slot name="icon">
-                  <div className="icon icon-shape bg-gradient-success text-white rounded-circle shadow">
-                    <i className="fas fa-users"/>
-                  </div>
-                </slot>
-              </div>
-            </div>
-
-            <p className="mt-3 mb-0 text-sm">
-              <slot name="footer">
-                <i className="fas fa-external-link-alt mr-2"/>
-                <router-link to="/user-management">
-                  <span className="nav-link p-0 d-inline text-nowrap">accéder liste utilisateurs</span>
-                </router-link>
-              </slot>
-            </p>
-          </card>
-        </div>
-      </div>
     </base-header>
 
-    <!-- ======================================= -->
-    <!-- == Main =============================== -->
-    <!-- ======================================= -->
-    <div className="container-fluid mt--6 card-wrapper">
-      <div className="row">
-        <!-- grades repartition -->
-        <div className="col-xl-4">
+    <div class="container-fluid mt--6">
+
+      <div class="row">
+        <div class="col-xl-9">
+          <div class="row">
+            <div class="col-xl-4 col-md-6">
+              <!-- total users  -->
+              <total-users :users="stats.users"/>
+              <!-- active users -->
+              <active-users :users="stats.users"/>
+              <!-- epsi / wis repartition -->
+              <repartition-users :users="stats.users"/>
+            </div>
+
+            <div class="col-xl-4 col-md-6">
+              <!-- inactive users -->
+              <inactive-users :users="stats.users"/>
+              <!-- new users -->
+              <new-users :users="stats.users"/>
+              <!-- users doing bts -->
+              <bts-users :users="stats.users"/>
+            </div>
+
+            <div class="col-xl-4 col-md-12">
+              <!-- migrated users -->
+              <migrated-users :users="stats.users"/>
+              <!-- old accounts, will never be migrated (old i2) -->
+              <old-users :users="stats.users"/>
+              <!-- users that are accepting mails -->
+              <mail-users :users="stats.users"/>
+            </div>
+          </div>
+          <div >
+            <!-- campus + grade repartition -->
+            <card>
+              <template slot="header">
+                <h6 class="surtitle">UTILISATEURS</h6>
+                <h5 class="h3 mb-0">Répartion des campus (et des classes)</h5>
+              </template>
+              <div class="chart-area">
+                <bar-chart
+                  :height="350"
+                  :chart-data="barChartStacked.chartData"
+                  :extra-options="barChartStacked.extraOptions"
+                />
+              </div>
+            </card>
+          </div>
+        </div>
+
+        <div class="col-xl-3">
+          <!-- derniers utilisateurs inscrits -->
+          <last-registers :users="stats.users"/>
+          <!-- grades repartition -->
           <card>
             <template slot="header">
-              <h6 className="surtitle">TÂCHES</h6>
-              <h5 className="h3 mb-0">Répartition par classes</h5>
+              <h6 class="surtitle">UTILISATEURS</h6>
+              <h5 class="h3 mb-0">Répartition des classes</h5>
             </template>
-            <div className="chart">
+            <div class="chart">
               <pie-chart
                 :height="350"
                 :chart-data="pieChart.chartData"
                 :extra-options="pieChart.extraOptions"
-              />
-            </div>
-          </card>
-        </div>
-
-        <!-- campus + grade repartition -->
-        <div className="col-xl-8">
-          <card>
-            <template slot="header">
-              <h6 className="surtitle">TÂCHES</h6>
-              <h5 className="h3 mb-0">Répartion par campus (et classes)</h5>
-            </template>
-            <div className="chart-area">
-              <bar-chart
-                :height="350"
-                :chart-data="barChartStacked.chartData"
-                :extra-options="barChartStacked.extraOptions"
               />
             </div>
           </card>
@@ -156,21 +92,43 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import { mapGetters } from 'vuex'
+
+import TotalUsers from './Widgets/Stats/TotalUsers'
+import InactiveUsers from './Widgets/Stats/InactiveUsers'
+import MigratedUsers from './Widgets/Stats/MigratedUsers'
+import OldUsers from './Widgets/Stats/OldUsers'
+import ActiveUsers from './Widgets/Stats/ActiveUsers'
+import NewUsers from './Widgets/Stats/NewUsers'
+import RepartitionUsers from './Widgets/Stats/RepartitionUsers'
+import BtsUsers from './Widgets/Stats/BtsUsers'
+import MailUsers from './Widgets/Stats/MailUsers'
+import LastRegisters from './Widgets/Stats/LastRegisters'
+
 import BarChart from '@/components/Charts/BarChart'
 import PieChart from '@/components/Charts/PieChart'
-import {Charts} from '@/components/Charts/config'
+import { Charts } from '@/components/Charts/config'
 
 export default {
   components: {
     BarChart,
-    PieChart
+    PieChart,
+    TotalUsers,
+    InactiveUsers,
+    MigratedUsers,
+    OldUsers,
+    ActiveUsers,
+    NewUsers,
+    RepartitionUsers,
+    BtsUsers,
+    MailUsers,
+    LastRegisters
   },
   computed: {
     ...mapGetters({
-      stats: 'sysconf/getTasksStats'
+      stats: 'sysconf/getUsersStats'
     }),
-    pieChart() {
+    pieChart () {
       return {
         chartData: {
           labels: [
@@ -206,7 +164,7 @@ export default {
         }
       }
     },
-    barChartStacked() {
+    barChartStacked () {
       return {
         chartData: {
           labels: ['Arras', 'Auxerre', 'Bordeaux', 'Brest', 'Grenoble', 'Lille', 'Lyon', 'Montpellier', 'Nantes', 'Rennes', 'Toulouse', 'Paris', 'Dakar'],
@@ -326,7 +284,7 @@ export default {
       }
     }
   },
-  created() {
+  created () {
     this.$store.dispatch('sysconf/fetchStats')
   }
 }
