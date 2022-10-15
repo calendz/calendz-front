@@ -173,7 +173,7 @@
                   <div class="col-md-12 mx-auto">
                     <BtsSelect
                       v-model="bts"
-                      :disabled="user.grade !== 'B1' && user.grade !== 'B2'"
+                      :disabled="user.grade !== 'SN1' && user.grade !== 'SN2'"
                       vee-scope="updateProfileForm"/>
                   </div>
                 </div>
@@ -191,7 +191,7 @@
 
                 <div class="row">
                   <base-button
-                    :disabled="changing || profileFormDisabled || (user.grade !== 'B1' && user.grade !== 'B2' && !settings.editGroupEnabled)"
+                    :disabled="changing || profileFormDisabled || (user.grade !== 'SN1' && user.grade !== 'SN2' && !settings.editGroupEnabled)"
                     type="primary"
                     class="mx-auto"
                     size="md"

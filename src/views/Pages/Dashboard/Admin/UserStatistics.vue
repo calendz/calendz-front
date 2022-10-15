@@ -132,16 +132,16 @@ export default {
       return {
         chartData: {
           labels: [
-            'B1',
-            'B2',
+            'SN1',
+            'SN2',
             'B3',
             'I1',
             'I2'
           ],
           datasets: [{
             data: [
-              this.stats.grades ? this.stats.grades.b1 : 0,
-              this.stats.grades ? this.stats.grades.b2 : 0,
+              this.stats.grades ? this.stats.grades.sn1 : 0,
+              this.stats.grades ? this.stats.grades.sn2 : 0,
               this.stats.grades ? this.stats.grades.b3 : 0,
               this.stats.grades ? this.stats.grades.i1 : 0,
               this.stats.grades ? this.stats.grades.i2 : 0
@@ -169,42 +169,42 @@ export default {
         chartData: {
           labels: ['Arras', 'Auxerre', 'Bordeaux', 'Brest', 'Grenoble', 'Lille', 'Lyon', 'Montpellier', 'Nantes', 'Rennes', 'Toulouse', 'Paris', 'Dakar'],
           datasets: [{
-            label: 'B1',
+            label: 'SN1',
             maxBarThickness: 10,
             backgroundColor: Charts.colors.theme['info'],
             data: [
-              this.stats.cities ? this.stats.cities.arras.b1 : 0,
-              this.stats.cities ? this.stats.cities.auxerre.b1 : 0,
-              this.stats.cities ? this.stats.cities.bordeaux.b1 : 0,
-              this.stats.cities ? this.stats.cities.brest.b1 : 0,
-              this.stats.cities ? this.stats.cities.grenoble.b1 : 0,
-              this.stats.cities ? this.stats.cities.lille.b1 : 0,
-              this.stats.cities ? this.stats.cities.lyon.b1 : 0,
-              this.stats.cities ? this.stats.cities.montpellier.b1 : 0,
-              this.stats.cities ? this.stats.cities.nantes.b1 : 0,
-              this.stats.cities ? this.stats.cities.rennes.b1 : 0,
-              this.stats.cities ? this.stats.cities.toulouse.b1 : 0,
-              this.stats.cities ? this.stats.cities.paris.b1 : 0,
-              this.stats.cities ? this.stats.cities.dakar.b1 : 0
+              this.stats.cities ? this.stats.cities.arras.sn1 : 0,
+              this.stats.cities ? this.stats.cities.auxerre.sn1 : 0,
+              this.stats.cities ? this.stats.cities.bordeaux.sn1 : 0,
+              this.stats.cities ? this.stats.cities.brest.sn1 : 0,
+              this.stats.cities ? this.stats.cities.grenoble.sn1 : 0,
+              this.stats.cities ? this.stats.cities.lille.sn1 : 0,
+              this.stats.cities ? this.stats.cities.lyon.sn1 : 0,
+              this.stats.cities ? this.stats.cities.montpellier.sn1 : 0,
+              this.stats.cities ? this.stats.cities.nantes.sn1 : 0,
+              this.stats.cities ? this.stats.cities.rennes.sn1 : 0,
+              this.stats.cities ? this.stats.cities.toulouse.sn1 : 0,
+              this.stats.cities ? this.stats.cities.paris.sn1 : 0,
+              this.stats.cities ? this.stats.cities.dakar.sn1 : 0
             ]
           }, {
-            label: 'B2',
+            label: 'SN2',
             maxBarThickness: 10,
             backgroundColor: Charts.colors.theme['primary'],
             data: [
-              this.stats.cities ? this.stats.cities.arras.b2 : 0,
-              this.stats.cities ? this.stats.cities.auxerre.b2 : 0,
-              this.stats.cities ? this.stats.cities.bordeaux.b2 : 0,
-              this.stats.cities ? this.stats.cities.brest.b2 : 0,
-              this.stats.cities ? this.stats.cities.grenoble.b2 : 0,
-              this.stats.cities ? this.stats.cities.lille.b2 : 0,
-              this.stats.cities ? this.stats.cities.lyon.b2 : 0,
-              this.stats.cities ? this.stats.cities.montpellier.b2 : 0,
-              this.stats.cities ? this.stats.cities.nantes.b2 : 0,
-              this.stats.cities ? this.stats.cities.rennes.b2 : 0,
-              this.stats.cities ? this.stats.cities.toulouse.b2 : 0,
-              this.stats.cities ? this.stats.cities.paris.b2 : 0,
-              this.stats.cities ? this.stats.cities.dakar.b2 : 0
+              this.stats.cities ? this.stats.cities.arras.sn2 : 0,
+              this.stats.cities ? this.stats.cities.auxerre.sn2 : 0,
+              this.stats.cities ? this.stats.cities.bordeaux.sn2 : 0,
+              this.stats.cities ? this.stats.cities.brest.sn2 : 0,
+              this.stats.cities ? this.stats.cities.grenoble.sn2 : 0,
+              this.stats.cities ? this.stats.cities.lille.sn2 : 0,
+              this.stats.cities ? this.stats.cities.lyon.sn2 : 0,
+              this.stats.cities ? this.stats.cities.montpellier.sn2 : 0,
+              this.stats.cities ? this.stats.cities.nantes.sn2 : 0,
+              this.stats.cities ? this.stats.cities.rennes.sn2 : 0,
+              this.stats.cities ? this.stats.cities.toulouse.sn2 : 0,
+              this.stats.cities ? this.stats.cities.paris.sn2 : 0,
+              this.stats.cities ? this.stats.cities.dakar.sn2 : 0
             ]
           }, {
             label: 'B3',

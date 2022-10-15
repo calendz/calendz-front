@@ -12,13 +12,13 @@
         Vous pouvez revenir à la date actuelle à tout moment en cliquant sur le bouton "Revenir à aujourd'hui".<br>
         <br>
         Les informations affichées sont :
-        <ul>
-          <li>Intitulé du module</li>
-          <li>Heures de début/fin</li>
-          <li>Nom de l'intervenant</li>
-          <li>Salle du cours</li>
-          <li>BTS (facultatif, pour les options)</li>
-        </ul>
+      <ul>
+        <li>Intitulé du module</li>
+        <li>Heures de début/fin</li>
+        <li>Nom de l'intervenant</li>
+        <li>Salle du cours</li>
+        <li>BTS (facultatif, pour les options)</li>
+      </ul>
       </p>
 
       <img
@@ -51,17 +51,17 @@
           href="https://github.com/calendz/calendz-api-calendar"
           target="_blank"
           rel="noreferrer noopener">API-Calendar</a>)
-          va télécharger la page HTML de l'emploi du temps traditionnel de Beecome, puis en extraire les données (intitulé du cours, salle, heure etc.)
-          pour ensuite les retourner au format JSON, et pour qu'elles soient ensuite affichées sur le site grâce à la librairie
+        va télécharger la page HTML de l'emploi du temps traditionnel de 360 Learning, puis en extraire les données (intitulé du cours, salle, heure etc.)
+        pour ensuite les retourner au format JSON, et pour qu'elles soient ensuite affichées sur le site grâce à la librairie
         <a
           href="https://fullcalendar.io/"
           target="_blank"
           rel="noreferrer noopener">FullCalendar</a>.
       </p>
 
-    <!-- <img
-      class="img-fluid"
-      src="https://gblobscdn.gitbook.com/assets%2F-LrtTS-hFZE84mrgJ_gj%2F-LrtcSAFCUo-HQvmScDC%2F-LrtcTaTaQObra6pGqW6%2Fimage.png?alt=media&token=3c6d3191-286b-4f20-8ff1-5d69f96b80ff"> -->
+      <!-- <img
+        class="img-fluid"
+        src="https://gblobscdn.gitbook.com/assets%2F-LrtTS-hFZE84mrgJ_gj%2F-LrtcSAFCUo-HQvmScDC%2F-LrtcTaTaQObra6pGqW6%2Fimage.png?alt=media&token=3c6d3191-286b-4f20-8ff1-5d69f96b80ff"> -->
     </div>
   </div>
 </template>

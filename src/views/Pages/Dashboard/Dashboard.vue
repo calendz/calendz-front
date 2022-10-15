@@ -59,12 +59,12 @@
           <a
             class="nav-link p-0"
             target="_blank"
-            href="https://www.beecome.io/dashboard">
+            href="https://epsi.360learning.com/">
             <stats-card
               title="ACCÈS DIRECT À"
               type="gradient-blue"
-              sub-title="beecome.io"
-              icon="fas fa-bold">
+              sub-title="360learning"
+              icon="fa-sharp fa-solid fa-360-degrees">
 
               <template slot="footer">
                 <i class="fas fa-external-link-alt mr-2"/>

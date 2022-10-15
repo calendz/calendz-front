@@ -182,7 +182,7 @@
               label="Séléctionnez votre groupe"/>
           </div>
           <div
-            v-if="migrationForm.grade === 'B1' || migrationForm.grade === 'B2'"
+            v-if="migrationForm.grade === 'SN1' || migrationForm.grade === 'SN2'"
             class="col-md-6">
             <base-input
               :error="getError('bts')"
