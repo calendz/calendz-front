@@ -67,8 +67,8 @@ export default {
           ]
         case 'EPSI':
           return [
-            { value: 'B1' },
-            { value: 'B2' },
+            { value: 'SN1' },
+            { value: 'SN2' },
             { value: 'B3' },
             { value: 'I1' },
             { value: 'I2' }

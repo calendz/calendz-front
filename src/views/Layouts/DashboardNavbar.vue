@@ -163,15 +163,15 @@
             <small>Devoirs</small>
           </router-link>
 
-          <!-- beecome -->
+          <!-- 360 Learning -->
           <a
             target="_blank"
-            href="https://www.beecome.io/dashboard"
+            href="https://epsi.360learning.com/"
             class="col-4 shortcut-item">
             <span class="shortcut-media avatar rounded-circle bg-gradient-red">
               <i class="fas fa-bold"/>
             </span>
-            <small>Beecome</small>
+            <small>360 Learning</small>
           </a>
 
           <!-- Email (outlook) -->

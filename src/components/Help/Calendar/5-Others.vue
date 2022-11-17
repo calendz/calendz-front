@@ -8,11 +8,11 @@
 
     <p>
       Vous pouvez également utiliser le paramètre <code>?user=</code> pour afficher l'emploi du temps d'une autre personne.<br>
-      Par exemple : <code>?user=arthur.dufour</code> affichera l'emploi du temps d'Arthur Dufour.
+      Par exemple : <code>?user=doryan.chaigneau</code> affichera l'emploi du temps de Doryan Chaigneau.
     </p>
 
     <base-alert type="primary">
-      <strong>Astuce : </strong> vous pouvez combiner deux paramètres : <code class="text-white">?user=arthur.dufour&date=24-12-2020</code>.
+      <strong>Astuce : </strong> vous pouvez combiner deux paramètres : <code class="text-white">?user=doryan.chaigneau&date=09-09-2022</code>.
     </base-alert>
 
     <h3># Afficher l'emploi du temps d'un intervenant</h3>
